@@ -1,0 +1,189 @@
+﻿
+// <summary>文字列解釈クラス<summary>
+// <desc>StringParser オブジェクトは文字列と解釈位置を示す指標を
+// 保持しています。<br/>
+// 指標は解釈に従って移動していきます。</desc>
+
+class StringParser	extends NativeObject
+{
+	// StringParser オブジェクトを構築します。
+	public native StringParser() ;
+
+	// StringParser オブジェクトを構築します。
+	// <param name="str">初期値として設定する文字列</param>
+	public native StringParser( String str ) ;
+
+	// StringParser を複製します。
+	public native StringParser operator := ( StringParser spars ) ;
+
+	// String を複製し、指標を 0 に移動します。
+	public native StringParser operator := ( String str ) ;
+
+	// 文字列を取得します。
+	@override
+	public native String toString() const ;
+
+	// テキストファイルを読み込みます。
+	public native boolean loadTextFile( String path ) ;
+
+	// File オブジェクトからテキストファイルを読み込みます。
+	public native boolean readTextFile( File file ) ;
+
+	// 指標を取得します。
+	public native ulong getIndex() const ;
+
+	// 指標を移動します。
+	public native void seekIndex( ulong index ) ;
+
+	// 現在位置から指標を移動します。
+	// <param name="offset">現在の指標に加算する値</param>
+	// <return>移動後の指標</return>
+	public native ulong skipIndex( long offset ) ;
+
+	// 指標が終端に到達したか？
+	public native boolean isEndOfString() const ;
+
+	// 指標位置の文字を取得します。
+	public native uint currentChar() const ;
+
+	// 指標位置を基準にした位置の文字を取得します。
+	public native uint currentAt( uint index ) const ;
+
+	// 指標位置の文字を取得し、指標を次へ進めます。
+	public native uint nextChar() ;
+
+	// 空白文字（タブや改行、BOMを含む）を読み飛ばします。
+	// <return>週単位到達した場合には false、
+	// 空白以外の文字を見つけた場合には true</return>
+	public native boolean passSpace() ;
+
+	// 空白を除いた次の文字が指定のいずれかの文字であるならそれを取得します。
+	// 但し指標はその文字のまま進めません。
+	// <param name="strChars">この文字列に含まれるいずれかの文字が次の文字か判定する</param>
+	public native uint checkNextChars( String strChars ) ;
+
+	// 空白を除いた次の文字が指定のいずれかの文字であるならそれを取得し次へ進めます。
+	// 何れの文字でもないなら指標を進めず 0 を返します（但し空白は飛ばす）
+	// <param name="strChars">この文字列に含まれるいずれかの文字が次の文字か判定する</param>
+	// <return>次の文字が strChars に含まれるいずれかの文字であるなら、その文字コード<br/>
+	// そうでないなら指標は進めず 0</return>
+	public native uint hasNextChars( String strChars ) ;
+
+	// 現在の位置から次の文字列が一致するかテストし、一致なら次へ進め true を返します。
+	// <param name="strNext">現在の指標位置から strNext.length() 区間、一致するか判定する</param>
+	// <return>現在の指標から strNext に一致するなら指標をその次の位置へ進め true<br/>
+	// そうでないなら指標を進めず false</return>
+	public native boolean hasNextString( String strNext ) ;
+
+	// 指定文字列と一致する次の位置まで指標を進め true を返します。
+	// そうでないなら末尾まで移動して false を返します。
+	// <param name="strSeek">現在の指標位置から後方へ一致位置を探す文字列</param>
+	public native boolean seekString( String strSeek ) ;
+
+	// 現在の位置から次のトークンが一致するかテストし、一致なら次へ進め true を返します。
+	// そうでないなら指標を進めず false を返します。
+	// <param name="strToken">現在の指標位置から空白を除いた次のトークンと一致判定する文字列</param>
+	public native boolean hasNextToken( String strToken ) ;
+
+	// トークン種別：空白（終端に到達した）
+	public static const int	tokenNothing = 0 ;
+
+	// トークン種別：数字と記号以外の文字から始まる記号以外の文字列
+	public static const int	tokenSymbol = 1 ;
+
+	// トークン種別：数字から始まる記号以外の文字列（数値リテラルではないことに注意）
+	public static const int	tokenNumber = 2 ;
+
+	//トークン種別：記号文字列（但し特殊記号で分割される）
+	public static const int	tokenMark = 3 ;
+
+	// １トークンの終端位置まで読み飛ばします。
+	// <return>読み飛ばしたトークン種別：tokenNothing, tokenSymbol, tokenNumber, tokenMark</return>
+	public native int passToken() ;
+
+	// 次の１トークンを取得して指標を進めます。
+	// <param name="pTokenType">取得したトークンの種別を受け取る int 変数。
+	// 		null の場合には受け取らない。</param>
+	// <return>取得したトークン文字列</return>
+	public native String nextToken( int* pTokenType = null ) ;
+
+	// 現在の位置から空白文字（タブや改行、BOM等を含む）で
+	// 区切られた文字列を取得します。
+	// <return>取得された文字列。終端の場合には null</return>
+	public native String nextStringTermBySpace() ;
+
+	// 現在の位置から指定のいずれかの文字で区切られた文字列を取得します。
+	// <param name="strDeliChars">区切り文字集合。
+	// この文字列に含まれるいずれかの１文字が区切りとして判定される。</param>
+	// <param name="pDeliChar">実際に見つけた区切り文字を受け取る uint 変数。<br/>
+	//			区切り文字を見つけないまま主担に到達した場合には 0。<br/>
+	//			null の場合には受け取らない。</param>
+	// <return>取得された文字列。<br/>
+	//		strDeliChars に指定されたいずれかの区切り文字を見つけた場合には、
+	//		その区切り文字の次の位置まで指標を移動する。<br/>
+	//		そうでない場合には終端まで指標は移動する。</return>
+	public native String nextStringTermByChars
+					( String strDeliChars, uint* pDeliChar = null ) ;
+
+	// 現在の位置から行末までの文字列を取得します。
+	// <param name="pRetCode">行末の改行コードを受け取る uint 変数。<br/>
+	//			改行コードが \r\n だった場合には \n を受け取る。</param>
+	// <return>末尾の改行コードを含まない現在の行の文字列。<br/>
+	//			指標は次の行の先頭に移動する。</return>
+	public native String nextLine( uint* pRetCode = null ) ;
+
+	// 閉じ記号まで読み飛ばします。
+	// <param name="chCloser">閉じ記号の文字コード。<br/>
+	//		' や &quot; 引用符の場合、Loquaty の \ 記号エスケープシーケンスに
+	//		基づいて解釈される。</param>
+	// <param name="strEscChars">この文字列に含まれるいずれかの１文字を見つけた場合には、
+	//		その指標位置で即座に終了する。</param>
+	// <return>chCloser に一致する文字を見つけた場合には true、そうでない場合には false</return>
+	public native boolean passEnclosedString
+					( uint chCloser, String strEscChars = null ) ;
+
+	// 閉じ記号までの文字列を取得します。
+	// <param name="chCloser">閉じ記号の文字コード。<br/>
+	//		' や &quot; 引用符の場合、Loquaty の \ 記号エスケープシーケンスに
+	//		基づいて解釈される。</param>
+	// <param name="strEscChars">この文字列に含まれるいずれかの１文字を見つけた場合には、
+	//		その指標位置で即座に終了する。</param>
+	// <param name="pFoundCloser">chCloser に一致する閉じ記号文字を
+	//		見つけた場合に true を受け取る boolean 変数。</param>
+	// <return>chCloser に一致する文字を見つけた場合にはそこまでの区間の文字列を返し、指標は閉じ記号の次の文字へ移動する。<br/>
+	// 		そうでない場合には終端、又は strEscChars に含まれる文字までの区間の文字列を返し、指標はその終端の位置に移動する。</return>
+	// <desc>この関数は nextStringTermByChars に似ていますが
+	//		chCloser が文字列引用符記号の場合に動作が異なります。</desc>
+	public native String nextEnclosedString
+		( uint chCloser, String strEscChars = null, boolean* pFoundCloser = null ) ;
+
+	// 空白文字判定
+	public static native boolean isCharSpace( uint ch ) ;
+
+	// 行情報
+	struct	LineInfo
+	{
+		// 行番号（1 から始まる / 0 は見つからなかった）
+		ulong	iLine ;
+		// 行先頭の文字指標
+		ulong	iStart ;
+		// 次の行の先頭文字指標
+		ulong	iEnd ;
+	} ;
+
+	// 文字指標に該当する行を探します。
+	// <param name="index">探す行に含まれる文字指標</param>
+	// <param name="chRet">改行コード</param>
+	// <return>見つけた行の情報を格納した LineInfo 構造体</return>
+	public native LineInfo* findLineContainingIndexAt
+							( ulong index, uint chRet = '\n' ) const ;
+
+	// Loquaty 文字列リテラルとして特殊文字を \ 記号エンコードします。
+	public static native String encodeStringLiteral( String str ) ;
+
+	// Loquaty 文字列リテラルとして \ 記号エスケープをデコードします。
+	public static native String decodeStringLiteral( String str ) ;
+
+}
+
+

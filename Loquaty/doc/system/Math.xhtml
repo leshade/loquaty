@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Math</title>
+</head>
+<body>
+<div class="chapter">Math</div>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Math.xhtml">Math</a>
+</div></div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_PI">PI</a><br/>
+	<a href="#static_E">E</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_abs">abs</a><br/>
+	<a href="#func_acos">acos</a><br/>
+	<a href="#func_asin">asin</a><br/>
+	<a href="#func_atan">atan</a><br/>
+	<a href="#func_atan2">atan2</a><br/>
+	<a href="#func_clamp">clamp</a><br/>
+	<a href="#func_cos">cos</a><br/>
+	<a href="#func_exp">exp</a><br/>
+	<a href="#func_floor">floor</a><br/>
+	<a href="#func_log">log</a><br/>
+	<a href="#func_log10">log10</a><br/>
+	<a href="#func_max">max</a><br/>
+	<a href="#func_min">min</a><br/>
+	<a href="#func_pow">pow</a><br/>
+	<a href="#func_random">random</a><br/>
+	<a href="#func_round">round</a><br/>
+	<a href="#func_sin">sin</a><br/>
+	<a href="#func_sqrt">sqrt</a><br/>
+	<a href="#func_tan">tan</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_PI"/>
+<div class="headline">PI</div>
+<div class="usage">public static const double&#9; PI = 3.14159265358979</div>
+<div class="normal">
+円周率π</div>
+<br/>
+<a name="static_E"/>
+<div class="headline">E</div>
+<div class="usage">public static const double&#9; E = 2.71828182845905</div>
+<div class="normal">
+自然対数 e</div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_abs"/>
+<div class="headline">abs</div>
+<div class="usage">public static long abs( long x )</div>
+<div class="normal">
+x の絶対値を取得します。</div>
+<br/>
+<div class="headline">abs</div>
+<div class="usage">public static double abs( double x )</div>
+<div class="normal">
+x の絶対値を取得します。</div>
+<br/>
+
+<a name="func_acos"/>
+<div class="headline">acos</div>
+<div class="usage">public static double acos( double x )</div>
+<div class="normal">
+x の逆余弦を計算します。</div>
+<br/>
+
+<a name="func_asin"/>
+<div class="headline">asin</div>
+<div class="usage">public static double asin( double x )</div>
+<div class="normal">
+x の逆正弦を計算します。</div>
+<br/>
+
+<a name="func_atan"/>
+<div class="headline">atan</div>
+<div class="usage">public static double atan( double x )</div>
+<div class="normal">
+x の逆接線を計算します。</div>
+<br/>
+
+<a name="func_atan2"/>
+<div class="headline">atan2</div>
+<div class="usage">public static double atan2( double y, double x )</div>
+<div class="normal">
+y/x の逆接線を計算します。</div>
+<br/>
+
+<a name="func_clamp"/>
+<div class="headline">clamp</div>
+<div class="usage">public static long clamp( long x, long l, long h )</div>
+<div class="normal">
+x を [l, h] 区間にクリップします。</div>
+<br/>
+<div class="headline">clamp</div>
+<div class="usage">public static double clamp( double x, double l, double h )</div>
+<div class="normal">
+x を [l, h] 区間にクリップします。</div>
+<br/>
+
+<a name="func_cos"/>
+<div class="headline">cos</div>
+<div class="usage">public static double cos( double x )</div>
+<div class="normal">
+x の余弦を計算します。</div>
+<br/>
+
+<a name="func_exp"/>
+<div class="headline">exp</div>
+<div class="usage">public static double exp( double x )</div>
+<div class="normal">
+<italic>e<sup>x</sup></italic>を計算します。</div>
+<br/>
+
+<a name="func_floor"/>
+<div class="headline">floor</div>
+<div class="usage">public static double floor( double x )</div>
+<div class="normal">
+x 以下の最大の整数値の浮動小数点値を取得します。</div>
+<br/>
+
+<a name="func_log"/>
+<div class="headline">log</div>
+<div class="usage">public static double log( double x )</div>
+<div class="normal">
+log<italic><sub>e</sub></italic>(x) を計算します。</div>
+<br/>
+
+<a name="func_log10"/>
+<div class="headline">log10</div>
+<div class="usage">public static double log10( double x )</div>
+<div class="normal">
+log<sub>10</sub>(x) を計算します。</div>
+<br/>
+
+<a name="func_max"/>
+<div class="headline">max</div>
+<div class="usage">public static long max( long x, long y )</div>
+<div class="normal">
+x と y の最大値を取得します。</div>
+<br/>
+<div class="headline">max</div>
+<div class="usage">public static double max( double x, double y )</div>
+<div class="normal">
+x と y の最大値を取得します。</div>
+<br/>
+
+<a name="func_min"/>
+<div class="headline">min</div>
+<div class="usage">public static long min( long x, long y )</div>
+<div class="normal">
+x と y の最小値を取得します。</div>
+<br/>
+<div class="headline">min</div>
+<div class="usage">public static double min( double x, double y )</div>
+<div class="normal">
+x と y の最小値を取得します。</div>
+<br/>
+
+<a name="func_pow"/>
+<div class="headline">pow</div>
+<div class="usage">public static double pow( double x, double y )</div>
+<div class="normal">
+<italic>x<sup>y</sup></italic>を計算します。</div>
+<br/>
+
+<a name="func_random"/>
+<div class="headline">random</div>
+<div class="usage">public static double random( double x )</div>
+<div class="normal">
+[0, x) 範囲の一様分布な乱数を発生します。</div>
+<br/>
+
+<a name="func_round"/>
+<div class="headline">round</div>
+<div class="usage">public static double round( double x )</div>
+<div class="normal">
+x の最近値の整数の浮動小数点値を取得します。</div>
+<br/>
+
+<a name="func_sin"/>
+<div class="headline">sin</div>
+<div class="usage">public static double sin( double x )</div>
+<div class="normal">
+x の正弦を計算します。</div>
+<br/>
+
+<a name="func_sqrt"/>
+<div class="headline">sqrt</div>
+<div class="usage">public static double sqrt( double x )</div>
+<div class="normal">
+x の平方根を計算します。</div>
+<br/>
+
+<a name="func_tan"/>
+<div class="headline">tan</div>
+<div class="usage">public static double tan( double x )</div>
+<div class="normal">
+x の接線を計算します。</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

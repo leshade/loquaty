@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>XMLDocParser</title>
+</head>
+<body>
+<div class="chapter">XMLDocParser</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+XML ライクな簡易文書パーサークラス</div>
+<div class="indent1">
+<div class="code_quote">// load xml file<br/>XMLDocParser xpars = XMLDocParser() ;<br/>xpars.loadTextFile( &quot;example.xml&quot; ) ;<br/><br/>// parse all tags<br/>XMLDocument xmlDoc = xpars.parseDocument() ;<br/><br/>// get a tag you want<br/>XMLDocument xmlTag = xpars.getTagPathAs( &quot;html&gt;head&gt;title&quot; ) ;<br/>Console.print( xmlTag.getTextElement() ) ; &#32;// title<br/><br/>// save to xml file<br/>xpars.saveToFile( &quot;save.xml&quot;, xmlDoc ) ;<br/></div></div><br/>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;xml_document.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="../string_parser.lqs/StringParser.xhtml">StringParser</a>
+<div class="indent1"><a href="XMLDocParser.xhtml">XMLDocParser</a>
+</div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_XMLDocParser">XMLDocParser</a><br/>
+	<a href="#virtual_decodeXMLString">decodeXMLString</a><br/>
+	<a href="#virtual_encodeXMLString">encodeXMLString</a><br/>
+	<a href="#virtual_getErrorCount">getErrorCount</a><br/>
+	<a href="#virtual_getErrorMessage">getErrorMessage</a><br/>
+	<a href="#virtual_isStrictText">isStrictText</a><br/>
+	<a href="#virtual_parseDocument">parseDocument</a><br/>
+	<a href="#virtual_parseElement">parseElement</a><br/>
+	<a href="#virtual_saveToFile">saveToFile</a><br/>
+	<a href="#virtual_serialize">serialize</a><br/>
+	<a href="#virtual_serializeToString">serializeToString</a><br/>
+	<a href="#virtual_setStrictText">setStrictText</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_XMLDocParser"/>
+<div class="headline">XMLDocParser</div>
+<div class="usage">public native XMLDocParser( )</div>
+<div class="normal">
+XMLDocParser オブジェクトを構築します。<br/></div>
+<br/>
+<div class="headline">XMLDocParser</div>
+<div class="usage">public native XMLDocParser( String str )</div>
+<div class="normal">
+XMLDocParser オブジェクトを構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">str</div>
+<div class="param_desc">
+初期値として設定する文字列</div>
+</div>
+<br/>
+
+<a name="virtual_decodeXMLString"/>
+<div class="headline">decodeXMLString</div>
+<div class="usage">public native String decodeXMLString( String str ) const</div>
+<div class="normal">
+XML テキストのエスケープ記号デコード処理をします。</div>
+<div class="notes_parameter">
+<div class="param_name">str</div>
+<div class="param_desc">
+デコード処理する文字列</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+デコードされた文字列</div>
+</div>
+<br/>
+
+<a name="virtual_encodeXMLString"/>
+<div class="headline">encodeXMLString</div>
+<div class="usage">public native String encodeXMLString( String str, String indent = null ) const</div>
+<div class="normal">
+XML テキスト・エスケープ処理をします。</div>
+<div class="notes_parameter">
+<div class="param_name">str</div>
+<div class="param_desc">
+エスケープ処理する文字列</div>
+<div class="param_name">indent</div>
+<div class="param_desc">
+isStrictText()==false の時に、文字列に改行が含まれる場合の2行目以降のインデント用文字列</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+エスケープ処理された文字列</div>
+</div>
+<br/>
+
+<a name="virtual_getErrorCount"/>
+<div class="headline">getErrorCount</div>
+<div class="usage">public native ulong getErrorCount( ) const</div>
+<div class="normal">
+エラー数取得します。<br/></div>
+<br/>
+
+<a name="virtual_getErrorMessage"/>
+<div class="headline">getErrorMessage</div>
+<div class="usage">public native String getErrorMessage( ) const</div>
+<div class="normal">
+エラーメッセージ取得します。<br/></div>
+<br/>
+
+<a name="virtual_isStrictText"/>
+<div class="headline">isStrictText</div>
+<div class="usage">public native boolean isStrictText( ) const</div>
+<div class="normal">
+テキスト要素の空白の扱いを厳格に行うか？</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+true の時には空白をそのまま維持し、false の時には可読性を優先する</div>
+</div>
+<br/>
+
+<a name="virtual_parseDocument"/>
+<div class="headline">parseDocument</div>
+<div class="usage">public native XMLDocument parseDocument( )</div>
+<div class="normal">
+ドキュメント全体を解釈します。<br/></div>
+<br/>
+
+<a name="virtual_parseElement"/>
+<div class="headline">parseElement</div>
+<div class="usage">public native XMLDocument parseElement( )</div>
+<div class="normal">
+１つの要素を解釈します。<br/></div>
+<br/>
+
+<a name="virtual_saveToFile"/>
+<div class="headline">saveToFile</div>
+<div class="usage">public native boolean saveToFile( String path, XMLDocument xmlDoc, ulong nReadableLineWidth = 60 )</div>
+<div class="normal">
+ドキュメントをファイルへ保存します。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+保存するファイルのパス</div>
+<div class="param_name">xmlDoc</div>
+<div class="param_desc">
+保存する XMLDocument オブジェクト</div>
+<div class="param_name">nReadableLineWidth</div>
+<div class="param_desc">
+isStrictText()==false の時のテキスト成型の基準となる行の幅</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+成功した場合には true, 失敗した場合には false</div>
+</div>
+<br/>
+
+<a name="virtual_serialize"/>
+<div class="headline">serialize</div>
+<div class="usage">public native void serialize( OutputStream strm, XMLDocument xmlDoc, ulong nReadableLineWidth = 60 )</div>
+<div class="normal">
+ドキュメントを出力ストリームへ出力します。</div>
+<div class="notes_parameter">
+<div class="param_name">strm</div>
+<div class="param_desc">
+出力先の OutputStream オブジェクト</div>
+<div class="param_name">xmlDoc</div>
+<div class="param_desc">
+保存する XMLDocument オブジェクト</div>
+<div class="param_name">nReadableLineWidth</div>
+<div class="param_desc">
+isStrictText()==false の時のテキスト成型の基準となる行の幅</div>
+</div>
+<br/>
+
+<a name="virtual_serializeToString"/>
+<div class="headline">serializeToString</div>
+<div class="usage">public native String serializeToString( XMLDocument xmlDoc, ulong nReadableLineWidth = 60 )</div>
+<div class="normal">
+ドキュメントを文字列化します。</div>
+<div class="notes_parameter">
+<div class="param_name">xmlDoc</div>
+<div class="param_desc">
+保存する XMLDocument オブジェクト</div>
+<div class="param_name">nReadableLineWidth</div>
+<div class="param_desc">
+isStrictText()==false の時のテキスト成型の基準となる行の幅</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+ドキュメントをシリアライズした文字列</div>
+</div>
+<br/>
+
+<a name="virtual_setStrictText"/>
+<div class="headline">setStrictText</div>
+<div class="usage">public native void setStrictText( boolean strict )</div>
+<div class="normal">
+テキスト要素の空白の扱いを厳格に行うか設定します。</div>
+<div class="notes_parameter">
+<div class="param_name">strict</div>
+<div class="param_desc">
+true の時には空白をそのまま維持し、false の時には可読性を優先する</div>
+</div>
+<div class="indent1">
+※setStrictText(true) 状態でシリアライズされた XML 文書をsetStrictText(false) 状態で解釈したり、その逆を行うとテキスト要素の空白は維持されず増えたり減ったりしますが、同じ状態、例えば setStrictText(false) でシリアライズ、setStrictText(false) で解釈すれば空白や改行は正しく維持されます。</div><br/>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public native XMLDocParser operator :=( XMLDocParser xpars )</div>
+<div class="normal">
+XMLDocParser を複製します。<br/></div>
+<br/>
+<div class="headline">operator :=</div>
+<div class="usage">public native XMLDocParser operator :=( String str )</div>
+<div class="normal">
+String を複製し XMLDocParser に設定します。<br/></div>
+<br/>
+<div class="headline">operator :=</div>
+<div class="usage">public XMLDocParser operator :=( StringParser spars )</div>
+<div class="normal">
+StringParser を複製し、XMLDocParser に設定します。<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

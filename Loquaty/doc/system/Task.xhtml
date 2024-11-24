@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Task</title>
+</head>
+<body>
+<div class="chapter">Task</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+軽量スレッドを実行するタスクオブジェクトの基底クラスです。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Task.xhtml">Task</a>
+</div></div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_getCurrent">getCurrent</a><br/>
+	<a href="#func_rest">rest</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_begin">begin</a><br/>
+	<a href="#virtual_finish">finish</a><br/>
+	<a href="#virtual_getReturned">getReturned</a><br/>
+	<a href="#virtual_getUnhandledException">getUnhandledException</a><br/>
+	<a href="#virtual_isFinished">isFinished</a><br/>
+	<a href="#virtual_join">join</a><br/>
+	<a href="#virtual_proceed">proceed</a><br/>
+	<a href="#virtual_throw">throw</a><br/>
+	<a href="#virtual_waitFor">waitFor</a><br/>
+</div><br/>
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_getCurrent"/>
+<div class="headline">getCurrent</div>
+<div class="usage">public static Task getCurrent( )</div>
+<div class="normal">
+タスク関数内で実行中のタスクを取得します。</div>
+<br/>
+
+<a name="func_rest"/>
+<div class="headline">rest</div>
+<div class="usage">public static void rest( )</div>
+<div class="normal">
+タスク関数内で実行中の proceed 関数を脱出させます。<br/>Thread.sleep(0) と同じ効果を得ます。</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_begin"/>
+<div class="headline">begin</div>
+<div class="usage">public boolean begin( Function&lt;void()&gt; func )</div>
+<div class="normal">
+タスクに実行する関数を設定します。</div>
+<div class="notes_parameter">
+<div class="param_name">func</div>
+<div class="param_desc">
+実行する関数。関数の返り値型はジェネリック型によります。</div>
+</div>
+<br/>
+
+<a name="virtual_finish"/>
+<div class="headline">finish</div>
+<div class="usage">public void finish( )</div>
+<div class="normal">
+タスクを即座に終了させます。<br/>実行中のタスクが保持していたオブジェクトの参照はすべて解放されます。</div>
+<br/>
+
+<a name="virtual_getReturned"/>
+<div class="headline">getReturned</div>
+<div class="usage">public void getReturned( ) const</div>
+<div class="normal">
+完了したタスク関数の返り値を取得します。<br/>返り値の型はジェネリック型によります。</div>
+<br/>
+
+<a name="virtual_getUnhandledException"/>
+<div class="headline">getUnhandledException</div>
+<div class="usage">public Object getUnhandledException( ) const</div>
+<div class="normal">
+タスク関数でキャッチされない例外が発生して終了した場合、その例外オブジェクトを取得します。</div>
+<br/>
+
+<a name="virtual_isFinished"/>
+<div class="headline">isFinished</div>
+<div class="usage">public boolean isFinished( ) const</div>
+<div class="normal">
+タスクの実行が完了しているか判定します。</div>
+<br/>
+
+<a name="virtual_join"/>
+<div class="headline">join</div>
+<div class="usage">public boolean join( )</div>
+<div class="normal">
+タスクの実行が完了するまで待機します。<br/>proceed が別のスレッドで実行されていなければこの関数は永遠に復帰しません。</div>
+<br/>
+
+<a name="virtual_proceed"/>
+<div class="headline">proceed</div>
+<div class="usage">public boolean proceed( long msecTimeout = 0 )</div>
+<div class="normal">
+タスクを実行する。</div>
+<div class="notes_parameter">
+<div class="param_name">msecTimeout</div>
+<div class="param_desc">
+ミリ秒単位でのタイムアウト時間。<br/>最悪の場合この時間内は処理を中断できないため長い時間を指定できません（システムによって大きくない値にクリップされます）。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+タスクの実行が完了すると true が返されます。</div>
+</div>
+<br/>
+
+<a name="virtual_throw"/>
+<div class="headline">throw</div>
+<div class="usage">public void throw( Object obj )</div>
+<div class="normal">
+実行中のタスクに例外を送出します。</div>
+<br/>
+
+<a name="virtual_waitFor"/>
+<div class="headline">waitFor</div>
+<div class="usage">public boolean waitFor( )</div>
+<div class="normal">
+タスクの実行が完了するまで待機します。<br/>この関数は join の別名です。</div>
+<br/>
+<div class="headline">waitFor</div>
+<div class="usage">public boolean waitFor( long msecTimeout )</div>
+<div class="normal">
+タスクの実行が完了するか、タイムアウトするまで待機します。</div>
+<div class="notes_parameter">
+<div class="param_name">msecTimeout</div>
+<div class="param_desc">
+ミリ秒単位でのタイムアウト時間</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+タスクの実行が完了すると true が返されます。</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

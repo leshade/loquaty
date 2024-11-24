@@ -1,0 +1,3408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+	<!ENTITY tab "&#160;&#160;&#160;&#160;">
+	<!ENTITY r "<br/>">
+	<!ENTITY opt "<sub><italic>opt</italic></sub>">
+	<!ENTITY exam '<div align="right"><small>ex. Loquaty</small></div>'>
+]>
+<?xml-stylesheet type="text/css" href="article.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Loquaty 言語マニュアル</title>
+</head>
+<body>
+
+<div class="title0">Loquaty 言語マニュアル</div>
+<br/>
+
+<div class="headline">目次</div>
+
+<div class="indent1">
+<a href="#chapter_peculiarity">§特徴</a><br/>
+	<div class="indent2">
+	<a href="#peculiarity_abstract">概要</a><br/>
+	<a href="#peculiarity_light_thread">軽量スレッド</a><br/>
+	<a href="#peculiarity_interface_with_cpp">C++ とのインターフェース</a><br/>
+	<a href="#peculiarity_portability">ポータブル性</a><br/>
+	<a href="#peculiarity_execution_speed">実行速度</a><br/>
+	</div>
+<br/>
+<a href="#chapter_tour_types">§型とリテラル</a><br/>
+	<div class="indent2">
+	<a href="#tour_kind_of_types">型の種類</a><br/>
+	<a href="#tour_builtin_literals">定義済みリテラル</a><br/>
+	<a href="#tour_primitive_type">プリミティブ型</a><br/>
+	<a href="#tour_boolean_type">ブール型</a><br/>
+	<a href="#tour_integer_type">整数型</a><br/>
+	<a href="#tour_number_type">浮動小数点数値型</a><br/>
+	<a href="#tour_string_type">文字列型</a><br/>
+	<a href="#tour_array_type">オブジェクト配列型</a><br/>
+	<a href="#tour_map_type">辞書配列型</a><br/>
+	<a href="#tour_function_type">関数型</a><br/>
+	<a href="#tour_thread_type">スレッド型</a><br/>
+	<a href="#tour_task_type">軽量スレッド型</a><br/>
+	<a href="#tour_pointer_type">ポインタ型</a><br/>
+	<a href="#tour_data_array_type">データ配列型</a><br/>
+	<a href="#tour_data_struct_type">構造体</a><br/>
+	<a href="#tour_data_fetch_addr">fetch_addr ポインタ型</a><br/>
+	</div>
+<br/>
+<a href="#chapter_tour_expression">§式と演算子</a><br/>
+	<div class="indent2">
+	<a href="#tour_operator_priority">演算子と優先度</a><br/>
+	<a href="#tour_operator_new">オブジェクト生成と new 演算子</a><br/>
+	<a href="#tour_operator_sizeof">sizeof 演算子</a><br/>
+	<a href="#tour_operator_member">:: 演算子と . 演算子と this, super, global と</a><br/>
+	<a href="#tour_operator_move">= 演算子と := 演算子</a><br/>
+	<a href="#tour_operator_cmpptr">== 演算子と === 演算子</a><br/>
+	<a href="#tour_operator_overload">演算子オーバーロード</a><br/>
+	<a href="#tour_operator_const_expr">定数式</a><br/>
+	</div>
+<br/>
+<a href="#chapter_usage">§文</a><br/>
+	<div class="indent2">
+	<a href="#usage_format">書式記法</a><br/>
+	<a href="#usage_comment">コメント</a><br/>
+	<a href="#usage_multi_statement">複文</a><br/>
+	<a href="#usage_expression">式文</a><br/>
+	<a href="#usage_variable">変数定義文</a><br/>
+	<a href="#usage_function">関数定義文</a><br/>
+	<a href="#usage_constructor">コンストラクタ定義文</a><br/>
+	<a href="#usage_operator">演算子オーバーロード関数定義文</a><br/>
+	<a href="#usage_import">@import 文</a><br/>
+	<a href="#usage_include">@include 文</a><br/>
+	<a href="#usage_error">@error 文</a><br/>
+	<a href="#usage_todo">@todo 文</a><br/>
+	<a href="#usage_class">class 文</a><br/>
+	<a href="#usage_struct">struct 文</a><br/>
+	<a href="#usage_namespace">namespace 文</a><br/>
+	<a href="#usage_typedef">typedef 文</a><br/>
+	<a href="#usage_for">for 文</a><br/>
+	<a href="#usage_forever">forever 文</a><br/>
+	<a href="#usage_while">while 文</a><br/>
+	<a href="#usage_do_while">do 文</a><br/>
+	<a href="#usage_if">if 文</a><br/>
+	<a href="#usage_switch">switch 文</a><br/>
+	<a href="#usage_break">break 文</a><br/>
+	<a href="#usage_continue">continue 文</a><br/>
+	<a href="#usage_goto">goto 文</a><br/>
+	<a href="#usage_label">ラベル文</a><br/>
+	<a href="#usage_try">try 文</a><br/>
+	<a href="#usage_throw">throw 文</a><br/>
+	<a href="#usage_return">return 文</a><br/>
+	<a href="#usage_with">with 文</a><br/>
+	<a href="#usage_synchronized">synchronized 文</a><br/>
+	</div>
+<br/>
+
+<a href="#chapter_class">§ クラス</a><br/>
+	<div class="indent2">
+	<a href="#class_member_and_initialization">メンバ変数と初期化コード</a><br/>
+	<a href="#class_creation_and_constructor">インスタンス生成とコンストラクタ</a><br/>
+	<a href="#class_life_and_destructor">オブジェクトの寿命とデストラクタ</a><br/>
+	<a href="#class_assumed_function">同名関数</a><br/>
+	<a href="#class_override_and_overload">オーバーライドとオーバーロード</a><br/>
+	</div>
+<br/>
+
+<a href="#chapter_structure">§ 構造体</a><br/>
+	<div class="indent2">
+	<a href="#structure_constructor">コンストラクタ</a><br/>
+	<a href="#structure_pointer">参照とポインタと演算子</a><br/>
+	<a href="#structure_derivation">派生</a><br/>
+	<a href="#structure_function">関数</a><br/>
+	<a href="#structure_destructor">デストラクタ</a><br/>
+	</div>
+<br/>
+
+<a href="#chapter_generic_type">§ ジェネリック型</a><br/>
+	<div class="indent2">
+	<a href="#generic_type_definition">定義</a><br/>
+	<a href="#generic_type_instantiate">インスタンス化</a><br/>
+	</div>
+<br/>
+
+<a href="./classes/index.xhtml">§ クラス一覧</a><br/>
+
+</div>
+
+
+
+<!--============================ §特徴 ====================================-->
+<a name="chapter_peculiarity"/>
+<div class="chapter">§特徴</div>
+
+
+<!--============================= 概略 =====================================-->
+<a name="peculiarity_abstract"/>
+<div class="headline">概略</div>
+<div class="normal">
+　Loquaty は汎用的なスクリプト言語で、「ポインタ型のある Java」、「const のある Java」、「演算子をオーバーロードできる Java」、「try 文に finally 句のある C++」、「安全なポインタしかない C++」等々、他の言語との差異を挙げることはできますが、ゲーム用のスクリプト言語として開発されたその目的のために特に以下の特徴を有します。<br/>
+
+<ul>
+<li>「軽量で」「安全な」軽量スレッド</li>
+<li>C++ との（比較的容易な）インターフェース</li>
+<li>ポータブル性</li>
+<li>そこそこ高速</li>
+</ul>
+
+</div>
+<br/>
+
+
+<!--=========================== 軽量スレッド ===============================-->
+<a name="peculiarity_light_thread"/>
+<div class="headline">軽量スレッド</div>
+
+<div class="normal">
+
+　軽量スレッドは現代では様々な言語で実装された機能です。<br/>
+　ゲーム開発において、オブジェクトや敵などの動きを軽量スレッドを用いて記述できると便利です。<br/>
+　例えば「１秒待ってから」「しばらく動く」ような動作は Loquaty では次のように記述し
+
+<div class="code_quote">
+Task tsk = Task{&r;
+&tab;Thread.sleep( 1000 ) ;&r;
+&tab;for ( int i = 0; i &lt; 60; ++ i )&r;
+&tab;{&r;
+&tab;&tab;move() ; &tab; // １フレーム分動く&r;
+&tab;&tab;Task.rest() ;&r;
+&tab;}&r;
+} ;
+</div>
+
+１フレーム分の動作を記述するタイマー関数などの中で次のように
+
+<div class="code_quote">
+void onTimer()&r;
+{&r;
+&tab;tsk.proceed() ;&r;
+}
+</div>
+
+proceed 関数を呼び出すことによって１フレーム分の処理を実行することができます（C++ 側から利用する場合にも同様です）。<br/>
+　これだけでも随分処理の見通しが良くなって便利です、が、しかしこれだけでは不満です。<br/>
+<br/>
+　ゲームではオブジェクトや敵を破壊できます。<br/>
+　その際、実行中の軽量スレッドを外部から安全に強制終了させられると便利です。<br/>
+　Loquaty では finish 関数を呼び出すと安全に強制終了させられます。<br/>
+
+<div class="code_quote">
+void onDestroy()&r;
+{&r;
+&tab;tsk.finish() ;&r;
+}
+</div>
+
+　ただし finish 関数は実行中のスレッドが所有しているすべてのオブジェクトの参照を解放しますが、スレッド内で記述された finally 句は実行されません。<br/>
+　finally 句を実行してくれなきゃ困る！という場合は（ゲームでのオブジェクトの動きを付けるだけの場合にそのようなシーンはほぼないと思いますが）
+
+<div class="code_quote">
+void onDestroy()&r;
+{&r;
+&tab;tsk.throw( null ) ;&r;
+&tab;tsk.proceed() ;&r;
+&tab;tsk.finish() ;&r;
+}
+</div>
+
+のように補足されない例外を送出すると finally 句は実行されます。<br/>
+　しかしすべての例外を補足する catch を記述している場合や finally 句内で待機関数などを呼び出している場合などには（そもそも finally 句内でそのような関数を呼び出すのは間違っていますが）これは正しく動作しません。<br/>
+　そこですべての finally 句を実行した上で即座に終了させるには
+
+<div class="code_quote">
+void onDestroy()&r;
+{&r;
+&tab;while ( !tsk.isFinished() )&r;
+&tab;{&r;
+&tab;&tab;tsk.throw( null ) ;&r;
+&tab;&tab;tsk.proceed() ;&r;
+&tab;}&r;
+}
+</div>
+
+のようにします。<br/>
+
+<br/>
+　なお Loquaty では軽量スレッドだけではなく通常のスレッドも、スレッドオブジェクトがどこからの参照もなくなりデストラクタが呼び出されると強制終了させられます（誰かが参照を持っていれば継続します）。<br/>
+　誰にも知られないスレッドを走らせ続けたい場合にはスレッド自身が自分のスレッドオブジェクトを明示的に参照しておく必要があります。しかし finish 関数が呼び出されるとスレッド自身が保持している参照はすべて解放されるため、スレッドも強制的に停止し解放されます。<br/>
+
+</div>
+<br/>
+
+
+
+<!--====================== C++ とのインターフェース ========================-->
+<a name="peculiarity_interface_with_cpp"/>
+<div class="headline">C++ とのインターフェース</div>
+
+<div class="normal">
+
+　Loquaty はゲームで使用するスクリプト言語が最大の目的ですので、Loquaty 自体に大量の機能をビルトインするのではなく、C++ で記述されたゲームの実装を Loquaty スクリプトから呼び出しやすくすることに重点が置かれています。<br/>
+<br/>
+　C++ 言語とやり取りをする場合、大きく二つの方法があり、その一つが NativeObject を利用する方法です。<br/>
+<br/>
+　例えば C++ で記述された次のようなクラスがあったとします。<br/>
+
+<div class="code_quote">
+<div align="right"><sup>C++</sup></div>
+class Hoge : public Loquaty::Object&r;
+{&r;
+public:&r;
+&tab;void foo() ;&r;
+}
+</div>
+
+　この Hoge クラスを Loquaty 上で利用したい場合、まず Loquaty スクリプト上でも次のようにクラスを定義しておきます。<br/>
+
+<div class="code_quote">
+<div align="right"><sup>Loquaty</sup></div>
+
+class Hoge extends NativeObject&r;
+{&r;
+&tab;public native Hoge() ;&r;
+&tab;public native void foo() ;&r;
+}
+</div>
+
+　そして呼び出しを仲介するスタブを C++ で以下のように記述します。<br/>
+
+<div class="code_quote">
+<div align="right"><sup>C++</sup></div>
+// 宣言&r;
+DECL_LOQUATY_CONSTRUCTOR(Hoge);&r;
+DECL_LOQUATY_FUNC(Hoge_foo);&r;
+&r;
+// 実装&r;
+IMPL_LOQUATY_CONSTRUCTOR(Hoge)&r;
+{&r;
+&tab;LQT_FUNC_ARG_LIST;&r;
+&tab;LQT_FUNC_THIS_INIT_NOBJ( Hoge, pThis, () ) ; &tab;// Hoge() を構築して NativeObject に設定&r;
+}&r;
+&r;
+IMPL_LOQUATY_FUNC(Hoge_foo)&r;
+{&r;
+&tab;LQT_FUNC_ARG_LIST ;&r;
+&tab;LQT_FUNC_THIS_NOBJ( Hoge, pThis ) ;&r;
+&r;
+&tab;pThis->foo() ;&r;
+&r;
+&tab;LQT_RETURN_VOID() ;&r;
+}
+</div>
+
+　このようにすれば Loquaty スクリプト上から C++ で記述された Hoge を利用できます。<br/>
+　（※ C++ 用のスタブコードは loquaty.exe コマンドラインツールで出力できるため、作業を簡略化できます）<br/>
+
+　（※ Loquaty スクリプト側で Hoge オブジェクトを生成しない場合にはコンストラクタは必要ありません）<br/>
+<br/>
+　NativeObject の他に、より簡単な方法として構造体を利用することができます。<br/>　例えば Loquaty 上で次のような構造体を定義したとします。<br/>
+
+<div class="code_quote">
+<div align="right"><sup>Loquaty</sup></div>
+struct Huga&r;
+{&r;
+&tab;int&tab; a, b, c ;&r;
+&tab;double d ;&r;
+}
+</div>
+
+　C++ 側でも同じように構造体を定義します。<br/>
+
+<div class="code_quote">
+<div align="right"><sup>C++</sup></div>
+struct Huga&r;
+{&r;
+&tab;LInt&tab; a, b, c ;&r;
+&tab;LDouble&nbsp; d ;&r;
+}
+</div>
+
+　そして Huga 構造体をやり取りする何か Hoge.boo 関数があったとしましょう。<br/>
+
+<div class="code_quote">
+<div align="right"><sup>Loquaty</sup></div>
+
+class Hoge extends NativeObject&r;
+{&r;
+&tab;public static native Huga* boo( Huga* p ) ;&r;
+}
+</div>
+
+　例えばこの関数は C++ で次のように実装できます。<br/>
+
+<div class="code_quote">
+<div align="right"><sup>C++</sup></div>
+DECL_LOQUATY_FUNC(Hoge_boo);&r;
+&r;
+IMPL_LOQUATY_FUNC(Hoge_boo)&r;
+{&r;
+&tab;LQT_FUNC_ARG_LIST ;&r;
+&tab;LQT_FUNC_ARG_STRUCT( Huga, p ) ;&r;
+&tab;LQT_VERIFY_NULL_PTR( p ) ; &tab; // p==nullptr なら NullPointerException 例外送出&r;
+&r;
+&tab;p->a ++ ;&tab; &tab; &nbsp;// 渡されたポインタの先を変更&r;
+&r;
+&tab;Huga h = *p ; &tab;&nbsp; // 複製された別の Huga&r;
+&tab;h.d *= -2.0 ;&r;
+&r;
+&tab;LQT_RETURN_POINTER_STRUCT(h) ;&nbsp; // 新しいメモリを確保して複製を返却&r;
+}
+</div>
+
+　ここでは省略しますが、もちろん渡された引数 p を返却できますし、実のところ C++ 側では受け取ったポインタを利用するだけであれば構造体でなく、
+
+<div class="code_quote">
+<div align="right"><sup>Loquaty</sup></div>
+class Huga&r;
+{&r;
+&tab;public int&tab; a, b, c ;&r;
+&tab;public double&nbsp; d ;&r;
+}
+</div>
+
+のように通常のクラスでも、まったく同じように受け取ってメンバ変数の値を参照したり変更したりできます（但しオブジェクト変数が存在する場合や派生して親クラスの変数も存在する場合などには注意が必要です）。
+
+</div>
+<br/>
+
+
+<!--=========================== ポータブル性 ===============================-->
+<a name="peculiarity_portability"/>
+<div class="headline">ポータブル性</div>
+
+<div class="normal">
+
+　Loquaty は基本的に外部の依存性が少なく、現バージョンにおいては C++17 ランタイムのみに依存するポータブルなライブラリです。<br/>
+<br/>
+　厳密にはごく一部 POSIX 関数や Windows 関数などを呼び出している箇所があります。<br/>
+　特にファイルインターフェースについてはデフォルトでは C++ 標準の filesystem を利用せず Windows や POSIX 関数を利用していますが、マクロスイッチによって C++ 標準に切り替えられますし、あるいは独自に実装したファイルインターフェースを利用することもできます。<br/>
+（※ C++ 標準の filesystem を利用しない理由は、機能的な不足や未定義の動作（ファイルのタイムスタンプを必ずしも正常に取得できない）が存在するためです）<br/>
+（それに Android では C++ の filesystem は利用できませんが POSIX 関数は利用できたりします）<br/>
+<br/>
+　従って大抵のアプリケーションに組み込んで利用することができます。<br/>
+
+
+</div>
+<br/>
+
+
+<!--============================= 実行速度 =================================-->
+<a name="peculiarity_execution_speed"/>
+<div class="headline">実行速度</div>
+
+<div class="normal">
+
+　現バージョンの Loquaty は JIT コンパイラを搭載していないため、他の JIT コンパイラを有する言語には速度面で劣るものの、JIT コンパイラを有さない言語と比較すると大差ないか、条件によっては Loquaty のほうが多少高速な場合もあります。<br/>
+
+　そのためほとんどの場面で処理速度を気にせず利用できます。<br/>
+
+
+</div>
+<br/>
+
+
+
+<!--============================ 型とリテラル ==============================-->
+<a name="chapter_tour_types"/>
+<div class="chapter">§型とリテラル</div>
+
+<a name="tour_kind_of_types"/>
+<div class="headline">型の種類</div>
+
+<div class="normal">
+　Loquaty には様々な型があります。<br/>
+<br/>
+<div class="indent1">
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080">
+<thead>
+<tr>
+	<td colspan="2">型分類</td><td>例</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td rowspan="2">データ型</td><td>プリミティブ型</td><td>long, int, short, byte, boolean, float, double</td>
+</tr>
+<tr>
+	<td>データ型</td><td>Structure (構造体), DataArray (データ配列)</td>
+</tr>
+<tr>
+	<td rowspan="2">オブジェクト型</td><td>基本型</td><td>String, StringBuf, Array, Map, Function, Pointer, Integer, Double</td>
+</tr>
+<tr>
+	<td>汎用型</td><td>Object, NativeObject, Task, Thread, Exception</td>
+</tr>
+</tbody></table>
+</div>
+<br/>
+
+　型は大別するとオブジェクト型と非オブジェクト型（データ型）に分けられます。<br/>
+　非オブジェクト型はプリミティブ型とデータ型に分類できます。<br/>
+　Structure や DataArray は便宜上クラスとして存在しますが、オブジェクトは存在しません。データ型はメモリ上のデータ配置を表現する型です。<br/>
+　一方オブジェクト型は基本型と汎用型に分類でき、基本型をユーザーが派生することはできません。<br/>
+　汎用型のみユーザーが派生することができます。<br/>
+</div>
+<br/>
+
+
+
+<!--========================== 定義済みリテラル ============================-->
+<a name="tour_builtin_literals"/>
+<div class="headline">定義済みリテラル</div>
+
+<div class="normal">
+
+<div class="term_name">null</div>
+<div class="indent1">
+参照先のない Object、又は Pointer を表現します。
+</div>
+<br/>
+
+<div class="term_name">void</div>
+<div class="indent1">
+型が存在しないことを表現する型です。<br/>
+関数の引数に記述した場合には、その引数は存在しません。
+</div>
+<br/>
+
+<div class="term_name">true</div>
+<div class="indent1">
+boolean の true 値を表現します。
+</div>
+<br/>
+
+<div class="term_name">false</div>
+<div class="indent1">
+boolean の false 値を表現します。
+</div>
+<br/>
+
+<div class="term_name">this</div>
+<div class="indent1">
+メンバ関数内で、クラスインスタンス、又は構造体ポインタを表現します。
+</div>
+<br/>
+
+<div class="term_name">super</div>
+<div class="indent1">
+メンバ関数内で、親クラスインスタンス、又は親構造体ポインタを表現します。
+</div>
+<br/>
+
+<div class="term_name">global</div>
+<div class="indent1">
+グローバル名前空間を表現します。
+</div>
+<br/>
+
+
+</div>
+<br/>
+
+
+
+<!--=========================== プリミティブ型 =============================-->
+<a name="tour_primitive_type"/>
+<div class="headline">プリミティブ型</div>
+
+<div class="normal">
+　プリミティブ型はデータ型の中で最も原始的な型です。<br/>
+<br/>
+
+<div class="indent1">
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080">
+<thead align="center">
+<tr>
+	<td>型分類</td><td>符号</td><td>ビット長</td><td>型名</td>
+</tr>
+</thead>
+<tbody align="center">
+<tr>
+	<td colspan="3">ブール型</td><td>boolean</td>
+</tr>
+<tr>
+	<td rowspan="16">整数型</td><td>有</td><td>8</td><td>byte</td>
+</tr>
+<tr>
+	<td>無</td><td>16</td><td>ubyte</td>
+</tr>
+<tr>
+	<td>有</td><td>16</td><td>short</td>
+</tr>
+<tr>
+	<td>無</td><td>16</td><td>ushort</td>
+</tr>
+<tr>
+	<td>有</td><td>32</td><td>int</td>
+</tr>
+<tr>
+	<td>無</td><td>32</td><td>uint</td>
+</tr>
+<tr>
+	<td>有</td><td>64</td><td>long</td>
+</tr>
+<tr>
+	<td>無</td><td>64</td><td>ulong</td>
+</tr>
+<tr>
+	<td>有</td><td>8</td><td>int8</td>
+</tr>
+<tr>
+	<td>無</td><td>8</td><td>uint8</td>
+</tr>
+<tr>
+	<td>有</td><td>16</td><td>int16</td>
+</tr>
+<tr>
+	<td>無</td><td>16</td><td>uint16</td>
+</tr>
+<tr>
+	<td>有</td><td>32</td><td>int32</td>
+</tr>
+<tr>
+	<td>無</td><td>32</td><td>uint32</td>
+</tr>
+<tr>
+	<td>有</td><td>64</td><td>int64</td>
+</tr>
+<tr>
+	<td>無</td><td>64</td><td>uint64</td>
+</tr>
+<tr>
+	<td colspan="2" rowspan="2">浮動小数点数値型</td><td>32</td><td>float</td>
+</tr>
+<tr>
+	<td>64</td><td>double</td>
+</tr>
+</tbody></table>
+</div>
+<br/>
+　プリミティブ型の演算の中には実行する CPU によって結果が依存するものがあることに留意してください。
+
+</div>
+<br/>
+
+
+
+<!--============================== ブール型 ================================-->
+<a name="tour_boolean_type"/>
+<div class="headline">ブール型</div>
+
+<div class="normal">
+　boolean はブール値を表現します。<br/>
+　true 又は false のいずれかの値をとります。
+
+</div>
+<br/>
+
+
+
+<!--============================== 整数型 ================================-->
+<a name="tour_integer_type"/>
+<div class="headline">整数型</div>
+
+<div class="normal">
+　整数型は整数値を表現します。<br/>
+　リテラル表現は C 言語と似ていますが８進数の表記法が異なるのと、２進数表記が可能な点が異なります。<br/>
+　以下のリテラルはすべて同じ値です。<br/>
+
+<div class="code_quote">
+	97<br/>
+	0t97<br/>
+	0b1100001<br/>
+	0o141<br/>
+	0x61<br/>
+	'a'<br/>
+</div>
+</div>
+<br/>
+
+
+
+<!--========================== 浮動小数点数値型 ============================-->
+<a name="tour_number_type"/>
+<div class="headline">浮動小数点数値型</div>
+
+<div class="normal">
+　浮動小数点数値型は実数値（有理数）を表現します。<br/>
+　リテラル表現は C 言語と似ていますが整数値リテラルと同様に２進数、８進数、１６進数の表記が可能です。<br/>
+　以下のリテラルはすべて同じ値です。<br/>
+
+<div class="code_quote">
+	1.25<br/>
+	0T1.25<br/>
+	0B1.01<br/>
+	0O1.2<br/>
+	0X1.4<br/>
+</div>
+
+　しかし進数プリフィックス（0t, 0b, 0o, 0x, 0T, 0B, 0O, 0X）を使用した場合、指数表現は不可能です。<br/>
+　指数表現を伴った以下のリテラルはすべて同じ値です。<br/>
+
+<div class="code_quote">
+	123.45<br/>
+	1.2345e+2<br/>
+	12345.0E-2<br/>
+</div>
+
+　末尾に f ポストフィックスを伴う場合、float 型として評価されます。<br/>
+
+<div class="code_quote">
+	float&nbsp; a = 123.45f ;<br/>
+	double b = 123.45 ;<br/>
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================== 文字列型 ================================-->
+<a name="tour_string_type"/>
+<div class="headline">文字列型</div>
+
+<div class="normal">
+
+　文字列リテラルは Java 同様にダブルクォーテーションで囲んで記述します。<br/>
+　文字列中のバックスラッシュや引用符記号などはバックスラッシュを伴って記述します。<br/>
+<br/>
+<div class="indent1">
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080">
+<thead>
+<tr>
+	<td>表記</td><td>16進</td><td>内容</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>\a</td><td>0x07</td><td>ベル（BEL）</td>
+</tr>
+<tr>
+	<td>\b</td><td>0x08</td><td>後進（BS）</td>
+</tr>
+<tr>
+	<td>\t</td><td>0x09</td><td>水平タブ（HT）</td>
+</tr>
+<tr>
+	<td>\n</td><td>0x0A</td><td>改行（LF）</td>
+</tr>
+<tr>
+	<td>\v</td><td>0x0B</td><td>垂直タブ（VT）</td>
+</tr>
+<tr>
+	<td>\f</td><td>0x0C</td><td>書式送り（FF）</td>
+</tr>
+<tr>
+	<td>\r</td><td>0x0D</td><td>行復帰（CR）</td>
+</tr>
+<tr>
+	<td>\?</td><td>0x3F</td><td>? 記号</td>
+</tr>
+<tr>
+	<td>\\</td><td>0x5C</td><td>バックスラッシュ（日本語環境では半角円記号）</td>
+</tr>
+<tr>
+	<td>\"</td><td>0x22</td><td>ダブルクォーテーション</td>
+</tr>
+<tr>
+	<td>\'</td><td>0x27</td><td>シングルクォーテーション</td>
+</tr>
+<tr>
+	<td>\x###</td><td>###</td><td>文字コード指定（16進表記）</td>
+</tr>
+<tr>
+	<td>\###</td><td>###</td><td>文字コード指定（8進表記）</td>
+</tr>
+</tbody></table>
+</div>
+<br/>
+
+　String 型のメソッドはすべて const です。<br/>
+　従って String 型インスタンスは必ず不変値です。<br/>
+<br/>
+　一方で StringBuf 型は内容を変更できます。関数の引数に渡して文字列を受け取ることができます。<br/>
+
+<div class="code_quote">
+	void foo( StringBuf s )&r;
+	{<br/>
+	&tab;s := "foo" ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--========================= オブジェクト配列型 ===========================-->
+<a name="tour_array_type"/>
+<div class="headline">オブジェクト配列型</div>
+
+<div class="normal">
+
+　オブジェクトの配列は Array 型で実装されます。<br/>
+　Array は可変長配列で自動的に伸長されます。<br/>
+　配列要素に <italic>Type</italic> 型にもつ配列型は Array&lt;<italic>Type</italic>&gt; のように表記できます。<br/>
+　又は <italic>Type</italic>[] とも表記できます。<br/>
+　<italic>Type</italic> はオブジェクト型でなければなりません。<br/>
+<br/>
+　リテラルは JavaScript のように角括弧 [] 内に要素をコンマで区切って記述します。<br/>
+
+<div class="code_quote">
+	String[] a = [ "abc", "def", "ghi" ] ;&r;
+</div>
+
+　リテラルの要素型を明示する場合には以下のように記述できます。<br/>
+
+<div class="code_quote">
+	Integer[] a = Array&lt;Integer&gt;[ 1, 2, 3 ] ;&r;
+</div>
+
+　1 や 2 や 3 は Integer オブジェクトではないことに注意してください。<br/>
+　上の記述は以下の記述と同じ意味になります。<br/>
+
+<div class="code_quote">
+	Integer[] a = [ (Integer) 1, (Integer) 2, (Integer) 3 ] ;&r;
+</div>
+
+　Array オブジェクトは &lt;&lt; や += 演算子で要素を追加できます。<br/>
+　+ 演算子でも追加できますが、配列の複製に要素が追加されたものが返されます。<br/>
+
+<div class="code_quote">
+	String[] a = String[]() ;&r;
+	Console.print( (a + "xyz").toString() + "\n" ) ; // [ "xyz" ]&r;
+	&r;
+	a &lt;&lt; "abc" &lt;&lt; def" ;&r;
+	Console.print( a.toString() + "\n" ) ; &tab;&tab;&nbsp; // [ "abc", "def" ]
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================= 辞書配列型 ===============================-->
+<a name="tour_map_type"/>
+<div class="headline">辞書配列型</div>
+
+<div class="normal">
+
+　辞書配列は Map 型で実装されます。<br/>
+　配列の要素は整数、または文字列によってアクセスできます。<br/>
+　整数で要素を参照する場合、要素は配列に追加された順序を保っていて計算量オーダーは O(1) です。。<br/>
+　しかし文字列で要素を参照する場合の計算量オーダーは C++ の map と同等の O(logN) です。<br/>
+<br/>
+　リテラルは JavaScript のように波括弧 { } 内に要素をコンマで区切り、各要素は名前と値をコロンで区切って記述します。<br/>
+
+<div class="code_quote">
+	Map&lt;String&gt; a = { a1 : "abc", a2 : "def" } ;&r;
+</div>
+
+　リテラルの要素型を明示する場合には以下のように記述できます。<br/>
+
+<div class="code_quote">
+	Map&lt;Integer&gt; a = Map&lt;Integer&gt;{ a1 : 1, a2 : 2 } ;&r;
+</div>
+
+　1 や 2 は Integer オブジェクトではないことに注意してください。<br/>
+　上の記述は以下の記述と同じ意味になります。<br/>
+
+<div class="code_quote">
+	Map&lt;Integer&gt; a = { a1 : (Integer) 1, a2 : (Integer) 2 } ;&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--=============================== 関数型 =================================-->
+<a name="tour_function_type"/>
+<div class="headline">関数型</div>
+
+<div class="normal">
+
+　関数インスタンスは Function 型によって表現されます。<br/>
+　引数も返り値もない関数型は Function&lt;void()&gt; のように表記でき、これはただの Function と同じです。<br/>
+<br/>
+　関数リテラルは function 式として以下のように記述できます。<br/>
+
+<div class="code_quote">
+	Function&lt;long(String)&gt; func = function( String s ) : long&r;
+	{&r;
+	&tab;return s.asInteger() ;&r;
+	} ;
+</div>
+
+　関数オブジェクトは関数として呼び出すことができます。<br/>
+
+<div class="code_quote">
+	long n = func( "123" ) ;
+</div>
+
+　クラスのメンバ関数を記述することもできます。<br/>
+
+<div class="code_quote">
+	Function&lt;int()Hoge&gt; func = function() Hoge : int&r;
+	{&r;
+	&tab;return m_memberOfHoge * 2 ;&r;
+	} ;
+</div>
+
+　const 関数なら次のように記述し、
+
+<div class="code_quote">
+	Function&lt;int()const Hoge&gt; func = function() const Hoge : int&r;
+	{&r;
+	&tab;return m_memberOfHoge * 2 ;&r;
+	} ;
+</div>
+
+呼び出す際には .* 演算子を使って以下のように記述します。<br/>
+
+<div class="code_quote">
+	Hoge hoge = Hoge() ;&r;
+	int n = (hoge.*func)() ;
+</div>
+
+　function 式には角括弧 [] 内にキャプチャーリストを記述することができます。<br/>
+<div class="code_quote">
+	String s1 = ... ;&r;
+	String s2 = ... ;&r;
+	&r;
+	Function&lt;long(String)&gt; func = function[s1,s2]( String s ) : long&r;
+	{&r;
+	&tab;return s.asInteger() * s1.asInteger() + s2.asInteger() ;&r;
+	} ;
+</div>
+
+　キャプチャーリストは C++ のラムダ式と似ていますが、常にオブジェクトの参照となります。<br/>
+
+</div>
+<br/>
+
+
+
+<!--============================= スレッド型 ===============================-->
+<a name="tour_thread_type"/>
+<div class="headline">スレッド型</div>
+
+<div class="normal">
+
+　スレッドは Thread 型によって実装されます。<br/>
+　スレッド・インスタンスは以下のように記述できます。
+
+<div class="code_quote">
+	Thread thread = Thread&r;
+	{&r;
+	&tab;foo() ;&r;
+	} ;&r;
+</div>
+
+　これは以下と同じ意味です。
+
+<div class="code_quote">
+	Thread thread = Thread() ;&r;
+	thread.begin( function()
+	{&r;
+	&tab;foo() ;&r;
+	} ) ;&r;
+</div>
+
+　スレッド関数の返り値が Type 型の Thread は Thread&lt;<italic>Type</italic>&gt; 形式で表現できます。
+
+<div class="code_quote">
+	Thread&lt;int&gt; thread = Thread&lt;int&gt;&r;
+	{&r;
+	&tab;return foo() ;&r;
+	} ;&r;
+	&r;
+	thread.join() ;&r;
+	int r = thread.getReturned() ;&r;
+</div>
+
+　function と同じようにキャプチャーリストを記述できます。
+
+<div class="code_quote">
+	String	s = "123" ;&r;
+	&r;
+	Thread&lt;long&gt; thread = Thread&lt;long&gt;[s]&r;
+	{&r;
+	&tab;return s.asInteger() ;&r;
+	} ;&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--=========================== 軽量スレッド型 =============================-->
+<a name="tour_task_type"/>
+<div class="headline">軽量スレッド型</div>
+
+<div class="normal">
+
+　軽量スレッドは Task 型によって実装されます。<br/>
+　スレッド型である Thread は Task から派生しており、Task インスタンスも Thread と同じように記述できます。
+
+<div class="code_quote">
+	Task&lt;String&gt; task = Task&lt;String&gt;[foo]&r;
+	{&r;
+	&tab;return foo.hoge() ;&r;
+	} ;&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================= ポインタ型 ===============================-->
+<a name="tour_pointer_type"/>
+<div class="headline">ポインタ型</div>
+
+<div class="normal">
+
+　ポインタは Pointer 型オブジェクトによって実装されます。<br/>
+　このポインタは C 言語のポインタと似ていて、メモリ上のデータ型を指し示します。<br/>
+　例えば int 型のメモリへのポインタは int*、Hoge 構造体へのポインタは Hoge* のように記述します。<br/>
+　Pointer は void* と同じ意味になります。<br/>
+<br/>
+　ポインタの指し示すメモリの内容を参照するには * 前置単項演算子を利用します。<br/>
+
+<div class="code_quote">
+	int* p ;&r;
+	int&nbsp; a = *p ;&r;
+	*p = 1 ;
+</div>
+
+　あるいは角括弧 [] によって添え字を指定することでポインタが指し示す配列の要素を参照できます。
+
+<div class="code_quote">
+	int* p ;&r;
+	int&nbsp; a = p[0] ;&r;
+	p[0] = 1 ;
+</div>
+
+　ポインタへの整数の加減算はポインタが指すデータ型のサイズに応じてポインタを移動します。
+
+<div class="code_quote">
+	int* p ;&r;
+	p = p + 2 ;&r;
+	p ++ ;
+</div>
+
+　なおポインタは有効なメモリの境界情報を持っているため、範囲外へアクセスしようとすると（メモリは破壊されず）安全に例外が送出されます。<br/>
+
+<div class="code_quote">
+	int* p = new int[10] ;&r;
+	p ++ ;&r;
+	p[8] = 9 ; &tab;&tab;// OK&r;
+	p[-1] = 0 ;&tab;&tab;// OK&r;
+	p[9] = 10 ;&tab;&tab;// メモリ範囲外エラー！&r;
+</div>
+
+<br/>
+　変数への参照はポインタ型に暗黙に変換できます。<br/>
+
+<div class="code_quote">
+	int&nbsp; a ;&r;
+	int* p = a ;
+</div>
+
+　Loquaty に C++ のような参照型は存在しませんが、コンパイル時の内部表現として存在しています。<br/>
+　参照型からポインタ型への暗黙変換が機能するため C 言語のような &amp; 前置単項演算子は Loquaty には存在しません。<br/>
+<br/>
+　因みに、ポインタでポイントできるのはデータ型だけですので、オブジェクトであるポインタをポイントすることはできません。つまり、ポインタのポインタは存在しません。<br/>
+
+</div>
+<br/>
+
+
+
+<!--============================ データ配列型 ==============================-->
+<a name="tour_data_array_type"/>
+<div class="headline">データ配列型</div>
+
+<div class="normal">
+
+　データ型の配列は角括弧 [] で配列サイズを記述します。<br/>
+
+<div class="code_quote">
+	int[10]&nbsp; a ;&r;
+</div>
+
+　オブジェクト配列と異なり配列長は固定で定数値であることに注意してください。<br/>
+　多次元配列の場合には複数の [] 括弧で各次元のサイズを記述します。<br/>
+
+<div class="code_quote">
+	int[10][7]&nbsp; a ;&r;
+</div>
+
+　配列をポインタへ変換する場合には配列が一次元削減された表現になります。<br/>
+
+<div class="code_quote">
+	int[10][7]&nbsp; a ;&r;
+	int[7]*&tab; p1 = a ;&r;
+	int*&tab;&tab;p2 = p1[2] ;
+</div>
+
+　次のようにポインタ型のオブジェクト配列表現も存在しますがその違いに注意してください。
+
+<div class="code_quote">
+	int*[] a ;
+</div>
+
+　int[10][7] はデータ配列で、連続した一つのメモリです。<br/>
+　int*[] はオブジェクト配列で、複数のメモリをポイントするポインタの配列です。<br/>
+<br/>
+　なお、ローカル変数に配列を直接配置することは推奨されません。<br/>
+　new 演算子を使うと定数でないサイズの配列を確保できます。
+
+<div class="code_quote">
+	int[8][7]* p = new int[n][8][7] ;
+</div>
+
+　多次元配列の場合、初めの次元以外は定数であることに注意してください。<br/>
+
+</div>
+<br/>
+
+
+
+<!--=============================== 構造体 =================================-->
+<a name="tour_data_struct_type"/>
+<div class="headline">構造体</div>
+
+<div class="normal">
+
+　構造体はメモリ上のデータ型変数の配置を記述できます。<br/>
+　オブジェクトを構造体内に定義することはできません。<br/>
+
+<div class="code_quote">
+	struct	Hoge&r;
+	{&r;
+	&tab;int[2]&tab; a = [ 5, 10 ] ;&r;
+	&tab;float&tab; &nbsp;b = -1.5f ;&r;
+	&tab;Foo&tab;&tab;c = { 1, 2, 3 } ;&r;
+	&tab;int*&tab; &nbsp; p ; &tab; &tab; &tab; // Error！ ポインタはオブジェクトです&r;
+	}
+</div>
+
+　構造体のメンバ変数には定数式で初期値を定義することができ、new 演算子でメモリを確保した際にはその値で初期化されます。<br/>
+　構造体内の配列の初期値は角括弧 [] で、構造体内の構造体メンバの初期値は波括弧 {} で記述できます。省略した場合には構造体で定義された元の初期値が使用されます。<small>（⇒構造体の詳細については後述「<a href="#chapter_structure">§ 構造体</a>」を参照）</small><br/>
+<br/>
+
+</div>
+<br/>
+
+
+
+<!--======================= fetch_addr ポインタ型 ==========================-->
+<a name="tour_data_fetch_addr"/>
+<div class="headline">fetch_addr ポインタ型</div>
+
+<div class="normal">
+
+　ポインタ型には fetch_addr 修飾をすることができます。
+
+<div class="code_quote">
+	fetch_addr Vector3* pfa = pBuf + i ;&r;
+	&r;
+	pfa[0].x += pfa[1].x ;&r;
+	pfa[0].y += pfa[1].y ;&r;
+	pfa[0].z += pfa[1].z ;&r;
+</div>
+
+　fetch_addr 修飾されたポインタは、実際のメモリアドレスを保持しています。<br/>
+　バウンダリ・チェックは fetch_addr ポインタ初期化時に行われ、それ以降は行われません。<br/>
+　この例では pfa 変数を通じてアクセスしているメモリの範囲を（中間コードへの）コンパイル時に決定し、実行時に pfa = pBuf + i で初期化する際に一括してバウンダリ・チェックします。<br/>
+<br/>
+　fetch_addr ポインタ変数の値は不変であり、操作することはできません。<br/>
+
+<div class="code_quote">
+	fetch_addr Vector3* pfa = pBuf + i ;&r;
+	&r;
+	pfa += 1 ; &tab; &tab; // エラー！
+</div>
+<br/>
+
+　現在のバージョンの Loquaty でも fetch_addr 修飾はポインタを通じた処理の高速化を助けますが、将来 JIT コンパイラが実装された際には、より強力です。<br/>
+
+</div>
+<br/>
+
+
+
+
+<!--============================= 式と演算子 ===============================-->
+<a name="chapter_tour_expression"/>
+<div class="chapter">§式と演算子</div>
+
+
+<!--=========================== 演算子と優先度 =============================-->
+
+<a name="tour_operator_priority"/>
+<div class="headline">演算子と優先度</div>
+
+<div class="normal">
+　Loquaty では以下の演算子が使用できます。
+</div>
+<br/>
+
+<div class="indent1">
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><bold>(</bold> <italic>expr</italic> <bold>)</bold></td>
+	<td align="left" width="60%">式の評価</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>(</bold> <italic>arg-list</italic> <bold>)</bold></td>
+	<td align="left" width="60%">関数呼び出し</td>
+</tr>
+<tr>
+	<td width="40%"><italic>type-expr</italic> <bold>(</bold> <italic>arg-list</italic> <bold>)</bold></td>
+	<td align="left" width="60%">オブジェクト・インスタンス生成</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>[ <italic>expr</italic> ]</bold></td>
+	<td align="left">配列要素、又はメンバ参照</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>type-expr</italic> <bold>::</bold> <italic>member</italic></td>
+	<td align="left" width="60%">クラスの static メンバ参照、又は関数参照</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>.</bold> <italic>member</italic></td>
+	<td align="left" width="60%">メンバ参照</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>.*</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">メンバ関数間接呼び出し</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>++</bold></td>
+	<td align="left" width="60%">インクリメント</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>--</bold></td>
+	<td align="left">デクリメント</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><bold>new</bold> <italic>type-expr</italic> [ <bold>(</bold> <italic>arg-list</italic> <bold>)</bold> ]&opt;</td>
+	<td align="left" width="60%">オブジェクト・インスタンス生成</td>
+</tr>
+<tr>
+	<td width="40%"><bold>function</bold> [ <bold>[</bold> <italic>capture-list</italic> <bold>]</bold> ]&opt; <bold>(</bold> <italic>arg-list</italic> <bold>)</bold> [ [<bold>const</bold>]&opt; <italic>class-name</italic> ]&opt; [<bold>:</bold> <italic>type-expr</italic> ]&opt; <bold>{</bold> <italic>statement-list</italic> <bold>}</bold></td>
+	<td align="left" width="60%">無名関数生成</td>
+</tr>
+<tr>
+	<td width="40%"><bold>sizeof (</bold> <italic>type-expr</italic> <bold>)</bold></td>
+	<td align="left" width="60%">データ型のバイト単位でのサイズ</td>
+</tr>
+<tr>
+	<td width="40%"><bold>sizeof</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">オブジェクトの要素数（配列長、文字列長）、又はポインタの有効なバッファサイズ、又はデータ型の場合はバイト単位でのサイズ</td>
+</tr>
+<tr>
+	<td><bold>::</bold> <italic>name</italic></td>
+	<td align="left">大域名前空間の名前参照</td>
+</tr>
+<tr>
+	<td><bold>++</bold> <italic>expr</italic></td>
+	<td align="left">インクリメント</td>
+</tr>
+<tr>
+	<td><bold>--</bold> <italic>expr</italic></td>
+	<td align="left">デクリメント</td>
+</tr>
+<tr>
+	<td><bold>(</bold> <italic>type-expr</italic> <bold>)</bold> <italic>expr</italic></td>
+	<td align="left">型変換</td>
+</tr>
+<tr>
+	<td><bold>+</bold> <italic>expr</italic></td>
+	<td align="left">単項プラス</td>
+</tr>
+<tr>
+	<td><bold>-</bold> <italic>expr</italic></td>
+	<td align="left">算術否定（マイナス）</td>
+</tr>
+<tr>
+	<td><bold>*</bold> <italic>expr</italic></td>
+	<td align="left">ポインタの参照先</td>
+</tr>
+<tr>
+	<td><bold>~</bold> <italic>expr</italic></td>
+	<td align="left">論理否定（ビット毎の1の補数）</td>
+</tr>
+<tr>
+	<td><bold>!</bold> <italic>expr</italic></td>
+	<td align="left">論理否定</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>*</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">乗算</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>/</bold> <italic>expr</italic></td>
+	<td align="left">除算</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>%</bold> <italic>expr</italic></td>
+	<td align="left">剰余</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>+</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">加算</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>-</bold> <italic>expr</italic></td>
+	<td align="left">減算</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>&amp;</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">論理積（ビット毎の論理積）</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>|</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">論理和（ビット毎の論理和）</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>^</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">排他的論理和（ビット毎の排他的論理和）</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>&gt;&gt;</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">算術右シフト</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>&lt;&lt;</bold> <italic>expr</italic></td>
+	<td align="left">算術左シフト</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>==</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">同値判定</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>!=</bold> <italic>expr</italic></td>
+	<td align="left">非同値判定</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>&lt;=</bold> <italic>expr</italic></td>
+	<td align="left">同値又は劣勢値判定</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>&lt;</bold> <italic>expr</italic></td>
+	<td align="left">劣勢値判定</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>&gt;=</bold> <italic>expr</italic></td>
+	<td align="left">同値又は優勢値判定</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>&gt;</bold> <italic>expr</italic></td>
+	<td align="left">優勢値判定</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>===</bold> <italic>expr</italic></td>
+	<td align="left">オブジェクトのポインタ一致判定</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>!==</bold> <italic>expr</italic></td>
+	<td align="left">オブジェクトのポインタ不一致判定</td>
+</tr>
+<tr>
+	<td><italic>expr</italic> <bold>instanceof</bold> <italic>type-expr</italic></td>
+	<td align="left">左辺オブジェクトの型適合判定</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>&amp;&amp;</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">論理積</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>||</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">論理和</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>?</bold> <italic>expr</italic> <bold>:</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">値の選択</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>lvalue</italic> <bold>=</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">代入</td>
+</tr>
+<tr>
+	<td width="40%"><italic>lvalue</italic> <bold>:=</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">複製代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>*=</bold> <italic>expr</italic></td>
+	<td align="left">乗算代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>/=</bold> <italic>expr</italic></td>
+	<td align="left">除算代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>%=</bold> <italic>expr</italic></td>
+	<td align="left">剰余代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>+=</bold> <italic>expr</italic></td>
+	<td align="left">加算代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>-=</bold> <italic>expr</italic></td>
+	<td align="left">減算代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>&amp;=</bold> <italic>expr</italic></td>
+	<td align="left">論理積代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>|=</bold> <italic>expr</italic></td>
+	<td align="left">論理和代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>^=</bold> <italic>expr</italic></td>
+	<td align="left">排他的論理和代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>&lt;&lt;=</bold> <italic>expr</italic></td>
+	<td align="left">算術左シフト代入</td>
+</tr>
+<tr>
+	<td><italic>lvalue</italic> <bold>&gt;&gt;=</bold> <italic>expr</italic></td>
+	<td align="left">算術右シフト代入</td>
+</tr>
+</thead>
+</table>
+
+<table border="1" cellspacing="1" cellpadding="4" bordercolor="#808080" width="90%" style="table-layout: fixed;">
+<thead>
+<tr>
+	<td width="40%"><italic>expr</italic> <bold>,</bold> <italic>expr</italic></td>
+	<td align="left" width="60%">列挙（右の項を評価）</td>
+</tr>
+</thead>
+</table>
+
+
+<br/>
+　表の上の行のほうが優先度が高く、縦罫線が繋がっている行は同じ優先度です。<br/>
+　<italic>expr</italic> は任意の式を、<italic>type-expr</italic> は任意の型を表現する式を、<italic>arg-list</italic> は関数引数リストを、<italic>capture-list</italic> はキャプチャー・オブジェクト名リストを、<italic>lvalue</italic> は左辺式を、<italic>member</italic> はメンバ名を、<italic>name</italic> は名前を表します。<br/>
+　[ ... ]&opt; は省略可能を意味します。&opt; のない角括弧 <bold>[ ]</bold> は省略でなく <bold>[ ]</bold> そのものであることに注意してください。<br/>
+<br/>
+
+</div>
+<br/>
+
+
+
+<!--=================== オブジェクト生成と new 演算子 =====================-->
+<a name="tour_operator_new"/>
+<div class="headline">オブジェクト生成と new 演算子</div>
+
+<div class="normal">
+
+　オブジェクトのインスタンスを生成するとき、ほとんどの場合には new 演算子はなくても同じ意味になります。
+
+<div class="code_quote">
+	Type obj1 = new Type() ;&r;
+	Type obj2 = Type() ;
+</div>
+
+　オブジェクト・インスタンス生成時の new 演算子との違いは、デフォルト・コンストラクタを呼び出す場合に引数を省略できる点です。
+
+<div class="code_quote">
+	Type obj1 = new Type ;&r;
+	Type obj2 = Type ; &tab; // エラー！（型を変数に代入しようとしている）
+</div>
+<br/>
+
+　構造体の場合には new 演算子はもう少し違いがあります。<br/>
+
+<div class="code_quote">
+	struct Type&r;
+	{&r;
+	&tab;int a = 1 ;&r;
+	&r;
+	&tab;public Type() { a = 2 ; }&r;
+	}&r;
+	&r;
+	Type* t1 = new Type ;&r;
+	Type* t2 = Type() ;&r;
+	&r;
+	Console.print( (String) t1.a + "\n" ) ; &tab; // 1&r;
+	Console.print( (String) t2.a + "\n" ) ; &tab; // 2
+</div>
+
+　上の例の t1.a と t2.a の違いは何でしょうか？<br/>
+　new Type では構築関数の引数を省略していますが、その場合構築関数は呼び出されません（オブジェクトの場合には省略した場合にもデフォルトの構築関数は呼び出されます）。<br/>
+　しかし定義された初期値でメモリは初期化されているので t1.a の値は 1 となります。<br/>
+<br/>
+　構造体（やプリミティブ型）の場合、new 演算子で配列としてメモリを確保できますが、() 括弧に引数を指定すると、すべての要素に対して構築関数が呼び出されます（プリミティブ型の場合には指定された値で初期化されます）。
+
+<div class="code_quote">
+	struct Type&r;
+	{&r;
+	&tab;int a = 1 ;&r;
+	&r;
+	&tab;public Type( int i ) { a = i ; }&r;
+	}&r;
+	&r;
+	Type* p = new Type[n]( 10 ) ;&r;
+</div>
+
+
+</div>
+<br/>
+
+
+
+<!--=========================== sizeof 演算子 =============================-->
+<a name="tour_operator_sizeof"/>
+<div class="headline">sizeof 演算子</div>
+
+<div class="normal">
+
+　sizeof 演算子には２種類の書式があります。<br/>
+
+<div class="code_quote">
+	<bold>sizeof(</bold> <italic>type-expr</italic> <bold>)</bold>&r;
+	<bold>sizeof</bold> <italic>expr</italic>&r;
+</div>
+
+　１つ目の書式はデータ型がメモリ上で必要とするサイズをバイト単位で評価する定数式です。<br/>
+　２つ目の書式でも、式がデータ型なら１つ目の書式と同じ意味になりますが、オブジェクトの場合、オブジェクトの要素数を評価します。<br/>
+　要素数は Array 型や Map 型では文字通りに要素数を、String 型の場合には文字列長を、Pointer 型の場合にはポインタが指すメモリ領域の残りのバイト数（全体のサイズではない）を評価します。<br/>
+　Pointer 型の場合、配列相当の長さ（配列長）ではなく、バイト数であることに注意が必要です。<br/>
+
+</div>
+<br/>
+
+
+
+<!--======================== :: 演算子と . 演算子 ==========================-->
+<a name="tour_operator_member"/>
+<div class="headline">:: 演算子と . 演算子と this, super, global と</div>
+
+<div class="normal">
+
+　:: 演算子と . 演算子は C++ 言語と似ていますが同じではありません。<br/>
+　:: 演算子は右辺式のメンバーではなく、右辺式がクラスや名前空間ではない場合に、その評価値の型のクラスのメンバーを探します。<br/>
+　従って親クラスの static なメンバーを super::member のように記述できます。<br/><br/>
+
+　static なメンバーを参照する場合には、:: 演算子と . 演算子は同じ効果の場合が多いですが、仮想関数を参照する場合には :: 演算子でなければなりません。<br/>
+<br/>
+　例えば
+
+<div class="code_quote">
+	super::foo( "abc", 123 ) ;
+</div>
+
+のような記述は親クラスの foo 関数を呼び出しますが
+
+<div class="code_quote">
+	super.foo( "abc", 123 ) ;
+</div>
+
+は
+
+<div class="code_quote">
+	this.foo( "abc", 123 ) ;
+</div>
+
+つまり単に
+
+<div class="code_quote">
+	foo( "abc", 123 ) ;
+</div>
+
+と記述した場合と同じになる場合がほとんどです。<br/>
+<br/>
+　super.foo() が super::foo() と同じ意味になるのは this が構造体であるか、this クラスで foo 関数が（オーバーライドではなく）オーバーロードされた場合です。<br/>
+<small>※オーバーライドとオーバーロードについては後述「<a href="#class_override_and_overload">オーバーライドとオーバーロード</a>」参照</small><br/>
+<br/>
+
+　::name のように記述するとローカルや this クラスのメンバの同名の名前を探さずにグローバルな名前を探します。<br/>
+　global.name と書いた場合と同じ意味になります。<br/>
+
+</div>
+<br/>
+
+
+
+<!--======================== = 演算子と := 演算子 ==========================-->
+<a name="tour_operator_move"/>
+<div class="headline">= 演算子と := 演算子</div>
+
+<div class="normal">
+
+　Loquaty には二つの代入演算子があります。<br/>
+<br/>
+　= 演算子はデフォルトの代入演算子で、ユーザーがオーバーロードすることはできません（オーバーロードしても無視されます）。<br/>
+　プリミティブ型の場合には値をコピーし、それ以外の場合にはオブジェクトの参照（内部的にはポインタ）をコピーします。<br/>
+<br/>
+　一方で := 演算子はユーザーがオーバーロード可能な代入演算子で、ビルトイン型でこの演算子がオーバーロードされている場合、内容の複製を行います。<br/>
+　StringBuf 型では文字列の内容のコピー、Array 型や Map 型では配列要素のコピー、構造体では構造体のメモリのコピーを行います。<br/>
+　因みに、Array 型や Map 型で複製される際、ほとんどのオブジェクトは複製が作成されますが String 型は参照がコピーされます。<br/>
+
+<div class="code_quote">
+	String[]	a1 = String[]() ;&r;
+	String[]	a2 = [ "abc" ] ;&r;
+	StringBuf[]	b1 = StringBuf[]() ;&r;
+	StringBuf[]	b2 = [ StringBuf("def") ] ;&r;
+	&r;
+	a1 := a2 ;&r;
+	b1 := b2 ;&r;
+	&r;
+	Console.print( "a1[0] : " + a1[0] + "\n" ) ; &tab; // a1[0] : abc&r;
+	Console.print( "b1[0] : " + b1[0] + "\n" ) ; &tab; // b1[0] : def&r;
+	Console.print( "a1[0]==a2[0] : " + (a1[0]==a2[0]) + "\n" ) ; &nbsp; // a1[0]==a2[0] : 1&r;
+	Console.print( "a1[0]===a2[0] : " + (a1[0]===a2[0]) + "\n" ) ; // a1[0]===a2[0] : 1&r;
+	Console.print( "b1[0]==b2[0] : " + (b1[0]==b2[0]) + "\n" ) ; &nbsp; // b1[0]==b2[0] : 1&r;
+	Console.print( "b1[0]===b2[0] : " + (b1[0]===b2[0]) + "\n" ) ; // b1[0]===b2[0] : 0
+</div>
+
+　なお、:= 演算子が記述されたにも関わらず演算子がオーバーロードされていない場合、デフォルトの = 演算子が呼び出されます。<br/>
+
+</div>
+<br/>
+
+
+
+<!--======================= == 演算子と === 演算子 =========================-->
+<a name="tour_operator_cmpptr"/>
+<div class="headline">== 演算子と === 演算子</div>
+
+<div class="normal">
+
+　Loquaty には同値判定演算子として == と === が、非同値判定演算子として != と !== があります。<br/>
+<br/>
+　== 演算子と != 演算子はユーザーがオーバーロードできますが、=== 演算子と !== 演算子はユーザーはオーバーロードすることはできません（オーバーロードしても無視されます）。<br/>
+<br/>
+　後者はオブジェクトポインタの比較、つまり同一のエンティティであるかを比較する（ポインタ型の場合にはポインタ値を比較する）一方、前者はオーバーロードされた演算子によって内容の比較、例えば String 型であれば文字列の内容の比較を行います。<br/>
+
+</div>
+<br/>
+
+
+
+<!--======================== 演算子オーバーロード ==========================-->
+<a name="tour_operator_overload"/>
+<div class="headline">演算子オーバーロード</div>
+
+<div class="normal">
+
+　Loquaty では多くの演算子をオーバーロードすることができます。<br/>
+　以下の二項演算子をオーバーロードすることができます。<br/>
+
+<div class="code_quote">
+	+ &nbsp; - &nbsp; *  &nbsp; / &nbsp; % &nbsp; &amp; &nbsp; | &nbsp; ^ &nbsp; &gt;&gt; &nbsp; &lt;&lt; &nbsp; []&r;
+	== &nbsp; != &nbsp; &lt;= &nbsp; &lt; &nbsp; &gt;= &nbsp; &gt; &nbsp; &r;
+	:= &nbsp; += &nbsp; -= &nbsp; *= &nbsp; /= &nbsp; %= &nbsp; &amp;= &nbsp; |= &nbsp; ^= &nbsp; &gt;&gt;= &nbsp; &lt;&lt;= &nbsp;
+</div>
+
+　現バージョンでは単項演算子はオーバーロードできません。<br/>
+<br/>
+　二項演算子のオーバーロードの記法は C++ 言語とほぼ同じです。<br/>
+　クラス／構造体のメンバ関数として右辺値を受け取る形式で記述するか、グローバル／名前空間内に static な関数として２つの引数を受け取る形式で記述します。<br/>
+
+<div class="code_quote">
+	class Hoge&r;
+	{&r;
+	&tab;// Hoge + int 演算子&r;
+	&tab;public Hoge operator + ( int num ) { ... }&r;
+	}&r;
+	&r;
+	// int + Hoge 演算子&r;
+	public static Hoge operator + ( int num, Hoge hoge ) { ... }&r;
+</div>
+
+
+</div>
+<br/>
+
+
+
+<!--=============================== 定数式 =================================-->
+<a name="tour_operator_const_expr"/>
+<div class="headline">定数式</div>
+
+<div class="normal">
+
+　コンパイル時に値を決定できる式は定数式です。<br/>
+　Loquaty では数値だけでなくビルトインされた型のオブジェクトの副作用のない多くの関数は定数式として扱えます。<br/>
+<br/>
+　定数式で初期化された const なローカル変数や staic 変数も定数式で扱えます。<br/>
+<br/>
+　従って
+
+<div class="code_quote">
+	const int n = 10 ;&r;
+	const int m = 20 ;&r;
+	&r;
+	int[n][m]* p = new int[x][n][m] ;
+</div>
+
+のように定数でなければならないデータ配列型の配列サイズに定数式として評価可能な nや m を記述できます。<br/>
+<br/>
+
+　また Math.PI は static const であるので定数である他、Math::cos は定数式で実行可能なので
+
+<div class="code_quote">
+	Math.cos( Math.PI / 3.0 )
+</div>
+
+は
+
+<div class="code_quote">
+	0.5
+</div>
+
+と評価されます。<br/>
+<br/>
+
+　式中の定数式もコンパイル時に計算して定数となるので
+
+<div class="code_quote">
+	x * (Math.cos( Math.PI / 3.0 ) * 0.5)
+</div>
+
+は
+
+<div class="code_quote">
+	x * 0.25
+</div>
+
+と同等のコードが出力されますが
+
+<div class="code_quote">
+	x * Math.cos( Math.PI / 3.0 ) * 0.5
+</div>
+
+は
+
+<div class="code_quote">
+	x * 0.5 * 0.5
+</div>
+
+と実行時に計算されることに注意してください。
+
+
+</div>
+<br/>
+
+
+
+<!--================================= 文 ===================================-->
+<a name="chapter_usage"/>
+<div class="chapter">§文</div>
+
+
+<!--============================== 書式記法 ================================-->
+<a name="usage_format"/>
+<div class="headline">書式記法</div>
+
+<div class="normal">
+
+　構文の書式は以下のように表記します。<br/>
+<br/>
+
+<div class="usage">
+<bold>abc</bold>
+</div>
+<div class="indent1">
+　装飾されていない（あるいは読みやすさのため太字強調されている）文字や記号はそのまま記述します。<br/>
+</div>
+<br/>
+
+<div class="usage">
+<italic>abc</italic>
+</div>
+<div class="indent1">
+　斜体部分は任意の名前や式を記述します。<br/>
+</div>
+<br/>
+
+<div class="usage">
+<italic>abc</italic><br/>
+<br/>
+<italic>abc</italic>:<br/>
+&tab; <italic>def</italic>
+</div>
+<div class="indent1">
+　任意書式 <italic>abc</italic> の詳細が、行をあけ : 記号以降に定義されています。<br/>
+　上の例は、任意の <italic>def</italic> を記述することを意味します。<br/>
+</div>
+<br/>
+
+<div class="usage">
+[ <bold>abc</bold> ]&opt;
+</div>
+<div class="indent1">
+　[ ]&opt; で囲まれた部分は省略可能であることを意味します。単に [ abc ] と表記した場合には、角括弧を含めそのままの表記を意味することに注意してください。<br/>
+</div>
+<br/>
+
+<div class="usage">
+{ <bold>a</bold> | <bold>b</bold> | <bold>c</bold> }&opt;
+</div>
+<div class="indent1">
+　{ }&opt; で囲まれた部分は書式が選択的であることを意味します。 | 記号で区切られた範囲が選択可能な一つの書式となります。つまり、上の例は a 又は b 又は c の何れかを記述することを意味します。<br/>
+</div>
+
+</div>
+<br/>
+<br/>
+
+
+<!--============================== コメント ================================-->
+<a name="usage_comment"/>
+<div class="headline">コメント</div>
+
+<div class="normal">
+
+　コメントは C++ と同様です。<br/>
+
+<div class="code_quote">
+	&exam;
+	// 行末までのコメント<br/>
+	/*<br/>
+	　任意のコメント<br/>
+	*/
+</div>
+
+</div>
+<br/>
+
+
+
+<!--================================ 複文 ==================================-->
+
+<a name="usage_multi_statement"/>
+<div class="headline">複文</div>
+
+<div class="usage">
+{ <italic>statement</italic><br/>
+| <bold>{</bold> <italic>statement-list</italic> <bold>}</bold> }&opt;<br/>
+<br/>
+<italic>statement-list</italic>:<br/>
+&tab; <italic>statement</italic> [ <italic>statement-list</italic> ]&opt;
+</div>
+<br/>
+
+<div class="normal">
+
+　文は単一の文の他、{ } 括弧に複数の文を囲んで記述出来ます。<br/>
+
+</div>
+<br/>
+
+
+
+<!--================================ 式文 ==================================-->
+<a name="usage_expression"/>
+<div class="headline">式文</div>
+
+<div class="usage">
+<italic>expr</italic> <bold>;</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　式を評価します。<br/>
+　ほとんどの文は式文です。<br/>
+
+</div>
+<br/>
+
+
+
+<!--============================= 変数定義文 ===============================-->
+<!-- 変数定義文 -->
+<a name="usage_variable"/>
+<div class="headline">変数定義文</div>
+
+<div class="usage">
+[ <italic>modifier-list</italic> ]&opt;&nbsp; <italic>type-expr</italic>&nbsp; <italic>var-difinition-list</italic> <bold>;</bold><br/>
+<br/>
+<italic>var-difinition-list</italic>:<br/>
+&tab;<italic>var-name</italic> [<bold>=</bold> <italic>init-expr</italic> ]&opt; [<bold>,</bold> <italic>var-difinition-list</italic>]&opt;<br/>
+<br/>
+<italic>modifier-list</italic>:<br/>
+&tab; { <bold>static</bold><br/>
+&tab; | <bold>const</bold><br/>
+&tab; | <bold>fetch_addr</bold><br/>
+&tab; | <bold>@deprecated</bold><br/>
+&tab; | <bold>public</bold><br/>
+&tab; | <bold>protected</bold><br/>
+&tab; | <bold>private</bold> }&opt; [ <italic>modifier-list</italic> ]&opt;
+</div>
+<br/>
+
+<div class="normal">
+
+　その名前空間に <italic>type-expr</italic> 型の新しい変数 <italic>var-name</italic> を作成し、<italic>init-expr</italic> で初期化します。<br/>
+
+
+<div class="code_quote">
+	&exam;
+	int a = 1, b = 2 ;&r;
+	public static const String d = "abcd" ;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================= 関数定義文 ===============================-->
+<a name="usage_function"/>
+<div class="headline">関数定義文</div>
+
+<div class="usage">
+[ <italic>modifier-list</italic> ]&opt;&nbsp; <italic>type-expr</italic>&nbsp; <italic>func-name</italic> <bold>(</bold> <italic>arg-list</italic> <bold>)</bold> [<bold>const</bold>]&opt; { <bold>;</bold> | <bold>{</bold> <italic>statement-list</italic> <bold>}</bold> }&opt;<br/>
+<br/>
+<italic>modifier-list</italic>:<br/>
+&tab; { <bold>static</bold><br/>
+&tab; | <bold>abstract</bold><br/>
+&tab; | <bold>native</bold><br/>
+&tab; | <bold>synchronized</bold><br/>
+&tab; | <bold>@override</bold><br/>
+&tab; | <bold>@deprecated</bold><br/>
+&tab; | <bold>public</bold><br/>
+&tab; | <bold>protected</bold><br/>
+&tab; | <bold>private</bold> }&opt; [ <italic>modifier-list</italic> ]&opt;<br/>
+<br/>
+<italic>arg-list</italic>:<br/>
+&tab; { [ <bold>void</bold> ]&opt;<br/>
+&tab; | <italic>argument</italic> [ , <italic>argument</italic> ]&opt; }&opt;<br/>
+<br/>
+<italic>argument</italic>:<br/>
+&tab; [ <italic>arg-type-expr</italic> ]&opt; <italic>arg-name</italic> [ = <italic>default-expr</italic> ]&opt;<br/>
+
+</div>
+<br/>
+
+<div class="normal">
+
+　その名前空間に <italic>type-expr</italic> 型の返り値を返す関数 <italic>func-name</italic> を定義します。<br/>
+
+<div class="code_quote">
+	&exam;
+	int main( String[] arg )&r;
+	{&r;
+	&tab;return 0 ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--======================= コンストラクタ定義文 ===========================-->
+<a name="usage_constructor"/>
+<div class="headline">コンストラクタ定義文</div>
+
+<div class="usage">
+[ <italic>modifier-list</italic> ]&opt;&nbsp; <italic>class-name</italic> ( <italic>arg-list</italic> ) { <bold>;</bold> | [<bold>:</bold> <italic>init-list</italic> ]&opt; <bold>{</bold> <italic>statement-list</italic> <bold>}</bold> }&opt;<br/>
+<br/>
+<italic>modifier-list</italic>:<br/>
+&tab; { <bold>native</bold><br/>
+&tab; | <bold>synchronized</bold><br/>
+&tab; | <bold>@deprecated</bold><br/>
+&tab; | <bold>public</bold><br/>
+&tab; | <bold>protected</bold><br/>
+&tab; | <bold>private</bold> }&opt; [ <italic>modifier-list</italic> ]&opt;<br/><br/>
+<italic>init-list</italic>:<br/>
+&tab; { <italic>parent-class-name</italic><br/>
+&tab; | <italic>member-var-name</italic> }&opt; <bold>(</bold> [ <italic>init-arg-list</italic> ]&opt; <bold>)</bold> [<bold>,</bold> <italic>init-list</italic> ]&opt;<br/>
+<br/>
+<italic>init-arg-list</italic>:<br/>
+&tab; <italic>expr</italic> [<bold>,</bold> <italic>init-arg-list</italic> ]&opt;<br/>
+
+</div>
+<br/>
+
+<div class="normal">
+
+　そのクラス／構造体の構築関数を定義します。<br/>
+
+<div class="code_quote">
+	&exam;
+	public MyType( int a, int b, int c )&r;
+	&tab;: ParentType( a, b ), m_member( c ) { }
+</div>
+
+</div>
+<br/>
+
+
+
+<!--================== 演算子オーバーロード関数定義文 ======================-->
+<a name="usage_operator"/>
+<div class="headline">演算子オーバーロード関数定義文</div>
+
+<div class="usage">
+[ <italic>modifier-list</italic> ]&opt;&nbsp; <italic>type-expr</italic>&nbsp; <bold>operator</bold> <italic>op-token</italic> <bold>(</bold> <italic>arg-list</italic> <bold>)</bold> [<bold>const</bold>]&opt; { <bold>;</bold> | <bold>{</bold> <italic>statement-list</italic> <bold>}</bold> }&opt;<br/>
+<br/>
+<italic>modifier-list</italic>:<br/>
+&tab; { <bold>native</bold><br/>
+&tab; | <bold>synchronized</bold><br/>
+&tab; | <bold>@deprecated</bold><br/>
+&tab; | <bold>public</bold><br/>
+&tab; | <bold>protected</bold><br/>
+&tab; | <bold>private</bold> }&opt; [ <italic>modifier-list</italic> ]&opt;<br/><br/>
+<italic>op-token</italic>:<br/>
+&tab; { <bold>+</bold>
+&nbsp;| <bold>-</bold>
+&nbsp;| <bold>*</bold>
+&nbsp;| <bold>/</bold>
+&nbsp;| <bold>%</bold>
+&nbsp;| <bold>&amp;</bold>
+&nbsp;| <bold>|</bold>
+&nbsp;| <bold>^</bold>
+&nbsp;| <bold>&gt;&gt;</bold>
+&nbsp;| <bold>&lt;&lt;</bold>
+&nbsp;| <bold>==</bold>
+&nbsp;| <bold>!=</bold>
+&nbsp;| <bold>&lt;=</bold>
+&nbsp;| <bold>&lt;</bold>
+&nbsp;| <bold>&gt;=</bold>
+&nbsp;| <bold>&gt;</bold>
+&nbsp;| <bold>:=</bold>
+&nbsp;| <bold>+=</bold>
+&nbsp;| <bold>-=</bold>
+&nbsp;| <bold>*=</bold>
+&nbsp;| <bold>/=</bold>
+&nbsp;| <bold>%=</bold>
+&nbsp;| <bold>&amp;=</bold>
+&nbsp;| <bold>|=</bold>
+&nbsp;| <bold>^=</bold>
+&nbsp;| <bold>&gt;&gt;=</bold>
+&nbsp;| <bold>&lt;&lt;=</bold> }&opt;<br/>
+
+</div>
+<br/>
+
+<div class="normal">
+
+　演算子のオーバーロード関数を定義します。<br/>
+
+<div class="code_quote">
+	&exam;
+	public Foo operator + ( Foo foo ) const&r;
+	{&r;
+	&tab;return Foo( m_a + foo.m_a, m_b + foo.m_b ) ;&r;
+	}
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================== @import =================================-->
+<a name="usage_import"/>
+<div class="headline">@import 文</div>
+
+<div class="usage">
+<bold>@import</bold> { <italic>module-name</italic> | <bold>"</bold><italic>module-name</italic><bold>"</bold> }&opt;
+</div>
+<br/>
+
+<div class="normal">
+
+　@import 文はモジュール（プラグイン）を追加します。<br/>
+　<italic>module-name</italic> を二重引用符で囲むと空白を含む名前を指定することはできますが、文字列リテラルのようなバックスラッシュによるエスケープ処理は行われません。<br/>
+
+</div>
+<br/>
+
+
+
+<!--============================== @include ================================-->
+<a name="usage_include"/>
+<div class="headline">@include 文</div>
+
+<div class="usage">
+<bold>@include</bold> { <italic>script-file</italic> | <bold>"</bold><italic>script-file</italic><bold>"</bold> }&opt;
+</div>
+<br/>
+
+<div class="normal">
+
+　@include 文はスクリプトファイルを追加します。<br/>
+　<italic>script-file</italic> を二重引用符で囲むと空白を含む名前を指定することはできますが、文字列リテラルのようなバックスラッシュによるエスケープ処理は行われません。<br/>
+<br/>
+　また、Loquaty の @include 文は一度追加したスクリプトファイルをもう一度 @include しても何もしません。<br/>
+　テキストマクロのようにも機能しません。<br/>
+
+</div>
+<br/>
+
+
+
+<!--=============================== @error =================================-->
+<a name="usage_error"/>
+<div class="headline">@error 文</div>
+
+<div class="usage">
+<bold>@error</bold> <italic>error-message</italic>
+</div>
+<br/>
+
+<div class="normal">
+
+　@error 文はコンパイラにエラーを出力します。<br/>
+
+</div>
+<br/>
+
+
+
+<!--=============================== @todo =================================-->
+<a name="usage_todo"/>
+<div class="headline">@todo 文</div>
+
+<div class="usage">
+<bold>@todo</bold> <italic>todo-message</italic>
+</div>
+<br/>
+
+<div class="normal">
+
+　@todo 文はコンパイラに警告を出力します。<br/>
+　書きかけのコードを放置して一旦別の作業に移らなければならない場合などに @todo を書き込んでおくと便利です。<br/>
+　特に構文上エラーにならない状態で書きかけのコードが放置されると、どこが書きかけで、どこにどういうコードを書くつもりだったのかわからなくなり悲惨です。<br/>
+　コードを書き始める前に @todo を記入し、書き終えたら @todo を削除する、という作業フローが推奨されます。<br/>
+
+<div class="code_quote">
+	&exam;
+	public void foo()&r;
+	{&r;
+	&tab;for ( x : m_elements )&r;
+	&tab;{&r;
+	&tab;&tab;@todo x に foo する&r;
+	&tab;}&r;
+	&tab;@todo hoge する&r;
+	}
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================== class 文 ================================-->
+<a name="usage_class"/>
+<div class="headline">class 文</div>
+
+<div class="usage">
+<bold>class</bold> <italic>class-name</italic> [<bold>&lt;</bold> <italic>gen-param-list</italic> <bold>&gt;</bold>]&opt; [ <bold>extends</bold> <italic>super-class</italic> ]&opt; [ <bold>implements</bold> <italic>super-class-list</italic> ]&opt; <bold>{</bold> <italic>statement-list</italic> <bold>}</bold><br/>
+<br/>
+<italic>gen-param-list</italic>:<br/>
+&tab; <italic>param-name</italic> [<bold>,</bold> <italic>gen-param-list</italic> ]&opt;<br/>
+<br/>
+<italic>super-class-list</italic>:<br/>
+&tab; <italic>super-class</italic> [ , <italic>super-class-list</italic> ]&opt;
+</div>
+<div class="usage">
+<bold>class</bold> <italic>class-expr</italic> [<bold>&lt;</bold> <italic>gen-param-list</italic> <bold>&gt;</bold>]&opt; <bold>;</bold><br/>
+<br/>
+<italic>class-expr</italic>:<br/>
+&tab; { <italic>class-name</italic> | <italic>struct-name</italic> | <italic>namespace-name</italic> }&opt; [ :: <italic>class-expr</italic> ]&opt;<br/>
+<br/>
+<italic>gen-param-list</italic>:<br/>
+&tab; <italic>type-expr</italic> [<bold>,</bold> <italic>gen-param-list</italic> ]&opt;<br/>
+</div>
+<br/>
+
+<div class="normal">
+
+　クラスを定義します。<br/>
+　Java と同じような書式ですが、Loquaty に interface は存在せず、implements は多重派生を実現します。但し、implements は static でないメンバ変数が存在しないクラスに限定されます。<br/>
+　<italic>super-class</italic> を省略した場合には暗黙に Object からの派生になります。<br/>
+<br/>
+　Loquaty のクラスは、Java での static クラスに相当します。クラス内のローカルクラスを定義した場合でも常に static クラス相当となります。<br/>
+<br/>
+　なお、C++ と同じようにクラスの宣言のみを行うことも出来ます。<br/>
+　更に、クラスのローカルクラスの宣言を行うことも出来ます。
+
+<div class="code_quote">
+	class Foo ;&r;
+	class Foo::Bar ;
+</div>
+<br/>
+　ジェネリック・パラメータ・リストを指定した場合にはジェネリック・クラスの定義となります。<br/>
+　Loquaty のジェネリック・クラスはクラスではありません。<br/>
+　原始的な C++ のテンプレート・クラスのようなものです。<br/>
+　インスタンス化されるとクラスになります。<br/>
+
+<div class="code_quote">
+	&exam;
+	// ジェネリック・クラスの定義&r;
+	class Foo&lt;T,S&gt;&r;
+	{&r;
+	&tab;T t ;&r;
+	&tab;public void foo( S s ) { }&r;
+	}&r;
+	&r;
+	// ジェネリック・クラスのインスタンス化&r;
+	class Foo&lt;int,String&gt; ;
+</div>
+
+　ジェネリック・クラスのインスタンス化は class 文で行う必要はありませんが、ジェネリック・クラスのパラメータの中でインスタンス化はできないので、その場合には必要に応じてあらかじめインスタンス化しておく必要があります。<br/>
+
+</div>
+<br/>
+
+
+
+<!--============================= struct 文 ================================-->
+<a name="usage_struct"/>
+<div class="headline">struct 文</div>
+
+<div class="usage">
+<bold>struct</bold> <italic>struct-name</italic> [<bold>&lt;</bold> <italic>gen-param-list</italic> <bold>&gt;</bold>]&opt; [ <bold>extends</bold> <italic>super-struct-list</italic> ]&opt; <bold>{</bold> <italic>statement-list</italic> <bold>}</bold><br/>
+<br/>
+<italic>super-struct-list</italic>:<br/>
+&tab; <italic>super-struct</italic> [ , <italic>super-struct-list</italic> ]&opt;
+</div>
+<div class="usage">
+<bold>struct</bold> <italic>struct-expr</italic> [<bold>&lt;</bold> <italic>gen-param-list</italic> <bold>&gt;</bold>]&opt; <bold>;</bold><br/>
+<br/>
+<italic>struct-expr</italic>:<br/>
+&tab; { <italic>class-name</italic> | <italic>struct-name</italic> | <italic>namespace-name</italic> }&opt; [ :: <italic>struct-expr</italic> ]&opt;<br/>
+<br/>
+<italic>gen-param-list</italic>:<br/>
+&tab; <italic>type-expr</italic> [<bold>,</bold> <italic>gen-param-list</italic> ]&opt;<br/>
+</div>
+<br/>
+
+<div class="normal">
+
+　構造体を定義します。<br/>
+　構造体は派生することは出来ますが、クラスから構造体を派生したり、構造体からクラスを派生したりすることは出来ません。<br/>
+　複数の構造体から派生することが出来、派生のメカニズムは C++（仮想関数を持たない構造体）と同等です。<br/>
+
+<div class="code_quote">
+	&exam;
+	struct A {  int a = 1 ; }&r;
+	&r;
+	struct B {  int b = 2 ; }&r;
+	&r;
+	struct C &nbsp;extends A, B&r;
+	{&r;
+	&tab;int c = 3 ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--=========================== namespace 文 ===============================-->
+<a name="usage_namespace"/>
+<div class="headline">namespace 文</div>
+
+<div class="usage">
+<bold>namespace</bold> <italic>namespace-name</italic> <bold>{</bold> <italic>statement-list</italic> <bold>}</bold><br/>
+</div>
+<br/>
+
+<div class="normal">
+
+　名前空間を作ります。<br/>
+　名前空間はクラスや構造体とは異なり具体物を定義するわけではないので何度でも同じ名前の名前空間を記述できます。<br/>
+
+<div class="code_quote">
+	&exam;
+	namespace A&r;
+	{&r;
+	&tab;// A::foo() 定義&r;
+	&tab;void foo() { }&r;
+	}&r;
+	&r;
+	namespace A&r;
+	{&r;
+	&tab;// A::hoge() 定義&r;
+	&tab;void hoge() { }&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================ typedef 文 ================================-->
+<a name="usage_typedef"/>
+<div class="headline">typedef 文</div>
+
+<div class="usage">
+<bold>typedef</bold> <italic>type-name</italic> <bold>=</bold> <italic>type-expr</italic> <bold>;</bold><br/>
+</div>
+<br/>
+
+<div class="normal">
+
+　新しい名前 <italic>type-name</italic> に <italic>type-expr</italic> 型を定義します。<br/>
+
+<div class="code_quote">
+	&exam;
+	typdef IntPtr = int* ;&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================== for 文 ==================================-->
+<a name="usage_for"/>
+<div class="headline">for 文</div>
+
+<div class="usage">
+<bold>for (</bold> [ <italic>init-expr</italic> ]&opt; <bold>;</bold> [ <italic>cond-expr</italic> ]&opt; <bold>;</bold> [ <italic>step-expr</italic> ]&opt; <bold>)</bold> <italic>statementt</italic> <br/>
+</div>
+<div class="usage">
+<bold>for (</bold> <italic>decl-var-statement</italic>&nbsp; [ <italic>cond-expr</italic> ]&opt; <bold>;</bold> [ <italic>step-expr</italic> ]&opt; <bold>)</bold> <italic>statement</italic> <br/>
+</div>
+<div class="usage">
+<bold>for (</bold> <italic>iter-var-name</italic> <bold>in</bold> <italic>expr</italic> <bold>)</bold> <italic>statement</italic> <br/>
+</div>
+<div class="usage">
+<bold>for (</bold> <italic>iter-var-name</italic> <bold>:</bold> <italic>expr</italic> <bold>)</bold> <italic>statement</italic> <br/>
+</div>
+<br/>
+
+<div class="normal">
+
+　1つ目と2つ目の書式は C/C++ と似ています。<br/>
+　<italic>init-expr</italic> は初期化式で、<italic>decl-var-statement</italic> は変数定義文です。（変数定義文の終端はセミコロンとなることに注意してください）<br/>
+　<italic>cond-expr</italic> は反復条件で、省略すると永遠に繰り返します。<br/>
+　<italic>step-expr</italic> は１回の反復処理が終わったときに評価されます。<br/>
+<br/>
+　3つ目の書式は JavaScript と似ています。<br/>
+　ループ内のローカル変数として <italic>iter-var-name</italic> に指定された名前の long 型又は String 型変数が自動的に定義され、<italic>expr</italic> の要素の指標、又は Map の要素名が順次設定されます。<br/>
+<br/>
+　4つ目の書式は C++ と似ていますが <italic>iter-var-name</italic> の型を明記することはできません。<br/>
+　<italic>iter-var-name</italic> は <italic>expr</italic> の要素の型として定義されます。<br/>
+
+<div class="code_quote">
+	&exam;
+	String[] a = [ "a", "b", "c" ] ;&r;
+	&r;
+	for ( uint i = 0; i &lt; a.length(); ++ i )&r;
+	{&r;
+	&tab;Console.print( a[i] + "\n") ;&r;
+	}&r;
+	&r;
+	for ( i in a )&r;
+	{&r;
+	&tab;Console.print( a[i] + "\n") ;&r;
+	}&r;
+	&r;
+	for ( i : a )&r;
+	{&r;
+	&tab;Console.print( i + "\n") ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================ forever 文 ================================-->
+<a name="usage_forever"/>
+<div class="headline">forever 文</div>
+
+<div class="usage">
+<bold>forever</bold>  <italic>statementt</italic> <br/>
+</div>
+<br/>
+
+<div class="normal">
+
+　<italic>statement</italic> を無限に繰り返します。<br/>
+　for(;;) <italic>statement</italic> や while(true) <italic>statement</italic> と同じ意味です。<br/>
+
+<div class="code_quote">
+	&exam;
+	forever&r;
+	{&r;
+	&tab;if ( !loop() )&r;
+	&tab;&tab;break ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+<!--============================= while 文 =================================-->
+<a name="usage_while"/>
+<div class="headline">while 文</div>
+
+<div class="usage">
+<bold>while (</bold> <italic>expr</italic> <bold>)</bold> <italic>statement</italic>
+</div>
+<br/>
+
+<div class="normal">
+
+　<italic>expr</italic> が真の間、<italic>statement</italic> を繰り返し実行します。<br/>
+
+<div class="code_quote">
+	&exam;
+	while ( loop() )&r;
+	{&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--=============================== do 文 ==================================-->
+<a name="usage_do_while"/>
+<div class="headline">do 文</div>
+
+<div class="usage">
+<bold>do {</bold> <italic>statement-list</italic>&nbsp; <bold>} while (</bold> <italic>expr</italic> <bold>) ;</bold>
+</div>
+<div class="usage">
+<bold>do {</bold> <italic>statement-list</italic>&nbsp; <bold>} ;</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　<italic>expr</italic> が真の間、<italic>statement-list</italic> を繰り返し実行します。<br/>
+　C++ とは異なり、ループ処理を { } 括弧で囲むことが必須となります。<br/>
+　while 句を省略した場合 while(false) と同じ意味になります。<br/>
+
+<div class="code_quote">
+	&exam;
+	do&r;
+	{&r;
+	&tab;if( !a() )&r;
+	&tab;&tab;break ;&r;
+	&r;
+	&tab;if( !b() )&r;
+	&tab;&tab;break ;&r;
+	&r;
+	&tab;if( !c() )&r;
+	&tab;&tab;break ;&r;
+	} ;&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--=============================== if 文 ==================================-->
+<a name="usage_if"/>
+<div class="headline">if 文</div>
+
+<div class="usage">
+<bold>if (</bold> <italic>expr</italic> <bold>)</bold> <italic>if-statement</italic> [ <bold>else</bold> <italic>else-statement</italic> ]&opt;
+</div>
+<br/>
+
+<div class="normal">
+
+　<italic>expr</italic> が真の時 <italic>if-statement</italic>、そうでない場合 <italic>else-statement</italic> を実行します。<br/>
+
+<div class="code_quote">
+	&exam;
+	if ( a() )&r;
+	{&r;
+	&tab;A() ;&r;
+	}&r;
+	else if ( b() )&r;
+	{&r;
+	&tab;B() ;&r;
+	}&r;
+	else&r;
+	{&r;
+	&tab;C() ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================= switch 文 ================================-->
+<a name="usage_switch"/>
+<div class="headline">switch 文</div>
+
+<div class="usage">
+<bold>switch (</bold> <italic>expr</italic> <bold>) {</bold> <italic>statement-list</italic> <bold>}</bold>
+</div>
+<div class="usage">
+<bold>case</bold> <italic>case-expr</italic> <bold>:</bold>
+</div>
+<div class="usage">
+<bold>default:</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　<italic>expr</italic> が <italic>case-expr</italic> に一致する case ラベルにジャンプします。<br/>
+　一致するラベルが存在しない場合、default ラベルへジャンプします。<br/>
+　一致判定は == 演算子によって行われます。<br/>
+
+<div class="code_quote">
+	&exam;
+	String s = "abc" ;&r;
+	&r;
+	switch( s )&r;
+	{&r;
+	case "abc":&r;
+	&tab;ABC() ;&r;
+	&tab;break ;&r;
+	&r;
+	default:&r;
+	&tab;DEF() ;&r;
+	&tab;break ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================== break 文 ================================-->
+<a name="usage_break"/>
+<div class="headline">break 文</div>
+
+<div class="usage">
+<bold>break</bold> [ <italic>destination-label</italic> ]&opt; <bold>;</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　最も内側のループ、あるいは switch ブロックから脱出します。<br/>
+　<italic>destination-label</italic> を指定した場合、指定のラベル位置までジャンプします。<br/>
+
+<div class="code_quote">
+	&exam;
+	for( ; ; )&r;
+	{&r;
+	&tab;for( ; ; )&r;
+	&tab;{&r;
+	&tab;&tab;break label ;&r;
+	&tab;}&r;
+	}&r;
+	label:&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================ continue 文 ===============================-->
+<a name="usage_continue"/>
+<div class="headline">continue 文</div>
+
+<div class="usage">
+<bold>continue ;</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　最も内側のループの先頭に戻ります。<br/>
+　do ～ while 文の場合には while 句までジャンプします。<br/>
+
+</div>
+<br/>
+
+
+
+<!--=============================== goto 文 ================================-->
+<a name="usage_goto"/>
+<div class="headline">goto 文</div>
+
+<div class="usage">
+<bold>goto</bold> <italic>destination-label</italic> <bold>;</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　指定のラベル位置までジャンプします。<br/>
+　ジャンプ元からジャンプ先の間に初期化されない変数が存在してはなりません。<br/>
+
+<div class="code_quote">
+	&exam;
+	int a, b ;&r;
+	goto label ;&r;
+	&r;
+	foo() ;&r;
+	&r;
+	label:&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================== ラベル文 ================================-->
+<a name="usage_goto"/>
+<div class="headline">ラベル文</div>
+
+<div class="usage">
+<italic>label-name</italic> <bold>:</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　現在の位置にジャンプ先ラベルを定義します。<br/>
+
+</div>
+<br/>
+
+
+
+<!--=============================== try 文 =================================-->
+<a name="usage_try"/>
+<div class="headline">try 文</div>
+
+<div class="usage">
+<bold>try</bold> <italic>try-statement</italic>&nbsp; [ <italic>catch-list</italic>  ]&opt;&nbsp;  [ <bold>finally</bold> <italic>finally-statement</italic> ]&opt; <br/>
+<br/>
+<italic>catch-list</italic>:<br/>
+&tab; <bold>catch</bold> [ <bold>(</bold> <italic>type-expr</italic> [ <italic>var-name</italic> ]&opt; <bold>)</bold> ]&opt; <italic>catch-statement</italic>&nbsp; [ <italic>catch-list</italic> ]&opt;
+</div>
+<br/>
+
+<div class="normal">
+
+　<italic>try-statement</italic> を実行します。<br/>
+　例外がスローされると、スローされたオブジェクトの型が <italic>type-expr</italic> に一致する catch 文の <italic>catch-statement</italic> が実行されます。<br/>
+　<italic>type-expr</italic> を省略した場合には常に例外を受け取ります。<br/>
+　finally 句を記述すると、<italic>try-statement</italic>、また catch した <italic>catch-statement</italic> を実行した後、必ず <italic>finally-statement</italic> が実行されます。<br/>
+
+<div class="code_quote">
+	&exam;
+	try&r;
+	{&r;
+	&tab;foo() ;&r;
+	}&r;
+	catch ( Exception e )&r;
+	{&r;
+	&tab;Console.print( e.toString() + "\n" ) ;&r;
+	}&r;
+	catch&r;
+	{&r;
+	&tab;// すべての例外を受け取る凶悪な catch&r;
+	}&r;
+	finally&r;
+	{&r;
+	&tab;hoge() ;&r;
+	}
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================= throw 文 =================================-->
+<a name="usage_throw"/>
+<div class="headline">throw 文</div>
+
+<div class="usage">
+<bold>throw</bold> <italic>expr</italic> <bold>;</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　例外を送出します。
+
+<div class="code_quote">
+	&exam;
+	throw Exception( "error!" ) ;&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================ return 文 =================================-->
+<a name="usage_return"/>
+<div class="headline">return 文</div>
+
+<div class="usage">
+<bold>return</bold> [ <italic>expr</italic> ]&opt; <bold>;</bold>
+</div>
+<br/>
+
+<div class="normal">
+
+　関数から復帰します。
+
+<div class="code_quote">
+	&exam;
+	return &nbsp; a + 1 ;&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================= with 文 ==================================-->
+<a name="usage_with"/>
+<div class="headline">with 文</div>
+
+<div class="usage">
+<bold>with (</bold> <italic>expr</italic> <bold>)</bold> <italic>statement</italic>
+</div>
+<br/>
+
+<div class="normal">
+
+　<italic>expr</italic> で評価されるオブジェクトを名前解決のために追加し <italic>statement</italic> を実行します。<br/>
+　C# の with 式ではなく JavaScript の with 文に似ています。<br/>
+
+<div class="code_quote">
+	&exam;
+	with( Console )&r;
+	{&r;
+	&tab;print( "abc\n" ) ;&r;
+	}&r;
+	String[] a = String[]() ;&r;
+	with( a )&r;
+	{&r;
+	&tab;add( "abc" ) ;&r;
+	&tab;add( "def" ) ;&r;
+	&tab;Console.print( toString() + "\n" ) ; // [ "abc", "def" ]&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--========================= synchronized 文 ==============================-->
+<a name="usage_synchronized"/>
+<div class="headline">synchronized 文</div>
+
+<div class="usage">
+<bold>synchronized (</bold> <italic>expr</italic> <bold>)</bold> <italic>statement</italic>
+</div>
+<br/>
+
+<div class="normal">
+
+　<italic>expr</italic> で評価されるオブジェクトに対する排他制御状態で <italic>statement</italic> を実行します。<br/>
+
+<div class="code_quote">
+	&exam;
+	synchronized( obj )&r;
+	{&r;
+	&tab;obj.wait() ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+<!--========================== §クラス ====================================-->
+<a name="chapter_class"/>
+<div class="chapter">§クラス</div>
+
+
+
+<!--===================== メンバ変数と初期化コード =========================-->
+<a name="class_member_and_initialization"/>
+<div class="headline">メンバ変数と初期化コード</div>
+
+<div class="normal">
+
+　class 文ブロック内直下（struct, namespace やグローバル領域についても同様）には初期化のための文を記述できます。<br/>
+
+
+<div class="code_quote">
+	&exam;
+	class Hoge&r;
+	{&r;
+	&tab;public String &tab;&tab;  a = "a" ;&r;
+	&tab;public static String[] b = String[]() ;&r;
+	&tab;public static int &tab;  c ;&r;
+	&r;
+	&tab;c = initC( b ) ;&r;
+	}&r;
+</div>
+
+　Loquaty ではメンバ変数の初期値には定数式しか記述できません。<br/>
+　定数式ではない式で値を初期化したい場合には上の例のように class ブロック内に初期化のための文を記述できます。<br/>
+　しかし非 static な変数の初期化はできない点、前方参照できない点について注意が必要です。<br/>
+
+<div class="code_quote">
+	&exam;
+	class Hoge&r;
+	{&r;
+	&tab;c = initC( b ) ; &tab; // b と c は前方参照なためエラー &r;
+	&r;
+	&tab;public String &tab;&tab;  a = "a" ;&r;
+	&tab;public static String[] b = String[]() ;&r;
+	&tab;public static int &tab;  c ;&r;
+	&tab;public static int &tab;  d ;&r;
+	&r;
+	&tab;a = initA() ; &tab;&tab; // a は非 static なメンバ変数のためエラー&r;
+	&tab;d = initD( b ) ; &nbsp;&tab; // initD 関数はは前方参照なためエラー &r;
+	}&r;
+	&r;
+	int initD( String[] a ) { return a.length() ; }&r;
+</div>
+
+　この初期化コードはコンパイル終了後、スクリプトを実行する前に一度だけ実行されます。<br/>
+
+
+</div>
+<br/>
+
+
+
+<!--================= インスタンス生成とコンストラクタ =====================-->
+<a name="class_creation_and_constructor"/>
+<div class="headline">インスタンス生成とコンストラクタ</div>
+
+<div class="normal">
+
+　クラスのインスタンスが生成されるとき、まず定義されたメンバ変数が「複製」されます。<br/>
+　その後、コンストラクタが呼び出されます。<br/>
+<br/>
+　従ってコンストラクタが呼び出された時点で、メンバ変数は定義された初期値で初期化された状態となっています。<br/>
+　またコンストラクタが存在しない場合でも、メンバ変数は初期値で初期化されます。<br/>
+
+</div>
+<br/>
+
+
+
+<!--================= オブジェクトの寿命とデストラクタ =====================-->
+<a name="class_life_and_destructor"/>
+<div class="headline">オブジェクトの寿命とデストラクタ</div>
+
+<div class="normal">
+
+　オブジェクト・インスタンスへのすべての参照が解放されるとデストラクタが呼び出されます。<br/>
+　デストラクタは finalize 関数で、解放時に即座に呼び出されます。<br/>
+
+<div class="code_quote">
+	&exam;
+	class Hoge&r;
+	{&r;
+	&tab;private String m_s ;&r;
+	&r;
+	&tab;public Hoge( String s )&r;
+	&tab;{&r;
+	&tab;&tab;m_s = s ;&r;
+	&tab;&tab;Console.print( "Hoge " + s + "\n" ) ;&r;
+	&tab;}&r;
+	&tab;&r;
+	&tab;private void finalize()&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "finalize " + m_s + "\n" ) ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	Hoge&tab;hoge1 ;&r;
+	Console.print( "begin\n" ) ;&r;
+	{&r;
+	&tab;Hoge&tab;hoge2 = Hoge( "2" ) ;&r;
+	&tab;hoge1 = Hoge( "1" ) ;&r;
+	}&r;
+	Console.print( "end\n" ) ;&r;
+	hoge1 = null ;
+</div>
+
+<div class="code_quote">
+	<div align="right"><small>output</small></div>
+	begin&r;
+	Hoge 2&r;
+	Hoge 1&r;
+	finalize 2&r;
+	end&r;
+	finalize 1&r;
+</div>
+
+　デストラクタは即座に呼び出されますがデータ型メンバ変数を保持しているメモリが解放されるのは、メモリへのすべての参照が解放されたときになります。<br/>
+<br/>
+　データ型変数は外部のポインタによっても参照できることに注意してください。<br/>
+　メモリへの参照がすべて解放されると即座にメモリは解放されますが、メモリの一部の領域のみでも誰かが参照を持っているとメモリは解放されません。<br/>
+　このメカニズムはポインタ型オブジェクトと共通のものです。<br/>
+<br/>
+
+</div>
+<br/>
+
+
+
+<!--============================= 同名関数 =================================-->
+<a name="class_assumed_function"/>
+<div class="headline">同名関数</div>
+
+<div class="normal">
+
+　Loquaty は同名の異なるプロトタイプの関数を複数定義することができます。<br/>
+　関数を呼び出す際、定義された複数の関数のうち初めに適合するプロトタイプの関数が呼び出されます。<br/>
+
+<div class="code_quote">
+	&exam;
+	class Hoge&r;
+	{&r;
+	&tab;public static void foo( int a )&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "foo int\n" ) ;&r;
+	&tab;}&r;
+	&tab;public static void foo( double a )&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "foo double\n" ) ;&r;
+	&tab;}&r;
+	&tab;public static void boo( double a )&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "boo double\n" ) ;&r;
+	&tab;}&r;
+	&tab;public static void boo( int a )&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "boo int\n" ) ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	Hoge.foo( 1 ) ;&r;
+	Hoge.foo( 1.0 ) ;&r;
+	Hoge.boo( 1 ) ;&r;
+	Hoge.boo( 1.0 ) ;&r;
+</div>
+
+<div class="code_quote">
+	<div align="right"><small>output</small></div>
+	foo int&r;
+	foo double&r;
+	boo double&r;
+	boo double&r;
+</div>
+
+　呼び出される関数以外に、より適した関数が定義されていたとしてもエラーも警告も出力されません。<br/>
+　この仕様は、より高級な仕組みより、より単純な法則のほうが意図通りに制御しやすいだろうという考えと、意図しない動作をしたときに理解や納得しやるいという考えに基づくものです。<br/>
+
+</div>
+<br/>
+
+
+
+<!--================== オーバーライドとオーバーロード ======================-->
+<a name="class_override_and_overload"/>
+<div class="headline">オーバーライドとオーバーロード</div>
+
+<div class="normal">
+
+　クラスの（非 static な）メンバ関数は仮想関数です。<br/>
+　従って派生したクラスト同じ名前・プロトタイプの関数を記述すると、その関数はオーバーライドされます。<br/>
+
+<div class="code_quote">
+	&exam;
+	class Hoge&r;
+	{&r;
+	&tab;public void put()&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "Hoge.put\n" ) ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	class Foo extends Hoge&r;
+	{&r;
+	&tab;public void put()&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "Foo.put\n" ) ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	Hoge hoge = Foo() ;&r;
+	hoge.put() ;&r;
+</div>
+
+<div class="code_quote">
+	<div align="right"><small>output</small></div>
+	Foo.put&r;
+</div>
+
+　上の例は Hoge 型変数の hoge から put 関数を呼び出しているにも関わらず Foo.put 関数が呼び出されています。<br/>
+　これは関数がオーバーライドされているためです。<br/>
+<br/>
+　しかし常にオーバーライドされるわけではありません。<br/>
+　Loquaty では引数が一致しているにもかかわらず返り値が異なる関数が定義された場合、エラーにはならず、その関数はオーバーロードされます。<br/>
+
+<div class="code_quote">
+	&exam;
+	class Hoge&r;
+	{&r;
+	&tab;public int put()&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "Hoge.put\n" ) ;&r;
+    &tab;&tab;return 0 ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	class Foo extends Hoge&r;
+	{&r;
+	&tab;public double put()&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "Foo.put\n" ) ;&r;
+    &tab;&tab;return 0.0 ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	Foo foo = Foo() ;&r;
+	Hoge hoge = foo ;&r;
+	foo.put() ;&r;
+	hoge.put() ;&r;
+</div>
+
+<div class="code_quote">
+	<div align="right"><small>output</small></div>
+	Foo.put&r;
+	Hoge.put&r;
+</div>
+
+　この例の場合、当然ながら foo.put() の返り値は double 型、hoge.put() の返り値は int 型になります。<br/>
+　意図しない関数のオーバーロードに警告を出してほしい場合には @override 修飾子を指定します。<br/>
+
+<div class="code_quote">
+	&exam;
+	class Foo extends Hoge&r;
+	{&r;
+	&tab;@override&r;
+	&tab;public double put()&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "Foo.put\n" ) ;&r;
+    &tab;&tab;return 0.0 ;&r;
+	&tab;}&r;
+	}&r;
+</div>
+
+　@override 修飾子は一見 Java のアノテーションのような見た目をしていますが、Loquaty では修飾子の一つです。<br/>
+
+</div>
+<br/>
+
+
+
+<!--========================== §構造体 ====================================-->
+<a name="chapter_structure"/>
+<div class="chapter">§構造体</div>
+
+
+
+<!--========================== コンストラクタ ==============================-->
+<a name="structure_constructor"/>
+<div class="headline">コンストラクタ</div>
+
+<div class="normal">
+
+　構造体を構築式、又は new 演算子で構造体インスタンスを生成するとき、まず所定のメモリが確保され、そのメモリに構造体で定義された初期値が複製されます。<br/>
+　その後、構造体のコンストラクタが呼び出されます。<br/>
+　しかし構造体はクラス・オブジェクトとは異なり new 演算子においてコンストラクタの引数を省略するとコンストラクタは呼び出されません。<small>（⇒参照「<a href="#tour_operator_new">オブジェクト生成と new 演算子</a>」）</small><br/>
+
+　また new 演算子で配列を確保する際にでコンストラクタ引数を記述すると、確保されたすべての要素に対してコンストラクタが呼び出されます。<br/>
+<br/>
+
+　ただし構造体は関数のローカル変数として直接スタック上に確保することは推奨されず、その場合の初期値は構造体での定義にかかわらず 0 です。<br/>
+
+<div class="code_quote">
+	struct Hoge { int a = 1 ; }&r;
+	&r;
+	void foo()&r;
+	{&r;
+	&tab;Hoge&tab;hoge1 ;&r;
+	&tab;Hoge* &nbsp; hoge2 = new Hoge ;&r;
+	&r;
+	&tab;Console.print( "hoge1.a = " + hoge1.a + "\n" ) ; // hoge1.a = 0&r;
+	&tab;Console.print( "hoge2.a = " + hoge2.a + "\n" ) ; // hoge2.a = 1&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--====================== 参照とポインタと演算子 ==========================-->
+<a name="structure_pointer"/>
+<div class="headline">参照とポインタと演算子</div>
+
+<div class="normal">
+
+　構造体を関数の引数に持つ場合、また返り値の型として記述された場合、それらは実際には構造体のポインタ型として解釈されます。<br/>
+
+<div class="code_quote">
+	struct Hoge { int a = 1 ; }&r;
+	&r;
+	// 実際には public Hoge* foo( Hoge* hoge ) と解釈される&r;
+	public Hoge foo( Hoge hoge ) { ... }
+</div>
+
+　また同じ理由で this も構造体の場合にはポインタとなります。<br/>
+
+<br/>
+
+　構造体のメンバ変数は . 演算子でアクセスできます。<br/>
+　構造体ポインタでも構造体参照でも同じです。C 言語のように -> 演算子は存在しません。<br/>
+
+<div class="code_quote">
+	Hoge&tab;hoge1 ;&r;
+	Hoge* &nbsp; hoge2 = new Hoge ;&r;
+	&r;
+	hoge1.a = -5 ;&r;
+	hoge2.a = 2 ;&r;
+</div>
+<br/>
+
+　また構造体への演算子はポインタ型であるか否かを問いません。<br/>
+　構造体ポインタ型への演算は構造体の演算子オーバーライドが適用されます。<br/>
+
+<div class="code_quote">
+	struct Vector2&r;
+	{&r;
+	&tab;float x, y ;&r;
+	&r;
+	&tab;public Vector2( float x0, float y0 )&r;
+	&tab;{&r;
+	&tab;&tab;x = x0 ;&r;
+	&tab;&tab;y = y0 ;&r;
+	&tab;}&r;
+	&tab;&r;
+	&tab;public Vector2 operator + ( Vector2 v ) const&r;
+	&tab;{&r;
+	&tab;&tab;return new Vector2( x + v.x, y + v.y ) ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	Vector2* v1 = new Vector2( 1.0f, -1.0f ) ;&r;
+	Vector2* v2 = new Vector2( 1.0f, 1.0f ) ;&r;
+	Vector2* v3 = v1 + v2 ;&r;
+	&r;
+	v1 := v3 ; &tab; // v3 の内容を v1 に複製
+</div>
+
+　なお、オーバーロードされていないデフォルトの := 演算子は構造体の内容を（配列の場合でも１つの構造体だけ）複製します。<br/>
+　= 演算子との違いに注意してください。<small>（⇒参照「<a href="#tour_operator_move">= 演算子と := 演算子</a>」）</small><br/>
+
+<br/>
+
+　ただし、右辺が整数の加減算演算子のオーバーロードには注意が必要です。<br/>
+
+<div class="code_quote">
+	struct Vector3&r;
+	{&r;
+	&tab;float x, y, z ;&r;
+	&r;
+	&tab;public Vector3 operator + ( int a )&r;
+	&tab;{&r;
+	&tab;&tab;x += (float) a;&r;
+	&tab;&tab;return this ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	Vector3* v1 = new Vector3[10] ;&r;
+	&r;
+	v1 = v1 + 1 ; &tab;   // x += 1.0 されるがポインタは進まない！&r;
+	&tab; &tab; &tab; &tab;// ※Vector3::operator + (int) がオーバーロードされている！&r;
+	v1 ++ ;&tab;&tab;&tab;// ポインタは進む
+</div>
+
+</div>
+<br/>
+
+
+
+<!--=============================== 派生 ===================================-->
+<a name="structure_derivation"/>
+<div class="headline">派生</div>
+
+<div class="normal">
+
+　構造体は C++ 言語と同じように派生することができます。
+
+<div class="code_quote">
+	struct	Foo&r;
+	{&r;
+	&tab;int a = 1 ;&r;
+	&r;
+	&tab;public Foo( int i ) { a = i ; }&r;
+	}&r;
+	&r;
+	struct	Bar&r;
+	{&r;
+	&tab;int b = 2 ;&r;
+	&r;
+	&tab;public Bar( int i ) { b = i ; }&r;
+	}&r;
+	&r;
+	struct	Hoge&nbsp; extends Foo, Bar&r;
+	{&r;
+	&tab;int c = 3 ;&r;
+	&r;
+	&tab;public Hoge( int i, int j, int k )&r;
+	&tab;&tab;: Foo(i), Bar(j) { c = k ; }&r;
+	}&r;
+</div>
+
+　クラスとは異なり構造体は多重派生できます。<br/>
+　この継承の仕組みは（仮想関数を持たない場合の） C++ と似ています。<br/>
+
+</div>
+<br/>
+
+
+
+<!--=============================== 関数 ===================================-->
+<a name="structure_function"/>
+<div class="headline">関数</div>
+
+<div class="normal">
+
+　構造体のメンバ関数は仮想関数ではありません。<br/>
+
+<div class="code_quote">
+	struct Foo&r;
+	{&r;
+	&tab;public foo()&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "foo\n" ) ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	struct Bar&nbsp; extends Foo&r;
+	{&r;
+	&tab;public foo()&r;
+	&tab;{&r;
+	&tab;&tab;Console.print( "bar\n" ) ;&r;
+	&tab;}&r;
+	}&r;
+	&r;
+	Bar* bar = new Bar ;&r;
+	Foo* foo = bar ;&r;
+	bar.foo() ; &tab; &tab; // "bar"&r;
+	foo.foo() ; &tab; &tab; // "foo"&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--=========================== デストラクタ ===============================-->
+<a name="structure_destructor"/>
+<div class="headline">デストラクタ</div>
+
+<div class="normal">
+
+　構造体にデストラクタはありません。<br/>
+　構造体に finalize 関数をオーバーロード（オーバーライドはできない！）しても、メモリ参照解放時に呼び出されることはありません。<br/>
+<br/>
+
+</div>
+<br/>
+
+
+
+<!--====================== §ジェネリック型 ================================-->
+<a name="chapter_generic_type"/>
+<div class="chapter">§ジェネリック型</div>
+
+
+
+<!--=============================== 定義 ===================================-->
+<a name="generic_type_definition"/>
+<div class="headline">定義</div>
+
+<div class="normal">
+
+　クラス名／構造体名にジェネリック型引数を伴って class 又は struct 文で定義するとジェネリック型を定義できます。<br/>
+
+<div class="code_quote">
+	&exam;
+	class Foo&lt;T&gt;&r;
+	{&r;
+	&tab;public T t ;&r;
+	}&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--========================== インスタンス化 ==============================-->
+<a name="generic_type_instantiate"/>
+<div class="headline">インスタンス化</div>
+
+<div class="normal">
+
+　定義されただけのジェネリック型は型ではありません。<br/>
+　インスタンス化されると初めて型として機能します。<br/>
+　インスタンス化は暗黙に行われますが、class 又は struct 文で明示的に行うことができます。<br/>
+
+<div class="code_quote">
+	&exam;
+	class Foo&lt;int&gt; ;&r;
+</div>
+
+　上の例は以下の文と同等です（※クラス名は便宜上のもので実際は Foo&lt;int&gt; です）。<br/>
+
+<div class="code_quote">
+	class Foo_int_&r;
+	{&r;
+	&tab;typedef T = int ;&r;
+	&tab;public T t ;&r;
+	}&r;
+</div>
+
+　これは見ての通り、C++ の原始的なテンプレート・クラスに似ています。<br/>
+<br/>
+　型のインスタンス化は暗黙に行われる一方、ジェネリック型引数での無限ループを避けるための簡単な仕様として、ジェネリック型引数内でのインスタンス化は許可されていません。<br/>
+
+<div class="code_quote">
+	Foo&lt;int&gt;&tab;&tab;&tab;a ; &tab; // OK&r;
+	Hoge&lt; Foo&lt;int&gt; &gt;&tab;b ; &tab; // Foo&lt;int&gt; は既にインスタンス化されているため OK&r;
+	Hoge&lt; Foo&lt;float&gt; &gt;&nbsp; c ; &tab; // Foo&lt;float&gt; がインスタンス化されていなければエラー&r;
+</div>
+
+
+</div>
+<br/>
+
+
+
+
+
+
+
+<br/>
+<br/>
+<br/>
+
+
+</body>
+</html>
+

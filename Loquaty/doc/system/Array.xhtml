@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Array</title>
+</head>
+<body>
+<div class="chapter">Array</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+配列オブジェクトの基底クラスです。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Array.xhtml">Array</a>
+</div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_add">add</a><br/>
+	<a href="#virtual_clear">clear</a><br/>
+	<a href="#virtual_findPtr">findPtr</a><br/>
+	<a href="#virtual_insert">insert</a><br/>
+	<a href="#virtual_length">length</a><br/>
+	<a href="#virtual_merge">merge</a><br/>
+	<a href="#virtual_pop">pop</a><br/>
+	<a href="#virtual_push">push</a><br/>
+	<a href="#virtual_remove">remove</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_add">operator +</a><br/>
+	<a href="#operator_shl">operator &lt;&lt;</a><br/>
+	<a href="#operator_smov">operator :=</a><br/>
+	<a href="#operator_sadd">operator +=</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_add"/>
+<div class="headline">add</div>
+<div class="usage">public uint add( Object obj )</div>
+<div class="normal">
+配列の末尾に追加します。</div>
+<div class="notes_parameter">
+<div class="param_name">obj</div>
+<div class="param_desc">
+追加するオブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+追加された要素の指標</div>
+</div>
+<br/>
+
+<a name="virtual_clear"/>
+<div class="headline">clear</div>
+<div class="usage">public void clear( )</div>
+<div class="normal">
+配列に含まれるすべての要素を削除します。</div>
+<br/>
+
+<a name="virtual_findPtr"/>
+<div class="headline">findPtr</div>
+<div class="usage">public int findPtr( Object obj )</div>
+<div class="normal">
+配列に含まれるエンティティの指標を検索します。</div>
+<div class="notes_parameter">
+<div class="param_name">obj</div>
+<div class="param_desc">
+検索するエンティティ</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+要素の指標。見つからなかった場合には -1</div>
+</div>
+<br/>
+
+<a name="virtual_insert"/>
+<div class="headline">insert</div>
+<div class="usage">public void insert( long index, Object obj )</div>
+<div class="normal">
+要素を挿入します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+挿入する指標</div>
+<div class="param_name">obj</div>
+<div class="param_desc">
+挿入する要素</div>
+</div>
+<br/>
+
+<a name="virtual_length"/>
+<div class="headline">length</div>
+<div class="usage">public uint length( ) const</div>
+<div class="normal">
+配列長を取得します。</div>
+<br/>
+
+<a name="virtual_merge"/>
+<div class="headline">merge</div>
+<div class="usage">public void merge( long index, const Array src, long first = 0, long count = -1 )</div>
+<div class="normal">
+配列を結合します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+結合する配列を挿入する先頭の指標</div>
+<div class="param_name">src</div>
+<div class="param_desc">
+結合する複製元配列</div>
+<div class="param_name">first</div>
+<div class="param_desc">
+複製元の src の先頭要素指標</div>
+<div class="param_name">count</div>
+<div class="param_desc">
+複製する要素数。マイナスの場合には first 以降のすべての要素が対象になります。</div>
+</div>
+<br/>
+
+<a name="virtual_pop"/>
+<div class="headline">pop</div>
+<div class="usage">public Object pop( )</div>
+<div class="normal">
+配列の末尾から要素を取得し、配列から削除します。</div>
+<br/>
+
+<a name="virtual_push"/>
+<div class="headline">push</div>
+<div class="usage">public uint push( Object obj )</div>
+<div class="normal">
+配列の末尾に追加します。</div>
+<div class="notes_parameter">
+<div class="param_name">obj</div>
+<div class="param_desc">
+追加するオブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+追加された要素の指標</div>
+</div>
+<br/>
+
+<a name="virtual_remove"/>
+<div class="headline">remove</div>
+<div class="usage">public Object remove( long index )</div>
+<div class="normal">
+要素を削除します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+削除する要素の指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+削除された要素</div>
+</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">Array operator := ( Array )</div>
+<div class="normal">
+配列の内容を複製します。<br/>各要素も可能な限り参照の複製ではなく実体を複製します。</div>
+<br/>
+
+<a name="operator_sadd"/>
+<div class="headline">operator +=</div>
+<div class="usage">Array operator += ( Object )</div>
+<div class="normal">
+配列の末尾に要素を追加します。</div>
+<br/>
+
+<a name="operator_shl"/>
+<div class="headline">operator &lt;&lt;</div>
+<div class="usage">Array operator &lt;&lt; ( Object )</div>
+<div class="normal">
+配列の末尾に要素を追加します。</div>
+<br/>
+
+<a name="operator_add"/>
+<div class="headline">operator +</div>
+<div class="usage">Array operator + ( Object ) const</div>
+<div class="normal">
+配列の末尾に要素を追加した新しい配列を返します。</div>
+<br/>
+<br/><br/>
+</body>
+</html>

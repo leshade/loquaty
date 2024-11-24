@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>StringBuf</title>
+</head>
+<body>
+<div class="chapter">StringBuf</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+StringBuf は文字列を保持するオブジェクトのクラスです。<br/>String クラスから派生していますが、StringBuf オブジェクトは文字列の内容を変更することができます。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="String.xhtml">String</a>
+<div class="indent1"><a href="StringBuf.xhtml">StringBuf</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_StringBuf">StringBuf</a><br/>
+	<a href="#virtual_resize">resize</a><br/>
+	<a href="#virtual_set">set</a><br/>
+	<a href="#virtual_setAt">setAt</a><br/>
+	<a href="#virtual_setIntegerOf">setIntegerOf</a><br/>
+	<a href="#virtual_setNumberOf">setNumberOf</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+	<a href="#operator_sadd">operator +=</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_StringBuf"/>
+<div class="headline">StringBuf</div>
+<div class="usage">public StringBuf( String str )</div>
+<div class="normal">
+StringBuf オブジェクトを構築します。</div>
+<br/>
+
+<a name="virtual_resize"/>
+<div class="headline">resize</div>
+<div class="usage">public void resize( long length )</div>
+<div class="normal">
+StringBuf が保持している文字列長を変更します。</div>
+<br/>
+
+<a name="virtual_set"/>
+<div class="headline">set</div>
+<div class="usage">public StringBuf set( String str )</div>
+<div class="normal">
+StringBuf オブジェクトに文字列を複製します。</div>
+<br/>
+
+<a name="virtual_setAt"/>
+<div class="headline">setAt</div>
+<div class="usage">public void setAt( long index, uint code )</div>
+<div class="normal">
+文字列の指定位置の文字コードを置き換えます。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+置き換える文字の位置。範囲を超えている場合にはこの関数は何もしません。</div>
+<div class="param_name">code</div>
+<div class="param_desc">
+置き換える文字コード。utf-16 で保持している場合には下位16ビットのみが使用されます。</div>
+</div>
+<br/>
+
+<a name="virtual_setIntegerOf"/>
+<div class="headline">setIntegerOf</div>
+<div class="usage">public StringBuf setIntegerOf( long val, int prec = 0, int radix = 10 )</div>
+<div class="normal">
+整数値を文字列に変換して StringBuf オブジェクトに設定します。</div>
+<br/>
+
+<a name="virtual_setNumberOf"/>
+<div class="headline">setNumberOf</div>
+<div class="usage">public StringBuf setNumberOf( double val, int prec = 0, boolean exp = true )</div>
+<div class="normal">
+数値を文字列に変換して StringBuf オブジェクトに設定します。</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">StringBuf operator := ( String )</div>
+<div class="normal">
+StringBuf に文字列を複製します。</div>
+<br/>
+
+<a name="operator_sadd"/>
+<div class="headline">operator +=</div>
+<div class="usage">StringBuf operator += ( String )</div>
+<div class="normal">
+StringBuf が保持する文字列の末尾に文字列を追加します。</div>
+<br/>
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>StringParser</title>
+</head>
+<body>
+<div class="chapter">StringParser</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+文字列解釈クラス<summary><desc>StringParser オブジェクトは文字列と解釈位置を示す指標を保持しています。<br/>指標は解釈に従って移動していきます。</desc></summary></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;string_parser.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="StringParser.xhtml">StringParser</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="StringParser.LineInfo.xhtml">StringParser.LineInfo</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_tokenNothing">tokenNothing</a><br/>
+	<a href="#static_tokenSymbol">tokenSymbol</a><br/>
+	<a href="#static_tokenNumber">tokenNumber</a><br/>
+	<a href="#static_tokenMark">tokenMark</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_decodeStringLiteral">decodeStringLiteral</a><br/>
+	<a href="#func_encodeStringLiteral">encodeStringLiteral</a><br/>
+	<a href="#func_isCharSpace">isCharSpace</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_StringParser">StringParser</a><br/>
+	<a href="#virtual_checkNextChars">checkNextChars</a><br/>
+	<a href="#virtual_currentAt">currentAt</a><br/>
+	<a href="#virtual_currentChar">currentChar</a><br/>
+	<a href="#virtual_findLineContainingIndexAt">findLineContainingIndexAt</a><br/>
+	<a href="#virtual_getIndex">getIndex</a><br/>
+	<a href="#virtual_hasNextChars">hasNextChars</a><br/>
+	<a href="#virtual_hasNextString">hasNextString</a><br/>
+	<a href="#virtual_hasNextToken">hasNextToken</a><br/>
+	<a href="#virtual_isEndOfString">isEndOfString</a><br/>
+	<a href="#virtual_loadTextFile">loadTextFile</a><br/>
+	<a href="#virtual_nextChar">nextChar</a><br/>
+	<a href="#virtual_nextEnclosedString">nextEnclosedString</a><br/>
+	<a href="#virtual_nextLine">nextLine</a><br/>
+	<a href="#virtual_nextStringTermByChars">nextStringTermByChars</a><br/>
+	<a href="#virtual_nextStringTermBySpace">nextStringTermBySpace</a><br/>
+	<a href="#virtual_nextToken">nextToken</a><br/>
+	<a href="#virtual_passEnclosedString">passEnclosedString</a><br/>
+	<a href="#virtual_passSpace">passSpace</a><br/>
+	<a href="#virtual_passToken">passToken</a><br/>
+	<a href="#virtual_readTextFile">readTextFile</a><br/>
+	<a href="#virtual_seekIndex">seekIndex</a><br/>
+	<a href="#virtual_seekString">seekString</a><br/>
+	<a href="#virtual_skipIndex">skipIndex</a><br/>
+	<a href="#virtual_toString">toString</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_tokenNothing"/>
+<div class="headline">tokenNothing</div>
+<div class="usage">public static const int&#9; tokenNothing = 0</div>
+<div class="normal">
+トークン種別：空白（終端に到達した）<br/></div>
+<br/>
+<a name="static_tokenSymbol"/>
+<div class="headline">tokenSymbol</div>
+<div class="usage">public static const int&#9; tokenSymbol = 1</div>
+<div class="normal">
+トークン種別：数字と記号以外の文字から始まる記号以外の文字列<br/></div>
+<br/>
+<a name="static_tokenNumber"/>
+<div class="headline">tokenNumber</div>
+<div class="usage">public static const int&#9; tokenNumber = 2</div>
+<div class="normal">
+トークン種別：数字から始まる記号以外の文字列（数値リテラルではないことに注意）<br/></div>
+<br/>
+<a name="static_tokenMark"/>
+<div class="headline">tokenMark</div>
+<div class="usage">public static const int&#9; tokenMark = 3</div>
+<div class="normal">
+トークン種別：記号文字列（但し特殊記号で分割される）<br/></div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_decodeStringLiteral"/>
+<div class="headline">decodeStringLiteral</div>
+<div class="usage">public static native String decodeStringLiteral( String str )</div>
+<div class="normal">
+Loquaty 文字列リテラルとして \ 記号エスケープをデコードします。<br/></div>
+<br/>
+
+<a name="func_encodeStringLiteral"/>
+<div class="headline">encodeStringLiteral</div>
+<div class="usage">public static native String encodeStringLiteral( String str )</div>
+<div class="normal">
+Loquaty 文字列リテラルとして特殊文字を \ 記号エンコードします。<br/></div>
+<br/>
+
+<a name="func_isCharSpace"/>
+<div class="headline">isCharSpace</div>
+<div class="usage">public static native boolean isCharSpace( uint ch )</div>
+<div class="normal">
+空白文字判定<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_StringParser"/>
+<div class="headline">StringParser</div>
+<div class="usage">public native StringParser( )</div>
+<div class="normal">
+StringParser オブジェクトを構築します。<br/></div>
+<br/>
+<div class="headline">StringParser</div>
+<div class="usage">public native StringParser( String str )</div>
+<div class="normal">
+StringParser オブジェクトを構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">str</div>
+<div class="param_desc">
+初期値として設定する文字列</div>
+</div>
+<br/>
+
+<a name="virtual_checkNextChars"/>
+<div class="headline">checkNextChars</div>
+<div class="usage">public native uint checkNextChars( String strChars )</div>
+<div class="normal">
+空白を除いた次の文字が指定のいずれかの文字であるならそれを取得します。但し指標はその文字のまま進めません。</div>
+<div class="notes_parameter">
+<div class="param_name">strChars</div>
+<div class="param_desc">
+この文字列に含まれるいずれかの文字が次の文字か判定する</div>
+</div>
+<br/>
+
+<a name="virtual_currentAt"/>
+<div class="headline">currentAt</div>
+<div class="usage">public native uint currentAt( uint index ) const</div>
+<div class="normal">
+指標位置を基準にした位置の文字を取得します。<br/></div>
+<br/>
+
+<a name="virtual_currentChar"/>
+<div class="headline">currentChar</div>
+<div class="usage">public native uint currentChar( ) const</div>
+<div class="normal">
+指標位置の文字を取得します。<br/></div>
+<br/>
+
+<a name="virtual_findLineContainingIndexAt"/>
+<div class="headline">findLineContainingIndexAt</div>
+<div class="usage">public native StringParser.LineInfo* findLineContainingIndexAt( ulong index, uint chRet = 10 ) const</div>
+<div class="normal">
+文字指標に該当する行を探します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+探す行に含まれる文字指標</div>
+<div class="param_name">chRet</div>
+<div class="param_desc">
+改行コード</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+見つけた行の情報を格納した LineInfo 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_getIndex"/>
+<div class="headline">getIndex</div>
+<div class="usage">public native ulong getIndex( ) const</div>
+<div class="normal">
+指標を取得します。<br/></div>
+<br/>
+
+<a name="virtual_hasNextChars"/>
+<div class="headline">hasNextChars</div>
+<div class="usage">public native uint hasNextChars( String strChars )</div>
+<div class="normal">
+空白を除いた次の文字が指定のいずれかの文字であるならそれを取得し次へ進めます。何れの文字でもないなら指標を進めず 0 を返します（但し空白は飛ばす）</div>
+<div class="notes_parameter">
+<div class="param_name">strChars</div>
+<div class="param_desc">
+この文字列に含まれるいずれかの文字が次の文字か判定する</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+次の文字が strChars に含まれるいずれかの文字であるなら、その文字コード<br/>そうでないなら指標は進めず 0</div>
+</div>
+<br/>
+
+<a name="virtual_hasNextString"/>
+<div class="headline">hasNextString</div>
+<div class="usage">public native boolean hasNextString( String strNext )</div>
+<div class="normal">
+現在の位置から次の文字列が一致するかテストし、一致なら次へ進め true を返します。</div>
+<div class="notes_parameter">
+<div class="param_name">strNext</div>
+<div class="param_desc">
+現在の指標位置から strNext.length() 区間、一致するか判定する</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+現在の指標から strNext に一致するなら指標をその次の位置へ進め true<br/>そうでないなら指標を進めず false</div>
+</div>
+<br/>
+
+<a name="virtual_hasNextToken"/>
+<div class="headline">hasNextToken</div>
+<div class="usage">public native boolean hasNextToken( String strToken )</div>
+<div class="normal">
+現在の位置から次のトークンが一致するかテストし、一致なら次へ進め true を返します。そうでないなら指標を進めず false を返します。</div>
+<div class="notes_parameter">
+<div class="param_name">strToken</div>
+<div class="param_desc">
+現在の指標位置から空白を除いた次のトークンと一致判定する文字列</div>
+</div>
+<br/>
+
+<a name="virtual_isEndOfString"/>
+<div class="headline">isEndOfString</div>
+<div class="usage">public native boolean isEndOfString( ) const</div>
+<div class="normal">
+指標が終端に到達したか？<br/></div>
+<br/>
+
+<a name="virtual_loadTextFile"/>
+<div class="headline">loadTextFile</div>
+<div class="usage">public native boolean loadTextFile( String path )</div>
+<div class="normal">
+テキストファイルを読み込みます。<br/></div>
+<br/>
+
+<a name="virtual_nextChar"/>
+<div class="headline">nextChar</div>
+<div class="usage">public native uint nextChar( )</div>
+<div class="normal">
+指標位置の文字を取得し、指標を次へ進めます。<br/></div>
+<br/>
+
+<a name="virtual_nextEnclosedString"/>
+<div class="headline">nextEnclosedString</div>
+<div class="usage">public native String nextEnclosedString( uint chCloser, String strEscChars = null, boolean* pFoundCloser = null )</div>
+<div class="normal">
+閉じ記号までの文字列を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">chCloser</div>
+<div class="param_desc">
+閉じ記号の文字コード。<br/>' や &quot; 引用符の場合、Loquaty の \ 記号エスケープシーケンスに基づいて解釈される。</div>
+<div class="param_name">strEscChars</div>
+<div class="param_desc">
+この文字列に含まれるいずれかの１文字を見つけた場合には、その指標位置で即座に終了する。</div>
+<div class="param_name">pFoundCloser</div>
+<div class="param_desc">
+chCloser に一致する閉じ記号文字を見つけた場合に true を受け取る boolean 変数。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+chCloser に一致する文字を見つけた場合にはそこまでの区間の文字列を返し、指標は閉じ記号の次の文字へ移動する。<br/>そうでない場合には終端、又は strEscChars に含まれる文字までの区間の文字列を返し、指標はその終端の位置に移動する。</div>
+</div>
+<div class="indent1">
+この関数は nextStringTermByChars に似ていますがchCloser が文字列引用符記号の場合に動作が異なります。</div><br/>
+<br/>
+
+<a name="virtual_nextLine"/>
+<div class="headline">nextLine</div>
+<div class="usage">public native String nextLine( uint* pRetCode = null )</div>
+<div class="normal">
+現在の位置から行末までの文字列を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">pRetCode</div>
+<div class="param_desc">
+行末の改行コードを受け取る uint 変数。<br/>改行コードが \r\n だった場合には \n を受け取る。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+末尾の改行コードを含まない現在の行の文字列。<br/>指標は次の行の先頭に移動する。</div>
+</div>
+<br/>
+
+<a name="virtual_nextStringTermByChars"/>
+<div class="headline">nextStringTermByChars</div>
+<div class="usage">public native String nextStringTermByChars( String strDeliChars, uint* pDeliChar = null )</div>
+<div class="normal">
+現在の位置から指定のいずれかの文字で区切られた文字列を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">strDeliChars</div>
+<div class="param_desc">
+区切り文字集合。この文字列に含まれるいずれかの１文字が区切りとして判定される。</div>
+<div class="param_name">pDeliChar</div>
+<div class="param_desc">
+実際に見つけた区切り文字を受け取る uint 変数。<br/>区切り文字を見つけないまま主担に到達した場合には 0。<br/>null の場合には受け取らない。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+取得された文字列。<br/>strDeliChars に指定されたいずれかの区切り文字を見つけた場合には、その区切り文字の次の位置まで指標を移動する。<br/>そうでない場合には終端まで指標は移動する。</div>
+</div>
+<br/>
+
+<a name="virtual_nextStringTermBySpace"/>
+<div class="headline">nextStringTermBySpace</div>
+<div class="usage">public native String nextStringTermBySpace( )</div>
+<div class="normal">
+現在の位置から空白文字（タブや改行、BOM等を含む）で区切られた文字列を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+取得された文字列。終端の場合には null</div>
+</div>
+<br/>
+
+<a name="virtual_nextToken"/>
+<div class="headline">nextToken</div>
+<div class="usage">public native String nextToken( int* pTokenType = null )</div>
+<div class="normal">
+次の１トークンを取得して指標を進めます。</div>
+<div class="notes_parameter">
+<div class="param_name">pTokenType</div>
+<div class="param_desc">
+取得したトークンの種別を受け取る int 変数。null の場合には受け取らない。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+取得したトークン文字列</div>
+</div>
+<br/>
+
+<a name="virtual_passEnclosedString"/>
+<div class="headline">passEnclosedString</div>
+<div class="usage">public native boolean passEnclosedString( uint chCloser, String strEscChars = null )</div>
+<div class="normal">
+閉じ記号まで読み飛ばします。</div>
+<div class="notes_parameter">
+<div class="param_name">chCloser</div>
+<div class="param_desc">
+閉じ記号の文字コード。<br/>' や &quot; 引用符の場合、Loquaty の \ 記号エスケープシーケンスに基づいて解釈される。</div>
+<div class="param_name">strEscChars</div>
+<div class="param_desc">
+この文字列に含まれるいずれかの１文字を見つけた場合には、その指標位置で即座に終了する。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+chCloser に一致する文字を見つけた場合には true、そうでない場合には false</div>
+</div>
+<br/>
+
+<a name="virtual_passSpace"/>
+<div class="headline">passSpace</div>
+<div class="usage">public native boolean passSpace( )</div>
+<div class="normal">
+空白文字（タブや改行、BOMを含む）を読み飛ばします。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+週単位到達した場合には false、空白以外の文字を見つけた場合には true</div>
+</div>
+<br/>
+
+<a name="virtual_passToken"/>
+<div class="headline">passToken</div>
+<div class="usage">public native int passToken( )</div>
+<div class="normal">
+１トークンの終端位置まで読み飛ばします。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+読み飛ばしたトークン種別：tokenNothing, tokenSymbol, tokenNumber, tokenMark</div>
+</div>
+<br/>
+
+<a name="virtual_readTextFile"/>
+<div class="headline">readTextFile</div>
+<div class="usage">public native boolean readTextFile( File file )</div>
+<div class="normal">
+File オブジェクトからテキストファイルを読み込みます。<br/></div>
+<br/>
+
+<a name="virtual_seekIndex"/>
+<div class="headline">seekIndex</div>
+<div class="usage">public native void seekIndex( ulong index )</div>
+<div class="normal">
+指標を移動します。<br/></div>
+<br/>
+
+<a name="virtual_seekString"/>
+<div class="headline">seekString</div>
+<div class="usage">public native boolean seekString( String strSeek )</div>
+<div class="normal">
+指定文字列と一致する次の位置まで指標を進め true を返します。そうでないなら末尾まで移動して false を返します。</div>
+<div class="notes_parameter">
+<div class="param_name">strSeek</div>
+<div class="param_desc">
+現在の指標位置から後方へ一致位置を探す文字列</div>
+</div>
+<br/>
+
+<a name="virtual_skipIndex"/>
+<div class="headline">skipIndex</div>
+<div class="usage">public native ulong skipIndex( long offset )</div>
+<div class="normal">
+現在位置から指標を移動します。</div>
+<div class="notes_parameter">
+<div class="param_name">offset</div>
+<div class="param_desc">
+現在の指標に加算する値</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+移動後の指標</div>
+</div>
+<br/>
+
+<a name="virtual_toString"/>
+<div class="headline">toString</div>
+<div class="usage">public native String toString( ) const</div>
+<div class="normal">
+文字列を取得します。<br/></div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public native StringParser operator :=( StringParser spars )</div>
+<div class="normal">
+StringParser を複製します。<br/></div>
+<br/>
+<div class="headline">operator :=</div>
+<div class="usage">public native StringParser operator :=( String str )</div>
+<div class="normal">
+String を複製し、指標を 0 に移動します。<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>DateTime</title>
+</head>
+<body>
+<div class="chapter">DateTime</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+DateTime は日時を保持する構造体です。<br/>紀元元年を基準とする時間に変換する機能を有していますが、この実装は独自なのでシステムに依存しません。但し閏年は考慮しますが閏秒は考慮されません。<br/>また Clock クラスのクロックと互換性がないことに注意してください。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Structure.xhtml">Structure</a>
+<div class="indent1"><a href="DateTime.xhtml">DateTime</a>
+</div></div></div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_Sunday">Sunday</a><br/>
+	<a href="#static_Monday">Monday</a><br/>
+	<a href="#static_Tuesday">Tuesday</a><br/>
+	<a href="#static_Wednesday">Wednesday</a><br/>
+	<a href="#static_Thursday">Thursday</a><br/>
+	<a href="#static_Friday">Friday</a><br/>
+	<a href="#static_Saturday">Saturday</a><br/>
+</div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_year">year</a><br/>
+	<a href="#member_month">month</a><br/>
+	<a href="#member_day">day</a><br/>
+	<a href="#member_week">week</a><br/>
+	<a href="#member_hour">hour</a><br/>
+	<a href="#member_minute">minute</a><br/>
+	<a href="#member_second">second</a><br/>
+	<a href="#member_msec">msec</a><br/>
+	<a href="#member_usec">usec</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_DateTime">DateTime</a><br/>
+	<a href="#virtual_days">days</a><br/>
+	<a href="#virtual_format">format</a><br/>
+	<a href="#virtual_sec">sec</a><br/>
+	<a href="#virtual_usec">usec</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_add">operator +</a><br/>
+	<a href="#operator_sub">operator -</a><br/>
+	<a href="#operator_sadd">operator +=</a><br/>
+	<a href="#operator_ssub">operator -=</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_Sunday"/>
+<div class="headline">Sunday</div>
+<div class="usage">public static const uint8&#9; Sunday = 0</div>
+<div class="normal">
+日曜日</div>
+<br/>
+<a name="static_Monday"/>
+<div class="headline">Monday</div>
+<div class="usage">public static const uint8&#9; Monday = 1</div>
+<div class="normal">
+月曜日</div>
+<br/>
+<a name="static_Tuesday"/>
+<div class="headline">Tuesday</div>
+<div class="usage">public static const uint8&#9; Tuesday = 2</div>
+<div class="normal">
+火曜日</div>
+<br/>
+<a name="static_Wednesday"/>
+<div class="headline">Wednesday</div>
+<div class="usage">public static const uint8&#9; Wednesday = 3</div>
+<div class="normal">
+水曜日</div>
+<br/>
+<a name="static_Thursday"/>
+<div class="headline">Thursday</div>
+<div class="usage">public static const uint8&#9; Thursday = 4</div>
+<div class="normal">
+木曜日</div>
+<br/>
+<a name="static_Friday"/>
+<div class="headline">Friday</div>
+<div class="usage">public static const uint8&#9; Friday = 5</div>
+<div class="normal">
+金曜日</div>
+<br/>
+<a name="static_Saturday"/>
+<div class="headline">Saturday</div>
+<div class="usage">public static const uint8&#9; Saturday = 6</div>
+<div class="normal">
+土曜日</div>
+<br/>
+
+
+<div class="chapter">Members</div>
+<a name="member_year"/>
+<div class="headline">year</div>
+<div class="usage">public uint16&#9; year = 0</div>
+<div class="normal">
+西暦年（1～）</div>
+<br/>
+<a name="member_month"/>
+<div class="headline">month</div>
+<div class="usage">public uint8&#9; month = 0</div>
+<div class="normal">
+月（1～12）</div>
+<br/>
+<a name="member_day"/>
+<div class="headline">day</div>
+<div class="usage">public uint8&#9; day = 0</div>
+<div class="normal">
+日（1～31）</div>
+<br/>
+<a name="member_week"/>
+<div class="headline">week</div>
+<div class="usage">public uint8&#9; week = 0</div>
+<div class="normal">
+曜日（0～6）</div>
+<br/>
+<a name="member_hour"/>
+<div class="headline">hour</div>
+<div class="usage">public uint8&#9; hour = 0</div>
+<div class="normal">
+時間（0～23）</div>
+<br/>
+<a name="member_minute"/>
+<div class="headline">minute</div>
+<div class="usage">public uint8&#9; minute = 0</div>
+<div class="normal">
+分（0～59）</div>
+<br/>
+<a name="member_second"/>
+<div class="headline">second</div>
+<div class="usage">public uint8&#9; second = 0</div>
+<div class="normal">
+秒（0～59）</div>
+<br/>
+<a name="member_msec"/>
+<div class="headline">msec</div>
+<div class="usage">public uint16&#9; msec = 0</div>
+<div class="normal">
+ミリ秒（0～999）</div>
+<br/>
+<a name="member_usec"/>
+<div class="headline">usec</div>
+<div class="usage">public uint16&#9; usec = 0</div>
+<div class="normal">
+マイクロ秒（0～999）</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_DateTime"/>
+<div class="headline">DateTime</div>
+<div class="usage">public DateTime( )</div>
+<div class="normal">
+DateTime 構造体を現在のローカル時間で初期化して構築します。</div>
+<br/>
+<div class="headline">DateTime</div>
+<div class="usage">public DateTime( long usec )</div>
+<div class="normal">
+DateTime 構造体を紀元元年を基準とする時間で初期化して構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">usec</div>
+<div class="param_desc">
+紀元元年を基準とするマイクロ秒</div>
+</div>
+<br/>
+<div class="headline">DateTime</div>
+<div class="usage">public DateTime( double sec )</div>
+<div class="normal">
+DateTime 構造体を紀元元年を基準とする時間で初期化して構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">sec</div>
+<div class="param_desc">
+紀元元年を基準とする秒</div>
+</div>
+<br/>
+
+<a name="virtual_days"/>
+<div class="headline">days</div>
+<div class="usage">public long days( ) const</div>
+<div class="normal">
+紀元元年を基準とする日数を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+紀元元年を基準とする日数</div>
+</div>
+<br/>
+
+<a name="virtual_format"/>
+<div class="headline">format</div>
+<div class="usage">public String format( String form ) const</div>
+<div class="normal">
+日時・時刻を文字列化します。</div>
+<div class="notes_parameter">
+<div class="param_name">form</div>
+<div class="param_desc">
+日時・時刻の書式。ex.&quot;Y/M/D h:m:s&quot;<br/><div class="indent1">Y:四桁の年<br/>M:二桁の月<br/>D:二桁の日<br/>W:Sunday, Monday,...<br/>w:Sun, Mon,...<br/>h:二桁の時間（24時間）<br/>m:二桁の分<br/>s:二桁の秒<br/>c:二桁の百分の１秒<br/>x:三桁のミリ秒</div></div>
+</div>
+<br/>
+
+<a name="virtual_sec"/>
+<div class="headline">sec</div>
+<div class="usage">public double sec( ) const</div>
+<div class="normal">
+紀元元年を基準とする時間を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+紀元元年を基準とする秒</div>
+</div>
+<br/>
+
+<a name="virtual_usec"/>
+<div class="headline">usec</div>
+<div class="usage">public long usec( ) const</div>
+<div class="normal">
+紀元元年を基準とする時間を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+紀元元年を基準とするマイクロ秒</div>
+</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_add"/>
+<div class="headline">operator +</div>
+<div class="usage">DateTime* operator + ( double ) const</div>
+<div class="normal">
+時刻に秒を加算した新しい DateTime を作成して返します。<br/>整数の場合、ポインタの加算になってしまうことに注意してください。</div>
+<br/>
+
+<a name="operator_sub"/>
+<div class="headline">operator -</div>
+<div class="usage">DateTime* operator - ( double ) const</div>
+<div class="normal">
+時刻に秒を減算した新しい DateTime を作成して返します。<br/>整数の場合、ポインタの減算になってしまうことに注意してください。</div>
+<br/>
+
+<a name="operator_sadd"/>
+<div class="headline">operator +=</div>
+<div class="usage">DateTime* operator += ( double )</div>
+<div class="normal">
+時刻に秒を加算します。<br/>整数の場合、ポインタの加算になってしまうことに注意してください。</div>
+<br/>
+
+<a name="operator_ssub"/>
+<div class="headline">operator -=</div>
+<div class="usage">DateTime* operator -= ( double )</div>
+<div class="normal">
+時刻に秒を減算します。<br/>整数の場合、ポインタの減算になってしまうことに注意してください。</div>
+<br/>
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugImp|Win32">
+      <Configuration>DebugImp</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugImp|x64">
+      <Configuration>DebugImp</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseImp|Win32">
+      <Configuration>ReleaseImp</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseImp|x64">
+      <Configuration>ReleaseImp</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Loquaty\include\loquaty.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_arrangement.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_array_buffer.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_class.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_cls_clock.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_cls_console.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_cls_file.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_cls_loquaty.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_cls_math.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_code_buffer.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_compiler.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_context.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_date_time.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_defs.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_error.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_file.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_function.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_lib.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_module.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_namespace.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_object.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_array.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_double.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_exception.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_generic.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_integer.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_map.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_native.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_pointer.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_string.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_obj_thread.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_operator.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_output_stream.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_parser.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_reserved_word.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_source_file.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_stack_buffer.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_string.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_type.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_value.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_virtual_machine.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_xml_document.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Loquaty\source\loquaty_array_buffer.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_class.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_cls_clock.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_cls_console.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_cls_file.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_cls_loquaty.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_cls_math.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_code_buffer.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_compiler.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_compiler_expression.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_compiler_statement.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_context.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_date_time.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_error.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_file.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_function.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_module.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_namespace.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_object.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">loquaty.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DebugImp|Win32'">loquaty.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">loquaty.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|Win32'">loquaty.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">loquaty.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DebugImp|x64'">loquaty.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">loquaty.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|x64'">loquaty.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_array.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_double.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_exception.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_generic.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_integer.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_map.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_native.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_pointer.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_string.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_obj_thread.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_operator.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_output_stream.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_parser.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_reserved_word.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_source_file.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_stack_buffer.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_string.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_type.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_value.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_virtual_machine.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_xml_document.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{8067708f-3533-4304-9c53-e5df4b771833}</ProjectGuid>
+    <RootNamespace>Loquaty</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Loquaty</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugImp|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugImp|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugImp|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugImp|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugImp|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugImp|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DLL_EXPORT_LOQUATY;WIN32;_DEBUG;_LIB;_DLL_EXPORT_LOQUATY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>loquaty.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\..\Loquaty\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\Loquaty\library\win32\loquaty_db$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugImp|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DLL_IMPORT_LOQUATY;WIN32;_DEBUG;_LIB;_DLL_EXPORT_LOQUATY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>loquaty.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\..\Loquaty\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\Loquaty\library\win32\loquaty_imp_db$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DLL_EXPORT_LOQUATY;WIN32;NDEBUG;_LIB;_DLL_EXPORT_LOQUATY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>loquaty.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\..\Loquaty\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\Loquaty\library\win32\loquaty$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DLL_IMPORT_LOQUATY;WIN32;NDEBUG;_LIB;_DLL_EXPORT_LOQUATY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>loquaty.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\..\Loquaty\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\Loquaty\library\win32\loquaty_imp$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DLL_EXPORT_LOQUATY;_DEBUG;_LIB;_DLL_EXPORT_LOQUATY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>loquaty.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\..\Loquaty\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\Loquaty\library\win64\loquaty_db$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugImp|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DLL_IMPORT_LOQUATY;_DEBUG;_LIB;_DLL_EXPORT_LOQUATY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>loquaty.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\..\Loquaty\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\Loquaty\library\win64\loquaty_imp_db$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DLL_EXPORT_LOQUATY;NDEBUG;_LIB;_DLL_EXPORT_LOQUATY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>loquaty.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\..\Loquaty\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\Loquaty\library\win64\loquaty$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseImp|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DLL_IMPORT_LOQUATY;NDEBUG;_LIB;_DLL_EXPORT_LOQUATY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>loquaty.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..\..\Loquaty\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>..\..\Loquaty\library\win64\loquaty_imp$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

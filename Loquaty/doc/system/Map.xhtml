@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Map</title>
+</head>
+<body>
+<div class="chapter">Map</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+辞書配列オブジェクトの基底クラスです。<br/>辞書配列は配列の指標に整数、又は文字列を使用できます。<br/>整数指標は要素が追加された順序が保たれます。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Map.xhtml">Map</a>
+</div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_find">find</a><br/>
+	<a href="#virtual_has">has</a><br/>
+	<a href="#virtual_keyAt">keyAt</a><br/>
+	<a href="#virtual_removeAs">removeAs</a><br/>
+	<a href="#virtual_removeAt">removeAt</a><br/>
+	<a href="#virtual_size">size</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_find"/>
+<div class="headline">find</div>
+<div class="usage">public int find( String key ) const</div>
+<div class="normal">
+要素の整数指標を取得します。（計算量 O(logN)）</div>
+<div class="notes_parameter">
+<div class="param_name">key</div>
+<div class="param_desc">
+指標を取得する要素名</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+要素の整数指標。要素が存在しない場合 -1</div>
+</div>
+<br/>
+
+<a name="virtual_has"/>
+<div class="headline">has</div>
+<div class="usage">public boolean has( String key ) const</div>
+<div class="normal">
+要素が存在するか判定します。（計算量 O(logN)）</div>
+<div class="notes_parameter">
+<div class="param_name">key</div>
+<div class="param_desc">
+存在を判定する要素名</div>
+</div>
+<br/>
+
+<a name="virtual_keyAt"/>
+<div class="headline">keyAt</div>
+<div class="usage">public String keyAt( long index ) const</div>
+<div class="normal">
+整数指標に対応する要素名を取得します。（計算量 O(1)）</div>
+<br/>
+
+<a name="virtual_removeAs"/>
+<div class="headline">removeAs</div>
+<div class="usage">public Object removeAs( String key )</div>
+<div class="normal">
+要素名に対応する要素を削除します。（計算量 O(N+logN)）</div>
+<div class="notes_parameter">
+<div class="param_name">key</div>
+<div class="param_desc">
+削除する要素名</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+削除された要素</div>
+</div>
+<br/>
+
+<a name="virtual_removeAt"/>
+<div class="headline">removeAt</div>
+<div class="usage">public Object removeAt( long index )</div>
+<div class="normal">
+整数指標に対応する要素を削除します。（計算量 O(N)）</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+削除する整数指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+削除された要素</div>
+</div>
+<br/>
+
+<a name="virtual_size"/>
+<div class="headline">size</div>
+<div class="usage">public uint size( ) const</div>
+<div class="normal">
+辞書配列の要素数を取得します。（計算量 O(1)）</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">Map operator := ( Map )</div>
+<div class="normal">
+辞書配列の内容を複製します。<br/>各要素も可能な限り参照の複製ではなく実体を複製します。</div>
+<br/>
+<br/><br/>
+</body>
+</html>

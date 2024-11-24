@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Thread</title>
+</head>
+<body>
+<div class="chapter">Thread</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+スレッドオブジェクトの基底クラスです。<br/>Thread クラスは Task クラスから派生したクラスで、オーバーライドされた begin 関数ではスレッドを作成し、実行が完了するまで Task.proceed を繰り返し実行します。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Task.xhtml">Task</a>
+<div class="indent1"><a href="Thread.xhtml">Thread</a>
+</div></div></div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_getCurrent">getCurrent</a><br/>
+	<a href="#func_sleep">sleep</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_begin">begin</a><br/>
+	<a href="#virtual_getReturned">getReturned</a><br/>
+</div><br/>
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_getCurrent"/>
+<div class="headline">getCurrent</div>
+<div class="usage">public static Thread getCurrent( )</div>
+<div class="normal">
+スレッド関数内で実行中のスレッドを取得します。</div>
+<br/>
+
+<a name="func_sleep"/>
+<div class="headline">sleep</div>
+<div class="usage">public static void sleep( long msecTimeout )</div>
+<div class="normal">
+スレッドの実行を一時的に休止します。</div>
+<div class="notes_parameter">
+<div class="param_name">msecTimeout</div>
+<div class="param_desc">
+ミリ秒単位での休止時間</div>
+</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_begin"/>
+<div class="headline">begin</div>
+<div class="usage">public boolean begin( Function&lt;void()&gt; func )</div>
+<div class="normal">
+スレッドを開始し関数を実行します。</div>
+<br/>
+
+<a name="virtual_getReturned"/>
+<div class="headline">getReturned</div>
+<div class="usage">public void getReturned( ) const</div>
+<div class="normal">
+完了したスレッド関数の返り値を取得します。<br/>返り値の型はジェネリック型によります。</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

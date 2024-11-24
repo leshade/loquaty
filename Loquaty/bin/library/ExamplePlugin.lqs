@@ -1,0 +1,184 @@
+﻿
+@import	"ExamplePlugin.dll"
+
+
+// RGBA 色情報
+//////////////////////////////////////////////////////////////////////////////
+
+struct	RGBA
+{
+	uint8	r, g, b, a ;
+
+	public RGBA( const RGBA* rgba )
+	{
+		this := rgba ;
+	}
+	public RGBA( uint _r, uint _g, uint _b, uint _a = 0xff )
+	{
+		r = (uint8) _r ;
+		g = (uint8) _g ;
+		b = (uint8) _b ;
+		a = (uint8) _a ;
+	}
+	public RGBA* operator + ( const RGBA* rgba ) const
+	{
+		return	RGBA( (uint) Math.min( r + rgba.r, 0xff ),
+						(uint) Math.min( g + rgba.g, 0xff ),
+						(uint) Math.min( b + rgba.b, 0xff ),
+						(uint) Math.min( a + rgba.a, 0xff ) ) ;
+	}
+	public RGBA* operator * ( double w ) const
+	{
+		uint	d = (uint) Math.clamp( (long) Math.round( w * 0x100 ), 0, 0x100 ) ;
+		return	RGBA( (d * r) >> 8, (d * g) >> 8, (d * b) >> 8, (d * a) >> 8 ) ;
+	}
+} ;
+
+
+// 位置情報
+//////////////////////////////////////////////////////////////////////////////
+
+struct	PointF
+{
+	float	x, y ;
+
+	public PointF( const PointF* point )
+	{
+		this := point ;
+	}
+	public PointF( double _x, double _y )
+	{
+		x = (float) _x ;
+		y = (float) _y ;
+	}
+}
+
+
+// アフィン
+//////////////////////////////////////////////////////////////////////////////
+
+struct	AffineF
+{
+	float	a11 = 1.0f, a12 = 0.0f, a13 = 0.0f ;
+	float	a21 = 0.0f, a22 = 1.0f, a23 = 0.0f ;
+
+	public AffineF( const AffineF* af )
+	{
+		this := af ;
+	}
+	public AffineF( double _a11, double _a12, double _a13,
+					double _a21, double _a22, double _a23 )
+	{
+		a11 = (float) _a11 ;
+		a12 = (float) _a12 ;
+		a13 = (float) _a13 ;
+		a21 = (float) _a21 ;
+		a22 = (float) _a22 ;
+		a23 = (float) _a23 ;
+	}
+	public AffineF* setRotation( double deg )
+	{
+		double	rad = (deg * Math.PI / 180.0) ;
+		a11 = (float) Math.cos( rad ) ;
+		a12 = (float) - Math.sin( rad ) ;
+		a21 = (float) Math.sin( rad ) ;
+		a22 = (float) Math.cos( rad ) ;
+		return	this ;
+	}
+	public AffineF* setTranslation( double x, double y )
+	{
+		a13 = (float) x ;
+		a23 = (float) y ;
+		return	this ;
+	}
+	public AffineF* scale( double x, double y )
+	{
+		a11 *= (float) x ;
+		a12 *= (float) x ;
+		a13 *= (float) x ;
+		a21 *= (float) y ;
+		a22 *= (float) y ;
+		a23 *= (float) y ;
+		return	this ;
+	}
+	public AffineF* operator * ( const AffineF* af ) const
+	{
+		return	AffineF( (a11 * af.a11 + a12 * af.a21),
+							(a11 * af.a12 + a12 * af.a22),
+							a13 + (a11 * af.a13 + a12 * af.a23),
+						(a21 * af.a11 + a22 * af.a21),
+							(a21 * af.a12 + a22 * af.a22),
+							a23 + (a21 * af.a13 + a22 * af.a23) ) ;
+	}
+	public PointF* operator * ( const PointF* point ) const
+	{
+		return	PointF( a11 * point.x + a12 * point.y + a12,
+						a21 * point.x + a22 * point.y + a13 ) ;
+	}
+	public void transformPoints
+				( PointF* pDst, const PointF* pSrc, uint count ) const
+	{
+		for ( uint i = 0; i < count; ++ i )
+		{
+			fetch_addr const PointF*	src = pSrc + i ;
+			fetch_addr PointF*			dst = pDst + i ;
+			const float	x = a11 * src.x + a12 * src.y + a13 ;
+			const float	y = a21 * src.x + a22 * src.y + a23 ;
+			dst.x = x ;
+			dst.y = y ;
+		}
+	}
+}
+
+
+// Window の簡易例
+//////////////////////////////////////////////////////////////////////////////
+
+class	ExampleWindow	extends NativeObject
+{
+	// ExampleWindow 構築
+	public native ExampleWindow() ;
+
+	// ウィンドウを作成
+	public native boolean createWindow
+			( String caption, uint width, uint height, uint scale ) ;
+
+	// ウィンドウを閉じる
+	public native void closeWindow() ;
+
+	// メッセージを処理する
+	public native boolean pumpMessage() ;
+
+	// バックバッファに矩形を塗りつぶす
+	public native void fillRectangle
+			( const RGBA* rgba, int x, int y, uint width, uint height ) ;
+
+	// バックバッファに多角形を塗りつぶす
+	public native void fillPolygon
+			( const RGBA* rgba, const PointF* pPoints, uint count ) ;
+
+	// バックバッファに連続直線を描画する
+	public native void drawLines
+			( const RGBA* rgba, const PointF* pPoints, uint count ) ;
+
+	// バックバッファに文字列を描画する
+	public native void drawText
+			( int x, int y, int size, const RGBA* rgba, String text ) ;
+
+	// 30fps タイマー
+	public abstract void onTimer() ;
+
+	// キー押下イベント
+	public abstract void onKeyDown( int vkey ) ;
+
+	// キー解放イベント
+	public abstract void onKeyUp( int vkey ) ;
+
+	// 描画処理（バックバッファがクリアされた状態で呼び出される）
+	public abstract void onPaint() ;
+
+}
+
+
+
+

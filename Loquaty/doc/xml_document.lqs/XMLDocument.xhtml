@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>XMLDocument</title>
+</head>
+<body>
+<div class="chapter">XMLDocument</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+XML ライクな簡易文書データクラス<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;xml_document.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="XMLDocument.xhtml">XMLDocument</a>
+</div></div></div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_typeRoot">typeRoot</a><br/>
+	<a href="#static_typeTag">typeTag</a><br/>
+	<a href="#static_typeDifinition">typeDifinition</a><br/>
+	<a href="#static_typeText">typeText</a><br/>
+	<a href="#static_typeCDATA">typeCDATA</a><br/>
+	<a href="#static_typeComment">typeComment</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_XMLDocument">XMLDocument</a><br/>
+	<a href="#virtual_addAttrOrder">addAttrOrder</a><br/>
+	<a href="#virtual_addElement">addElement</a><br/>
+	<a href="#virtual_createTagAs">createTagAs</a><br/>
+	<a href="#virtual_createTagPathAs">createTagPathAs</a><br/>
+	<a href="#virtual_findElement">findElement</a><br/>
+	<a href="#virtual_findElementPtr">findElementPtr</a><br/>
+	<a href="#virtual_getAttrInteger">getAttrInteger</a><br/>
+	<a href="#virtual_getAttrNumber">getAttrNumber</a><br/>
+	<a href="#virtual_getAttrString">getAttrString</a><br/>
+	<a href="#virtual_getElementAt">getElementAt</a><br/>
+	<a href="#virtual_getElementCount">getElementCount</a><br/>
+	<a href="#virtual_getTag">getTag</a><br/>
+	<a href="#virtual_getTagAs">getTagAs</a><br/>
+	<a href="#virtual_getTagPathAs">getTagPathAs</a><br/>
+	<a href="#virtual_getText">getText</a><br/>
+	<a href="#virtual_getTextElement">getTextElement</a><br/>
+	<a href="#virtual_getType">getType</a><br/>
+	<a href="#virtual_hasAttribute">hasAttribute</a><br/>
+	<a href="#virtual_insertElement">insertElement</a><br/>
+	<a href="#virtual_removeAllAttributes">removeAllAttributes</a><br/>
+	<a href="#virtual_removeAllElements">removeAllElements</a><br/>
+	<a href="#virtual_removeAttribute">removeAttribute</a><br/>
+	<a href="#virtual_removeElementAt">removeElementAt</a><br/>
+	<a href="#virtual_setAttrInteger">setAttrInteger</a><br/>
+	<a href="#virtual_setAttrNumber">setAttrNumber</a><br/>
+	<a href="#virtual_setAttrString">setAttrString</a><br/>
+	<a href="#virtual_setTag">setTag</a><br/>
+	<a href="#virtual_setText">setText</a><br/>
+	<a href="#virtual_setType">setType</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_typeRoot"/>
+<div class="headline">typeRoot</div>
+<div class="usage">public static const int&#9; typeRoot = 0</div>
+<div class="normal">
+要素タイプ：XML 文書全体を保持するコンテナ<br/></div>
+<br/>
+<a name="static_typeTag"/>
+<div class="headline">typeTag</div>
+<div class="usage">public static const int&#9; typeTag = 1</div>
+<div class="normal">
+要素タイプ：タグ要素<br/></div>
+<br/>
+<a name="static_typeDifinition"/>
+<div class="headline">typeDifinition</div>
+<div class="usage">public static const int&#9; typeDifinition = 2</div>
+<div class="normal">
+要素タイプ：定義タグ要素<br/></div>
+<br/>
+<a name="static_typeText"/>
+<div class="headline">typeText</div>
+<div class="usage">public static const int&#9; typeText = 3</div>
+<div class="normal">
+要素タイプ：テキスト要素<br/></div>
+<br/>
+<a name="static_typeCDATA"/>
+<div class="headline">typeCDATA</div>
+<div class="usage">public static const int&#9; typeCDATA = 4</div>
+<div class="normal">
+要素タイプ：CDATA テキスト要素<br/></div>
+<br/>
+<a name="static_typeComment"/>
+<div class="headline">typeComment</div>
+<div class="usage">public static const int&#9; typeComment = 5</div>
+<div class="normal">
+要素タイプ：コメント要素<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_XMLDocument"/>
+<div class="headline">XMLDocument</div>
+<div class="usage">public native XMLDocument( )</div>
+<div class="normal">
+XMLDocument を構築します。<br/></div>
+<br/>
+<div class="headline">XMLDocument</div>
+<div class="usage">public native XMLDocument( XMLDocument xmlDoc )</div>
+<div class="normal">
+XMLDocument を複製して構築します。<br/></div>
+<br/>
+
+<a name="virtual_addAttrOrder"/>
+<div class="headline">addAttrOrder</div>
+<div class="usage">public native void addAttrOrder( String name )</div>
+<div class="normal">
+属性をシリアライズする場合の順序を追加します。</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+属性名</div>
+</div>
+<div class="indent1">
+シリアライズされる時、属性が記述される順序は追加された順序通りにはなりませんが、addAttrOrder で呼び出された順序は維持されます。</div><br/>
+<br/>
+
+<a name="virtual_addElement"/>
+<div class="headline">addElement</div>
+<div class="usage">public native void addElement( XMLDocument xmlElement )</div>
+<div class="normal">
+要素を末尾に追加します。</div>
+<div class="notes_parameter">
+<div class="param_name">xmlElement</div>
+<div class="param_desc">
+追加する XML 要素</div>
+</div>
+<br/>
+
+<a name="virtual_createTagAs"/>
+<div class="headline">createTagAs</div>
+<div class="usage">public native XMLDocument createTagAs( String tag, ulong first )</div>
+<div class="normal">
+タグが存在していればタグを取得し、存在しない場合には作成して追加します。</div>
+<div class="notes_parameter">
+<div class="param_name">tag</div>
+<div class="param_desc">
+取得するタグ名</div>
+<div class="param_name">first</div>
+<div class="param_desc">
+検索する初めの要素指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+tag に指定されたタグ要素。存在しない場合には新たに作成されたタグ要素</div>
+</div>
+<br/>
+
+<a name="virtual_createTagPathAs"/>
+<div class="headline">createTagPathAs</div>
+<div class="usage">public native XMLDocument createTagPathAs( String tagPath )</div>
+<div class="normal">
+階層を検索してタグを取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">tagPath</div>
+<div class="param_desc">
+タグ名を '&gt;' 記号で区切って階層指定したタグパス<br/>ex. html&gt;body&gt;chapter</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+見つかったタグ要素。存在しなかった場合に新たに作成されたタグ要素</div>
+</div>
+<br/>
+
+<a name="virtual_findElement"/>
+<div class="headline">findElement</div>
+<div class="usage">public native long findElement( int type, String tag = null, ulong first = 0 ) const</div>
+<div class="normal">
+このタグ内に存在する要素を検索します。</div>
+<div class="notes_parameter">
+<div class="param_name">type</div>
+<div class="param_desc">
+検索する要素タイプ<br/>typeRoot, typeTag, typeDifinition, typeText, typeCDATA, typeComment</div>
+<div class="param_name">tag</div>
+<div class="param_desc">
+検索するタグ名</div>
+<div class="param_name">first</div>
+<div class="param_desc">
+検索する初めの要素指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+一致する要素が見つかった場合にはその指標。見つからなかった場合には -1</div>
+</div>
+<br/>
+
+<a name="virtual_findElementPtr"/>
+<div class="headline">findElementPtr</div>
+<div class="usage">public native long findElementPtr( XMLDocument xmlElement ) const</div>
+<div class="normal">
+このタグ内に存在する要素を検索します。</div>
+<div class="notes_parameter">
+<div class="param_name">xmlElement</div>
+<div class="param_desc">
+検索する要素エンティティ</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+一致する要素が見つかった場合にはその指標。見つからなかった場合には -1</div>
+</div>
+<br/>
+
+<a name="virtual_getAttrInteger"/>
+<div class="headline">getAttrInteger</div>
+<div class="usage">public native long getAttrInteger( String name, long nDefault = 0, int radix = 10 ) const</div>
+<div class="normal">
+属性を整数値として取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+属性名</div>
+<div class="param_name">nDefault</div>
+<div class="param_desc">
+属性が存在しない場合に関数が返す値</div>
+<div class="param_name">radix</div>
+<div class="param_desc">
+属性を解釈する進数</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+属性の値、存在しない場合には nDefault</div>
+</div>
+<br/>
+
+<a name="virtual_getAttrNumber"/>
+<div class="headline">getAttrNumber</div>
+<div class="usage">public native double getAttrNumber( String name, double nDefault = 0. ) const</div>
+<div class="normal">
+属性を数値として取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+属性名</div>
+<div class="param_name">nDefault</div>
+<div class="param_desc">
+属性が存在しない場合に関数が返す値</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+属性の値、存在しない場合には nDefault</div>
+</div>
+<br/>
+
+<a name="virtual_getAttrString"/>
+<div class="headline">getAttrString</div>
+<div class="usage">public native String getAttrString( String name, String strDefault = null ) const</div>
+<div class="normal">
+属性を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+属性名</div>
+<div class="param_name">strDefault</div>
+<div class="param_desc">
+属性が存在しない場合に関数が返す値。属性が存在せず strDefault===null の場合には &quot;&quot; が返されます。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+属性の値、存在しない場合には strDefault</div>
+</div>
+<br/>
+
+<a name="virtual_getElementAt"/>
+<div class="headline">getElementAt</div>
+<div class="usage">public native XMLDocument getElementAt( ulong index ) const</div>
+<div class="normal">
+このタグ内の要素を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+0 から始まる要素の指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+index 番目の要素。index が範囲外の場合には null</div>
+</div>
+<br/>
+
+<a name="virtual_getElementCount"/>
+<div class="headline">getElementCount</div>
+<div class="usage">public native ulong getElementCount( ) const</div>
+<div class="normal">
+このタグ内の要素数を取得します。<br/></div>
+<br/>
+
+<a name="virtual_getTag"/>
+<div class="headline">getTag</div>
+<div class="usage">public native String getTag( ) const</div>
+<div class="normal">
+この要素のタグを取得します。<br/></div>
+<br/>
+
+<a name="virtual_getTagAs"/>
+<div class="headline">getTagAs</div>
+<div class="usage">public native XMLDocument getTagAs( String tag, ulong first = 0 ) const</div>
+<div class="normal">
+このタグ内に存在するタグ要素を検索して取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">tag</div>
+<div class="param_desc">
+取得するタグ名</div>
+<div class="param_name">first</div>
+<div class="param_desc">
+検索する初めの要素指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+一致するタグ要素。存在しなかった場合には null</div>
+</div>
+<br/>
+
+<a name="virtual_getTagPathAs"/>
+<div class="headline">getTagPathAs</div>
+<div class="usage">public native XMLDocument getTagPathAs( String tagPath ) const</div>
+<div class="normal">
+階層を検索してタグを取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">tagPath</div>
+<div class="param_desc">
+タグ名を '&gt;' 記号で区切って階層指定したタグパス<br/>ex. html&gt;body&gt;chapter</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+見つかったタグ要素。存在しない場合には null</div>
+</div>
+<br/>
+
+<a name="virtual_getText"/>
+<div class="headline">getText</div>
+<div class="usage">public native String getText( ) const</div>
+<div class="normal">
+この要素のテキストを取得します。<br/></div>
+<br/>
+
+<a name="virtual_getTextElement"/>
+<div class="headline">getTextElement</div>
+<div class="usage">public native String getTextElement( ulong first = 0 ) const</div>
+<div class="normal">
+このタグ内に存在するテキスト要素を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">first</div>
+<div class="param_desc">
+検索する初めの要素指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+見つかったテキスト要素のテキスト。存在しなかった場合には &quot;&quot;</div>
+</div>
+<br/>
+
+<a name="virtual_getType"/>
+<div class="headline">getType</div>
+<div class="usage">public native int getType( ) const</div>
+<div class="normal">
+この要素タイプを取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+要素タイプ<br/>typeRoot, typeTag, typeDifinition, typeText, typeCDATA, typeComment</div>
+</div>
+<br/>
+
+<a name="virtual_hasAttribute"/>
+<div class="headline">hasAttribute</div>
+<div class="usage">public native boolean hasAttribute( String name ) const</div>
+<div class="normal">
+属性は存在するか</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+属性名</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+属性が存在する場合には true、存在しない場合には false</div>
+</div>
+<br/>
+
+<a name="virtual_insertElement"/>
+<div class="headline">insertElement</div>
+<div class="usage">public native void insertElement( ulong index, XMLDocument xmlElement )</div>
+<div class="normal">
+要素を指定の位置に挿入します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+挿入する要素指標</div>
+<div class="param_name">xmlElement</div>
+<div class="param_desc">
+挿入する XML 要素</div>
+</div>
+<br/>
+
+<a name="virtual_removeAllAttributes"/>
+<div class="headline">removeAllAttributes</div>
+<div class="usage">public native void removeAllAttributes( )</div>
+<div class="normal">
+すべての属性を削除します。<br/></div>
+<br/>
+
+<a name="virtual_removeAllElements"/>
+<div class="headline">removeAllElements</div>
+<div class="usage">public native void removeAllElements( )</div>
+<div class="normal">
+全ての要素を削除します。<br/></div>
+<br/>
+
+<a name="virtual_removeAttribute"/>
+<div class="headline">removeAttribute</div>
+<div class="usage">public native boolean removeAttribute( String name )</div>
+<div class="normal">
+属性を削除します。</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+削除する属性名</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+属性が存在した場合には true、存在しなかった場合には false</div>
+</div>
+<br/>
+
+<a name="virtual_removeElementAt"/>
+<div class="headline">removeElementAt</div>
+<div class="usage">public native void removeElementAt( ulong index )</div>
+<div class="normal">
+要素を削除します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+削除する要素指標</div>
+</div>
+<br/>
+
+<a name="virtual_setAttrInteger"/>
+<div class="headline">setAttrInteger</div>
+<div class="usage">public native void setAttrInteger( String name, long value, int radix = 10 )</div>
+<div class="normal">
+属性を設定します。</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+属性名</div>
+<div class="param_name">value</div>
+<div class="param_desc">
+設定する整数値</div>
+<div class="param_name">radix</div>
+<div class="param_desc">
+属性を文字列化する進数</div>
+</div>
+<br/>
+
+<a name="virtual_setAttrNumber"/>
+<div class="headline">setAttrNumber</div>
+<div class="usage">public native void setAttrNumber( String name, double value )</div>
+<div class="normal">
+属性を設定します。</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+属性名</div>
+<div class="param_name">value</div>
+<div class="param_desc">
+設定する数値</div>
+</div>
+<br/>
+
+<a name="virtual_setAttrString"/>
+<div class="headline">setAttrString</div>
+<div class="usage">public native void setAttrString( String name, String str )</div>
+<div class="normal">
+属性を設定します。</div>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+属性名</div>
+<div class="param_name">str</div>
+<div class="param_desc">
+設定する文字列</div>
+</div>
+<br/>
+
+<a name="virtual_setTag"/>
+<div class="headline">setTag</div>
+<div class="usage">public native void setTag( String tag, int type = 1 )</div>
+<div class="normal">
+この要素のタグを設定します。</div>
+<div class="notes_parameter">
+<div class="param_name">tag</div>
+<div class="param_desc">
+タグ名</div>
+<div class="param_name">type</div>
+<div class="param_desc">
+要素タイプ : typeTag, typeDifinition</div>
+</div>
+<br/>
+
+<a name="virtual_setText"/>
+<div class="headline">setText</div>
+<div class="usage">public native void setText( String text, int type = 3 )</div>
+<div class="normal">
+この要素のテキストを設定します。</div>
+<div class="notes_parameter">
+<div class="param_name">text</div>
+<div class="param_desc">
+テキスト要素</div>
+<div class="param_name">type</div>
+<div class="param_desc">
+要素タイプ : typeText, typeCDATA, typeComment</div>
+</div>
+<br/>
+
+<a name="virtual_setType"/>
+<div class="headline">setType</div>
+<div class="usage">public native void setType( int type )</div>
+<div class="normal">
+この要素タイプを設定します。</div>
+<div class="notes_parameter">
+<div class="param_name">type</div>
+<div class="param_desc">
+</div>
+</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public native XMLDocument operator :=( XMLDocument xmlDoc )</div>
+<div class="normal">
+XMLDocument を複製します。<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,294 @@
+﻿
+@include string_parser.lqs
+
+class XMLDocument ;
+
+
+//////////////////////////////////////////////////////////////////////////////
+// XML ライクな簡易文書パーサークラス
+//////////////////////////////////////////////////////////////////////////////
+/*
+ <desc><div class="code_quote">
+	// load xml file<br/>
+	XMLDocParser xpars = XMLDocParser() ;<br/>
+	xpars.loadTextFile( "example.xml" ) ;<br/>
+<br/>
+	// parse all tags<br/>
+	XMLDocument xmlDoc = xpars.parseDocument() ;<br/>
+<br/>
+	// get a tag you want<br/>
+	XMLDocument xmlTag = xpars.getTagPathAs( "html>head>title" ) ;<br/>
+	Console.print( xmlTag.getTextElement() ) ;  // title<br/>
+<br/>
+	// save to xml file<br/>
+	xpars.saveToFile( "save.xml", xmlDoc ) ;<br/>
+ </div></desc>
+*/
+
+class XMLDocParser	extends StringParser
+{
+	// XMLDocParser オブジェクトを構築します。
+	public native XMLDocParser() ;
+
+	// XMLDocParser オブジェクトを構築します。
+	// <param name="str">初期値として設定する文字列</param>
+	public native XMLDocParser( String str ) ;
+
+	// XMLDocParser を複製します。
+	public native XMLDocParser operator := ( XMLDocParser xpars ) ;
+
+	// String を複製し XMLDocParser に設定します。
+	public native XMLDocParser operator := ( String str ) ;
+
+	// StringParser を複製し、XMLDocParser に設定します。
+	public XMLDocParser operator := ( StringParser spars )
+	{
+		super::operator := ( spars ) ;
+		return	this ;
+	}
+
+	// ドキュメント全体を解釈します。
+	public native XMLDocument parseDocument() ;
+
+	// １つの要素を解釈します。
+	public native XMLDocument parseElement() ;
+
+	// エラー数取得します。
+	public native ulong getErrorCount() const ;
+
+	// エラーメッセージ取得します。
+	public native String getErrorMessage() const ;
+
+	// ドキュメントをファイルへ保存します。
+	// <param name="path">保存するファイルのパス</param>
+	// <param name="xmlDoc">保存する XMLDocument オブジェクト</param>
+	// <param name="nReadableLineWidth">isStrictText()==false の時のテキスト成型の基準となる行の幅</param>
+	// <return>成功した場合には true, 失敗した場合には false</return>
+	public native boolean saveToFile
+		( String path, XMLDocument xmlDoc, ulong nReadableLineWidth = 60 ) ;
+
+	// ドキュメントを出力ストリームへ出力します。
+	// <param name="strm">出力先の OutputStream オブジェクト</param>
+	// <param name="xmlDoc">保存する XMLDocument オブジェクト</param>
+	// <param name="nReadableLineWidth">isStrictText()==false の時のテキスト成型の基準となる行の幅</param>
+	public native void serialize
+		( OutputStream strm, XMLDocument xmlDoc, ulong nReadableLineWidth = 60 ) ;
+
+	// ドキュメントを文字列化します。
+	// <param name="xmlDoc">保存する XMLDocument オブジェクト</param>
+	// <param name="nReadableLineWidth">isStrictText()==false の時のテキスト成型の基準となる行の幅</param>
+	// <return>ドキュメントをシリアライズした文字列</return>
+	public native String serializeToString
+		( XMLDocument xmlDoc, ulong nReadableLineWidth = 60 ) ;
+
+	// テキスト要素の空白の扱いを厳格に行うか？
+	// <return>true の時には空白をそのまま維持し、false の時には可読性を優先する</return>
+	public native boolean isStrictText() const ;
+
+	// テキスト要素の空白の扱いを厳格に行うか設定します。
+	// <param name="strict">true の時には空白をそのまま維持し、false の時には可読性を優先する</param>
+	// <desc>※setStrictText(true) 状態でシリアライズされた XML 文書を
+	//  setStrictText(false) 状態で解釈したり、その逆を行うと
+	// テキスト要素の空白は維持されず増えたり減ったりしますが、
+	// 同じ状態、例えば setStrictText(false) でシリアライズ、setStrictText(false) で解釈すれば
+	// 空白や改行は正しく維持されます。</desc>
+	public native void setStrictText( boolean strict ) ;
+
+	// XML テキスト・エスケープ処理をします。
+	// <param name="str">エスケープ処理する文字列</param>
+	// <param name="indent">isStrictText()==false の時に、文字列に改行が含まれる場合の2行目以降のインデント用文字列</param>
+	// <return>エスケープ処理された文字列</return>
+	public native String encodeXMLString( String str, String indent = null ) const ;
+
+	// XML テキストのエスケープ記号デコード処理をします。
+	// <param name="str">デコード処理する文字列</param>
+	// <return>デコードされた文字列</return>
+	public native String decodeXMLString( String str ) const ;
+
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+// XML ライクな簡易文書データクラス
+//////////////////////////////////////////////////////////////////////////////
+
+class XMLDocument	extends NativeObject
+{
+	// 要素タイプ：XML 文書全体を保持するコンテナ
+	public static const int	typeRoot		= 0 ;
+
+	// 要素タイプ：タグ要素
+	public static const int	typeTag			= 1 ;
+
+	// 要素タイプ：定義タグ要素
+	public static const int	typeDifinition	= 2 ;
+
+	// 要素タイプ：テキスト要素
+	public static const int	typeText		= 3 ;
+
+	// 要素タイプ：CDATA テキスト要素
+	public static const int	typeCDATA		= 4 ;
+
+	// 要素タイプ：コメント要素
+	public static const int	typeComment		= 5 ;
+
+	// XMLDocument を構築します。
+	public native XMLDocument() ;
+
+	// XMLDocument を複製して構築します。
+	public native XMLDocument( XMLDocument xmlDoc ) ;
+
+	// XMLDocument を複製します。
+	public native XMLDocument operator := ( XMLDocument xmlDoc ) ;
+
+	// この要素タイプを取得します。
+	// <return>要素タイプ<br/>typeRoot, typeTag, typeDifinition, typeText, typeCDATA, typeComment</return>
+	public native int getType() const ;
+
+	// この要素タイプを設定します。
+	// <param name="type"></param>
+	public native void setType( int type ) ;
+
+	// この要素のタグを取得します。
+	public native String getTag() const ;
+
+	// この要素のタグを設定します。
+	// <param name="tag">タグ名</param>
+	// <param name="type">要素タイプ : typeTag, typeDifinition</param>
+	public native void setTag( String tag, int type = typeTag ) ;
+
+	// この要素のテキストを取得します。
+	public native String getText() const ;
+
+	// この要素のテキストを設定します。
+	// <param name="text">テキスト要素</param>
+	// <param name="type">要素タイプ : typeText, typeCDATA, typeComment</param>
+	public native void setText( String text, int type = typeText ) ;
+
+	// 属性は存在するか
+	// <param name="name">属性名</param>
+	// <return>属性が存在する場合には true、存在しない場合には false</return>
+	public native boolean hasAttribute( String name ) const ;
+
+	// 属性を削除します。
+	// <param name="name">削除する属性名</param>
+	// <return>属性が存在した場合には true、存在しなかった場合には false</return>
+	public native boolean removeAttribute( String name ) ;
+
+	// すべての属性を削除します。
+	public native void removeAllAttributes() ;
+
+	// 属性を取得します。
+	// <param name="name">属性名</param>
+	// <param name="strDefault">属性が存在しない場合に関数が返す値。
+	//		属性が存在せず strDefault===null の場合には "" が返されます。</param>
+	// <return>属性の値、存在しない場合には strDefault</return>
+	public native String getAttrString
+				( String name, String strDefault = null ) const ;
+
+	// 属性を整数値として取得します。
+	// <param name="name">属性名</param>
+	// <param name="nDefault">属性が存在しない場合に関数が返す値</param>
+	// <param name="radix">属性を解釈する進数</param>
+	// <return>属性の値、存在しない場合には nDefault</return>
+	public native long getAttrInteger
+				( String name, long nDefault = 0, int radix = 10 ) const ;
+
+	// 属性を数値として取得します。
+	// <param name="name">属性名</param>
+	// <param name="nDefault">属性が存在しない場合に関数が返す値</param>
+	// <return>属性の値、存在しない場合には nDefault</return>
+	public native double getAttrNumber( String name, double nDefault = 0.0 ) const ;
+
+	// 属性を設定します。
+	// <param name="name">属性名</param>
+	// <param name="str">設定する文字列</param>
+	public native void setAttrString( String name, String str ) ;
+
+	// 属性を設定します。
+	// <param name="name">属性名</param>
+	// <param name="value">設定する整数値</param>
+	// <param name="radix">属性を文字列化する進数</param>
+	public native void setAttrInteger( String name, long value, int radix = 10 ) ;
+
+	// 属性を設定します。
+	// <param name="name">属性名</param>
+	// <param name="value">設定する数値</param>
+	public native void setAttrNumber( String name, double value ) ;
+
+	// 属性をシリアライズする場合の順序を追加します。
+	// <param name="name">属性名</param>
+	// <desc>シリアライズされる時、属性が記述される順序は追加された順序通りには
+	// なりませんが、addAttrOrder で呼び出された順序は維持されます。</desc>
+	public native void addAttrOrder( String name ) ;
+
+	// このタグ内の要素数を取得します。
+	public native ulong getElementCount() const ;
+
+	// このタグ内の要素を取得します。
+	// <param name="index">0 から始まる要素の指標</param>
+	// <return>index 番目の要素。index が範囲外の場合には null</return>
+	public native XMLDocument getElementAt( ulong index ) const ;
+
+	// このタグ内に存在するタグ要素を検索して取得します。
+	// <param name="tag">取得するタグ名</param>
+	// <param name="first">検索する初めの要素指標</param>
+	// <return>一致するタグ要素。存在しなかった場合には null</return>
+	public native XMLDocument getTagAs( String tag, ulong first = 0 ) const ;
+
+	// このタグ内に存在するテキスト要素を取得します。
+	// <param name="first">検索する初めの要素指標</param>
+	// <return>見つかったテキスト要素のテキスト。存在しなかった場合には &quot;&quot;</return>
+	public native String getTextElement( ulong first = 0 ) const ;
+
+	// このタグ内に存在する要素を検索します。
+	// <param name="type">検索する要素タイプ<br/>
+	//		typeRoot, typeTag, typeDifinition, typeText, typeCDATA, typeComment</param>
+	// <param name="tag">検索するタグ名</param>
+	// <param name="first">検索する初めの要素指標</param>
+	// <return>一致する要素が見つかった場合にはその指標。見つからなかった場合には -1</return>
+	public native long findElement( int type, String tag = null, ulong first = 0 ) const ;
+
+	// このタグ内に存在する要素を検索します。
+	// <param name="xmlElement">検索する要素エンティティ</param>
+	// <return>一致する要素が見つかった場合にはその指標。見つからなかった場合には -1</return>
+	public native long findElementPtr( XMLDocument xmlElement ) const ;
+
+	// 要素を末尾に追加します。
+	// <param name="xmlElement">追加する XML 要素</param>
+	public native void addElement( XMLDocument xmlElement ) ;
+
+	// 要素を指定の位置に挿入します。
+	// <param name="index">挿入する要素指標</param>
+	// <param name="xmlElement">挿入する XML 要素</param>
+	public native void insertElement( ulong index, XMLDocument xmlElement ) ;
+
+	// タグが存在していればタグを取得し、存在しない場合には作成して追加します。
+	// <param name="tag">取得するタグ名</param>
+	// <param name="first">検索する初めの要素指標</param>
+	// <return>tag に指定されたタグ要素。存在しない場合には新たに作成されたタグ要素</return>
+	public native XMLDocument createTagAs( String tag, ulong first ) ;
+
+	// 要素を削除します。
+	// <param name="index">削除する要素指標</param>
+	public native void removeElementAt( ulong index ) ;
+
+	// 全ての要素を削除します。
+	public native void removeAllElements() ;
+
+	// 階層を検索してタグを取得します。
+	// <param name="tagPath">タグ名を '&gt;' 記号で区切って階層指定したタグパス<br/>
+	//			ex. html&gt;body&gt;chapter</param>
+	// <return>見つかったタグ要素。存在しない場合には null</return>
+	public native XMLDocument getTagPathAs( String tagPath ) const ;
+
+	// 階層を検索してタグを取得します。
+	// <param name="tagPath">タグ名を '&gt;' 記号で区切って階層指定したタグパス<br/>
+	//			ex. html&gt;body&gt;chapter</param>
+	// <return>見つかったタグ要素。存在しなかった場合に新たに作成されたタグ要素</return>
+	public native XMLDocument createTagPathAs( String tagPath ) ;
+}
+
+
+

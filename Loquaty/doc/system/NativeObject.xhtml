@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>NativeObject</title>
+</head>
+<body>
+<div class="chapter">NativeObject</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+ネイティブオブジェクトを保持するオブジェクトです。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="NativeObject.xhtml">NativeObject</a>
+</div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_dispose">dispose</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_eq">operator ==</a><br/>
+	<a href="#operator_ne">operator !=</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_dispose"/>
+<div class="headline">dispose</div>
+<div class="usage">public void dispose( )</div>
+<div class="normal">
+保持しているネイティブオブジェクトを解放します。<br/>別のオブジェクトが同じエンティティを参照している場合、実際にネイティブオブジェクトが解放されるとは限りません。</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_eq"/>
+<div class="headline">operator ==</div>
+<div class="usage">boolean operator == ( NativeObject ) const</div>
+<div class="normal">
+ネイティブオブジェクトが同一エンティティの場合 true を評価します。</div>
+<br/>
+
+<a name="operator_ne"/>
+<div class="headline">operator !=</div>
+<div class="usage">boolean operator != ( NativeObject ) const</div>
+<div class="normal">
+ネイティブオブジェクトが同一エンティティの場合 false を評価します。</div>
+<br/>
+<br/><br/>
+</body>
+</html>

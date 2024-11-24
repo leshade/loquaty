@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Console</title>
+</head>
+<body>
+<div class="chapter">Console</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+Console クラスはレガシー・スタイルなコンソールへの入出力関数を提供します。<br/>コンソールは仮想ターミナル シーケンスが有効な状態に設定されています。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Console.xhtml">Console</a>
+</div></div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_getch">getch</a><br/>
+	<a href="#func_input">input</a><br/>
+	<a href="#func_kbhit">kbhit</a><br/>
+	<a href="#func_print">print</a><br/>
+	<a href="#func_putchar">putchar</a><br/>
+</div><br/>
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_getch"/>
+<div class="headline">getch</div>
+<div class="usage">public static int getch( )</div>
+<div class="normal">
+キー入力が存在する場合、その文字コードを取得します。キー入力が存在しない場合はも即座に関数は復帰します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+入力されたーコード。入力が存在しない場合は 0</div>
+</div>
+<br/>
+
+<a name="func_input"/>
+<div class="headline">input</div>
+<div class="usage">public static String input( )</div>
+<div class="normal">
+コンソールから文字列を１行入力します。<br/>関数は入力を受け取るまで復帰しません。</div>
+<br/>
+
+<a name="func_kbhit"/>
+<div class="headline">kbhit</div>
+<div class="usage">public static boolean kbhit( )</div>
+<div class="normal">
+キー入力が存在するか調べます。</div>
+<br/>
+
+<a name="func_print"/>
+<div class="headline">print</div>
+<div class="usage">public static void print( String msg )</div>
+<div class="normal">
+コンソールに文字列を出力します。</div>
+<br/>
+
+<a name="func_putchar"/>
+<div class="headline">putchar</div>
+<div class="usage">public static void putchar( int c )</div>
+<div class="normal">
+コンソールに文字を1文字出力します。文字コードは環境に依存します。</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>File</title>
+</head>
+<body>
+<div class="chapter">File</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+ファイルを保持、またファイルシステムへのインターフェースを備えたクラスです。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="File.xhtml">File</a>
+</div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="File.State.xhtml">File.State</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_modeRead">modeRead</a><br/>
+	<a href="#static_modeWrite">modeWrite</a><br/>
+	<a href="#static_modeReadWrite">modeReadWrite</a><br/>
+	<a href="#static_modeCreate">modeCreate</a><br/>
+	<a href="#static_modeCreateFlag">modeCreateFlag</a><br/>
+	<a href="#static_modeCreateDirsFlag">modeCreateDirsFlag</a><br/>
+	<a href="#static_modeStreamingFlag">modeStreamingFlag</a><br/>
+	<a href="#static_modeXOTH">modeXOTH</a><br/>
+	<a href="#static_modeWOTH">modeWOTH</a><br/>
+	<a href="#static_modeROTH">modeROTH</a><br/>
+	<a href="#static_modeRWXO">modeRWXO</a><br/>
+	<a href="#static_modeXGRP">modeXGRP</a><br/>
+	<a href="#static_modeWGRP">modeWGRP</a><br/>
+	<a href="#static_modeRGRP">modeRGRP</a><br/>
+	<a href="#static_modeRWXG">modeRWXG</a><br/>
+	<a href="#static_modeXUSR">modeXUSR</a><br/>
+	<a href="#static_modeWUSR">modeWUSR</a><br/>
+	<a href="#static_modeRUSR">modeRUSR</a><br/>
+	<a href="#static_modeRWXU">modeRWXU</a><br/>
+	<a href="#static_modePermissionMask">modePermissionMask</a><br/>
+	<a href="#static_stateHasAttribute">stateHasAttribute</a><br/>
+	<a href="#static_stateHasFileSize">stateHasFileSize</a><br/>
+	<a href="#static_stateHasModifiedDate">stateHasModifiedDate</a><br/>
+	<a href="#static_stateHasCreatedDate">stateHasCreatedDate</a><br/>
+	<a href="#static_stateHasAccessedDate">stateHasAccessedDate</a><br/>
+	<a href="#static_attrDirectory">attrDirectory</a><br/>
+	<a href="#static_attrHidden">attrHidden</a><br/>
+	<a href="#static_permissionXOTH">permissionXOTH</a><br/>
+	<a href="#static_permissionWOTH">permissionWOTH</a><br/>
+	<a href="#static_permissionROTH">permissionROTH</a><br/>
+	<a href="#static_permissionRWXO">permissionRWXO</a><br/>
+	<a href="#static_permissionXGRP">permissionXGRP</a><br/>
+	<a href="#static_permissionWGRP">permissionWGRP</a><br/>
+	<a href="#static_permissionRGRP">permissionRGRP</a><br/>
+	<a href="#static_permissionRWXG">permissionRWXG</a><br/>
+	<a href="#static_permissionXUSR">permissionXUSR</a><br/>
+	<a href="#static_permissionWUSR">permissionWUSR</a><br/>
+	<a href="#static_permissionRUSR">permissionRUSR</a><br/>
+	<a href="#static_permissionRWXU">permissionRWXU</a><br/>
+	<a href="#static_permissionMask">permissionMask</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_createDirectory">createDirectory</a><br/>
+	<a href="#func_deleteDirectory">deleteDirectory</a><br/>
+	<a href="#func_deleteFile">deleteFile</a><br/>
+	<a href="#func_isDirectory">isDirectory</a><br/>
+	<a href="#func_isExisting">isExisting</a><br/>
+	<a href="#func_listFiles">listFiles</a><br/>
+	<a href="#func_makeBuffer">makeBuffer</a><br/>
+	<a href="#func_queryState">queryState</a><br/>
+	<a href="#func_renameFile">renameFile</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_File">File</a><br/>
+	<a href="#virtual_close">close</a><br/>
+	<a href="#virtual_flush">flush</a><br/>
+	<a href="#virtual_getFilePath">getFilePath</a><br/>
+	<a href="#virtual_getLength">getLength</a><br/>
+	<a href="#virtual_getPosition">getPosition</a><br/>
+	<a href="#virtual_isSeekable">isSeekable</a><br/>
+	<a href="#virtual_open">open</a><br/>
+	<a href="#virtual_outStream">outStream</a><br/>
+	<a href="#virtual_read">read</a><br/>
+	<a href="#virtual_seek">seek</a><br/>
+	<a href="#virtual_skip">skip</a><br/>
+	<a href="#virtual_truncate">truncate</a><br/>
+	<a href="#virtual_write">write</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_modeRead"/>
+<div class="headline">modeRead</div>
+<div class="usage">public static const long&#9; modeRead = 0x1000</div>
+<div class="normal">
+読み込み用として開く。</div>
+<br/>
+<a name="static_modeWrite"/>
+<div class="headline">modeWrite</div>
+<div class="usage">public static const long&#9; modeWrite = 0x2000</div>
+<div class="normal">
+書き込み用として開く。</div>
+<br/>
+<a name="static_modeReadWrite"/>
+<div class="headline">modeReadWrite</div>
+<div class="usage">public static const long&#9; modeReadWrite = 0x3000</div>
+<div class="normal">
+読み書き両用として開く。</div>
+<br/>
+<a name="static_modeCreate"/>
+<div class="headline">modeCreate</div>
+<div class="usage">public static const long&#9; modeCreate = 0x1A000</div>
+<div class="normal">
+ファイルを新規作成して書き出し用として開く。<br/>ディレクトリが存在しない場合にはディレクトリも作成する。</div>
+<br/>
+<a name="static_modeCreateFlag"/>
+<div class="headline">modeCreateFlag</div>
+<div class="usage">public static const long&#9; modeCreateFlag = 0x8000</div>
+<div class="normal">
+ファイルを新規作成して開く。</div>
+<br/>
+<a name="static_modeCreateDirsFlag"/>
+<div class="headline">modeCreateDirsFlag</div>
+<div class="usage">public static const long&#9; modeCreateDirsFlag = 0x10000</div>
+<div class="normal">
+ディレクトリが存在しない場合にはディレクトリも作成する。</div>
+<br/>
+<a name="static_modeStreamingFlag"/>
+<div class="headline">modeStreamingFlag</div>
+<div class="usage">public static const long&#9; modeStreamingFlag = 0x4000</div>
+<div class="normal">
+圧縮ストリームなどのストリーム形式で、デフォルトでは一旦メモリにバッファするような場合にも、バッファリングせずにストリームとして開く。</div>
+<br/>
+<a name="static_modeXOTH"/>
+<div class="headline">modeXOTH</div>
+<div class="usage">public static const long&#9; modeXOTH = 1</div>
+<div class="normal">
+その他の実行権限。</div>
+<br/>
+<a name="static_modeWOTH"/>
+<div class="headline">modeWOTH</div>
+<div class="usage">public static const long&#9; modeWOTH = 2</div>
+<div class="normal">
+その他の書き込み権限。</div>
+<br/>
+<a name="static_modeROTH"/>
+<div class="headline">modeROTH</div>
+<div class="usage">public static const long&#9; modeROTH = 4</div>
+<div class="normal">
+その他の読み込み権限。</div>
+<br/>
+<a name="static_modeRWXO"/>
+<div class="headline">modeRWXO</div>
+<div class="usage">public static const long&#9; modeRWXO = 7</div>
+<div class="normal">
+その他の実行読み書き権限。</div>
+<br/>
+<a name="static_modeXGRP"/>
+<div class="headline">modeXGRP</div>
+<div class="usage">public static const long&#9; modeXGRP = 8</div>
+<div class="normal">
+グループの実行権限。</div>
+<br/>
+<a name="static_modeWGRP"/>
+<div class="headline">modeWGRP</div>
+<div class="usage">public static const long&#9; modeWGRP = 16</div>
+<div class="normal">
+グループの書き込み権限。</div>
+<br/>
+<a name="static_modeRGRP"/>
+<div class="headline">modeRGRP</div>
+<div class="usage">public static const long&#9; modeRGRP = 32</div>
+<div class="normal">
+グループの読み込み権限。</div>
+<br/>
+<a name="static_modeRWXG"/>
+<div class="headline">modeRWXG</div>
+<div class="usage">public static const long&#9; modeRWXG = 56</div>
+<div class="normal">
+グループの実行読み書き権限。</div>
+<br/>
+<a name="static_modeXUSR"/>
+<div class="headline">modeXUSR</div>
+<div class="usage">public static const long&#9; modeXUSR = 64</div>
+<div class="normal">
+ユーザーの実行権限。</div>
+<br/>
+<a name="static_modeWUSR"/>
+<div class="headline">modeWUSR</div>
+<div class="usage">public static const long&#9; modeWUSR = 0x80</div>
+<div class="normal">
+ユーザーの書き込み権限。</div>
+<br/>
+<a name="static_modeRUSR"/>
+<div class="headline">modeRUSR</div>
+<div class="usage">public static const long&#9; modeRUSR = 0x100</div>
+<div class="normal">
+ユーザーの読み込み権限。</div>
+<br/>
+<a name="static_modeRWXU"/>
+<div class="headline">modeRWXU</div>
+<div class="usage">public static const long&#9; modeRWXU = 448</div>
+<div class="normal">
+ユーザーの実行読み書き権限。</div>
+<br/>
+<a name="static_modePermissionMask"/>
+<div class="headline">modePermissionMask</div>
+<div class="usage">public static const long&#9; modePermissionMask = 511</div>
+<div class="normal">
+権限フラグマスク。</div>
+<br/>
+<a name="static_stateHasAttribute"/>
+<div class="headline">stateHasAttribute</div>
+<div class="usage">public static const uint&#9; stateHasAttribute = 1</div>
+<div class="normal">
+File.State の attributes へ値を取得した。</div>
+<br/>
+<a name="static_stateHasFileSize"/>
+<div class="headline">stateHasFileSize</div>
+<div class="usage">public static const uint&#9; stateHasFileSize = 2</div>
+<div class="normal">
+File.State の fileSizeInBytes へ値を取得した。</div>
+<br/>
+<a name="static_stateHasModifiedDate"/>
+<div class="headline">stateHasModifiedDate</div>
+<div class="usage">public static const uint&#9; stateHasModifiedDate = 4</div>
+<div class="normal">
+File.State の dateModified へ値を取得した。</div>
+<br/>
+<a name="static_stateHasCreatedDate"/>
+<div class="headline">stateHasCreatedDate</div>
+<div class="usage">public static const uint&#9; stateHasCreatedDate = 8</div>
+<div class="normal">
+File.State の dateCreated へ値を取得した。</div>
+<br/>
+<a name="static_stateHasAccessedDate"/>
+<div class="headline">stateHasAccessedDate</div>
+<div class="usage">public static const uint&#9; stateHasAccessedDate = 16</div>
+<div class="normal">
+File.State の dateAccessed へ値を取得した。</div>
+<br/>
+<a name="static_attrDirectory"/>
+<div class="headline">attrDirectory</div>
+<div class="usage">public static const uint&#9; attrDirectory = 0x10000</div>
+<div class="normal">
+ディレクトリ属性フラグ。</div>
+<br/>
+<a name="static_attrHidden"/>
+<div class="headline">attrHidden</div>
+<div class="usage">public static const uint&#9; attrHidden = 0x20000</div>
+<div class="normal">
+隠しファイル属性フラグ。</div>
+<br/>
+<a name="static_permissionXOTH"/>
+<div class="headline">permissionXOTH</div>
+<div class="usage">public static const long&#9; permissionXOTH = 1</div>
+<div class="normal">
+その他の実行権限。</div>
+<br/>
+<a name="static_permissionWOTH"/>
+<div class="headline">permissionWOTH</div>
+<div class="usage">public static const long&#9; permissionWOTH = 2</div>
+<div class="normal">
+その他の書き込み権限。</div>
+<br/>
+<a name="static_permissionROTH"/>
+<div class="headline">permissionROTH</div>
+<div class="usage">public static const long&#9; permissionROTH = 4</div>
+<div class="normal">
+その他の読み込み権限。</div>
+<br/>
+<a name="static_permissionRWXO"/>
+<div class="headline">permissionRWXO</div>
+<div class="usage">public static const long&#9; permissionRWXO = 7</div>
+<div class="normal">
+その他の実行読み書き権限。</div>
+<br/>
+<a name="static_permissionXGRP"/>
+<div class="headline">permissionXGRP</div>
+<div class="usage">public static const long&#9; permissionXGRP = 8</div>
+<div class="normal">
+グループの実行権限。</div>
+<br/>
+<a name="static_permissionWGRP"/>
+<div class="headline">permissionWGRP</div>
+<div class="usage">public static const long&#9; permissionWGRP = 16</div>
+<div class="normal">
+グループの書き込み権限。</div>
+<br/>
+<a name="static_permissionRGRP"/>
+<div class="headline">permissionRGRP</div>
+<div class="usage">public static const long&#9; permissionRGRP = 32</div>
+<div class="normal">
+グループの読み込み権限。</div>
+<br/>
+<a name="static_permissionRWXG"/>
+<div class="headline">permissionRWXG</div>
+<div class="usage">public static const long&#9; permissionRWXG = 56</div>
+<div class="normal">
+グループの実行読み書き権限。</div>
+<br/>
+<a name="static_permissionXUSR"/>
+<div class="headline">permissionXUSR</div>
+<div class="usage">public static const long&#9; permissionXUSR = 64</div>
+<div class="normal">
+ユーザーの実行権限。</div>
+<br/>
+<a name="static_permissionWUSR"/>
+<div class="headline">permissionWUSR</div>
+<div class="usage">public static const long&#9; permissionWUSR = 0x80</div>
+<div class="normal">
+ユーザーの書き込み権限。</div>
+<br/>
+<a name="static_permissionRUSR"/>
+<div class="headline">permissionRUSR</div>
+<div class="usage">public static const long&#9; permissionRUSR = 0x100</div>
+<div class="normal">
+ユーザーの読み込み権限。</div>
+<br/>
+<a name="static_permissionRWXU"/>
+<div class="headline">permissionRWXU</div>
+<div class="usage">public static const long&#9; permissionRWXU = 448</div>
+<div class="normal">
+ユーザーの実行読み書き権限。</div>
+<br/>
+<a name="static_permissionMask"/>
+<div class="headline">permissionMask</div>
+<div class="usage">public static const long&#9; permissionMask = 511</div>
+<div class="normal">
+権限フラグマスク。</div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_createDirectory"/>
+<div class="headline">createDirectory</div>
+<div class="usage">public static boolean createDirectory( String path )</div>
+<div class="normal">
+ディレクトリを作成します。デフォルトのスキーマでは途中のディレクトリが存在しない場合にも併せて作成されます。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+作成するディレクトリパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+作成に成功した場合には true</div>
+</div>
+<br/>
+
+<a name="func_deleteDirectory"/>
+<div class="headline">deleteDirectory</div>
+<div class="usage">public static boolean deleteDirectory( String path )</div>
+<div class="normal">
+ディレクトリを削除します。デフォルトのスキーマではディレクトリ内にファイルが残っている場合しない場合には削除できません。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+削除するディレクトリパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+削除に成功した場合には true</div>
+</div>
+<br/>
+
+<a name="func_deleteFile"/>
+<div class="headline">deleteFile</div>
+<div class="usage">public static boolean deleteFile( String path )</div>
+<div class="normal">
+指定のファイルを削除します。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+対象のファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+削除に成功した場合には true</div>
+</div>
+<br/>
+
+<a name="func_isDirectory"/>
+<div class="headline">isDirectory</div>
+<div class="usage">public static boolean isDirectory( String path )</div>
+<div class="normal">
+ディレクトリか問い合わせます。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+対象のファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+対象がディレクトリが存在する場合には true</div>
+</div>
+<br/>
+
+<a name="func_isExisting"/>
+<div class="headline">isExisting</div>
+<div class="usage">public static boolean isExisting( String path )</div>
+<div class="normal">
+ファイルが存在するか問い合わせます。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+対象のファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+ファイル／ディレクトリが存在する場合には true</div>
+</div>
+<br/>
+
+<a name="func_listFiles"/>
+<div class="headline">listFiles</div>
+<div class="usage">public static String[] listFiles( String path )</div>
+<div class="normal">
+指定ディレクトリ内の全てのファイル名とディレクトリ名を列挙します。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+対象のディレクトリパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+ディレクトリ内に存在するファイル名とディレクトリ名の配列。<br/>各配列の要素はパスではなくディレクトリ内のファイル名</div>
+</div>
+<br/>
+
+<a name="func_makeBuffer"/>
+<div class="headline">makeBuffer</div>
+<div class="usage">public static File makeBuffer( long flags = 0x1000, const void* buf = null, ulong bytes = 0 )</div>
+<div class="normal">
+実際のファイルではないメモリ上の File オブジェクトを作成します。</div>
+<div class="notes_parameter">
+<div class="param_name">flags</div>
+<div class="param_desc">
+ファイルモードフラグ<div class="indent1">modeRead : 読み込み用として作成</div><div class="indent1">modeWrite : 書き込み用として作成</div><div class="indent1">modeReadWrite : 読み書き両用として作成</div></div>
+<div class="param_name">buf</div>
+<div class="param_desc">
+File オブジェクトの初期イメージ</div>
+<div class="param_name">bytes</div>
+<div class="param_desc">
+File オブジェクトの初期イメージのバイト数</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+作成された File オブジェクト</div>
+</div>
+<br/>
+
+<a name="func_queryState"/>
+<div class="headline">queryState</div>
+<div class="usage">public static boolean queryState( File.State* state, String path )</div>
+<div class="normal">
+ファイルのステート情報を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">state</div>
+<div class="param_desc">
+情報を受け取る File.State 構造体</div>
+<div class="param_name">path</div>
+<div class="param_desc">
+対象のファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+成功した場合には true</div>
+</div>
+<br/>
+
+<a name="func_renameFile"/>
+<div class="headline">renameFile</div>
+<div class="usage">public static boolean renameFile( String pathOld, String pathNew )</div>
+<div class="normal">
+ファイル名を変更／移動します。</div>
+<div class="notes_parameter">
+<div class="param_name">pathOld</div>
+<div class="param_desc">
+対象の元のファイルパス</div>
+<div class="param_name">pathNew</div>
+<div class="param_desc">
+対象の変更後のファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+変更に成功した場合には true</div>
+</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_File"/>
+<div class="headline">File</div>
+<div class="usage">public File( )</div>
+<div class="normal">
+空の File オブジェクトを構築します。</div>
+<br/>
+<div class="headline">File</div>
+<div class="usage">public File( String path, long flags = 0x1000 )</div>
+<div class="normal">
+ファイルを開いて File オブジェクトを構築します。ファイルを開けなかった場合には IOException 例外が送出されます。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+開くファイルパス</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+開くファイルのモードとフラグの組み合わせ<div class="indent1">modeRead : 読み込み用として開く</div><div class="indent1">modeWrite : 書き込み用として開く</div><div class="indent1">modeReadWrite : 読み書き両用として開く</div><div class="indent1">modeCreate : ファイルを新規作成して書き込み用として開く</div><div class="indent1">modeStreaming : ストリーミングの場合、メモリへのバッファを抑制する</div></div>
+</div>
+<br/>
+
+<a name="virtual_close"/>
+<div class="headline">close</div>
+<div class="usage">public void close( )</div>
+<div class="normal">
+ファイルを閉じます。</div>
+<br/>
+
+<a name="virtual_flush"/>
+<div class="headline">flush</div>
+<div class="usage">public void flush( )</div>
+<div class="normal">
+書き出しがバッファされている場合には実際に書き出します。</div>
+<br/>
+
+<a name="virtual_getFilePath"/>
+<div class="headline">getFilePath</div>
+<div class="usage">public String getFilePath( )</div>
+<div class="normal">
+開いているファイルのパスを取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+開いているファイルのパス。<br/>多くの場合コンストラクタや open 関数に渡したパスがそのまま返されます。実際のファイルでない場合 null を返す場合もあることに注意してください。</div>
+</div>
+<br/>
+
+<a name="virtual_getLength"/>
+<div class="headline">getLength</div>
+<div class="usage">public long getLength( ) const</div>
+<div class="normal">
+ファイルの全長を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+ファイルの全長（バイト単位）。ストリーム等取得できない場合には -1</div>
+</div>
+<br/>
+
+<a name="virtual_getPosition"/>
+<div class="headline">getPosition</div>
+<div class="usage">public long getPosition( ) const</div>
+<div class="normal">
+現在のファイルポインタを取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+ファイルポインタの位置。ストリーム等取得できない場合には -1</div>
+</div>
+<br/>
+
+<a name="virtual_isSeekable"/>
+<div class="headline">isSeekable</div>
+<div class="usage">public boolean isSeekable( ) const</div>
+<div class="normal">
+シーク可能か判定します。</div>
+<br/>
+
+<a name="virtual_open"/>
+<div class="headline">open</div>
+<div class="usage">public boolean open( String path, long flags = 0x1000 )</div>
+<div class="normal">
+ファイルを開きます。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+開くファイルパス</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+開くファイルのモードとフラグの組み合わせ<div class="indent1">modeRead : 読み込み用として開く</div><div class="indent1">modeWrite : 書き込み用として開く</div><div class="indent1">modeReadWrite : 読み書き両用として開く</div><div class="indent1">modeCreate : ファイルを新規作成して書き込み用として開く</div><div class="indent1">modeStreamingFlag : ストリーミングの場合、メモリへのバッファを抑制する</div></div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+成功した場合には true、失敗した場合には false</div>
+</div>
+<br/>
+
+<a name="virtual_outStream"/>
+<div class="headline">outStream</div>
+<div class="usage">public OutputStream outStream( String enc = "utf-8" )</div>
+<div class="normal">
+ファイルへ出力する OutputStream を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">enc</div>
+<div class="param_desc">
+文字エンコーディングを指定します。<br/><div class="indent1">&quot;utf-8&quot; : UTF-8</div><div class="indent1">&quot;utf-16&quot; : UTF-16</div><div class="indent1">&quot;utf-32&quot; : UTF-32</div><div class="indent1">null : デフォルトのエンコーディング</div></div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+ファイルへ出力する OutputStream オブジェクト</div>
+</div>
+<br/>
+
+<a name="virtual_read"/>
+<div class="headline">read</div>
+<div class="usage">public ulong read( void* buf, ulong bytes )</div>
+<div class="normal">
+ファイルから読み込みます。</div>
+<div class="notes_parameter">
+<div class="param_name">buf</div>
+<div class="param_desc">
+読み込んだデータを格納するメモリの先頭</div>
+<div class="param_name">bytes</div>
+<div class="param_desc">
+読み込みたいバイト数。バッファの有効なサイズを超えている場合にはクリップされます。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+実際に読み込まれたバイト数。0 の場合にはファイルの終端。</div>
+</div>
+<br/>
+
+<a name="virtual_seek"/>
+<div class="headline">seek</div>
+<div class="usage">public void seek( long pos )</div>
+<div class="normal">
+ファイルポインタを移動します。</div>
+<div class="notes_parameter">
+<div class="param_name">pos</div>
+<div class="param_desc">
+新しいファイルポインタ</div>
+</div>
+<br/>
+
+<a name="virtual_skip"/>
+<div class="headline">skip</div>
+<div class="usage">public void skip( long bytes )</div>
+<div class="normal">
+ファイルポインタを現在の位置から移動します。</div>
+<div class="notes_parameter">
+<div class="param_name">bytes</div>
+<div class="param_desc">
+ポインタを移動するバイト数。<br/>プラスの場合には位置を進め、マイナスの場合には位置を戻します。</div>
+</div>
+<br/>
+
+<a name="virtual_truncate"/>
+<div class="headline">truncate</div>
+<div class="usage">public void truncate( )</div>
+<div class="normal">
+ファイルを現在のファイルポインタの位置まで切り詰めます。</div>
+<br/>
+
+<a name="virtual_write"/>
+<div class="headline">write</div>
+<div class="usage">public ulong write( const void* buf, ulong bytes )</div>
+<div class="normal">
+ファイルへ書き込みます。</div>
+<div class="notes_parameter">
+<div class="param_name">buf</div>
+<div class="param_desc">
+書き込むデータを格納したメモリの先頭</div>
+<div class="param_name">bytes</div>
+<div class="param_desc">
+書き込みたいバイト数。バッファの有効なサイズを超えている場合にはクリップされます。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+実際に書き込まれたバイト数</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>OutputStream</title>
+</head>
+<body>
+<div class="chapter">OutputStream</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+OutputStream クラスはファイルへ文字列をエンコードして出力するクラスです。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="OutputStream.xhtml">OutputStream</a>
+</div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_getFile">getFile</a><br/>
+	<a href="#virtual_writeString">writeString</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_shl">operator &lt;&lt;</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_getFile"/>
+<div class="headline">getFile</div>
+<div class="usage">public File getFile( ) const</div>
+<div class="normal">
+ストリームの出力先のファイルを取得します。</div>
+<br/>
+
+<a name="virtual_writeString"/>
+<div class="headline">writeString</div>
+<div class="usage">public void writeString( String str )</div>
+<div class="normal">
+ファイルへ文字列を出力します。<br/>文字列は所定の文字コードにエンコードされます。</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_shl"/>
+<div class="headline">operator &lt;&lt;</div>
+<div class="usage">OutputStream operator &lt;&lt; ( String )</div>
+<div class="normal">
+ファイルへ文字列を出力します。</div>
+<br/>
+<div class="headline">operator &lt;&lt;</div>
+<div class="usage">OutputStream operator &lt;&lt; ( Object )</div>
+<div class="normal">
+obj.toString() をファイルへ出力します。</div>
+<br/>
+<div class="headline">operator &lt;&lt;</div>
+<div class="usage">OutputStream operator &lt;&lt; ( long )</div>
+<div class="normal">
+long を文字列化しファイルへ出力します。</div>
+<br/>
+<div class="headline">operator &lt;&lt;</div>
+<div class="usage">OutputStream operator &lt;&lt; ( double )</div>
+<div class="normal">
+double を文字列化しファイルへ出力します。</div>
+<br/>
+<br/><br/>
+</body>
+</html>

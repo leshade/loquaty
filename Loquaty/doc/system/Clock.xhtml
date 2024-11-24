@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Clock</title>
+</head>
+<body>
+<div class="chapter">Clock</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+Clock はシステム・クロックを取得するクラスです。<br/>このクラスのクロックは DateTime のエポック時間とは互換性がありません。経過時間を測定することに利用できます。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Clock.xhtml">Clock</a>
+</div></div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_localDate">localDate</a><br/>
+	<a href="#func_msec">msec</a><br/>
+	<a href="#func_sec">sec</a><br/>
+	<a href="#func_timeZone">timeZone</a><br/>
+	<a href="#func_timeZoneName">timeZoneName</a><br/>
+	<a href="#func_usec">usec</a><br/>
+	<a href="#func_utcDate">utcDate</a><br/>
+</div><br/>
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_localDate"/>
+<div class="headline">localDate</div>
+<div class="usage">public static DateTime* localDate( )</div>
+<div class="normal">
+現在の時刻をローカルのタイムゾーンで取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+ローカルのタイムゾーンでの現時刻</div>
+</div>
+<br/>
+
+<a name="func_msec"/>
+<div class="headline">msec</div>
+<div class="usage">public static long msec( )</div>
+<div class="normal">
+システム・クロックを取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+ミリ秒単位のクロック</div>
+</div>
+<br/>
+
+<a name="func_sec"/>
+<div class="headline">sec</div>
+<div class="usage">public static double sec( )</div>
+<div class="normal">
+システム・クロックを取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+秒単位のクロック</div>
+</div>
+<br/>
+
+<a name="func_timeZone"/>
+<div class="headline">timeZone</div>
+<div class="usage">public static long timeZone( )</div>
+<div class="normal">
+ローカルのタイムゾーンと UTC の時差を秒単位で取得します。<br/>Clock.localDate() + (double) Clock.timeZone() == Clock.utcDate() の関係が成立します。<br/>※実際に実行すると関数の実行に要する時間差によって厳密には == が成立しません。</div>
+<br/>
+
+<a name="func_timeZoneName"/>
+<div class="headline">timeZoneName</div>
+<div class="usage">public static String timeZoneName( )</div>
+<div class="normal">
+タイムゾーンの名前を取得します。</div>
+<br/>
+
+<a name="func_usec"/>
+<div class="headline">usec</div>
+<div class="usage">public static long usec( )</div>
+<div class="normal">
+システム・クロックを取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+マイクロ秒単位のクロック</div>
+</div>
+<br/>
+
+<a name="func_utcDate"/>
+<div class="headline">utcDate</div>
+<div class="usage">public static DateTime* utcDate( )</div>
+<div class="normal">
+現在の時刻を UTC で取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+UTC での現時刻</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

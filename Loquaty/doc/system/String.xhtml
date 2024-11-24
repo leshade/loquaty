@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>String</title>
+</head>
+<body>
+<div class="chapter">String</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+String は文字列を保持するオブジェクトのクラスです。<br/>String のコンストラクタ以外の全てのメソッドは const であり String オブジェクトの内容は不変値です。<br/>内容を変更したい場合には StringBuf オブジェクトを使用してください。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="String.xhtml">String</a>
+</div></div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_integerOf">integerOf</a><br/>
+	<a href="#func_numberOf">numberOf</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_String">String</a><br/>
+	<a href="#virtual_asInteger">asInteger</a><br/>
+	<a href="#virtual_asNumber">asNumber</a><br/>
+	<a href="#virtual_backAt">backAt</a><br/>
+	<a href="#virtual_charAt">charAt</a><br/>
+	<a href="#virtual_chop">chop</a><br/>
+	<a href="#virtual_find">find</a><br/>
+	<a href="#virtual_left">left</a><br/>
+	<a href="#virtual_length">length</a><br/>
+	<a href="#virtual_lower">lower</a><br/>
+	<a href="#virtual_middle">middle</a><br/>
+	<a href="#virtual_replace">replace</a><br/>
+	<a href="#virtual_right">right</a><br/>
+	<a href="#virtual_trim">trim</a><br/>
+	<a href="#virtual_upper">upper</a><br/>
+	<a href="#virtual_utf16">utf16</a><br/>
+	<a href="#virtual_utf32">utf32</a><br/>
+	<a href="#virtual_utf8">utf8</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_add">operator +</a><br/>
+	<a href="#operator_mul">operator *</a><br/>
+	<a href="#operator_div">operator /</a><br/>
+	<a href="#operator_eq">operator ==</a><br/>
+	<a href="#operator_ne">operator !=</a><br/>
+	<a href="#operator_le">operator &lt;=</a><br/>
+	<a href="#operator_lt">operator &lt;</a><br/>
+	<a href="#operator_ge">operator &gt;=</a><br/>
+	<a href="#operator_gt">operator &gt;</a><br/>
+</div><br/>
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_integerOf"/>
+<div class="headline">integerOf</div>
+<div class="usage">public static String integerOf( long val, int prec = 0, int radix = 10 )</div>
+<div class="normal">
+整数値を文字列に変換します。</div>
+<div class="notes_parameter">
+<div class="param_name">val</div>
+<div class="param_desc">
+整数値</div>
+<div class="param_name">prec</div>
+<div class="param_desc">
+文字列化する場合の桁数。0 の場合には自動的に調整します。</div>
+<div class="param_name">radix</div>
+<div class="param_desc">
+文字列化する場合の進数</div>
+</div>
+<br/>
+
+<a name="func_numberOf"/>
+<div class="headline">numberOf</div>
+<div class="usage">public static String numberOf( double val, int prec = 0, boolean exp = false )</div>
+<div class="normal">
+数値を文字列に変換します。</div>
+<div class="notes_parameter">
+<div class="param_name">prec</div>
+<div class="param_desc">
+文字列化する場合の小数点以下の桁数。0の場合には自動的に調整します。</div>
+<div class="param_name">exp</div>
+<div class="param_desc">
+true を指定すると、文字列化する場合に指数表現します。但し必ず指数表現されるわけではなく、絶対値が 10<sup>prec/2</sup>に対して大きい又は 10<sup>-prec/4</sup>に対して小さい場合に指数表現されます。</div>
+</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_String"/>
+<div class="headline">String</div>
+<div class="usage">public String( String str )</div>
+<div class="normal">
+文字列を複製して String オブジェクトを構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">str</div>
+<div class="param_desc">
+複製元の文字列</div>
+</div>
+<br/>
+<div class="headline">String</div>
+<div class="usage">public String( uint8* utf8, long length = -1 )</div>
+<div class="normal">
+utf-8 文字列から String オブジェクトを構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">utf8</div>
+<div class="param_desc">
+utf-8 文字列へのポインタ</div>
+<div class="param_name">length</div>
+<div class="param_desc">
+utf-8 文字列への長さ。マイナス値の場合には utf8 のバッファ終端、又は 0 要素まで</div>
+</div>
+<br/>
+<div class="headline">String</div>
+<div class="usage">public String( uint16* utf16, long length = -1 )</div>
+<div class="normal">
+utf-16 文字列から String オブジェクトを構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">utf16</div>
+<div class="param_desc">
+utf-16 文字列へのポインタ</div>
+<div class="param_name">length</div>
+<div class="param_desc">
+utf-16 文字列への長さ。マイナス値の場合には utf16 のバッファ終端、又は 0 要素まで</div>
+</div>
+<br/>
+<div class="headline">String</div>
+<div class="usage">public String( uint* utf32, long length = -1 )</div>
+<div class="normal">
+utf-32 文字列から String オブジェクトを構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">utf32</div>
+<div class="param_desc">
+utf-32 文字列へのポインタ</div>
+<div class="param_name">length</div>
+<div class="param_desc">
+utf-32 文字列への長さ。マイナス値の場合には utf32 のバッファ終端、又は 0 要素まで</div>
+</div>
+<br/>
+
+<a name="virtual_asInteger"/>
+<div class="headline">asInteger</div>
+<div class="usage">public long asInteger( boolean* pHasInteger = null, int radix = 10 ) const</div>
+<div class="normal">
+文字列を整数値に変換します。整数値以降にも文字列が続いていたとしても無視されます。</div>
+<div class="notes_parameter">
+<div class="param_name">pHasInteger</div>
+<div class="param_desc">
+文字列の先頭に整数値が含まれていた場合には true を受け取る boolean 変数/param&gt;<param name="radix">整数値を解釈する進数</param><return>変換された整数値。整数が文字列の先頭にない場合には 0</return></div>
+</div>
+<br/>
+
+<a name="virtual_asNumber"/>
+<div class="headline">asNumber</div>
+<div class="usage">public double asNumber( boolean* pHasNumber = null ) const</div>
+<div class="normal">
+文字列を数値に変換します。数値以降にも文字列が続いていたとしても無視されます。</div>
+<div class="notes_parameter">
+<div class="param_name">pHasNumber</div>
+<div class="param_desc">
+文字列の先頭に数値が含まれていた場合には true を受け取る boolean 変数/param&gt;<return>変換された数値。数値が文字列の先頭にない場合には 0.0</return></div>
+</div>
+<br/>
+
+<a name="virtual_backAt"/>
+<div class="headline">backAt</div>
+<div class="usage">public uint backAt( long index ) const</div>
+<div class="normal">
+文字列中の末尾からの指定位置の文字コードを取得します。<br/>文字コードは utf-16 か utf-32 で、何れであるかは環境に依存します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+取得する文字列末尾からの文字指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+index 位置の文字コード。index が範囲外の場合には 0</div>
+</div>
+<br/>
+
+<a name="virtual_charAt"/>
+<div class="headline">charAt</div>
+<div class="usage">public uint charAt( long index ) const</div>
+<div class="normal">
+文字列中の指定位置の文字コードを取得します。<br/>文字コードは utf-16 か utf-32 で、何れであるかは環境に依存します。</div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+取得する文字指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+index 位置の文字コード。index が範囲外の場合には 0</div>
+</div>
+<br/>
+
+<a name="virtual_chop"/>
+<div class="headline">chop</div>
+<div class="usage">public String chop( long count ) const</div>
+<div class="normal">
+文字列の末尾を除去した文字列を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">count</div>
+<div class="param_desc">
+除去する文字列長。大きすぎる場合にはクリップされます。</div>
+</div>
+<br/>
+
+<a name="virtual_find"/>
+<div class="headline">find</div>
+<div class="usage">public int find( String str, int first = 0 ) const</div>
+<div class="normal">
+文字列中の str に一致する先頭位置を探します。</div>
+<div class="notes_parameter">
+<div class="param_name">str</div>
+<div class="param_desc">
+一致位置を検索する文字列</div>
+<div class="param_name">first</div>
+<div class="param_desc">
+検索の開始位置</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+str に一致する先頭位置。一致箇所が見つからなかった場合には -1</div>
+</div>
+<br/>
+
+<a name="virtual_left"/>
+<div class="headline">left</div>
+<div class="usage">public String left( long count ) const</div>
+<div class="normal">
+文字列の左側を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">count</div>
+<div class="param_desc">
+取り出す文字列長。大きすぎる場合にはクリップされます。</div>
+</div>
+<br/>
+
+<a name="virtual_length"/>
+<div class="headline">length</div>
+<div class="usage">public uint length( ) const</div>
+<div class="normal">
+文字列長を取得します。<br/>文字列長は実際の文字数とは限りません。</div>
+<br/>
+
+<a name="virtual_lower"/>
+<div class="headline">lower</div>
+<div class="usage">public String lower( ) const</div>
+<div class="normal">
+半角大文字アルファベットを半角小文字に変換した文字列を取得します。</div>
+<br/>
+
+<a name="virtual_middle"/>
+<div class="headline">middle</div>
+<div class="usage">public String middle( long first, long count = -1 ) const</div>
+<div class="normal">
+文字列の任意の部分を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">first</div>
+<div class="param_desc">
+文字列を取り出す初めの位置</div>
+<div class="param_name">count</div>
+<div class="param_desc">
+取り出す文字列長。大きすぎる場合にはクリップされます。<br/>マイナス値の場合には first から終端までを取り出します。</div>
+</div>
+<br/>
+
+<a name="virtual_replace"/>
+<div class="headline">replace</div>
+<div class="usage">public String replace( Map map ) const</div>
+<div class="normal">
+文字列中の map 要素名 key に一致する部分を map[key].toString() に置き換えた文字列を取得します。</div>
+<br/>
+
+<a name="virtual_right"/>
+<div class="headline">right</div>
+<div class="usage">public String right( long count ) const</div>
+<div class="normal">
+文字列の右側を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">count</div>
+<div class="param_desc">
+取り出す文字列長。大きすぎる場合にはクリップされます。</div>
+</div>
+<br/>
+
+<a name="virtual_trim"/>
+<div class="headline">trim</div>
+<div class="usage">public String trim( ) const</div>
+<div class="normal">
+文字列の先頭と末尾の空白、タブ、改行等を除去した文字列を取得します。</div>
+<br/>
+
+<a name="virtual_upper"/>
+<div class="headline">upper</div>
+<div class="usage">public String upper( ) const</div>
+<div class="normal">
+半角小文字アルファベットを半角大文字に変換した文字列を取得します。</div>
+<br/>
+
+<a name="virtual_utf16"/>
+<div class="headline">utf16</div>
+<div class="usage">public uint16* utf16( ) const</div>
+<div class="normal">
+文字列を utf-16 に変換します。<br/>変換されたutf-16 の文字列長は sizeof で取得してください（末尾が 0 ではありません）</div>
+<br/>
+
+<a name="virtual_utf32"/>
+<div class="headline">utf32</div>
+<div class="usage">public uint* utf32( ) const</div>
+<div class="normal">
+文字列を utf-32 に変換します。<br/>変換されたutf-32 の文字列長は sizeof で取得してください（末尾が 0 ではありません）</div>
+<br/>
+
+<a name="virtual_utf8"/>
+<div class="headline">utf8</div>
+<div class="usage">public uint8* utf8( ) const</div>
+<div class="normal">
+文字列を utf-8 に変換します。<br/>変換されたutf-8 の文字列長は sizeof で取得してください（末尾が 0 ではありません）</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_eq"/>
+<div class="headline">operator ==</div>
+<div class="usage">boolean operator == ( String ) const</div>
+<div class="normal">
+文字列の内容を比較し、一致する場合には true を評価します。</div>
+<br/>
+
+<a name="operator_ne"/>
+<div class="headline">operator !=</div>
+<div class="usage">boolean operator != ( String ) const</div>
+<div class="normal">
+文字列の内容を比較し、一致する場合には false を評価します。</div>
+<br/>
+
+<a name="operator_lt"/>
+<div class="headline">operator &lt;</div>
+<div class="usage">boolean operator &lt; ( String ) const</div>
+<div class="normal">
+文字列の内容を比較し、より小さい場合に true を評価します。</div>
+<br/>
+
+<a name="operator_le"/>
+<div class="headline">operator &lt;=</div>
+<div class="usage">boolean operator &lt;= ( String ) const</div>
+<div class="normal">
+文字列の内容を比較し、一致するかより小さい場合に true を評価します。</div>
+<br/>
+
+<a name="operator_gt"/>
+<div class="headline">operator &gt;</div>
+<div class="usage">boolean operator &gt; ( String ) const</div>
+<div class="normal">
+文字列の内容を比較し、より大きい場合に true を評価します。</div>
+<br/>
+
+<a name="operator_ge"/>
+<div class="headline">operator &gt;=</div>
+<div class="usage">boolean operator &gt;= ( String ) const</div>
+<div class="normal">
+文字列の内容を比較し、一致するかより大きい場合に true を評価します。</div>
+<br/>
+
+<a name="operator_add"/>
+<div class="headline">operator +</div>
+<div class="usage">String operator + ( String ) const</div>
+<div class="normal">
+結合した文字列を取得します。</div>
+<br/>
+<div class="headline">operator +</div>
+<div class="usage">String operator + ( long ) const</div>
+<div class="normal">
+整数値を文字列に変換して結合した文字列を取得します。</div>
+<br/>
+<div class="headline">operator +</div>
+<div class="usage">String operator + ( double ) const</div>
+<div class="normal">
+数値を文字列に変換して結合した文字列を取得します。</div>
+<br/>
+<div class="headline">operator +</div>
+<div class="usage">String operator + ( Object ) const</div>
+<div class="normal">
+オブジェクトを文字列に変換して結合した文字列を取得します。</div>
+<br/>
+
+<a name="operator_mul"/>
+<div class="headline">operator *</div>
+<div class="usage">String operator * ( long ) const</div>
+<div class="normal">
+文字列を n 回繰り返した文字列を取得します。<br/>マイナスの場合には文字列の順序を反転して繰り返します。<br/>※反転の際には utf-32 に変換してから反転されます。</div>
+<br/>
+
+<a name="operator_div"/>
+<div class="headline">operator /</div>
+<div class="usage">String[] operator / ( String ) const</div>
+<div class="normal">
+右辺値文字列で分割した文字列配列を取得します。</div>
+<br/>
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Loquaty</title>
+</head>
+<body>
+<div class="chapter">Loquaty</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+Loquaty 仮想マシンのクラスです。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="Loquaty.xhtml">Loquaty</a>
+</div></div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_evalConstExpr">evalConstExpr</a><br/>
+	<a href="#func_express">express</a><br/>
+	<a href="#func_getCurrent">getCurrent</a><br/>
+	<a href="#func_traceLocalVars">traceLocalVars</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Loquaty">Loquaty</a><br/>
+	<a href="#virtual_compileAsInteger">compileAsInteger</a><br/>
+	<a href="#virtual_compileAsNumber">compileAsNumber</a><br/>
+	<a href="#virtual_compileAsObject">compileAsObject</a><br/>
+	<a href="#virtual_compileAsVoid">compileAsVoid</a><br/>
+	<a href="#virtual_includeScript">includeScript</a><br/>
+	<a href="#virtual_release">release</a><br/>
+</div><br/>
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_evalConstExpr"/>
+<div class="headline">evalConstExpr</div>
+<div class="usage">public static Object evalConstExpr( String expr )</div>
+<div class="normal">
+定数式を表現した文字列を評価してオブジェクトとして返します。この関数は簡易的な JSON デコーダーとして利用できるかもしれません。</div>
+<div class="notes_parameter">
+<div class="param_name">expr</div>
+<div class="param_desc">
+文字列化したいオブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+定数式として評価された Object オブジェクト。結果が数値の場合には Integer オブジェクトか Double オブジェクトにボックス化されます。</div>
+</div>
+<br/>
+
+<a name="func_express"/>
+<div class="headline">express</div>
+<div class="usage">public static String express( Object obj )</div>
+<div class="normal">
+オブジェクトを文字列変換しますが、出来るだけ Loquaty の式として評価できる形式にします。null を受け取った場合には null&quot; が返されます。この関数は簡易的な JSON エンコーダーとして利用できるかもしれません。</div>
+<div class="notes_parameter">
+<div class="param_name">obj</div>
+<div class="param_desc">
+文字列化したいオブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+式として文字列化された String オブジェクト</div>
+</div>
+<br/>
+
+<a name="func_getCurrent"/>
+<div class="headline">getCurrent</div>
+<div class="usage">public static Loquaty getCurrent( )</div>
+<div class="normal">
+実行している仮想マシンを取得します。</div>
+<br/>
+
+<a name="func_traceLocalVars"/>
+<div class="headline">traceLocalVars</div>
+<div class="usage">public static void traceLocalVars( )</div>
+<div class="normal">
+現在のスタック上のローカル変数の内容を標準出力へダンプします。</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Loquaty"/>
+<div class="headline">Loquaty</div>
+<div class="usage">public Loquaty( Loquaty ref = null )</div>
+<div class="normal">
+Loquaty 仮想マシンを構築します。</div>
+<div class="notes_parameter">
+<div class="param_name">ref</div>
+<div class="param_desc">
+参照元の仮想マシン。null の場合には新規に作成します。</div>
+</div>
+<div class="indent1">
+別の仮想マシン間では相互に干渉することはありませんが、ref を指定するとクラスを共有するため、グローバル変数やクラスの static メンバを介して干渉することが可能となります。<br/>しかし ref を指定して仮想マシンを作成する主な利点は初期化の高速化です。</div><br/>
+<br/>
+
+<a name="virtual_compileAsInteger"/>
+<div class="headline">compileAsInteger</div>
+<div class="usage">public Function&lt;long()&gt; compileAsInteger( String expr, StringBuf errmsg = null ) const</div>
+<div class="normal">
+式を表す文字列を long 型を評価する関数としてコンパイルします。</div>
+<div class="notes_parameter">
+<div class="param_name">expr</div>
+<div class="param_desc">
+コンパイルする式を格納した文字列</div>
+<div class="param_name">errmsg</div>
+<div class="param_desc">
+コンパイル時に出力された警告やエラーメッセージを受け取る StringBuf オブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+コンパイルされた関数。エラーが発生した場合には null</div>
+</div>
+<br/>
+
+<a name="virtual_compileAsNumber"/>
+<div class="headline">compileAsNumber</div>
+<div class="usage">public Function&lt;double()&gt; compileAsNumber( String expr, StringBuf errmsg = null ) const</div>
+<div class="normal">
+式を表す文字列を double 型を評価する関数としてコンパイルします。</div>
+<div class="notes_parameter">
+<div class="param_name">expr</div>
+<div class="param_desc">
+コンパイルする式を格納した文字列</div>
+<div class="param_name">errmsg</div>
+<div class="param_desc">
+コンパイル時に出力された警告やエラーメッセージを受け取る StringBuf オブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+コンパイルされた関数。エラーが発生した場合には null</div>
+</div>
+<br/>
+
+<a name="virtual_compileAsObject"/>
+<div class="headline">compileAsObject</div>
+<div class="usage">public Function&lt;Object()&gt; compileAsObject( String expr, StringBuf errmsg = null ) const</div>
+<div class="normal">
+式を表す文字列を Object 型を評価する関数としてコンパイルします。</div>
+<div class="notes_parameter">
+<div class="param_name">expr</div>
+<div class="param_desc">
+コンパイルする式を格納した文字列</div>
+<div class="param_name">errmsg</div>
+<div class="param_desc">
+コンパイル時に出力された警告やエラーメッセージを受け取る StringBuf オブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+コンパイルされた関数。エラーが発生した場合には null</div>
+</div>
+<div class="indent1">
+※getCurrent() で取得される仮想マシン自身、あるいはそれを参照する仮想マシン以外からの Object は、この仮想マシンとはクラスの互換性がないためスクリプト上で利用することはできません</div><br/>
+<br/>
+
+<a name="virtual_compileAsVoid"/>
+<div class="headline">compileAsVoid</div>
+<div class="usage">public Function&lt;void()&gt; compileAsVoid( String statement, StringBuf errmsg = null ) const</div>
+<div class="normal">
+文をコンパイルします。</div>
+<div class="notes_parameter">
+<div class="param_name">statement</div>
+<div class="param_desc">
+コンパイルする文を格納した文字列</div>
+<div class="param_name">errmsg</div>
+<div class="param_desc">
+コンパイル時に出力された警告やエラーメッセージを受け取る StringBuf オブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+コンパイルされた関数。エラーが発生した場合には null</div>
+</div>
+<br/>
+
+<a name="virtual_includeScript"/>
+<div class="headline">includeScript</div>
+<div class="usage">public int includeScript( String file, StringBuf errmsg = null )</div>
+<div class="normal">
+仮想マシンにスクリプトを追加します。</div>
+<div class="notes_parameter">
+<div class="param_name">file</div>
+<div class="param_desc">
+インクルードするスクリプトファイル名</div>
+<div class="param_name">errmsg</div>
+<div class="param_desc">
+コンパイル時に出力された警告やエラーメッセージを受け取る StringBuf オブジェクト</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+発生したエラー数</div>
+</div>
+<br/>
+
+<a name="virtual_release"/>
+<div class="headline">release</div>
+<div class="usage">public void release( )</div>
+<div class="normal">
+Loquaty 仮想マシン内の全てのスレッドを終了して全てのオブジェクトを解放します。</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

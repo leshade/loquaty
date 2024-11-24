@@ -1,0 +1,1588 @@
+
+@include "ExamplePlugin.lqs"
+
+
+//////////////////////////////////////////////////////////////////////////////
+// エントリポイント
+//////////////////////////////////////////////////////////////////////////////
+
+int main( String[] arg )
+{
+	SimpleGame.GameWindow	window = SimpleGame.GameWindow() ;
+	window.initialize() ;
+
+	while ( window.pumpMessage() )
+	{
+		Thread.sleep( 1 ) ;
+	}
+
+	window.release() ;
+
+	return	0 ;
+}
+
+
+namespace	SimpleGame
+{
+	class	Item ;
+	class	Enemy ;
+	class	Player ;
+	class	Particle ;
+
+	//////////////////////////////////////////////////////////////////////////
+	// 定数
+	//////////////////////////////////////////////////////////////////////////
+
+	// 画面サイズ
+	public static const int		ScreenWidth		= 640 ;
+	public static const int		ScreenHeight	= 480 ;
+
+	// ユニット（表示）サイズ
+	public static const double	UnitSize	= 24.0 ;
+
+	// フィールド表示位置（左上ユニットの中心）
+	public static const double	FieldTop	= UnitSize * 1.5 ;
+	public static const double	FieldLeft	= UnitSize * 0.75 ;
+
+	// キーコード
+	public static const int		VKeySpace	= 0x20 ;
+	public static const int		VKeyLeft	= 0x25 ;
+	public static const int		VKeyUp		= 0x26 ;
+	public static const int		VKeyRight	= 0x27 ;
+	public static const int		VKeyDown	= 0x28 ;
+
+	// キー番号
+	public static const uint	IKeySpace	= 0 ;
+	public static const uint	IKeyLeft	= 1 ;
+	public static const uint	IKeyUp		= 2 ;
+	public static const uint	IKeyRight	= 3 ;
+	public static const uint	IKeyDown	= 4 ;
+	public static const uint	IKeyCount	= 5 ;
+
+	public static const int[IKeyCount]	s_vkeyTable =
+	[
+		VKeySpace, VKeyLeft, VKeyUp, VKeyRight, VKeyDown
+	] ;
+
+	// キーコード ⇒ キー番号
+	public int KeyCodeToIndex( int vkey )
+	{
+		for ( int i = 0; i < IKeyCount; ++ i )
+		{
+			if ( s_vkeyTable[i] == vkey )
+			{
+				return	i ;
+			}
+		}
+		return	-1 ;
+	}
+
+	// 表示優先度（大きいほど奥、小さいほど手前）
+	public static const int		PriorityField	= 10 ;
+	public static const int		PriorityEnemy	= 7 ;
+	public static const int		PriorityBullet	= 5 ;
+	public static const int		PriorityPlayer	= 0 ;
+	public static const int		PriorityEffect	= -5 ;
+	public static const int		PriorityOverlay	= -10 ;
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Simple Game ウィンドウ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	GameWindow	extends ExampleWindow
+	{
+		// フィールド初期配置
+		public	static const String[]	s_stage =
+		[
+			"CCCCCCCCCCCCCCCCCCCCCCCCCC",
+			"C  d                  d  C",
+			"C  44  4   4444   4  44  C",
+			"C  44  4  b    b  4  44  C",
+			"C c      4  44  4      c C",
+			"C     4444      4444     C",
+			"C 222   b       b    222 C",
+			"C          6666          C",
+			"C  2 a 2   6666    2 a 2 C",
+			"C  2   2   6666    2   2 C",
+			"C  22222           22222 C",
+			"C                        C",
+			"C                        C",
+			"C                        C",
+			"C                        C",
+			"C            P           C",
+			"C                        C",
+			"CCCCCCCCCCCCCCCCCCCCCCCCCC",
+		] ;
+
+		// フィールドサイズ
+		public static const uint	FieldWidth	= (uint) sizeof(s_stage[0]) ;
+		public static const uint	FieldHeight	= (uint) sizeof(s_stage) ;
+
+		// キー押下状態
+		private boolean[IKeyCount]	m_keyPushing ;
+
+		// キー押下回数
+		private uint[IKeyCount]		m_keyPushed ;
+
+		// フィールド障害物フラグ（必ずしも必要ないがサンプルコードとして）
+		private boolean[FieldHeight][FieldWidth]
+							m_fieldMask ;
+
+		// フィールド上アイテム
+		private Item[][]	m_fieldItems ;
+
+		// 敵
+		private Item[]		m_enemies ;
+
+		// リポップ位置
+		struct	Point
+		{
+			public int	x, y ;
+
+			public Point( int _x, int _y )
+			{
+				x = _x ;
+				y = _y ;
+			}
+		}
+		private Point*[]	m_ptsPop ;
+
+		private int			m_periodPop ;
+		private int			m_levelPop ;
+		private int			m_countPop ;
+
+		// 全アイテム
+		private Item[]		m_items ;
+		private boolean		m_freezeItems = false ;
+
+		// プレイヤーアイテム
+		private Player		m_player ;
+
+		// パーティクル
+		private Task[]		m_particles = Task[]() ;
+
+		// メイン・フロー
+		private Task		m_mainFlow ;
+
+		// タイマーカウンタ
+		private uint		m_tickCount = 0 ;
+
+		// スコア
+		public long			m_score = 0 ;
+		public long			m_hiScore = 0 ;
+
+		// 初期化処理
+		public void initialize()
+		{
+			createWindow
+				( "Simple Game", ScreenWidth, ScreenHeight, 2 ) ;
+			makeField() ;
+
+			m_freezeItems = true ;
+			m_mainFlow = Task[this]
+			{
+				runMain() ;
+			} ;
+		}
+
+		// 終了処理
+		public void release()
+		{
+			if ( m_mainFlow != null )
+			{
+				m_mainFlow.finish() ;
+				m_mainFlow = null ;
+			}
+			closeWindow() ;
+			releaseItems() ;
+			cancelAllParticles() ;
+		}
+
+		// アイテムを解放する
+		public void releaseItems()
+		{
+			if ( m_items != null )
+			{
+				for ( item : m_items )
+				{
+					item.release() ;
+				}
+			}
+			m_fieldItems = null ;
+			m_enemies = null ;
+			m_items = null ;
+		}
+
+		// ゲーム・フロー
+		public void runMain()
+		{
+			forever
+			{
+				// Start To Push Space Key
+				Task	tskMessage = Task[this]
+				{
+					forever
+					{
+						double	t = Math.max( 0.0,
+										Math.sin( (double) m_tickCount
+												* Math.PI / 15.0 ) + 1.0 ) ;
+						fillRectangle
+							( RGBA(0,0,0,0xc0),
+								0, ScreenHeight/2-24, ScreenWidth, 48 ) ;
+						drawText
+							( 200, ScreenHeight/2-8, 16,
+								RGBA(0xff,0xff,0xff) * t,
+								"Start To Push Space Key" ) ;
+						Task.rest() ;
+					}
+				} ;
+				addParticle( tskMessage ) ;
+				getKeyPushed( IKeySpace ) ;
+				m_freezeItems = true ;
+
+				// Space Key 押下待ち
+				while ( getKeyPushed( IKeySpace ) == 0 )
+				{
+					Task.rest() ;
+				}
+				m_freezeItems = false ;
+				cancelParticle( tskMessage ) ;
+				tskMessage = null ;
+
+				// ゲーム実行中
+				while ( !m_player.isGameOver() )
+				{
+					Task.rest() ;
+				}
+
+				// ゲームオーバー
+				Thread.sleep( 500 ) ;
+				tskMessage = Task[this]
+				{
+					long	tickStart = m_tickCount ;
+					forever
+					{
+						double	t = (double) (m_tickCount - tickStart) / 15.0 ;
+						t = Math.min( t, 1.0 ) ;
+						fillRectangle
+							( RGBA(0,0,0,0xc0) * t,
+									0, 0, ScreenWidth, ScreenHeight ) ;
+						drawText
+							( 240, ScreenHeight/2-16, 32,
+								RGBA(0xff,0xff,0xff) * t, "GAME OVER" ) ;
+						Task.rest() ;
+					}
+				} ;
+				addParticle( tskMessage ) ;
+				Thread.sleep( 500 ) ;
+
+				m_freezeItems = true ;
+				getKeyPushed( IKeySpace ) ;
+
+				// Space Key 押下待ち
+				while ( getKeyPushed( IKeySpace ) == 0 )
+				{
+					Task.rest() ;
+				}
+				cancelParticle( tskMessage ) ;
+				tskMessage = null ;
+
+				makeField() ;
+			}
+		}
+
+		// フィールドを構築する
+		public void makeField()
+		{
+			releaseItems() ;
+
+			m_fieldItems = Item[][]() ;
+			m_enemies = Item[]() ;
+			m_ptsPop = Point*[]() ;
+			m_items = Item[]() ;
+			m_score = 0 ;
+
+			m_periodPop = 300 ;
+			m_levelPop = 0 ;
+			m_countPop = 0 ;
+
+			for ( uint y = 0; y < FieldHeight; ++ y )
+			{
+				m_fieldItems[y] = Item[]() ;
+
+				const String	line = s_stage[y] ;
+				for ( uint x = 0; x < FieldWidth; ++ x )
+				{
+					m_fieldMask[y][x] = false ;
+					m_fieldItems[y][x] = null ;
+
+					uint	ch = line.charAt(x) ;
+					if ( (ch >= '1') && (ch <= '9') )
+					{
+						BlockItem	item = BlockItem( (ch - '0') ) ;
+						item.setPosition( x, y ) ;
+						addItem( item ) ;
+
+						m_fieldMask[y][x] = true ;
+						m_fieldItems[y][x] = item ;
+					}
+					else if ( ch == 'C' )
+					{
+						WallItem	item = WallItem() ;
+						item.setPosition( x, y ) ;
+						addItem( item ) ;
+
+						m_fieldMask[y][x] = true ;
+						m_fieldItems[y][x] = item ;
+					}
+					else if ( (ch >= 'a') && (ch <= 'g') )
+					{
+						Enemy	enemy = Enemy( this, (int) ch - 'a' ) ;
+						enemy.setPosition( x, y ) ;
+						addEnemy( enemy ) ;
+
+						m_ptsPop.add( Point( x, y ) ) ;
+					}
+					else if ( ch == 'P' )
+					{
+						m_player = Player() ;
+						m_player.setPosition( x, y ) ;
+						addItem( m_player ) ;
+					}
+				}
+			}
+		}
+
+		// フィールド移動可能マス判定
+		public boolean isMovableAt( int x, int y ) const
+		{
+			if ( (x >= 0) && (x < FieldWidth)
+				&& (y >= 0) && (y < FieldHeight) )
+			{
+				return	!m_fieldMask[y][x] ;
+			}
+			return	false ;
+		}
+
+		// フィールド・アイテム取得
+		public Item getFieldAt( int x, int y ) const
+		{
+			if ( (x >= 0) && (x < FieldWidth)
+				&& (y >= 0) && (y < FieldHeight) )
+			{
+				return	m_fieldItems[y][x] ;
+			}
+			return	null ;
+		}
+
+		// フィールド１マス・クリア
+		public void clearFieldAt( int x, int y )
+		{
+			if ( (x >= 0) && (x < FieldWidth)
+				&& (y >= 0) && (y < FieldHeight) )
+			{
+				m_fieldMask[y][x] = false ;
+				m_fieldItems[y][x] = null ;
+			}
+		}
+
+		// タイマーカウンタ取得
+		public uint getTickCount() const
+		{
+			return	m_tickCount ;
+		}
+
+		// キー押下状態
+		public boolean isKeyPushing( int ikey ) const
+		{
+			return	m_keyPushing[ikey] ;
+		}
+
+		// キー押下回数取得とクリア
+		public uint getKeyPushed( int ikey )
+		{
+			uint	nPushed = m_keyPushed[ikey] ;
+			m_keyPushed[ikey] = 0 ;
+			return	nPushed ;
+		}
+
+		// アイテム追加
+		public void addItem( Item item )
+		{
+			int		priority = item.m_priority ;
+			long	first = 0 ;
+			long	end = (long) sizeof(m_items) ;
+			while ( first < end )
+			{
+				long	middle = (first + end) / 2 ;
+				if ( priority > m_items[middle].m_priority )
+				{
+					end = middle ;
+				}
+				else if ( m_items[middle].m_priority > priority )
+				{
+					first = middle + 1 ;
+				}
+				else
+				{
+					break ;
+				}
+			}
+			m_items.insert( first, item ) ;
+		}
+
+		// アイテム削除
+		public boolean removeItem( Item item )
+		{
+			int	i = m_items.findPtr( item ) ;
+			if ( i >= 0 )
+			{
+				m_items.remove( i ) ;
+				item.release() ;
+				return	true ;
+			}
+			return	false ;
+		}
+
+		// 敵追加
+		public void addEnemy( Item enemy )
+		{
+			m_enemies.add( enemy ) ;
+			addItem( enemy ) ;
+		}
+
+		// 敵削除
+		public boolean removeEnemy( Item enemy )
+		{
+			int	i = m_enemies.findPtr( enemy ) ;
+			if ( i >= 0 )
+			{
+				m_enemies.remove( i ) ;
+				return	true ;
+			}
+			return	false ;
+		}
+
+		// 敵当たり判定
+		public Item testHitEnemy( float x, float y ) const
+		{
+			for ( enemy : m_enemies )
+			{
+				float	dx = enemy.m_pos.x - x ;
+				float	dy = enemy.m_pos.y - y ;
+				if ( dx * dx + dy * dy < 0.6 * 0.6 )
+				{
+					return	enemy ;
+				}
+			}
+			return	null ;
+		}
+
+		// プレイヤー取得
+		public Player getPlayer()
+		{
+			return	m_player ;
+		}
+
+		// プレイヤーへの当たり判定と攻撃
+		public boolean attackToPlayer( float x, float y, float r )
+		{
+			return	m_player.exposureOfDamage( this, x, y, r ) ;
+		}
+
+		// パーティクル追加
+		public Task addParticle
+			( const PointF* pShape, uint nPoints, const RGBA* rgba,
+				const PointF* pos, const PointF* speed, float decel = 0.9f,
+				double rot0 = 0.0, double rotrnd = 180.0, double rspeed = 30.0,
+				double zoom0 = 1.0, const PointF* pZoom1 = null, uint life = 10 )
+		{
+			Particle	prtc =
+				Particle( pShape, nPoints, rgba,
+							pos, speed, decel,
+							rot0, rotrnd, rspeed,
+							zoom0, pZoom1, life ) ;
+			Task	tsk = Task[this,prtc]
+			{
+				uint	tickStart = m_tickCount ;
+				while ( m_tickCount - tickStart < prtc.m_life )
+				{
+					// Task.rest() までが１フレームの描画
+					// ※但しタイムアウトすると途中で停止してしまうので
+					//   そのフレームでは描画されない（少しトリッキー）
+					double	t = (double) (m_tickCount - tickStart) / prtc.m_life ;
+					double	sx = (prtc.m_zoom1.x - prtc.m_zoom0.x) * t + prtc.m_zoom0.x ;
+					double	sy = (prtc.m_zoom1.y - prtc.m_zoom0.y) * t + prtc.m_zoom0.y ;
+					prtc.m_pos.x += prtc.m_speed.x ;
+					prtc.m_pos.y += prtc.m_speed.y ;
+					prtc.m_speed.x *= prtc.m_decel ;
+					prtc.m_speed.y *= prtc.m_decel ;
+					prtc.m_rot += prtc.m_rspeed ;
+					prtc.m_affine
+						.setRotation( prtc.m_rot )
+						.scale( sx, sy )
+						.setTranslation( prtc.m_pos.x * UnitSize + FieldLeft,
+											prtc.m_pos.y * UnitSize + FieldTop ) ;
+					fillPolygon( prtc.m_affine,
+									prtc.m_rgba * (1.0 - t),
+									prtc.m_pShape, prtc.m_nPoints ) ;
+					Task.rest() ;
+				}
+			} ;
+			return	addParticle( tsk ) ;
+		}
+
+		public Task addParticle( Task tsk )
+		{
+			m_particles.add( tsk ) ;
+			return	tsk ;
+		}
+
+		// パーティクル停止
+		public void cancelParticle( Task tsk )
+		{
+			int	i = m_particles.findPtr( tsk ) ;
+			if ( i >= 0 )
+			{
+				m_particles.remove( i ) ;
+				tsk.finish() ;
+			}
+		}
+		public void cancelAllParticles()
+		{
+			for ( tsk : m_particles )
+			{
+				tsk.finish() ;
+			}
+			m_particles.clear() ;
+		}
+
+		// スコア加算
+		public void addScore( int score )
+		{
+			m_score += score ;
+			m_hiScore = Math.max( m_hiScore, m_score ) ;
+		}
+
+		// タイマー・カウンタ取得
+		public long getTickCount() const
+		{
+			return	m_tickCount ;
+		}
+
+		// 30fps タイマー
+		@override
+		public void onTimer()
+		{
+			m_tickCount ++ ;
+
+			if ( m_mainFlow != null )
+			{
+				// メインフロー進行
+				m_mainFlow.proceed( 10 ) ;
+			}
+			if ( !m_freezeItems )
+			{
+				if ( (-- m_periodPop <= 0) || (m_enemies.length() == 0) )
+				{
+					// 敵ポップ
+					int	pos = (int) Math.floor( Math.random
+										( (double) sizeof(m_ptsPop) ) ) ;
+					int	type = (int) Math.min( Enemy.EnemyTypeCount - 1,
+									m_levelPop + (int) Math.random( 4.0 ) ) ;
+
+					Enemy	enemy = Enemy( this, type ) ;
+					enemy.setPosition( m_ptsPop[pos].x, m_ptsPop[pos].y ) ;
+					addEnemy( enemy ) ;
+
+					if ( ++ m_countPop >= 4 )
+					{
+						if ( m_levelPop < Enemy.EnemyTypeCount - 3 )
+						{
+							++ m_levelPop ;
+						}
+						m_countPop = 0 ;
+					}
+					m_periodPop = (int) Math.max( (6 - m_levelPop), 1 ) * 30 ;
+				}
+
+				// アイテム全般タイマー処理
+				for ( uint i = 0; i < sizeof(m_items); ++ i )
+				{
+					if ( !m_items[i].onTimer( this ) )
+					{
+						m_items.remove( i -- ) ;
+					}
+				}
+			}
+		}
+
+		// キー押下
+		@override
+		public void onKeyDown( int vkey )
+		{
+			int	ikey = KeyCodeToIndex( vkey ) ;
+			if ( (ikey >= 0) && !m_keyPushing[ikey] )
+			{
+				m_keyPushing[ikey] = true ;
+				m_keyPushed[ikey] ++ ;
+			}
+		}
+
+		// キー解放
+		@override
+		public void onKeyUp( int vkey )
+		{
+			int	ikey = KeyCodeToIndex( vkey ) ;
+			if ( ikey >= 0 )
+			{
+				m_keyPushing[ikey] = false ;
+			}
+		}
+
+		// 描画
+		@override
+		public void onPaint()
+		{
+			for ( item : m_items )
+			{
+				item.draw( this ) ;
+			}
+			for ( uint i = 0; i < sizeof(m_particles); ++ i )
+			{
+				if ( m_particles[i].proceed( 10 ) )
+				{
+					m_particles.remove( i -- ) ;
+				}
+			}
+			drawText( 8, 4, 16, RGBA(0xff,0xff,0xff),
+						"Score " + String.integerOf( m_score, 10 )
+						+ "    High Score "
+						+ String.integerOf( m_hiScore, 10 ) ) ;
+			drawText( 8, ScreenHeight - 24, 16, RGBA(0xff,0xff,0xff),
+						"Move: ←↑→↓ arrow keys  /  Shoot: Space key" ) ;
+		}
+
+		// 描画用頂点バッファ
+		private PointF*	m_bufPoints = null ;
+		private uint	m_numPoints = 0 ;
+
+		public PointF* transformPoints
+			( const AffineF* affine, const PointF* pPoints, uint count )
+		{
+			if ( m_numPoints < count )
+			{
+				m_bufPoints = new PointF[count] ;
+				m_numPoints = count ;
+			}
+			affine.transformPoints( m_bufPoints, pPoints, count ) ;
+			return	m_bufPoints ;
+		}
+
+		// バックバッファに多角形を塗りつぶす
+		public void fillPolygon
+			( const AffineF* affine,
+				const RGBA* rgba, const PointF* pPoints, uint count )
+		{
+			super::fillPolygon
+				( rgba, transformPoints( affine, pPoints, count ), count ) ;
+		}
+
+		// バックバッファに連続直線を描画する
+		public void drawLines
+			( const AffineF* affine,
+				const RGBA* rgba, const PointF* pPoints, uint count )
+		{
+			super::drawLines
+				( rgba, transformPoints( affine, pPoints, count ), count ) ;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// パーティクル
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Particle
+	{
+		public AffineF			m_affine ;
+		public PointF			m_pos ;
+		public PointF			m_speed ;
+		public float			m_decel = 0.9f ;
+		public double			m_rot ;
+		public double			m_rspeed ;
+		public RGBA				m_rgba ;
+		public PointF			m_zoom0 ;
+		public PointF			m_zoom1 ;
+		public const PointF*	m_pShape ;
+		public uint				m_nPoints ;
+		public uint				m_life ;
+
+		public Particle
+			( const PointF* pShape, uint nPoints, const RGBA* rgba,
+				const PointF* pos, const PointF* speed, float decel = 0.9f,
+				double rot0 = 0.0, double rotrnd = 180.0, double rspeed = 30.0,
+				double zoom0 = 1.0, const PointF* pZoom1 = null, uint life = 10 )
+		{
+			m_pShape = pShape ;
+			m_nPoints = nPoints ;
+			m_rgba := rgba ;
+			m_pos := pos ;
+			m_speed := speed ;
+			m_decel = decel ;
+			m_rot = rot0 + Math.random( rotrnd * 2.0 ) - rotrnd ;
+			m_rspeed = Math.random( rspeed * 2.0 ) - rspeed ;
+			m_zoom0.x = (float) zoom0 ;
+			m_zoom0.y = (float) zoom0 ;
+			if ( pZoom1 != null )
+			{
+				m_zoom1 := *pZoom1 ;
+			}
+			else
+			{
+				m_zoom1 := m_zoom0 ;
+			}
+			m_life = life ;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Item
+	{
+		protected AffineF		m_affine ;
+
+		// 位置（ユニット単位）
+		public PointF			m_pos ;
+
+		// 回転角 [deg]
+		public double			m_rot = 0.0 ;
+
+		// 拡大率
+		public PointF			m_zoom = { 1.0f, 1.0f } ;
+
+		// 表示色
+		public RGBA				m_rgba = { 0xff, 0xff, 0xff, 0xff } ;
+
+		// 表示優先度（大きいほうが奥）
+		public int				m_priority ;
+
+		// 形状頂点
+		protected const PointF*	m_pPoints ;
+		protected uint			m_nPoints = 0 ;
+
+		// 座標設定（ユニット単位）
+		public void setPosition( double x, double y )
+		{
+			m_pos.x = (float) x ;
+			m_pos.y = (float) y ;
+		}
+
+		// 回転設定
+		public void setRotation( double deg )
+		{
+			m_rot = deg ;
+		}
+
+		// 表示形状設定
+		public void setShape( const PointF* pPoints, uint nPoints )
+		{
+			m_pPoints = pPoints ;
+			m_nPoints = nPoints ;
+		}
+
+		// 表示色設定
+		public void setColor( const RGBA* rgba )
+		{
+			m_rgba := rgba ;
+		}
+
+		// 表示優先度設定
+		public void setPriority( int priority )
+		{
+			m_priority = priority ;
+		}
+
+		// ダメージを受ける
+		public void takeDamage( GameWindow window )
+		{
+		}
+
+		// タイマー処理
+		public boolean onTimer( GameWindow window )
+		{
+			return	true ;
+		}
+
+		// 描画処理
+		public void draw( GameWindow window )
+		{
+			if ( m_nPoints > 0 )
+			{
+				m_affine
+					.setRotation( m_rot )
+					.scale( m_zoom.x, m_zoom.y )
+					.setTranslation
+						( m_pos.x * UnitSize + FieldLeft,
+							m_pos.y * UnitSize + FieldTop ) ;
+				window.fillPolygon( m_affine, m_rgba, m_pPoints, m_nPoints ) ;
+			}
+		}
+
+		// 解放処理（循環参照の場合にも確実に解放するため）
+		public void release()
+		{
+		}
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 破壊不能な壁
+	//////////////////////////////////////////////////////////////////////////
+
+	class	WallItem	extends Item
+	{
+		// ブロック形状
+		public static const PointF[8]	s_block =
+		[
+			{ -9.0f, -11.0f },
+			{ 9.0f, -11.0f },
+			{ 11.0f, -9.0f },
+			{ 11.0f, 8.0f },
+			{ 8.0f, 11.0f },
+			{ -8.0f, 11.0f },
+			{ -11.0f, 8.0f },
+			{ -11.0f, -9.0f },
+		] ;
+
+		public WallItem()
+		{
+			setPriority( PriorityField ) ;
+			setColor( RGBA(0xff,0xff,0xff,0xff) ) ;
+			setShape( s_block, sizeof(s_block)/sizeof(PointF) ) ;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 破壊可能なアイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	DestructibleItem	extends Item
+	{
+		protected boolean	m_invincible = false ;
+		protected int		m_toughness = 1 ;
+		protected int		m_score = 100 ;
+		protected int		m_flush = 0 ;
+
+		protected RGBA		m_rgbaBase = { 0xff, 0xff, 0xff, 0xff } ;
+
+		public DestructibleItem( int toughness, int score )
+		{
+			m_toughness = toughness ;
+			m_score = score ;
+		}
+
+		// 表示色設定
+		@override
+		public void setColor( const RGBA* rgba )
+		{
+			super::setColor( rgba ) ;
+			m_rgbaBase := rgba ;
+		}
+
+		// ダメージを受ける
+		public void takeDamage( GameWindow window )
+		{
+			if ( !m_invincible )
+			{
+				m_flush = 2 ;
+				if ( -- m_toughness == 0 )
+				{
+					window.addScore( m_score ) ;
+					onDestroyed( window ) ;
+				}
+			}
+		}
+
+		// 破壊時処理
+		public void onDestroyed( GameWindow window )
+		{
+		}
+
+		// タイマー処理
+		@override
+		public boolean onTimer( GameWindow window )
+		{
+			if ( m_flush > 0 )
+			{
+				-- m_flush ;
+			}
+			return	(m_toughness > 0) ;
+		}
+
+		// 描画処理
+		@override
+		public void draw( GameWindow window )
+		{
+			if ( m_flush > 0 )
+			{
+				double	f = (double) m_flush * 3.0 ;
+				m_rgba := m_rgbaBase * (1.0 - f)
+							+ RGBA(0xff,0xff,0xff,0xff) * f ;
+			}
+			else
+			{
+				m_rgba := m_rgbaBase ;
+			}
+			super::draw( window ) ;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 破壊可能な壁
+	//////////////////////////////////////////////////////////////////////////
+
+	class	BlockItem	extends DestructibleItem
+	{
+		public BlockItem( int toughness )
+			: DestructibleItem( toughness, 10 )
+		{
+			setPriority( PriorityField ) ;
+			setColor( RGBA(0xc0,0xc0,0xc0,0xff) ) ;
+			setShape( WallItem.s_block,
+						sizeof(WallItem.s_block)/sizeof(PointF) ) ;
+		}
+
+		// 描画処理
+		@override
+		public void draw( GameWindow window )
+		{
+			double	t = Math.clamp( (double) m_toughness / 5.0, 0.0, 1.0 ) ;
+			m_rgbaBase := RGBA(0xf0,0xf0,0xf0) * t
+						+ RGBA(0xc0,0x40,0x40) * (1.0 - t) ;
+			super::draw( window ) ;
+		}
+
+		// 破壊時処理
+		@override
+		public void onDestroyed( GameWindow window )
+		{
+			window.clearFieldAt
+				( (int) Math.round(m_pos.x), (int) Math.round(m_pos.y) ) ;
+			for ( int i = 0; i < 8; ++ i )
+			{
+				double	rad = Math.random( Math.PI * 2.0 ) ;
+				double	speed = Math.random( 0.7 ) + 0.3 ;
+				double	zoom = Math.random( 0.5 ) + 0.5 ;
+				window.addParticle
+					( m_pPoints, m_nPoints, RGBA(0xff,0x40,0x40),
+						m_pos, PointF( Math.cos(rad) * speed,
+										Math.sin(rad) * speed ),
+						0.9f, 0.0, 360.0, 45.0,
+						zoom, PointF( zoom * 2.0, zoom * 2.0 ) ) ;
+			}
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 弾
+	//////////////////////////////////////////////////////////////////////////
+
+	class	BulletItem	extends Item
+	{
+		protected PointF	m_speed ;
+		protected int		m_rep = 1 ;
+
+		// 移動速度（/frame）設定
+		public void setSpeed( double x, double y, int rep = 1 )
+		{
+			m_speed.x = (float) x ;
+			m_speed.y = (float) y ;
+			m_rep = rep ;
+		}
+
+		// タイマー処理
+		@override
+		public boolean onTimer( GameWindow window )
+		{
+			for ( int i = 0; i < m_rep; ++ i )
+			{
+				m_pos.x += m_speed.x ;
+				m_pos.y += m_speed.y ;
+
+				if ( onTestHit( window ) )
+				{
+					return	false ;
+				}
+			}
+			return	true ;
+		}
+
+		// 当たり判定
+		public boolean onTestHit( GameWindow window )
+		{
+			const int	xUnit = (int) Math.round(m_pos.x) ;
+			const int	yUnit = (int) Math.round(m_pos.y) ;
+			if ( !window.isMovableAt( xUnit, yUnit ) )
+			{
+				onHit( window, window.getFieldAt( xUnit, yUnit ) ) ;
+				return	true ;
+			}
+			return	false ;
+		}
+
+		// 当たった
+		public void onHit( GameWindow window, Item item )
+		{
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 敵の弾
+	//////////////////////////////////////////////////////////////////////////
+
+	class	EnemyBullet	extends BulletItem
+	{
+		private static const PointF[4]	s_bullet =
+		[
+			{ -3.0f, -3.0f },
+			{ 3.0f, -3.0f },
+			{ 3.0f, 3.0f },
+			{ -3.0f, 3.0f },
+		] ;
+
+		public EnemyBullet( const PointF* pos, double sx, double sy, int rep = 1 )
+		{
+			setPosition( pos.x, pos.y ) ;
+			setSpeed( sx, sy, rep ) ;
+			setShape( s_bullet, sizeof(s_bullet)/sizeof(PointF) ) ;
+			setPriority( PriorityBullet ) ;
+		}
+		
+		// タイマー処理
+		@override
+		public boolean onTimer( GameWindow window )
+		{
+			m_rot += 10.0 ;
+			return	super::onTimer( window ) ;
+		}
+
+		// 当たり判定
+		@override
+		public boolean onTestHit( GameWindow window )
+		{
+			window.attackToPlayer( m_pos.x, m_pos.y, 0.1f ) ;
+			return	super::onTestHit( window ) ;
+		}
+
+		// 当たった
+		@override
+		public void onHit( GameWindow window, Item item )
+		{
+			window.addParticle
+				( m_pPoints, m_nPoints, m_rgba,
+					m_pos, PointF( 0.0, 0.0 ),
+					0.9f, m_rot, 0.0, 60.0, 1.0, PointF( 2.0, 2.0 ) ) ;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// プレイヤーの弾
+	//////////////////////////////////////////////////////////////////////////
+
+	class	PlayerShot	extends BulletItem
+	{
+		private static const PointF[4]	s_shot =
+		[
+			{ -2.0f, -8.0f },
+			{ 2.0f, -8.0f },
+			{ 2.0f, 8.0f },
+			{ -2.0f, 8.0f },
+		] ;
+
+		public PlayerShot( double xSpeed, double ySpeed )
+		{
+			setSpeed( xSpeed * 0.25, ySpeed * 0.25, 4 ) ;
+			setShape( s_shot, sizeof(s_shot)/sizeof(PointF) ) ;
+			setColor( RGBA( 0, 0x80, 0xff ) ) ;
+			setRotation
+				( (float) (Math.atan2( xSpeed, -ySpeed )
+										* (180.0 / Math.PI)) ) ;
+			setPriority( PriorityBullet ) ;
+		}
+
+		// 当たり判定
+		@override
+		public boolean onTestHit( GameWindow window )
+		{
+			Item	enemy = window.testHitEnemy( m_pos.x, m_pos.y ) ;
+			if ( enemy != null )
+			{
+				onHit( window, enemy ) ;
+				return	true ;
+			}
+			return	super::onTestHit( window ) ;
+		}
+
+		// 当たった
+		@override
+		public void onHit( GameWindow window, Item item )
+		{
+			if ( item != null )
+			{
+				item.takeDamage( window ) ;
+			}
+			window.addParticle
+				( m_pPoints, m_nPoints, m_rgba,
+					m_pos, PointF( -2.0 * m_speed.x, -2.0 * m_speed.y ),
+					0.9f, m_rot, 0.0, 60.0, 1.0, PointF( 2.0, 2.0 ) ) ;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 敵
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Enemy	extends DestructibleItem
+	{
+		public static const int	EnemyTypeCount	= 7 ;
+
+		struct	EnemyProperty
+		{
+			int		score;
+			int		toughness ;
+			RGBA	rgba ;
+			int		shape ;
+			int		moveSpend ;
+			int		moveDime ;
+			float	shotSpeed ;
+			int		shotRepeat ;
+			int		shotInterval1 ;
+			int		shotInterval2 ;
+		}
+		static const EnemyProperty[EnemyTypeCount]	s_EnemyProps =
+		[
+			{ 100, 1, { 0, 0xff, 0x80, 0 }, 0, 12, 100, 1.0f, 1, 5, 30 },
+			{ 200, 1, { 0xff, 0xff, 0, 0 }, 2, 12, 100, 1.0f, 1, 5, 30 },
+			{ 200, 2, { 0, 0x80, 0xff, 0 }, 0, 10,  50, 1.0f, 1, 4, 30 },
+			{ 300, 2, { 0, 0xff, 0xff, 0 }, 1, 10,  50, 1.2f, 2, 4, 10 },
+			{ 400, 3, { 0xff, 0, 0xff, 0 }, 2,  8,   0, 1.2f, 1, 4, 30 },
+			{ 500, 3, { 0xff, 0, 0x00, 0 }, 0,  8,   0, 1.5f, 2, 4, 10 },
+			{ 600, 4, { 0xff, 0, 0x00, 0 }, 1,  7,   0, 1.5f, 3, 4, 10 },
+		] ;
+
+		private int			m_tick = 0 ;
+		private int			m_type = 0 ;
+		private int			m_moveSpend = 10 ;
+		private int			m_moveDime = 100 ;
+		private Task		m_algorithm ;
+		private GameWindow	m_window ;
+
+		private int			m_shootRep = 1 ;
+		private int			m_nextLoaded = 30 * 3 ;
+
+
+		public Enemy( GameWindow window, int type )
+			: DestructibleItem( 1, 200 )
+		{
+			m_invincible = true ;
+			m_window = window ;
+			setPriority( PriorityEnemy ) ;
+
+			m_type = (int) Math.clamp( type, 0, EnemyTypeCount - 1 ) ;
+
+			m_score = s_EnemyProps[m_type].score ;
+			m_toughness = s_EnemyProps[m_type].toughness ;
+			m_rgbaBase := s_EnemyProps[m_type].rgba ;
+			m_moveSpend = s_EnemyProps[m_type].moveSpend ;
+			m_moveDime = s_EnemyProps[m_type].moveDime ;
+
+			switch ( s_EnemyProps[type].shape )
+			{
+			case	0:
+			default:
+				makeShape0() ;
+				break ;
+			case	1:
+				makeShape1() ;
+				break ;
+			case	2:
+				makeShape2() ;
+				break ;
+			}
+
+			m_shootRep = s_EnemyProps[m_type].shotRepeat ;
+			m_nextLoaded = s_EnemyProps[m_type].shotInterval1 * 30 ;
+
+			m_algorithm = Task[this]
+			{
+				moveAlgorithm() ;
+			} ;
+		}
+
+		// 〇形状
+		public void makeShape0()
+		{
+			const float	s = (float) UnitSize * 0.5f - 0.5f ;
+			PointF*		points = new PointF[8] ;
+			for ( int i = 0; i < 8; ++ i )
+			{
+				double	rad = (double) i * Math.PI / 4.0 ;
+				points[i].x = (float) Math.cos(rad) * s ;
+				points[i].y = (float) Math.sin(rad) * s ;
+			}
+			setShape( points, 8 ) ;
+		}
+
+		// 凹□形状
+		public void makeShape1()
+		{
+			const float	s = (float) UnitSize * 0.5f - 0.5f ;
+			PointF*		points = new PointF[8] ;
+			for ( int i = 0; i < 8; ++ i )
+			{
+				double	rad = (double) i * Math.PI / 4.0 ;
+				float	z = s * ((float) (i & 1) * 0.65f + 0.65f) ;
+				points[i].x = (float) Math.cos(rad) * z ;
+				points[i].y = (float) Math.sin(rad) * z ;
+			}
+			setShape( points, 8 ) ;
+		}
+
+		// ☆形状
+		public void makeShape2()
+		{
+			const float	s = (float) UnitSize * 0.6f ;
+			PointF*		points = new PointF[10] ;
+			for ( int i = 0; i < 10; ++ i )
+			{
+				double	rad = (double) i * Math.PI / 5.0 ;
+				float	z = s * ((float) (~i & 1) * 0.5f + 0.5f) ;
+				points[i].x = (float) Math.sin(rad) * z ;
+				points[i].y = (float) Math.cos(rad) * -z ;
+			}
+			setShape( points, 10 ) ;
+		}
+
+		// タイマー処理
+		@override
+		public boolean onTimer( GameWindow window )
+		{
+			double	r = (double) ++ m_tick * Math.PI / 15.0 ;
+			m_zoom.x = (float) Math.cos(r) * 0.1f + 1.0f ;
+			m_zoom.y = (float) Math.sin(r) * 0.1f + 1.0f ;
+
+			if ( m_algorithm != null )
+			{
+				m_algorithm.proceed() ;
+			}
+			if ( !m_invincible )
+			{
+				window.attackToPlayer( m_pos.x, m_pos.y, 0.4f ) ;
+			}
+			if ( -- m_nextLoaded <= 0 )
+			{
+				// 弾を発射
+				Player	player = window.getPlayer() ;
+				double	dx = player.m_pos.x - m_pos.x ;
+				double	dy = player.m_pos.y - m_pos.y ;
+				double	dr = Math.sqrt( dx * dx + dy * dy ) ;
+				if ( dr > 0.0 )
+				{
+					double	d = s_EnemyProps[m_type].shotSpeed * 0.2 / dr ;
+					EnemyBullet	bullet =
+						EnemyBullet( m_pos, dx * d, dy * d ) ;
+					bullet.setColor
+						( RGBA(0xff,0xff,0xff) * 0.5 + m_rgbaBase * 0.5 ) ;
+					window.addItem( bullet ) ;
+				}
+				if ( -- m_shootRep <= 0 )
+				{
+					m_shootRep = s_EnemyProps[m_type].shotRepeat ;
+					m_nextLoaded =
+						s_EnemyProps[m_type].shotInterval1 * 30 ;
+				}
+				else
+				{
+					// 連射
+					m_nextLoaded =
+						s_EnemyProps[m_type].shotInterval2 ;
+				}
+			}
+
+			return	super::onTimer( window ) ;
+		}
+
+		// 解放処理（循環参照の場合にも確実に解放するため）
+		@override
+		public void release()
+		{
+			if ( m_algorithm != null )
+			{
+				m_algorithm.finish() ;
+				m_algorithm = null ;
+			}
+		}
+
+		// 破壊時処理
+		@override
+		public void onDestroyed( GameWindow window )
+		{
+			window.removeEnemy( this ) ;
+
+			window.addParticle
+				( m_pPoints, m_nPoints, m_rgbaBase,
+					m_pos, PointF( 0.0, 0.0 ),
+					0.9f, 0.0, 0.0, 0.0, 1.0, PointF( 0.125, 8.0 ) ) ;
+
+			for ( int i = 0; i < 8; ++ i )
+			{
+				double	rad = Math.random( Math.PI * 2.0 ) ;
+				double	speed = Math.random( 0.5 ) + 0.1 ;
+				double	zoom = Math.random( 0.5 ) + 0.5 ;
+				window.addParticle
+					( WallItem.s_block,
+						sizeof(WallItem.s_block)/sizeof(PointF),
+						RGBA(0xff,0xff,0xff,0xc0),
+						m_pos, PointF( Math.cos(rad) * speed,
+										Math.sin(rad) * speed ),
+						0.9f, 0.0, 360.0, 45.0,
+						zoom, PointF( zoom * 2.0, zoom * 2.0 ) ) ;
+			}
+		}
+
+		// 移動アルゴリズム
+		public void moveAlgorithm()
+		{
+			// フェードイン
+			for ( int i = 0; i < 30; ++ i )
+			{
+				m_rgbaBase.a = (uint8) (i * 0xff / 30) ;
+				Task.rest() ;
+			}
+			m_invincible = false ;
+
+			forever
+			{
+				// 移動方向を決める
+				double	rad = Math.floor( Math.random( 4.0 ) )
+												* (Math.PI * 0.5) ;
+				int	dx = (int) Math.round( Math.cos(rad) ) ;
+				int	dy = (int) Math.round( Math.sin(rad) ) ;
+
+				int	count = (int) Math.random( 5.0 ) + 2 ;
+				for ( int i = 0; i < count; ++ i )
+				{
+					if ( !moveOneSquare( dx, dy, m_moveSpend ) )
+					{
+						break ;
+					}
+					Thread.sleep( m_moveDime ) ;
+				}
+			}
+		}
+
+		// 1マス移動
+		public boolean moveOneSquare( int x, int y, int spend )
+		{
+			if ( !m_window.isMovableAt
+					( (int) Math.round(m_pos.x) + x,
+						(int) Math.round(m_pos.y) + y ) )
+			{
+				Task.rest() ;
+				return	false ;
+			}
+			float	dx = (float) x / (float) spend ;
+			float	dy = (float) y / (float) spend ;
+			for ( int i = 0; i < spend; ++ i )
+			{
+				m_pos.x += dx ;
+				m_pos.y += dy ;
+				Task.rest() ;
+			}
+			m_pos.x = (float) Math.round( m_pos.x ) ;
+			m_pos.y = (float) Math.round( m_pos.y ) ;
+			return	true ;
+		}
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// プレイヤー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Player	extends Item
+	{
+		// プレイヤー形状
+		public static const PointF[3]	s_player =
+		[
+			{ 0.0f, -8.0f },
+			{ 7.0f, 8.0f },
+			{ -7.0f, 8.0f },
+		] ;
+
+		private boolean	m_gameover = false ;
+		private int		m_loaded = 3 ;
+		private int		m_loading = 0 ;
+
+		public Player()
+		{
+			setPriority( PriorityPlayer ) ;
+			setColor( RGBA(0xff,0xff,0xff) ) ;
+			setShape( s_player, sizeof(s_player)/sizeof(PointF) ) ;
+		}
+
+		// ゲームオーバーか？
+		public boolean isGameOver() const
+		{
+			return	m_gameover ;
+		}
+
+		// 被弾判定と被弾処理
+		public boolean exposureOfDamage
+				( GameWindow window, float x, float y, float r )
+		{
+			if ( m_gameover )
+			{
+				return	false ;
+			}
+			float	dx = m_pos.x - x ;
+			float	dy = m_pos.y - y ;
+			float	dr = r + 0.3f ;
+			if ( dx * dx + dy * dy > dr * dr )
+			{
+				return	false ;
+			}
+
+			window.addParticle
+				( m_pPoints, m_nPoints, m_rgba,
+					m_pos, PointF( 0.0, 0.0 ),
+					0.0f, m_rot, 0.0, 0.0, 1.0, PointF( 0.1, 0.1 ) ) ;
+
+			window.addParticle( Task[window]
+				{
+					// 画面フラッシュ
+					const long	tickStart = window.getTickCount() ;
+					const int	spend = 10 ;
+					while ( window.getTickCount() - tickStart < spend )
+					{
+						double	t = (double) (window.getTickCount() - tickStart) / spend ;
+						window.fillRectangle
+							( RGBA(0xff,0xff,0xff,0)
+								+ RGBA(0,0,0,0xff) * (1.0 - t),
+								0, 0, ScreenWidth, ScreenHeight ) ;
+						Task.rest() ;
+					}
+				} ) ;
+
+			m_gameover = true ;
+			return	true ;
+		}
+
+		// タイマー処理
+		@override
+		public boolean onTimer( GameWindow window )
+		{
+			if ( m_gameover )
+			{
+				return	false ;
+			}
+			const float	d = 0.25f ;
+			float		dx = 0.0f ;
+			float		dy = 0.0f ;
+			if ( window.isKeyPushing( IKeyUp ) )
+			{
+				dy -= d ;
+			}
+			if ( window.isKeyPushing( IKeyDown ) )
+			{
+				dy += d ;
+			}
+			if ( window.isKeyPushing( IKeyLeft ) )
+			{
+				dx -= d ;
+			}
+			if ( window.isKeyPushing( IKeyRight ) )
+			{
+				dx += d ;
+			}
+			moveDelta( window, dx, dy, 0.45f ) ;
+
+			if ( (dx != 0.0f) || (dy != 0.0f) )
+			{
+				setRotation
+					( (float) (Math.atan2( dx, -dy )
+									* (180.0 / Math.PI)) ) ;
+			}
+			if ( (m_loaded > 0)
+				&& (window.getKeyPushed( IKeySpace ) > 0) )
+			{
+				double	rad = m_rot * (Math.PI / 180.0) ;
+				double	speed = 1.0 ;
+				double	sx = Math.sin( rad ) * speed ;
+				double	sy = - Math.cos( rad ) * speed ;
+				PlayerShot	shot = PlayerShot( sx, sy ) ;
+				shot.setPosition( m_pos.x + sx * 0.5f, m_pos.y + sy * 0.5f ) ;
+				window.addItem( shot ) ;
+				-- m_loaded ;
+				m_loading = 0 ;
+			}
+			if( (m_loaded < 3) && (++ m_loading >= 10) )
+			{
+				m_loaded = (int) Math.min( m_loaded + 1, 3 ) ;
+				m_loading = 0 ;
+			}
+			return	true ;
+		}
+
+		// 移動処理
+		public void moveDelta( GameWindow window, float dx, float dy, float r )
+		{
+			if ( dx != 0.0f )
+			{
+				float	x = m_pos.x + r * (float) (dx / Math.abs(dx)) ;
+				if ( window.isMovableAt
+						( (int) Math.round(x), (int) Math.round(m_pos.y) ) )
+				{
+					m_pos.x += dx ;
+				}
+			}
+			if ( dy != 0.0f )
+			{
+				float	y = m_pos.y + r * (float) (dy / Math.abs(dy)) ;
+				if ( window.isMovableAt
+						( (int) Math.round(m_pos.x), (int) Math.round(y) ) )
+				{
+					m_pos.y += dy ;
+				}
+			}
+		}
+
+		// 描画処理
+		@override
+		public void draw( GameWindow window )
+		{
+			super::draw( window ) ;
+
+			window.drawText
+				( ScreenWidth - 8*14, 4, 16,
+					RGBA(0xff,0xff,0xff), "Loaded  " + m_loaded ) ;
+		}
+	}
+
+
+}
+

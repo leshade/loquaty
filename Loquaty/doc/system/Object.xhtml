@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Object</title>
+</head>
+<body>
+<div class="chapter">Object</div>
+
+<div class="headline">Summary</div>
+<div class="normal">
+全てのオブジェクトの基底クラスです。</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_finalize">finalize</a><br/>
+	<a href="#virtual_getClass">getClass</a><br/>
+	<a href="#virtual_notify">notify</a><br/>
+	<a href="#virtual_notifyAll">notifyAll</a><br/>
+	<a href="#virtual_toString">toString</a><br/>
+	<a href="#virtual_wait">wait</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_eq">operator ==</a><br/>
+	<a href="#operator_ne">operator !=</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_finalize"/>
+<div class="headline">finalize</div>
+<div class="usage"> void finalize( )</div>
+<div class="normal">
+デストラクタです。</div>
+<br/>
+
+<a name="virtual_getClass"/>
+<div class="headline">getClass</div>
+<div class="usage">public Class getClass( ) const</div>
+<div class="normal">
+オブジェクトのクラスを取得します。</div>
+<br/>
+
+<a name="virtual_notify"/>
+<div class="headline">notify</div>
+<div class="usage">public void notify( )</div>
+<div class="normal">
+このオブジェクトに対して wait している１つのスレッドを起床させます。</div>
+<br/>
+
+<a name="virtual_notifyAll"/>
+<div class="headline">notifyAll</div>
+<div class="usage">public void notifyAll( )</div>
+<div class="normal">
+このオブジェクトに対して wait している全てのスレッドを起床させます。</div>
+<br/>
+
+<a name="virtual_toString"/>
+<div class="headline">toString</div>
+<div class="usage">public String toString( ) const</div>
+<div class="normal">
+オブジェクトを文字列に変換します。</div>
+<br/>
+
+<a name="virtual_wait"/>
+<div class="headline">wait</div>
+<div class="usage">public void wait( )</div>
+<div class="normal">
+このオブジェクトへの通知があるまでスレッドを待機状態（休止）にします。<br/>呼び出し時にこのオブジェクトに対して synchronized 状態でなければなりません。</div>
+<br/>
+<div class="headline">wait</div>
+<div class="usage">public void wait( long timeout )</div>
+<div class="normal">
+このオブジェクトへの通知があるかタイムアウトするまでスレッドを待機状態（休止）にします。<br/>呼び出し時にこのオブジェクトに対して synchronized 状態でなければなりません。</div>
+<div class="notes_parameter">
+<div class="param_name">timeout</div>
+<div class="param_desc">
+ミリ秒単位でのタイムアウト時間</div>
+</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_eq"/>
+<div class="headline">operator ==</div>
+<div class="usage">boolean operator == ( Object ) const</div>
+<div class="normal">
+同一エンティティなら true を評価します。</div>
+<br/>
+
+<a name="operator_ne"/>
+<div class="headline">operator !=</div>
+<div class="usage">boolean operator != ( Object ) const</div>
+<div class="normal">
+同一エンティティなら false を評価します。</div>
+<br/>
+<br/><br/>
+</body>
+</html>
