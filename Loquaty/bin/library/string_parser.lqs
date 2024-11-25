@@ -24,9 +24,11 @@ class StringParser	extends NativeObject
 	public native String toString() const ;
 
 	// テキストファイルを読み込みます。
+	// <return>成功したら true、失敗したら false</return>
 	public native boolean loadTextFile( String path ) ;
 
 	// File オブジェクトからテキストファイルを読み込みます。
+	// <return>成功したら true、失敗したら false</return>
 	public native boolean readTextFile( File file ) ;
 
 	// 指標を取得します。
