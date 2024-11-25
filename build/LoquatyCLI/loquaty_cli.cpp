@@ -313,15 +313,7 @@ int LoquatyApp::RunMain( void )
 		return	nExit ;
 	}
 
-	// 関数を取得する
-	const LFunctionVariation *	pFuncVar =
-			m_vm->Global()->GetLocalStaticFunctionsAs( L"main" ) ;
-	if ( (pFuncVar == nullptr)
-		|| (pFuncVar->size() == 0) )
-	{
-		printf( "main 関数が見つかりません\n" ) ;
-		return	1 ;
-	}
+	// 引数配列
 	LPtr<LThreadObj>	pThread = new LThreadObj( m_vm->GetThreadClass() ) ;
 
 	std::vector<LValue>	args ;
@@ -329,23 +321,6 @@ int LoquatyApp::RunMain( void )
 		pThread->Context().new_Array( m_vm->GetStringClass() ) ;
 	args.push_back( LValue( pArg ) ) ;
 
-	LArgumentListType	argTypes ;
-	argTypes.push_back( LType( pArg->GetClass() ) ) ;
-	LPtr<LFunctionObj>	pFunc = pFuncVar->GetCallableFunction( argTypes ) ;
-	if ( pFunc == nullptr )
-	{
-		args.clear() ;
-		argTypes.clear() ;
-		//
-		pFunc = pFuncVar->GetCallableFunction( argTypes ) ;
-		if ( pFunc == nullptr )
-		{
-			printf( "適合する main 関数が見つかりません\n" ) ;
-			return	1 ;
-		}
-	}
-
-	// 引数配列
 	for ( size_t i = 0; i < m_argsScript.size(); i ++ )
 	{
 		pArg->m_array.push_back
@@ -354,8 +329,8 @@ int LoquatyApp::RunMain( void )
 
 	// 関数を呼び出す
 	auto [valRet, pExcept] =
-		pThread->SyncCallFunction
-			( pFunc.Ptr(), args.data(), args.size() ) ;
+		pThread->SyncCallFunctionAs
+			( nullptr, L"main", args.data(), args.size() ) ;
 
 	if ( pExcept != nullptr )
 	{

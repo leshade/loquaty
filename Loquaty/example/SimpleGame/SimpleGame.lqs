@@ -613,6 +613,7 @@ namespace	SimpleGame
 				{
 					if ( !m_items[i].onTimer( this ) )
 					{
+						m_items[i].release() ;
 						m_items.remove( i -- ) ;
 					}
 				}

@@ -45,6 +45,13 @@ namespace	Loquaty
 					const wchar_t * pwszFuncName,
 					const LValue * pArgValues, size_t nArgCount ) ;
 
+		// 関数取得
+		LPtr<LFunctionObj> GetFunctionAs
+				( std::vector<LValue>& argValues,
+					LObjPtr pThisObj,
+					const wchar_t * pwszFuncName,
+					const LValue * pArgValues, size_t nArgCount ) const ;
+
 		// LContext 取得
 		LContext& Context( void )
 		{
@@ -57,7 +64,13 @@ namespace	Loquaty
 
 	public:	// 軽量スレッド
 		// 軽量スレッドとして実行を開始する
-		bool BeginAsync( LPtr<LFunctionObj> pFunc ) ;
+		bool BeginAsync
+			( LPtr<LFunctionObj> pFunc,
+				const LValue * pArgValues = nullptr, size_t nArgCount = 0 ) ;
+		bool BeginAsyncAs
+			( LObjPtr pThisObj,
+				const wchar_t * pwszFuncName,
+				const LValue * pArgValues, size_t nArgCount ) ;
 		// 軽量スレッドとして実行を継続する
 		bool AsyncProceed( std::int64_t msecTimeout = 0 ) ;
 		// 完了時の処理

@@ -58,41 +58,68 @@ std::tuple<LValue,LObjPtr>
 			const wchar_t * pwszFuncName,
 			const LValue * pArgValues, size_t nArgCount )
 {
-	if ( pThisObj == nullptr )
+	std::vector<LValue>	argValues ;
+	LPtr<LFunctionObj>	pFunc =
+		GetFunctionAs( argValues, pThisObj,
+						pwszFuncName, pArgValues, nArgCount ) ;
+	if ( pFunc == nullptr )
 	{
 		return	std::make_tuple<LValue,LObjPtr>
 			( LValue(), LObjPtr(m_context.new_Exception( exceptionNullPointer)) ) ;
 	}
 
-	std::vector<LValue>	vArgValues ;
-	vArgValues.push_back( LValue( pThisObj ) ) ;
+	return	SyncCallFunction
+				( pFunc.Ptr(), argValues.data(), argValues.size() ) ;
+}
+
+// 関数取得
+LPtr<LFunctionObj> LTaskObj::GetFunctionAs
+		( std::vector<LValue>& argValues,
+			LObjPtr pThisObj,
+			const wchar_t * pwszFuncName,
+			const LValue * pArgValues, size_t nArgCount ) const
+{
+	if ( pThisObj != nullptr )
+	{
+		argValues.push_back( LValue( pThisObj ) ) ;
+	}
 
 	LArgumentListType	argListType ;
 	for ( size_t i = 0; i < nArgCount; i ++ )
 	{
 		argListType.push_back( pArgValues[i].GetType() ) ;
-		vArgValues.push_back( pArgValues[i] ) ;
+		argValues.push_back( pArgValues[i] ) ;
 	}
 
-	LClass *	pClass = pThisObj->GetClass() ;
-	assert( pClass != nullptr ) ;
-	const ssize_t	iFunc =
-		pClass->GetVirtualVector().FindCallableFunction
-							( pwszFuncName, argListType, pClass ) ;
-	if ( iFunc < 0 )
+	LPtr<LFunctionObj>	pFunc ;
+	if ( pThisObj != nullptr )
 	{
-		return	std::make_tuple<LValue,LObjPtr>
-			( LValue(), LObjPtr(m_context.new_Exception( exceptionNullPointer)) ) ;
+		LClass *	pClass = pThisObj->GetClass() ;
+		assert( pClass != nullptr ) ;
+		const ssize_t	iFunc =
+			pClass->GetVirtualVector().FindCallableFunction
+								( pwszFuncName, argListType, pClass ) ;
+		if ( iFunc < 0 )
+		{
+			return	nullptr ;
+		}
+		return	pClass->GetVirtualVector().GetFunctionAt( (size_t) iFunc ) ;
 	}
-	LPtr<LFunctionObj>	pFunc =
-			pClass->GetVirtualVector().GetFunctionAt( (size_t) iFunc ) ;
-
-	return	SyncCallFunction
-				( pFunc.Ptr(), vArgValues.data(), vArgValues.size() ) ;
+	else
+	{
+		const LFunctionVariation *	pFuncVar =
+			m_context.VM().Global()->GetLocalStaticFunctionsAs( pwszFuncName ) ;
+		if ( pFuncVar == nullptr )
+		{
+			return	nullptr ;
+		}
+		return	pFuncVar->GetCallableFunction( argListType ) ;
+	}
 }
 
 // 軽量スレッドとして実行を開始する
-bool LTaskObj::BeginAsync( LPtr<LFunctionObj> pFunc )
+bool LTaskObj::BeginAsync
+	( LPtr<LFunctionObj> pFunc, const LValue * pArgValues, size_t nArgCount )
 {
 	assert( !m_context.IsRunning() ) ;
 	m_flagAsync = true ;
@@ -102,13 +129,31 @@ bool LTaskObj::BeginAsync( LPtr<LFunctionObj> pFunc )
 	LTaskObj *	pPrevTask = t_pCurrent ;
 	t_pCurrent = this ;
 
-	if ( m_context.AsyncCallFunction( m_state, pFunc.Ptr(), nullptr, 0 ) )
+	if ( m_context.AsyncCallFunction
+			( m_state, pFunc.Ptr(), pArgValues, nArgCount ) )
 	{
 		OnFinished() ;
 	}
 
 	t_pCurrent = pPrevTask ;
 	return	m_flagFinished ;
+}
+
+bool LTaskObj::BeginAsyncAs
+	( LObjPtr pThisObj,
+		const wchar_t * pwszFuncName,
+		const LValue * pArgValues, size_t nArgCount )
+{
+	std::vector<LValue>	argValues ;
+	LPtr<LFunctionObj>	pFunc =
+		GetFunctionAs( argValues, pThisObj,
+						pwszFuncName, pArgValues, nArgCount ) ;
+	if ( pFunc == nullptr )
+	{
+		m_state.exception = m_context.new_Exception( exceptionNullPointer ) ;
+		return	true ;
+	}
+	return	BeginAsync( pFunc, argValues.data(), argValues.size() ) ;
 }
 
 // 軽量スレッドとして実行を継続する
