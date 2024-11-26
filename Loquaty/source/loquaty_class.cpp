@@ -792,14 +792,25 @@ const Symbol::BinaryOperatorDef *
 		( Symbol::OperatorIndex opIndex,
 			const LType& typeVal2, LType::AccessModifier accScope ) const
 {
-	return	FindMatchBinaryOperator
-		( opIndex, typeVal2,
-			m_vecBinaryOperators.data(), m_vecBinaryOperators.size(), accScope ) ;
+	const Symbol::BinaryOperatorDef *
+		pbopd = FindMatchBinaryOperator
+					( opIndex, this, typeVal2,
+						m_vecBinaryOperators.data(),
+						m_vecBinaryOperators.size(), accScope ) ;
+	if ( pbopd == nullptr )
+	{
+		pbopd = FindMatchBinaryOperator
+					( opIndex, nullptr, typeVal2,
+						m_vecBinaryOperators.data(),
+						m_vecBinaryOperators.size(), accScope ) ;
+	}
+	return	pbopd ;
 }
 
 const Symbol::BinaryOperatorDef *
 	LClass::FindMatchBinaryOperator
-			( Symbol::OperatorIndex opIndex, const LType& typeVal2,
+			( Symbol::OperatorIndex opIndex,
+				const LClass * pThisClass, const LType& typeVal2,
 				const Symbol::BinaryOperatorDef * pList, size_t nCount,
 				LType::AccessModifier accScope )
 {
@@ -811,7 +822,11 @@ const Symbol::BinaryOperatorDef *
 			if ( (pList[i].m_pOpFunc == nullptr)
 				|| pList[i].m_pOpFunc->IsEnableAccess( accScope ) )
 			{
-				return	pList + i ;
+				if ( (pThisClass == nullptr)
+					|| (pThisClass == pList[i].m_pThisClass) )
+				{
+					return	pList + i ;
+				}
 			}
 		}
 	}
@@ -901,11 +916,23 @@ void LClass::AddBinaryOperatorDef
 {
 	for ( size_t i = 0; i < m_vecBinaryOperators.size(); i ++ )
 	{
-		if ( (m_vecBinaryOperators.at(i).m_opIndex == bopDef.m_opIndex)
-			&& (m_vecBinaryOperators.at(i).m_typeRight == typeAsRight) )
+		Symbol::BinaryOperatorDef&	bopd = m_vecBinaryOperators.at(i) ;
+		if ( bopd.m_opIndex == bopDef.m_opIndex )
 		{
-			m_vecBinaryOperators.erase( m_vecBinaryOperators.begin() + i ) ;
-			break ;
+			if ( bopd.m_typeRight == typeAsRight )
+			{
+				// オーバーライド
+				m_vecBinaryOperators.erase( m_vecBinaryOperators.begin() + i ) ;
+				break ;
+			}
+			if ( bopd.m_pThisClass != bopDef.m_pThisClass )
+			{
+				// 異なるクラス（派生クラス）では派生したクラスを優先する
+				// （※同じクラス内では記述した順序が優先される）
+				m_vecBinaryOperators.insert
+					( m_vecBinaryOperators.begin() + i, bopDef ) ;
+				return ;
+			}
 		}
 	}
 	m_vecBinaryOperators.push_back( bopDef ) ;

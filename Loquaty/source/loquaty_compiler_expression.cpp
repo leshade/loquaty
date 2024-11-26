@@ -1488,32 +1488,14 @@ LExprValuePtr LCompiler::GetExprVarMember
 	LPointerClass *	pPtrClass = dynamic_cast<LPointerClass*>( pClass ) ;
 	if ( pPtrClass != nullptr )
 	{
-		// ポインタ型のメソッドを参照
-		const std::vector<size_t> *
-			pVirtVec = pPtrClass->GetVirtualVector().FindFunction( pwszName ) ;
-		if ( pVirtVec != nullptr )
-		{
-			LClass *		pAbsFuncClass = m_vm.GetFunctionClass() ;
-			LExprValuePtr	xvalVirtFunc =
-				std::make_shared<LExprValue>
-					( pAbsFuncClass,
-						pPtrClass->GetVirtualVector().MakeFuncVariationOf( pVirtVec ) ) ;
-			LExprValuePtr	xvalRefCallFunc =
-					std::make_shared<LExprValue>
-						( LType(pAbsFuncClass), nullptr, false, false ) ;
-			xvalRefCallFunc->SetOptionRefCallThisOf( xvalVar, xvalVirtFunc ) ;
-			return	xvalRefCallFunc ;
-		}
-
 		// ポインタ型の場合は構造体のメンバが対象
 		LStructureClass *
 			pStructClass = pPtrClass->GetBufferType().GetStructureClass() ;
-		if ( pStructClass == nullptr )
+		if ( pStructClass != nullptr )
 		{
-			return	nullptr ;
+			flagConstVal = pPtrClass->GetBufferType().IsConst() ;
+			pClass = pStructClass ;
 		}
-		flagConstVal = pPtrClass->GetBufferType().IsConst() ;
-		pClass = pStructClass ;
 	}
 	else
 	{
@@ -1598,6 +1580,26 @@ LExprValuePtr LCompiler::GetExprVarMember
 						( LType(pAbsFuncClass), nullptr, false, false ) ;
 		xvalRefCallFunc->SetOptionRefCallThisOf( xvalVar, xvalVirtFunc ) ;
 		return	xvalRefCallFunc ;
+	}
+
+	if ( pPtrClass != nullptr )
+	{
+		// ポインタ型のメソッドを参照
+		const std::vector<size_t> *
+			pVirtVec = pPtrClass->GetVirtualVector().FindFunction( pwszName ) ;
+		if ( pVirtVec != nullptr )
+		{
+			LClass *		pAbsFuncClass = m_vm.GetFunctionClass() ;
+			LExprValuePtr	xvalVirtFunc =
+				std::make_shared<LExprValue>
+					( pAbsFuncClass,
+						pPtrClass->GetVirtualVector().MakeFuncVariationOf( pVirtVec ) ) ;
+			LExprValuePtr	xvalRefCallFunc =
+					std::make_shared<LExprValue>
+						( LType(pAbsFuncClass), nullptr, false, false ) ;
+			xvalRefCallFunc->SetOptionRefCallThisOf( xvalVar, xvalVirtFunc ) ;
+			return	xvalRefCallFunc ;
+		}
 	}
 
 	return	GetSymbolWithNamespaceAs( pwszName, nullptr, pClass ) ;
@@ -4781,21 +4783,21 @@ LExprValuePtr LCompiler::EvalPrimitiveBinaryOperator
 	if ( LType::IsFloatingPointPrimitive( primRet ) )
 	{
 		pbopDef = LClass::FindMatchBinaryOperator
-					( opPrimitive, typeRet,
+					( opPrimitive, nullptr, typeRet,
 						LDoubleClass::s_BinaryOperatorDefs,
 						LDoubleClass::BinaryOperatorCount ) ;
 	}
 	else if ( LType::IsUnsignedIntegerPrimitive( primRet ) )
 	{
 		pbopDef = LClass::FindMatchBinaryOperator
-					( opPrimitive, typeRet,
+					( opPrimitive, nullptr, typeRet,
 						LIntegerClass::s_UintOperatorDefs,
 						LIntegerClass::BinaryOperatorCount ) ;
 	}
 	else
 	{
 		pbopDef = LClass::FindMatchBinaryOperator
-					( opPrimitive, typeRet,
+					( opPrimitive, nullptr, typeRet,
 						LIntegerClass::s_IntOperatorDefs,
 						LIntegerClass::BinaryOperatorCount ) ;
 	}
@@ -4960,14 +4962,14 @@ LExprValuePtr LCompiler::EvalPointerBinaryOperator
 		|| flagComparator || flagOffsetOperator || flagFetchAddrPointer )
 	{
 		pbopDef = LClass::FindMatchBinaryOperator
-					( opPrimitive, LType(LType::typeInt64),
+					( opPrimitive, nullptr, LType(LType::typeInt64),
 						LPointerClass::s_BinaryOffsetOperatorDefs,
 						LPointerClass::BinaryOffsetOperatorCount ) ;
 	}
 	else
 	{
 		pbopDef = LClass::FindMatchBinaryOperator
-					( opPrimitive, xval2->GetType(),
+					( opPrimitive, nullptr, xval2->GetType(),
 						LPointerClass::s_BinaryPtrOperatorDefs,
 						LPointerClass::BinaryPtrOperatorCount ) ;
 	}

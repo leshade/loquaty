@@ -558,6 +558,24 @@ ssize_t LVirtualFuncVector::FindCallableFunction
 	}
 	if ( (iCallable < 0) && (pThisClass != nullptr) )
 	{
+		if ( pThisClass->GetSuperClass() != nullptr )
+		{
+			iCallable = FindCallableFunction
+				( pFuncs, argListType, pThisClass->GetSuperClass(), accScope ) ;
+			if ( iCallable >= 0 )
+			{
+				return	iCallable ;
+			}
+		}
+		for ( LClass * pImplClass : pThisClass->GetImplementClasses() )
+		{
+			iCallable = FindCallableFunction
+							( pFuncs, argListType, pImplClass, accScope ) ;
+			if ( iCallable >= 0 )
+			{
+				return	iCallable ;
+			}
+		}
 		return	FindCallableFunction
 					( pFuncs, argListType, nullptr, accScope ) ;
 	}

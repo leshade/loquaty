@@ -4417,6 +4417,19 @@ void LCompiler::ParseInitListOfConstructer
 			sparsSrc.PassStatement( L"", L"{" ) ;
 			return ;
 		}
+		if ( sparsSrc.PassSpace()
+			&& (sparsSrc.CurrentChar() == L'<') )
+		{
+			std::vector<LType>	vecTypes ;
+			LString	strTempName = strName ;
+			if ( !sparsSrc.ParseGenericArgList
+				( vecTypes, strName, true,
+					strTempName.c_str(), m_vm, pnslLocal ) )
+			{
+				sparsSrc.PassStatement( L"", L"{" ) ;
+				return ;
+			}
+		}
 		if ( setInitMember.count( strName.c_str() ) > 0 )
 		{
 			OnError( errorDoubleInitialized, strName.c_str() ) ;

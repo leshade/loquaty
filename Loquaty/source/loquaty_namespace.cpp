@@ -609,7 +609,7 @@ void LNamespaceList::AddNamespace( LNamespace * pNamespace )
 {
 	for ( auto pns : *this )
 	{
-		if ( pns != pNamespace )
+		if ( pns == pNamespace )
 		{
 			return ;
 		}

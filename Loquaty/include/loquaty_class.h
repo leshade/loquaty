@@ -286,7 +286,8 @@ namespace	Loquaty
 						LType::AccessModifier accScope = LType::modifierPublic ) const ;
 		static const Symbol::BinaryOperatorDef *
 				FindMatchBinaryOperator
-					( Symbol::OperatorIndex opIndex, const LType& typeVal2,
+					( Symbol::OperatorIndex opIndex,
+						const LClass * pThisClass, const LType& typeVal2,
 						const Symbol::BinaryOperatorDef * pList, size_t nCount,
 						LType::AccessModifier accScope = LType::modifierPublic ) ;
 		// 二単項演算子リスト
