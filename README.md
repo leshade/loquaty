@@ -29,7 +29,7 @@ Loquaty は汎用的なスクリプト言語で、「ポインタ型のある Ja
 - `Loquaty/bin/win32/plugins/` - Win32 loquaty.exe 用プラグイン・ディレクトリ
 - `Loquaty/bin/win64/loquaty.exe` - Win64 用 loquaty.exe ビルド出力先
 - `Loquaty/bin/win64/plugins/` - Win64 loquaty.exe 用プラグイン・ディレクトリ
-- `Loquaty/example/SimpleGame/SimpleGame.lqs` - サンプル簡易ゲーム・スクリプト
+- [`Loquaty/example/SimpleGame/SimpleGame.lqs`](./Loquaty/example/SimpleGame/SimpleGame.lqs) - サンプル簡易ゲーム・スクリプト
 - `Loquaty/example/SimpleGame/run.bat` - サンプル簡易ゲーム実行用 bat ファイル (Win64 用)
 
 
