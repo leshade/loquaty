@@ -65,7 +65,7 @@ std::tuple<LValue,LObjPtr>
 	if ( pFunc == nullptr )
 	{
 		return	std::make_tuple<LValue,LObjPtr>
-			( LValue(), LObjPtr(m_context.new_Exception( exceptionNullPointer)) ) ;
+			( LValue(), LObjPtr(m_context.new_Exception( exceptionUnimplemented)) ) ;
 	}
 
 	return	SyncCallFunction

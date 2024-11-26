@@ -529,7 +529,8 @@ int LoquatyApp::MakeDocClass( void )
 	LString	strCssFile =
 		LURLSchemer::SubPath
 			( m_strMakeOutput.c_str(),
-				(MakeClassDocFileDir( type.GetClass(), nullptr )
+				(MakeClassDocFileDir
+					( type.GetClass(), (LPackage*) nullptr )
 										+ L"specifications.css").c_str() ) ;
 	WriteCssFile( strCssFile.c_str() ) ;
 
@@ -547,8 +548,22 @@ int LoquatyApp::MakeDocClass( void )
 LString LoquatyApp::MakeClassDocFileName( LClass * pClass, LClass * pFromClass )
 {
 	LString	strClassName = pClass->GetFullClassName() ;
-	LString	strClassFile =
-		strClassName.Replace
+	LString	strClassFile = MakeTypeFileName( strClassName ) ;
+
+	return	MakeClassDocFileDir( pClass, pFromClass ) + strClassFile ;
+}
+
+LString LoquatyApp::MakeClassDocFileName( LClass * pClass, LPackage * pFromPackage )
+{
+	LString	strClassName = pClass->GetFullClassName() ;
+	LString	strClassFile = MakeTypeFileName( strClassName ) ;
+
+	return	MakeClassDocFileDir( pClass, pFromPackage ) + strClassFile ;
+}
+
+LString LoquatyApp::MakeTypeFileName( const LString& strTypeName )
+{
+	return	strTypeName.Replace
 			( []( LStringParser& spars )
 				{
 					if ( LStringParser::IsCharContained
@@ -578,26 +593,30 @@ LString LoquatyApp::MakeClassDocFileName( LClass * pClass, LClass * pFromClass )
 					}
 					return	str ;
 				} ) ;
-
-	return	MakeClassDocFileDir( pClass, pFromClass ) + strClassFile ;
 }
 
 LString LoquatyApp::MakeClassDocFileDir( LClass * pClass, LClass * pFromClass )
 {
+	return	MakeClassDocFileDir
+				( pClass, (pFromClass != nullptr)
+							? pFromClass->GetPackage() : nullptr ) ;
+}
+
+LString LoquatyApp::MakeClassDocFileDir( LClass * pClass, LPackage * pFromPackage )
+{
 	LPackage *	pPackage = pClass->GetPackage() ;
 	if ( pPackage != nullptr )
 	{
-		if ( pFromClass == nullptr )
+		if ( pFromPackage == nullptr )
 		{
 			return	pPackage->GetName() + L"/" ;
 		}
-		else if ( pFromClass->GetPackage() != pPackage )
+		else if ( pFromPackage != pPackage )
 		{
 			return	LString( L"../" ) + pPackage->GetName() + L"/" ;
 		}
 	}
-	else if ( (pFromClass != nullptr)
-				&& (pFromClass->GetPackage() != nullptr) )
+	else if ( pFromPackage != nullptr )
 	{
 		return	LString( L"../" ) ;
 	}
@@ -607,11 +626,15 @@ LString LoquatyApp::MakeClassDocFileDir( LClass * pClass, LClass * pFromClass )
 // 出力ファイルを開く
 std::shared_ptr<LOutputStream> LoquatyApp::OpenClassDocFile( LClass * pClass )
 {
+	return	OpenDocFile
+		( (MakeClassDocFileName( pClass, (LPackage*) nullptr ) + L".xhtml").c_str() ) ;
+}
+
+std::shared_ptr<LOutputStream> LoquatyApp::OpenDocFile( const wchar_t * pwszFileName )
+{
 	// 出力ファイルを開く
 	LString		strClassFile =
-		LURLSchemer::SubPath
-			( m_strMakeOutput.c_str(),
-				(MakeClassDocFileName( pClass, nullptr ) + L".xhtml").c_str() ) ;
+		LURLSchemer::SubPath( m_strMakeOutput.c_str(), pwszFileName ) ;
 	LFilePtr	file =
 		LURLSchemer::Open( strClassFile.c_str(), LDirectory::modeCreate ) ;
 
@@ -626,6 +649,61 @@ std::shared_ptr<LOutputStream> LoquatyApp::OpenClassDocFile( LClass * pClass )
 	return	std::make_shared<LOutputUTF8Stream>( file ) ;
 }
 
+// 型定義を文書化する
+int LoquatyApp::MakeDocTypeDef
+	( LOutputStream& strm,
+		const wchar_t * pwszName, const LType type, LPackage * pPackage )
+{
+	LString	strXTypeName = LXMLDocParser::EncodeXMLString( pwszName ) ;
+
+	// ヘッダ・見出し
+	strm << L"<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n"
+			L"<!DOCTYPE html\r\n"
+			L"[\r\n"
+			L"	<!ENTITY nbsp \"&#160;\">\r\n"
+			L"]>\r\n"
+			L"<?xml-stylesheet type=\"text/css\" href=\"specifications.css\"?>\r\n"
+			L"<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\">\r\n"
+			L"<head>\r\n"
+			L"	<title>" << strXTypeName << L"</title>\r\n"
+			L"</head>\r\n"
+			L"<body>\r\n"
+			L"<div class=\"chapter\">" << strXTypeName << L"</div>\r\n\r\n" ;
+
+	// 定義概要
+	strm << L"<div class=\"headline\">Type Summary</div>\r\n" ;
+	strm << L"<div class=\"usage\">typedef "
+			<< strXTypeName << L" = "
+			<< LXMLDocParser::EncodeXMLString( type.GetTypeName().c_str() )
+			<< L"</div>\r\n" ;
+
+	LType::LComment *	pComment = type.GetComment() ;
+	if ( (pComment != nullptr) && HasCommentSummary( *pComment ) )
+	{
+		MakeDocXMLSummary( strm, *pComment ) ;
+		MakeDocXMLDescription( strm, *pComment ) ;
+	}
+	strm << L"<br/>\r\n\r\n" ;
+
+	// ジェネリック型の場合にはクラスを文書化する
+	int	nExit = 0 ;
+	if ( (type.GetModifiers() == 0)
+		&& type.IsObject()
+		&& (type.GetClass() != nullptr)
+		&& type.GetClass()->IsGenericInstance() )
+	{
+		nExit = MakeDocClassDefs( strm, type.GetClass(), pPackage ) ;
+	}
+	else
+	{
+		strm << L"<br/><br/>\r\n"
+				L"</body>\r\n"
+				L"</html>\r\n" ;
+	}
+	return	nExit ;
+}
+
+// クラスを文書化する
 int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 {
 	LString	strClassName = pClass->GetFullClassName() ;
@@ -645,18 +723,16 @@ int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 			L"<body>\r\n"
 			L"<div class=\"chapter\">" << strXClassName << L"</div>\r\n\r\n" ;
 
+	return	MakeDocClassDefs( strm, pClass, pClass->GetPackage() ) ;
+}
+
+int LoquatyApp::MakeDocClassDefs
+	( LOutputStream& strm, LClass * pClass, LPackage * pPackage )
+{
 	// クラス概要
-	LType::LComment *	pComment = pClass->GetSelfComment() ;
-	if ( (pComment != nullptr) && HasCommentSummary( *pComment ) )
-	{
-		strm << L"<div class=\"headline\">Summary</div>\r\n" ;
-		MakeDocXMLSummary( strm, *pComment ) ;
-		MakeDocXMLDescription( strm, *pComment ) ;
-		strm << L"<br/>\r\n\r\n" ;
-	}
+	MakeDocClassSummary( strm, pClass ) ;
 
 	// パッケージ
-	LPackage *	pPackage = pClass->GetPackage() ;
 	if ( (pPackage != nullptr)
 		&& (pPackage->GetType() != LPackage::typeSystemDefault) )
 	{
@@ -679,14 +755,15 @@ int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 	strm << L"<div class=\"headline\">Super Classes</div>\r\n"
 			L"<div class=\"indent1\"><a href=\"index.xhtml\">&lt;index&gt;</a></div>\r\n" ;
 
-	strm << MakeDocSuperClass( strm, pClass, pClass ) ;
+	strm << MakeDocSuperClass( strm, pClass, pPackage ) ;
 
 	if ( dynamic_cast<LStructureClass*>( pClass ) != nullptr )
 	{
 		const std::vector<LClass*>&	vImplements = pClass->GetImplementClasses() ;
 		for ( size_t i = 0; i < vImplements.size(); i ++ )
 		{
-			strm << MakeDocSuperClass( strm, vImplements.at(i), pClass ) ;
+			strm << MakeDocSuperClass
+					( strm, vImplements.at(i), pPackage ) ;
 		}
 	}
 	strm << L"<br/>\r\n\r\n" ;
@@ -758,7 +835,8 @@ int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 				L"<div class=\"indent2\">\r\n" ;
 		for ( auto iter : pClass->GetStaticFunctionList() )
 		{
-			strm << L"	<a href=\"#func_" << iter.first.c_str() << L"\">"
+			strm << L"	<a href=\"#func_"
+					<< LXMLDocParser::EncodeXMLString( iter.first.c_str() ) << L"\">"
 					<< LXMLDocParser::EncodeXMLString( iter.first.c_str() )
 					<< L"</a><br/>\r\n" ;
 		}
@@ -791,7 +869,8 @@ int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 			{
 				strFuncName = pClass->GetClassName() ;
 			}
-			strm << L"	<a href=\"#virtual_" << strFuncName << L"\">"
+			strm << L"	<a href=\"#virtual_"
+					<< LXMLDocParser::EncodeXMLString( strFuncName.c_str() ) << L"\">"
 					<< LXMLDocParser::EncodeXMLString( strFuncName.c_str() )
 					<< L"</a><br/>\r\n" ;
 		}
@@ -864,7 +943,8 @@ int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 		strm << L"<div class=\"chapter\">Static Functions</div>\r\n" ;
 		for ( auto iter : pClass->GetStaticFunctionList() )
 		{
-			strm << L"\r\n<a name=\"func_" << iter.first.c_str() << L"\"/>\r\n" ;
+			strm << L"\r\n<a name=\"func_"
+				<< LXMLDocParser::EncodeXMLString( iter.first.c_str() ) << L"\"/>\r\n" ;
 			for ( size_t i = 0; i < iter.second.size(); i ++ )
 			{
 				MakeDocFunctionDesc( strm, iter.second.at(i) ) ;
@@ -884,7 +964,8 @@ int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 			{
 				strFuncName = pClass->GetClassName() ;
 			}
-			strm << L"\r\n<a name=\"virtual_" << strFuncName << L"\"/>\r\n" ;
+			strm << L"\r\n<a name=\"virtual_"
+				<< LXMLDocParser::EncodeXMLString( strFuncName.c_str() ) << L"\"/>\r\n" ;
 			const std::vector<size_t> *
 				pVirtFuncs = vecVirtuals.FindFunction( iter.c_str() ) ;
 			if ( pVirtFuncs == nullptr )
@@ -936,15 +1017,67 @@ int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 	return	0 ;
 }
 
+// クラス概要
+void LoquatyApp::MakeDocClassSummary( LOutputStream& strm, LClass * pClass )
+{
+	strm << L"<div class=\"headline\">Summary</div>\r\n" ;
+	strm << L"<div class=\"usage\">" ;
+	if ( dynamic_cast<LStructureClass*>( pClass ) != nullptr )
+	{
+		strm << L"struct "
+				<< LXMLDocParser::EncodeXMLString
+						( pClass->GetName().c_str() ) << L"<br/>\r\n" ;
+		strm << L"{<br/>\r\n" ;
+
+		const LArrangementBuffer&	arrange = pClass->GetProtoArrangemenet() ;
+		std::vector<LString>		names ;
+		arrange.GetOrderedNameList( names ) ;
+		for ( size_t i = 0; i < names.size(); i ++ )
+		{
+			LArrangement::Desc	desc ;
+			if ( arrange.GetDescAs( desc, names.at(i).c_str() ) )
+			{
+				strm << L"&nbsp; &nbsp; "
+					<< LXMLDocParser::EncodeXMLString
+							( desc.m_type.GetTypeName().c_str() )
+					<< L"&nbsp; &nbsp; " << names.at(i) << L" ;<br/>\r\n" ;
+			}
+		}
+
+		strm << L"}" ;
+	}
+	else if ( dynamic_cast<LClass*>( pClass ) != nullptr )
+	{
+		strm << L"class "
+				<< LXMLDocParser::EncodeXMLString
+						( pClass->GetName().c_str() ) << L" ;" ;
+	}
+	else
+	{
+		strm << L"namespace "
+				<< LXMLDocParser::EncodeXMLString( pClass->GetName().c_str() ) ;
+	}
+	strm << L"</div>\r\n" ;
+
+	LType::LComment *	pComment = pClass->GetSelfComment() ;
+	if ( (pComment != nullptr) && HasCommentSummary( *pComment ) )
+	{
+		MakeDocXMLSummary( strm, *pComment ) ;
+		MakeDocXMLDescription( strm, *pComment ) ;
+	}
+
+	strm << L"<br/>\r\n\r\n" ;
+}
+
 // 親クラスツリー
 LString LoquatyApp::MakeDocSuperClass
-	( LOutputStream& strm, LClass * pClass, LClass * pFromClass )
+	( LOutputStream& strm, LClass * pClass, LPackage * pFromPackage )
 {
 	LClass *	pSuperClass = pClass->GetSuperClass() ;
 	LString		strCloser ;
 	if ( pSuperClass != nullptr )
 	{
-		strCloser = MakeDocSuperClass( strm, pSuperClass, pFromClass ) ;
+		strCloser = MakeDocSuperClass( strm, pSuperClass, pFromPackage ) ;
 	}
 
 	LString	strClassName = pClass->GetFullClassName() ;
@@ -952,9 +1085,21 @@ LString LoquatyApp::MakeDocSuperClass
 
 	strm << L"<div class=\"indent1\"><a href=\""
 			<< LXMLDocParser::EncodeXMLString
-				( MakeClassDocFileName( pClass, pFromClass ).c_str() )
+				( MakeClassDocFileName( pClass, pFromPackage ).c_str() )
 			<< L".xhtml\">" << strXClassName << L"</a>\r\n" ;
 
+	if ( m_mapDocClass.find(pClass) == m_mapDocClass.end() )
+	{
+		std::shared_ptr<LOutputStream>	pStream = OpenClassDocFile( pClass ) ;
+		if ( pStream != nullptr )
+		{
+			m_mapDocClass.insert
+				( std::make_pair<LClass*,LString>
+					( (LClass*) pClass, pStream->GetFile()->GetFilePath() ) ) ;
+
+			MakeDocClass( *pStream, pClass ) ;
+		}
+	}
 	return	LString( L"</div>" ) + strCloser ;
 }
 
@@ -985,7 +1130,8 @@ void LoquatyApp::MakeDocVariableList
 
 	for ( size_t i = 0; i < names.size(); i ++ )
 	{
-		strm << L"	<a href=\"#" << pwszBase << names.at(i) << L"\">"
+		strm << L"	<a href=\"#" << pwszBase
+				<< LXMLDocParser::EncodeXMLString( names.at(i).c_str() ) << L"\">"
 				<< LXMLDocParser::EncodeXMLString( names.at(i).c_str() )
 				<< L"</a><br/>\r\n" ;
 	}
@@ -1006,7 +1152,8 @@ void LoquatyApp::MakeDocVariableDesc
 
 			if ( !strName.IsEmpty() )
 			{
-				strm << L"<a name=\"" << pwszBase << strName << L"\"/>\r\n" ;
+				strm << L"<a name=\"" << pwszBase
+					<< LXMLDocParser::EncodeXMLString( strName.c_str() ) << L"\"/>\r\n" ;
 
 				LType	typeVar = pVar->GetElementTypeAt( i ) ;
 				MakeDocVariableDesc
@@ -1023,7 +1170,8 @@ void LoquatyApp::MakeDocVariableDesc
 		LArrangement::Desc	desc ;
 		if ( arrange.GetDescAs( desc, names.at(i).c_str() ) )
 		{
-			strm << L"<a name=\"" << pwszBase << names.at(i) << L"\"/>\r\n" ;
+			strm << L"<a name=\"" << pwszBase
+				<< LXMLDocParser::EncodeXMLString( names.at(i).c_str() ) << L"\"/>\r\n" ;
 
 			LPtr<LPointerObj>	pPtr =
 				new LPointerObj( m_vm->GetPointerClassAs( desc.m_type ) ) ;
@@ -1039,7 +1187,8 @@ void LoquatyApp::MakeDocVariableDesc
 	( LOutputStream& strm, const wchar_t * pwszName,
 		const LType& typeVar, LObjPtr pVarInit )
 {
-	strm << L"<div class=\"headline\">" << pwszName << L"</div>\r\n" ;
+	strm << L"<div class=\"headline\">"
+		<< LXMLDocParser::EncodeXMLString( pwszName ) << L"</div>\r\n" ;
 	strm << L"<div class=\"usage\">"
 			<< MakeTypeModifiers
 					( typeVar.GetModifiers() & ~LType::modifierConst )
@@ -1083,6 +1232,7 @@ LString LoquatyApp::MakeTypeModifiers( LType::Modifiers modifiers )
 		strModifiers += L"protected" ;
 		break ;
 	case	LType::modifierPrivate:
+	case	LType::modifierPrivateInvisible:
 		strModifiers += L"private" ;
 		break ;
 	}
@@ -1116,7 +1266,9 @@ void LoquatyApp::MakeDocFunctionDesc
 	std::shared_ptr<LPrototype>	pProto = pFunc->GetPrototype() ;
 	assert( pProto != nullptr ) ;
 
-	strm << L"<div class=\"headline\">" << pFunc->GetPrintName() << L"</div>\r\n" ;
+	strm << L"<div class=\"headline\">"
+		<< LXMLDocParser::EncodeXMLString
+				( pFunc->GetPrintName().c_str() ) << L"</div>\r\n" ;
 	strm << L"<div class=\"usage\">"
 			<< MakeTypeModifiers
 					( pProto->GetModifiers() & ~LType::modifierConst ) ;
@@ -1125,7 +1277,8 @@ void LoquatyApp::MakeDocFunctionDesc
 		strm << L" " << LXMLDocParser::EncodeXMLString
 							( pProto->GetReturnType().GetTypeName().c_str() ) ;
 	}
-	strm << L" " << pFunc->GetPrintName() << L"(" ;
+	strm << L" " << LXMLDocParser::EncodeXMLString
+						( pFunc->GetPrintName().c_str() ) << L"(" ;
 
 	const LNamedArgumentListType&	argList = pProto->GetArgListType() ;
 	const std::vector<LValue>&		argDefaults = pProto->GetDefaultArgList() ;
@@ -1605,11 +1758,26 @@ int LoquatyApp::MakeDocIndexInPackage( LPackagePtr pPackage )
 			L"<div class=\"chapter\">" << pPackage->GetName() << L"</div>\r\n\r\n" ;
 
 	// クラス一覧
-	strm << L"<div class=\"headline\">Classes</div>\r\n"
-			<< L"<div class=\"indent2\">"
-			<< L"<a href=\"../index.xhtml\">&lt;..&gt;</a></div>\r\n" ;
+	if ( CoundClassesInPackage( pPackage ) > 0 )
+	{
+		strm << L"<div class=\"headline\">Classes</div>\r\n"
+				<< L"<div class=\"indent2\">"
+				<< L"<a href=\"../index.xhtml\">&lt;..&gt;</a></div>\r\n" ;
 
-	MakeDocClassesInPackage( strm, pPackage, false ) ;
+		nExitCode += MakeDocClassesInPackage( strm, pPackage, false ) ;
+
+		strm << L"<br/>\r\n" ;
+	}
+
+	// 型定義一覧
+	if ( CoundTypesInPackage( pPackage ) > 0 )
+	{
+		strm << L"<div class=\"headline\">Types</div>\r\n" ;
+
+		nExitCode += MakeDocTypesInPackage( strm, pPackage, false ) ;
+
+		strm << L"<br/>\r\n" ;
+	}
 
 	strm << L"</body>\r\n"
 			L"</html>\r\n" ;
@@ -1644,10 +1812,72 @@ int LoquatyApp::MakeDocClassesInPackage
 				<< L".xhtml\">" << strXName << L"</a></div>\r\n" ;
 
 		// クラスを文書化して出力
-		std::shared_ptr<LOutputStream>	pStream = OpenClassDocFile( pClass ) ;
+		if ( m_mapDocClass.find(pClass) == m_mapDocClass.end() )
+		{
+			std::shared_ptr<LOutputStream>	pStream = OpenClassDocFile( pClass ) ;
+			if ( pStream != nullptr )
+			{
+				m_mapDocClass.insert
+					( std::make_pair<LClass*,LString>
+						( (LClass*) pClass, pStream->GetFile()->GetFilePath() ) ) ;
+
+				nExitCode += MakeDocClass( *pStream, pClass ) ;
+			}
+			else
+			{
+				nExitCode ++ ;
+			}
+		}
+	}
+	return	nExitCode ;
+}
+
+int LoquatyApp::MakeDocTypesInPackage
+	( LOutputStream& strm, LPackagePtr pPackage, bool flagRootIndex )
+{
+	int	nExitCode = 0 ;
+
+	for ( size_t i = 0; i < pPackage->GetTypes().size(); i ++ )
+	{
+		const LPackage::TypeDefDesc& tdd = pPackage->GetTypes().at(i) ;
+		if ( tdd.m_strName.GetAt(0) == L'@' )
+		{
+			continue ;
+		}
+		const LType *	pType = tdd.m_pNamespace->GetTypeAs( tdd.m_strName.c_str() ) ;
+		assert( pType != nullptr ) ;
+		LString	strTypeName ;
+		if ( tdd.m_pNamespace->GetName().IsEmpty() )
+		{
+			strTypeName = tdd.m_strName ;
+		}
+		else
+		{
+			strTypeName = tdd.m_pNamespace->GetName() + L"." + tdd.m_strName ;
+		}
+		LString	strFileName ;
+		if ( flagRootIndex )
+		{
+			strFileName = pPackage->GetName() + L"/" ;
+		}
+		strFileName += MakeTypeFileName(strTypeName) + L".xhtml" ;
+
+		strm << L"<div class=\"indent2\"><a href=\""
+				<< LXMLDocParser::EncodeXMLString( strFileName.c_str() ) << L"\">"
+				<< LXMLDocParser::EncodeXMLString( strTypeName.c_str() )
+				<< L"</a></div>\r\n" ;
+
+		// 型定義を文書化して出力
+		if ( !flagRootIndex )
+		{
+			strFileName = pPackage->GetName() + L"/" + strFileName ;
+		}
+		std::shared_ptr<LOutputStream>
+					pStream = OpenDocFile( strFileName.c_str() ) ;
 		if ( pStream != nullptr )
 		{
-			nExitCode += MakeDocClass( *pStream, pClass ) ;
+			nExitCode += MakeDocTypeDef
+				( *pStream, strTypeName.c_str(), *pType, pPackage.get() ) ;
 		}
 		else
 		{
@@ -1694,22 +1924,14 @@ int LoquatyApp::MakeDocAllPackages( void )
 
 	for ( auto p : m_vm->GetPackageList() )
 	{
-		size_t	nNoGenClasses = 0 ;
-		for ( LClass * pClass : p->GetClasses() )
-		{
-			if ( !pClass->IsGenericInstance() )
-			{
-				nNoGenClasses ++ ;
-				break ;
-			}
-		}
-		if ( nNoGenClasses == 0 )
+		if ( CoundClassesInPackage(p) + CoundTypesInPackage(p) == 0 )
 		{
 			continue ;
 		}
 		strm << L"<div class=\"headline\">" << p->GetName() << L"</div>\r\n" ;
 
 		nExit += MakeDocClassesInPackage( strm, p, true ) ;
+		nExit += MakeDocTypesInPackage( strm, p, true ) ;
 
 		strm << L"<br/>\r\n\r\n" ;
 
@@ -1721,6 +1943,35 @@ int LoquatyApp::MakeDocAllPackages( void )
 			L"</html>\r\n" ;
 
 	return	nExit ;
+}
+
+size_t LoquatyApp::CoundClassesInPackage( LPackagePtr pPackage ) const
+{
+	size_t	nNoGenClasses = 0 ;
+	for ( LClass * pClass : pPackage->GetClasses() )
+	{
+		if ( !pClass->IsGenericInstance() )
+		{
+			nNoGenClasses ++ ;
+			break ;
+		}
+	}
+	return	nNoGenClasses ;
+}
+
+size_t LoquatyApp::CoundTypesInPackage( LPackagePtr pPackage ) const
+{
+	size_t	nTypeCount = 0 ;
+	for ( size_t i = 0; i < pPackage->GetTypes().size(); i ++ )
+	{
+		const LPackage::TypeDefDesc& tdd = pPackage->GetTypes().at(i) ;
+		if ( tdd.m_strName.GetAt(0) == L'@' )
+		{
+			continue ;
+		}
+		nTypeCount ++ ;
+	}
+	return	nTypeCount ;
 }
 
 // クラスの native 関数宣言・実装のテンプレートを出力する

@@ -171,6 +171,7 @@ void LGenericObj::CloneFrom( const LGenericObj& obj )
 
 	LSpinLock	lockMap( obj.m_mtxMap ) ;
 	LSpinLock	lockArray( obj.m_mtxArray ) ;
+	m_types = obj.m_types ;
 	LMapObj::CloneFrom( obj ) ;
 }
 

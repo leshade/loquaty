@@ -48,6 +48,7 @@ LPtr<LNamespace> LNamespace::GenericDef::Instantiate
 	LClass *	pGenClass = m_parent->GetClassAs( strGenTypeName.c_str() ) ;
 	if ( pGenClass != nullptr )
 	{
+		pGenClass->AddRef() ;
 		return	pGenClass ;
 	}
 
@@ -428,6 +429,11 @@ bool LNamespace::DefineTypeAs
 	if ( iter != m_typedefs.end() )
 	{
 		return	false ;
+	}
+	LPackage *	pPackage = LPackage::GetCurrent() ;
+	if ( pPackage != nullptr )
+	{
+		pPackage->AddTypeDef( this, pwszName ) ;
 	}
 	m_typedefs.insert
 		( std::make_pair<std::wstring,LType>( pwszName, LType(type) ) ) ;

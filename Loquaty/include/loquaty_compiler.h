@@ -1021,7 +1021,7 @@ namespace	Loquaty
 			( LStringParser& sparsSrc, LPtr<LNamespace> pNamespace,
 				Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal ) ;
 	protected:
-		LPtr<LNamespace> ParseNamespaceExpr
+		LClass * ParseNamespaceExpr
 			( LStringParser& sparsSrc,
 				Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal ) ;
 		bool IsInstantiatingGenericType( LStringParser& sparsSrc ) ;

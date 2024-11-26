@@ -1045,16 +1045,11 @@ bool LStringParser::ParseTypeName
 	}
 
 	// インスタンス化済みか？
-	LPtr<LNamespace>	pInstance ;
-	pInstance = pGenType->m_parent->GetClassAs( strGenTypeName.c_str() ) ;
-	if ( pInstance != nullptr )
+	pClass = pGenType->m_parent->GetClassAs( strGenTypeName.c_str() ) ;
+	if ( pClass != nullptr )
 	{
-		pClass = dynamic_cast<LClass*>( pInstance.Ptr() ) ;
-		if ( pClass != nullptr )
-		{
-			type = LType( pClass, accMod ) ;
-			return	true ;
-		}
+		type = LType( pClass, accMod ) ;
+		return	true ;
 	}
 	if ( !instantiateGenType )
 	{
@@ -1066,6 +1061,7 @@ bool LStringParser::ParseTypeName
 	}
 
 	// インスタンス化
+	LPtr<LNamespace>	pInstance ;
 	LCompiler *			pCompiler = LCompiler::GetCurrent() ;
 	if ( pCompiler != nullptr )
 	{

@@ -24,17 +24,19 @@ private:
 		verbMakeDocAll,
 		verbMakeCppStub,
 	} ;
-	Verb					m_verb ;
-	bool					m_optNologo ;
-	LString					m_strDumpFunc ;
-	LString					m_strMakeOutput ;
-	LString					m_strMakeTarget ;
-	LString					m_strCppClass ;
-	LString					m_strSourceFile ;
-	std::vector<LString>	m_argsScript ;
+	Verb						m_verb ;
+	bool						m_optNologo ;
+	LString						m_strDumpFunc ;
+	LString						m_strMakeOutput ;
+	LString						m_strMakeTarget ;
+	LString						m_strCppClass ;
+	LString						m_strSourceFile ;
+	std::vector<LString>		m_argsScript ;
 
-	LPtr<LVirtualMachine>	m_vm ;
-	int						m_warnLevel ;
+	LPtr<LVirtualMachine>		m_vm ;
+	int							m_warnLevel ;
+
+	std::map<LClass*,LString>	m_mapDocClass ;
 
 public:
 	LoquatyApp( void ) ;
@@ -67,12 +69,22 @@ public:
 	int MakeDocClass( void ) ;
 
 	LString MakeClassDocFileName( LClass * pClass, LClass * pFromClass ) ;
+	LString MakeClassDocFileName( LClass * pClass, LPackage * pFromPackage ) ;
+	LString MakeTypeFileName( const LString& strTypeName ) ;
 	LString MakeClassDocFileDir( LClass * pClass, LClass * pFromClass ) ;
+	LString MakeClassDocFileDir( LClass * pClass, LPackage * pFromPackage ) ;
 	std::shared_ptr<LOutputStream> OpenClassDocFile( LClass * pClass ) ;
+	std::shared_ptr<LOutputStream> OpenDocFile( const wchar_t * pwszFileName ) ;
 
+	int MakeDocTypeDef
+		( LOutputStream& strm,
+			const wchar_t * pwszName, const LType type, LPackage * pPackage ) ;
 	int MakeDocClass( LOutputStream& strm, LClass * pClass ) ;
+	int MakeDocClassDefs( LOutputStream& strm, LClass * pClass, LPackage * pPackage ) ;
+	void MakeDocClassSummary( LOutputStream& strm, LClass * pClass ) ;
+
 	LString MakeDocSuperClass
-		( LOutputStream& strm, LClass * pClass, LClass * pFromClass ) ;
+		( LOutputStream& strm, LClass * pClass, LPackage * pFromPackage ) ;
 
 	void MakeDocVariableList
 		( LOutputStream& strm, const wchar_t * pwszBase,
@@ -104,9 +116,13 @@ public:
 	int MakeDocIndexInPackage( LPackagePtr pPackage ) ;
 	int MakeDocClassesInPackage
 		( LOutputStream& strm, LPackagePtr pPackage, bool flagRootIndex ) ;
+	int MakeDocTypesInPackage
+		( LOutputStream& strm, LPackagePtr pPackage, bool flagRootIndex ) ;
 
 	// 全てのパッケージのクラスを文書化する
 	int MakeDocAllPackages( void ) ;
+	size_t CoundClassesInPackage( LPackagePtr pPackage ) const ;
+	size_t CoundTypesInPackage( LPackagePtr pPackage ) const ;
 
 	// クラスの native 関数宣言・実装のテンプレートを出力する
 	int MakeNativeFuncStubClass( void ) ;

@@ -1455,25 +1455,23 @@ void LCompiler::ParseImplementationClass
 					(Symbol::rwiExtends).pwszName /*L"extends"*/ ) )
 		{
 			// extends ...
-			LPtr<LNamespace>	pParent =
+			pSuperClass =
 				ParseNamespaceExpr( sparsSrc, Symbol::rwiClass, pnslLocal ) ;
-			if ( pParent == nullptr )
+			if ( pSuperClass == nullptr )
 			{
 				sparsSrc.PassStatementBlock() ;
 				return ;
 			}
-			pSuperClass = dynamic_cast<LClass*>( pParent.Ptr() ) ;
-			if ( (pSuperClass == nullptr)
-				|| (dynamic_cast<LStructureClass*>( pSuperClass ) != nullptr) )
+			if ( dynamic_cast<LStructureClass*>( pSuperClass ) != nullptr )
 			{
-				OnError( errorIsNotClassName, pParent->GetName().c_str() ) ;
+				OnError( errorIsNotClassName, pSuperClass->GetName().c_str() ) ;
 				sparsSrc.PassStatementBlock() ;
 				return ;
 			}
 			if ( dynamic_cast<LGenericObj*>
 					( pSuperClass->GetPrototypeObject().Ptr() ) == nullptr )
 			{
-				OnError( errorNonDerivableClass, pParent->GetName().c_str() ) ;
+				OnError( errorNonDerivableClass, pSuperClass->GetName().c_str() ) ;
 				sparsSrc.PassStatementBlock() ;
 				return ;
 			}
@@ -1496,25 +1494,23 @@ void LCompiler::ParseImplementationClass
 			// implements ...
 			do
 			{
-				LPtr<LNamespace>	pParent =
+				pSuperClass =
 					ParseNamespaceExpr( sparsSrc, Symbol::rwiClass, pnslLocal ) ;
-				if ( pParent == nullptr )
+				if ( pSuperClass == nullptr )
 				{
 					sparsSrc.PassStatementBlock() ;
 					return ;
 				}
-				pSuperClass = dynamic_cast<LClass*>( pParent.Ptr() ) ;
-				if ( (pSuperClass == nullptr)
-					|| (dynamic_cast<LStructureClass*>( pSuperClass ) != nullptr) )
+				if ( dynamic_cast<LStructureClass*>( pSuperClass ) != nullptr )
 				{
-					OnError( errorIsNotClassName, pParent->GetName().c_str() ) ;
+					OnError( errorIsNotClassName, pSuperClass->GetName().c_str() ) ;
 					sparsSrc.PassStatementBlock() ;
 					return ;
 				}
 				if ( dynamic_cast<LGenericObj*>
 						( pSuperClass->GetPrototypeObject().Ptr() ) == nullptr )
 				{
-					OnError( errorNonDerivableClass, pParent->GetName().c_str() ) ;
+					OnError( errorNonDerivableClass, pSuperClass->GetName().c_str() ) ;
 					sparsSrc.PassStatementBlock() ;
 					return ;
 				}
@@ -1541,7 +1537,7 @@ void LCompiler::ParseImplementationClass
 			size_t	i = 0 ;
 			do
 			{
-				LPtr<LNamespace>	pParent =
+				LClass *	pParent =
 					ParseNamespaceExpr( sparsSrc, Symbol::rwiClass, pnslLocal ) ;
 				if ( pParent == nullptr )
 				{
@@ -1549,7 +1545,7 @@ void LCompiler::ParseImplementationClass
 					return ;
 				}
 				LStructureClass *	pSuperClass =
-							dynamic_cast<LStructureClass*>( pParent.Ptr() ) ;
+							dynamic_cast<LStructureClass*>( pParent ) ;
 				if ( pSuperClass == nullptr )
 				{
 					OnError( errorIsNotStructName, pParent->GetName().c_str() ) ;
@@ -1607,13 +1603,11 @@ void LCompiler::ParseImplementationClass
 }
 
 // 派生元クラスを解釈
-LPtr<LNamespace> LCompiler::ParseNamespaceExpr
+LClass * LCompiler::ParseNamespaceExpr
 	( LStringParser& sparsSrc,
 		Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal )
 {
-	// Type1 :: Type2 :: ... DefName
 	size_t	iStart = sparsSrc.GetIndex() ;
-
 	LString	strName ;
 	if ( sparsSrc.NextToken( strName ) == LStringParser::tokenNothing )
 	{
@@ -1621,35 +1615,10 @@ LPtr<LNamespace> LCompiler::ParseNamespaceExpr
 		return	nullptr ;
 	}
 
-	LPtr<LNamespace>	pNamespace ;
-	LExprValuePtr		xval = GetExprSymbolAs
-									( strName.c_str(), &sparsSrc, pnslLocal ) ;
-	if ( xval != nullptr )
-	{
-		if ( xval->IsNamespace() )
-		{
-			pNamespace = xval->GetNamespace() ;
-		}
-		else if ( xval->IsConstExprClass() )
-		{
-			LClass *	pClass = xval->GetConstExprClass() ;
-			assert( pClass != nullptr ) ;
-			pClass->AddRef() ;
-			pNamespace = pClass ;
-		}
-	}
-	while ( (pNamespace != nullptr)
-			&& (sparsSrc.HasNextToken( L"::" )
-				|| sparsSrc.HasNextToken( L"." )) )
-	{
-		if ( sparsSrc.NextToken( strName ) == LStringParser::tokenNothing )
-		{
-			OnError( errorSyntaxError ) ;
-			return	nullptr ;
-		}
-		pNamespace = pNamespace->GetLocalNamespaceAs( strName.c_str() ) ;
-	}
-	if ( pNamespace == nullptr )
+	LType	typeClass ;
+	if ( !sparsSrc.ParseTypeName
+			( typeClass, true, strName.c_str(), m_vm, pnslLocal, 0, false )
+		|| (typeClass.GetClass() == nullptr) )
 	{
 		switch ( rwIndex )
 		{
@@ -1666,7 +1635,7 @@ LPtr<LNamespace> LCompiler::ParseNamespaceExpr
 		sparsSrc.SeekIndex( iStart ) ;
 		return	nullptr ;
 	}
-	return	pNamespace ;
+	return	typeClass.GetClass() ;
 }
 
 // ジェネリック型のインスタンス化書式か？
@@ -1724,7 +1693,6 @@ void LCompiler::ParseDeclarationGenericType
 	gendef.m_name = pwszName ;
 	gendef.m_kind = rwIndex ;
 	gendef.m_source = m_vm.SourceProducer().GetSafeSource( &sparsSrc ) ;
-	gendef.m_srcFirst = sparsSrc.GetIndex() ;
 
 	// ジェネリック型引数解釈
 	if ( sparsSrc.HasNextChars( L"<" ) == L'<' )
@@ -1760,6 +1728,7 @@ void LCompiler::ParseDeclarationGenericType
 	}
 
 	// ブロックの終端
+	gendef.m_srcFirst = sparsSrc.GetIndex() ;
 	sparsSrc.PassStatementBlock() ;
 	gendef.m_srcEnd = sparsSrc.GetIndex() ;
 
@@ -4171,7 +4140,11 @@ bool LCompiler::ParseConstructer
 
 	// ClassName( ... )
 	const size_t	iSaveIndex = sparsSrc.GetIndex() ;
-	if ( !sparsSrc.HasNextToken( pClass->GetConstructerName().c_str() )
+	LType	typeClass ;
+	if ( !sparsSrc.NextTypeExpr
+			( typeClass, false, m_vm, pnslLocal, 0, false, false )
+		|| (typeClass.GetModifiers() != 0)
+		|| (typeClass.GetClass() != pClass)
 		|| (sparsSrc.HasNextChars( L"(" ) != L'(') )
 	{
 		sparsSrc.SeekIndex( iSaveIndex ) ;

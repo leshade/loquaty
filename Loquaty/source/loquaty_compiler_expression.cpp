@@ -1378,11 +1378,12 @@ LPtr<LNamespace> LCompiler::ParseGenericType
 	}
 
 	// インスタンス化済みか？
-	LPtr<LNamespace>	pInstance ;
-	pInstance = pGenType->m_parent->GetClassAs( strGenTypeName.c_str() ) ;
-	if ( pInstance != nullptr )
+	LClass *	pGenClass =
+		pGenType->m_parent->GetClassAs( strGenTypeName.c_str() ) ;
+	if ( pGenClass != nullptr )
 	{
-		return	pInstance ;
+		pGenClass->AddRef() ;
+		return	pGenClass ;
 	}
 	if ( !instantiateGenType )
 	{
@@ -1391,6 +1392,7 @@ LPtr<LNamespace> LCompiler::ParseGenericType
 	}
 
 	// インスタンス化
+	LPtr<LNamespace>	pInstance ;
 	pInstance = pGenType->Instantiate( *this, vecTypes ) ;
 	if ( pInstance == nullptr )
 	{

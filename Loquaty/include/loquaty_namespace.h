@@ -242,10 +242,21 @@ namespace	Loquaty
 			typeImportingModule,
 			typeIncludingScript,
 		} ;
+		class	TypeDefDesc
+		{
+		public:
+			LNamespace *	m_pNamespace ;
+			LString			m_strName ;
+
+			TypeDefDesc( LNamespace * pNamespace, const wchar_t * pwszName )
+				: m_pNamespace( pNamespace ), m_strName( pwszName ) { }
+		} ;
+
 	protected:
-		Type					m_type ;
-		LString					m_name ;
-		std::vector<LClass*>	m_classes ;
+		Type						m_type ;
+		LString						m_name ;
+		std::vector<LClass*>		m_classes ;
+		std::vector<TypeDefDesc>	m_types ;
 
 		static thread_local LPackage *	t_pCurrent ;
 
@@ -272,6 +283,17 @@ namespace	Loquaty
 		const std::vector<LClass*>& GetClasses( void ) const
 		{
 			return	m_classes ;
+		}
+		// 型定義追加
+		void AddTypeDef
+			( LNamespace * pNamespace, const wchar_t * pwszName )
+		{
+			m_types.push_back( TypeDefDesc( pNamespace, pwszName ) ) ;
+		}
+		// 型定義リスト
+		const std::vector<TypeDefDesc>& GetTypes( void ) const
+		{
+			return	m_types ;
 		}
 
 	public:
