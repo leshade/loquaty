@@ -1066,6 +1066,7 @@ LExprValuePtr LCompiler::GetExprSymbolAs
 	}
 
 	// ネストから探す
+	LNamespaceList	nslTemp ;
 	if ( m_ctx != nullptr )
 	{
 		CodeNestPtr	pNest = m_ctx->m_curNest ;
@@ -1073,15 +1074,10 @@ LExprValuePtr LCompiler::GetExprSymbolAs
 		{
 			if ( pNest->m_namespace != nullptr )
 			{
-				LExprValuePtr	xval =
-					GetSymbolWithNamespaceAs
-						( pwszName, psparsExpr,
-							pNest->m_namespace.Ptr(), pnslLocal ) ;
-				if ( xval != nullptr )
-				{
-					return	xval ;
-				}
+				nslTemp.AddNamespace( pNest->m_namespace.Ptr() ) ;
 			}
+			nslTemp.AddNamespaceList( pNest->m_nslUsing ) ;
+
 			if ( (pNest->m_type == CodeNest::ctrlWith)
 				&& (pNest->m_xvalObj != nullptr) )
 			{
@@ -1099,26 +1095,27 @@ LExprValuePtr LCompiler::GetExprSymbolAs
 	// 名前空間から探す
 	if ( pnslLocal != nullptr )
 	{
-		for ( size_t i = 0; i < pnslLocal->size(); i ++ )
+		nslTemp.AddNamespaceList( *pnslLocal ) ;
+	}
+	for ( size_t i = 0; i < nslTemp.size(); i ++ )
+	{
+		LNamespace *	pnsLocal = nslTemp.at(i) ;
+		while ( (pnsLocal != nullptr) && (pnsLocal != m_vm.Global().Ptr()) )
 		{
-			LNamespace *	pnsLocal = pnslLocal->at(i) ;
-			while ( (pnsLocal != nullptr) && (pnsLocal != m_vm.Global().Ptr()) )
+			LExprValuePtr	xval =
+					GetSymbolWithNamespaceAs
+						( pwszName, psparsExpr, pnsLocal, &nslTemp ) ;
+			if ( xval != nullptr )
 			{
-				LExprValuePtr	xval =
-						GetSymbolWithNamespaceAs
-							( pwszName, psparsExpr, pnsLocal, pnslLocal ) ;
-				if ( xval != nullptr )
-				{
-					return	xval ;
-				}
-				pnsLocal = pnsLocal->GetParentNamespace().Ptr() ;
+				return	xval ;
 			}
+			pnsLocal = pnsLocal->GetParentNamespace().Ptr() ;
 		}
 	}
 
 	// グローバル空間から探す
 	return	GetSymbolWithNamespaceAs
-				( pwszName, psparsExpr, m_vm.Global().Ptr(), pnslLocal ) ;
+				( pwszName, psparsExpr, m_vm.Global().Ptr(), &nslTemp ) ;
 }
 
 // 名前空間から探す（見つからなければ nullptr）
@@ -1829,6 +1826,8 @@ void LCompiler::AddScopeToNamespaceList
 			{
 				nslNamespace.AddNamespace( pNest->m_namespace.Ptr() ) ;
 			}
+			nslNamespace.AddNamespaceList( pNest->m_nslUsing );
+
 			pNest = pNest->m_prev ;
 		}
 

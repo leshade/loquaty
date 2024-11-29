@@ -89,6 +89,7 @@ namespace	Loquaty
 			std::shared_ptr<CodeNest>	m_prev ;
 			ControlType					m_type ;
 			LPtr<LNamespace>			m_namespace ;	// class, namespace
+			LNamespaceList				m_nslUsing ;	// using namespace
 			LLocalVarArrayPtr			m_frame ;
 			LLocalVarPtr				m_var ;			// switch 分岐値
 			LExprValuePtr				m_xvalObj ;		// with, synchronized
@@ -1037,6 +1038,10 @@ namespace	Loquaty
 				Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal ) ;
 		// typedef
 		void ParseStatement_typedef
+			( LStringParser& sparsSrc,
+				Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal ) ;
+		// using
+		void ParseStatement_using
 			( LStringParser& sparsSrc,
 				Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal ) ;
 		// for

@@ -610,14 +610,17 @@ const LNamespace::GenericDef *
 // 名前空間追加
 void LNamespaceList::AddNamespace( LNamespace * pNamespace )
 {
-	for ( auto pns : *this )
+	if ( pNamespace != nullptr )
 	{
-		if ( pns == pNamespace )
+		for ( auto pns : *this )
 		{
-			return ;
+			if ( pns == pNamespace )
+			{
+				return ;
+			}
 		}
+		std::vector<LNamespace*>::push_back( pNamespace ) ;
 	}
-	std::vector<LNamespace*>::push_back( pNamespace ) ;
 }
 
 void LNamespaceList::AddNamespaceList( const LNamespaceList& list )

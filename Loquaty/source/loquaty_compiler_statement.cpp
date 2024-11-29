@@ -59,6 +59,9 @@ void LCompiler::ParseOneStatement
 		return ;
 	}
 
+	LNamespaceList	nslTemp ;
+	AddScopeToNamespaceList( nslTemp, pnslLocal ) ;
+
 	LString		strToken ;
 	LStringParser::TokenType
 				typeToken = sparsSrc.NextToken( strToken ) ;
@@ -68,7 +71,7 @@ void LCompiler::ParseOneStatement
 	if ( rwIndex != Symbol::rwiInvalid )
 	{
 		// 予約語から始まる文
-		(this->*s_pfnParseStatement[rwIndex])( sparsSrc, rwIndex, pnslLocal ) ;
+		(this->*s_pfnParseStatement[rwIndex])( sparsSrc, rwIndex, &nslTemp ) ;
 		ExprCodeFreeTempStack() ;
 		OnEndStatement( sparsSrc, rwIndex ) ;
 		return ;
@@ -85,7 +88,7 @@ void LCompiler::ParseOneStatement
 
 	// 型名から始まる場合は宣言文、そうでないなら式文
 	sparsSrc.SeekIndex( m_iSrcStatement ) ;
-	ParseDefinitionOrExpression( sparsSrc, pnslLocal ) ;
+	ParseDefinitionOrExpression( sparsSrc, &nslTemp ) ;
 	ExprCodeFreeTempStack() ;
 	OnEndStatement( sparsSrc, rwIndex ) ;
 
@@ -1102,6 +1105,7 @@ const LCompiler::PFN_ParseStatement
 	&LCompiler::ParseStatement_class,			// struct
 	&LCompiler::ParseStatement_class,			// namespace
 	&LCompiler::ParseStatement_typedef,			// typedef
+	&LCompiler::ParseStatement_using,			// using
 	&LCompiler::ParseStatement_expr,			// function
 	&LCompiler::ParseStatement_syntax_error,	// extends
 	&LCompiler::ParseStatement_syntax_error,	// implements
@@ -1786,6 +1790,54 @@ void LCompiler::ParseStatement_typedef
 	else
 	{
 		pNamespace->DefineTypeAs( strTypeName.c_str(), typeDef, true ) ;
+	}
+}
+
+// using
+///////////////////////////////////////////////////////////////////////////////
+void LCompiler::ParseStatement_using
+	( LStringParser& sparsSrc,
+		Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal )
+{
+	// using namespace namespace-expr ;
+	if ( !sparsSrc.HasNextToken
+			( GetReservedWordDesc(Symbol::rwiNamespace).pwszName ) )
+	{
+		OnError( errorNotFoundSyntax_opt1,
+					GetReservedWordDesc(Symbol::rwiNamespace).pwszName ) ;
+		sparsSrc.PassStatement( L";", L"}" ) ;
+		return ;
+	}
+	LExprValuePtr	xval = EvaluateExpression( sparsSrc, pnslLocal, L";" ) ;
+	if ( HasErrorOnCurrent() )
+	{
+		sparsSrc.PassStatement( L";", L"}" ) ;
+		return ;
+	}
+	HasSemicolonForEndOfStatement( sparsSrc ) ;
+
+	if ( xval->IsNamespace() )
+	{
+		if ( (m_ctx != nullptr)
+			&& (m_ctx->m_curNest != nullptr) )
+		{
+			m_ctx->m_curNest->m_nslUsing.AddNamespace
+								( xval->GetNamespace().Ptr() ) ;
+		}
+	}
+	else if ( xval->IsConstExprClass() )
+	{
+		if ( (m_ctx != nullptr)
+			&& (m_ctx->m_curNest != nullptr) )
+		{
+			m_ctx->m_curNest->m_nslUsing.AddNamespace
+								( xval->GetConstExprClass() ) ;
+		}
+	}
+	else
+	{
+		OnError( errorSyntaxErrorWithReservedWord,
+					GetReservedWordDesc(rwIndex).pwszName ) ;
 	}
 }
 
@@ -4324,10 +4376,8 @@ void LCompiler::ParseFunctionImplementation
 		pNest = pNest->m_prev ;
 	}
 	LNamespaceList	nslTemp ;
-	if ( pnslLocal != nullptr )
-	{
-		nslTemp.AddNamespaceList( *pnslLocal ) ;
-	}
+	AddScopeToNamespaceList( nslTemp, pnslLocal ) ;
+
 	pNest->m_vecDelayImplements.push_back
 		( std::make_shared<DelayImplement>( ps, pFunc, nslTemp ) ) ;
 

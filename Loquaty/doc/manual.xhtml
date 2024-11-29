@@ -79,6 +79,7 @@
 	<a href="#usage_struct">struct 文</a><br/>
 	<a href="#usage_namespace">namespace 文</a><br/>
 	<a href="#usage_typedef">typedef 文</a><br/>
+	<a href="#usage_using">using 文</a><br/>
 	<a href="#usage_for">for 文</a><br/>
 	<a href="#usage_forever">forever 文</a><br/>
 	<a href="#usage_while">while 文</a><br/>
@@ -2356,6 +2357,31 @@ boolean の false 値を表現します。
 <div class="code_quote">
 	&exam;
 	typdef IntPtr = int* ;&r;
+</div>
+
+</div>
+<br/>
+
+
+
+<!--============================ using 文 ================================-->
+<a name="usage_using"/>
+<div class="headline">using 文</div>
+
+<div class="usage">
+<bold>using namespace</bold> <italic>namespace-expr</italic> <bold>;</bold><br/>
+</div>
+<br/>
+
+<div class="normal">
+
+　現在のスコープで暗黙に名前解決に参照する名前空間を追加します。<br/>
+　<italic>namespace-expr</italic> は名前空間だけでなくクラス・構造体でも構いません（静的なメンバが参照の対象になります）。<br/>
+
+<div class="code_quote">
+	&exam;
+	using namespace Console ;&r;
+	using namespace Math ;&r;
 </div>
 
 </div>

@@ -11,7 +11,8 @@ namespace	Loquaty
 		{
 			rwiInvalid	= -1,
 			rwiImport, rwiInclude, rwiError, rwiTodo,
-			rwiClass, rwiStruct, rwiNamespace, rwiTypeDef,
+			rwiClass, rwiStruct, rwiNamespace,
+			rwiTypeDef, rwiUsing,
 			rwiFunction, rwiExtends, rwiImplements,
 			rwiFor, fwiIn, fwiForever, rwiWhile, rwiDo,
 			rwiIf, rwiElse, rwiSwitch, rwiCase, rwiDefault,

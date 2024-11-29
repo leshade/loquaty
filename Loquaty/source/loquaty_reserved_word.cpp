@@ -16,6 +16,7 @@ const Symbol::ReservedWordDesc
 	{	rwiStruct,			L"struct"		},
 	{	rwiNamespace,		L"namespace"	},
 	{	rwiTypeDef,			L"typedef"		},
+	{	rwiUsing,			L"using"		},
 	{	rwiFunction,		L"function"		},
 	{	rwiExtends,			L"extends"		},
 	{	rwiImplements,		L"implements"	},
