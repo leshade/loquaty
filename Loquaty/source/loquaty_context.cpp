@@ -1130,7 +1130,10 @@ void LContext::instruction_LoadFetchAddr( const LCodeBuffer::Word& word )
 		micro_instruction_FetchAddr
 			( pStack->BackIndex(word.sop1),
 				(ssize_t) word.imop.value.longValue, (size_t) word.imm ) ;
-
+	if ( pBuf == nullptr )
+	{
+		return ;
+	}
 	pStack->Push( micro_instruction_CheckAlignment( pBuf, word.op3 ) ) ;
 }
 
@@ -1143,7 +1146,10 @@ void LContext::instruction_LoadFetchAddrOffset( const LCodeBuffer::Word& word )
 			( pStack->BackIndex(word.sop1),
 				(ssize_t) pStack->BackAt(word.sop2).longValue
 					+ (ssize_t) word.imop.value.longValue, (size_t) word.imm ) ;
-
+	if ( pBuf == nullptr )
+	{
+		return ;
+	}
 	pStack->Push( micro_instruction_CheckAlignment( pBuf, word.op3 ) ) ;
 }
 
@@ -1156,7 +1162,10 @@ void LContext::instruction_LoadFetchLAddr( const LCodeBuffer::Word& word )
 			( pStack->m_fp + word.sop1,
 				(ssize_t) pStack->BackAt(word.sop2).longValue
 					+ (ssize_t) word.imop.value.longValue, (size_t) word.imm ) ;
-
+	if ( pBuf == nullptr )
+	{
+		return ;
+	}
 	pStack->Push( micro_instruction_CheckAlignment( pBuf, word.op3 ) ) ;
 }
 
@@ -1168,7 +1177,10 @@ void LContext::instruction_CheckLPtrAlign( const LCodeBuffer::Word& word )
 		micro_instruction_FetchAddr
 			( pStack->m_fp + (size_t) word.imop.value.longValue,
 				(size_t) pStack->At(word.sop1).longValue + word.imm, 0 ) ;
-	micro_instruction_CheckAlignment( pBuf, word.op3 ) ;
+	if ( pBuf != nullptr )
+	{
+		micro_instruction_CheckAlignment( pBuf, word.op3 ) ;
+	}
 }
 
 // CheckPtrAlign
@@ -1177,7 +1189,10 @@ void LContext::instruction_CheckPtrAlign( const LCodeBuffer::Word& word )
 	std::uint8_t *	pBuf =
 		micro_instruction_FetchAddr
 			( m_stack->BackIndex( word.sop1 ), word.imm, 0 ) ;
-	micro_instruction_CheckAlignment( pBuf, word.op3 ) ;
+	if ( pBuf != nullptr )
+	{
+		micro_instruction_CheckAlignment( pBuf, word.op3 ) ;
+	}
 }
 
 // LoadLPtr
@@ -1193,7 +1208,6 @@ void LContext::instruction_LoadLPtr( const LCodeBuffer::Word& word )
 				(size_t) word.imm, LType::s_bytesAligned[type] ) ;
 	if ( pBuf == nullptr )
 	{
-		micro_instruction_ThrowNullException() ;
 		return ;
 	}
 	pStack->Push( (s_pfnLoadFromPointer[type])( pBuf ) ) ;
@@ -1213,7 +1227,6 @@ void LContext::instruction_LoadLPtrOffset( const LCodeBuffer::Word& word )
 				+ (size_t) word.imm, LType::s_bytesAligned[type] ) ;
 	if ( pBuf == nullptr )
 	{
-		micro_instruction_ThrowNullException() ;
 		return ;
 	}
 	pStack->Push( (s_pfnLoadFromPointer[type])( pBuf ) ) ;
@@ -1232,7 +1245,6 @@ void LContext::instruction_LoadByPtr( const LCodeBuffer::Word& word )
 				(size_t) word.imm, LType::s_bytesAligned[type] ) ;
 	if ( pBuf == nullptr )
 	{
-		micro_instruction_ThrowNullException() ;
 		return ;
 	}
 	pStack->Push( (s_pfnLoadFromPointer[type])( pBuf ) ) ;
@@ -1458,7 +1470,6 @@ void LContext::instruction_StoreByPtr( const LCodeBuffer::Word& word )
 					word.imm, LType::s_bytesAligned[type] ) ;
 	if ( pBuf == nullptr )
 	{
-		micro_instruction_ThrowNullException() ;
 		return ;
 	}
 	(s_pfnStoreIntoPointer[type])( pBuf, m_stack->BackAt(word.sop2) ) ;
@@ -1477,7 +1488,6 @@ void LContext::instruction_StoreByLPtr( const LCodeBuffer::Word& word )
 					word.imm, LType::s_bytesAligned[type] ) ;
 	if ( pBuf == nullptr )
 	{
-		micro_instruction_ThrowNullException() ;
 		return ;
 	}
 	(s_pfnStoreIntoPointer[type])( pBuf, m_stack->BackAt(word.sop2) ) ;
@@ -2065,6 +2075,18 @@ void LContext::micro_instruction_ThrowIndexOutOfBounds( void )
 	micro_instruction_Throw() ;
 }
 
+void LContext::micro_instruction_ThrowPointerOutOfBounds( void )
+{
+	LClass *	pClass = m_vm.GetExceptioinClassAs
+							( GetExceptionClassName(exceptionPointerOutOfBounds) ) ;
+	m_stack->Push
+		( LValue::MakeObjectPtr
+			( new LExceptionObj
+				( pClass, GetErrorMessage(exceptionPointerOutOfBounds) ) ) ) ;
+
+	micro_instruction_Throw() ;
+}
+
 void LContext::micro_instruction_ThrowAlignmentMismatch( void )
 {
 	LClass *	pClass = m_vm.GetExceptioinClassAs
@@ -2072,7 +2094,7 @@ void LContext::micro_instruction_ThrowAlignmentMismatch( void )
 	m_stack->Push
 		( LValue::MakeObjectPtr
 			( new LExceptionObj
-				( pClass, GetErrorMessage(exceptionIndexOutOfBounds) ) ) ) ;
+				( pClass, GetErrorMessage(exceptionPointerAlignmentMismatch) ) ) ) ;
 
 	micro_instruction_Throw() ;
 }
@@ -2162,14 +2184,22 @@ std::uint8_t * LContext::micro_instruction_FetchAddr
 	LObject *	pObj = m_stack->At(ptr).pObject ;
 	if ( pObj == nullptr )
 	{
+		micro_instruction_ThrowNullException() ;
 		return	nullptr ;
 	}
 	LPtr<LPointerObj>	pPtr = pObj->GetBufferPoiner() ;
 	if ( pPtr == nullptr )
 	{
+		micro_instruction_ThrowNullException() ;
 		return	nullptr ;
 	}
-	return	pPtr->GetPointer( off, range ) ;
+	std::uint8_t *	pBuf = pPtr->GetPointer( off, range ) ;
+	if ( pBuf == nullptr )
+	{
+		micro_instruction_ThrowPointerOutOfBounds() ;
+		return	nullptr ;
+	}
+	return	pBuf ;
 }
 
 // ポインタ・アライメント・チェック

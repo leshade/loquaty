@@ -86,7 +86,7 @@ LPtr<LNamespace> LNamespace::GenericDef::Instantiate
 	// 引数を設定
 	for ( size_t i = 0; i < arg.size(); i ++ )
 	{
-		pInstance->DefineTypeAs( m_params.at(i).c_str(), arg.at(i) ) ;
+		pInstance->DefineTypeAs( m_params.at(i).c_str(), arg.at(i), false ) ;
 	}
 
 	// 実装
@@ -422,7 +422,7 @@ const std::map< std::wstring, LPtr<LNamespace> >&
 
 // 型定義を追加
 bool LNamespace::DefineTypeAs
-	( const wchar_t * pwszName, const LType& type )
+	( const wchar_t * pwszName, const LType& type, bool flagPackage )
 {
 	auto	lock = GetLock() ;
 	auto	iter = m_typedefs.find( pwszName ) ;
@@ -430,10 +430,13 @@ bool LNamespace::DefineTypeAs
 	{
 		return	false ;
 	}
-	LPackage *	pPackage = LPackage::GetCurrent() ;
-	if ( pPackage != nullptr )
+	if ( flagPackage )
 	{
-		pPackage->AddTypeDef( this, pwszName ) ;
+		LPackage *	pPackage = LPackage::GetCurrent() ;
+		if ( pPackage != nullptr )
+		{
+			pPackage->AddTypeDef( this, pwszName ) ;
+		}
 	}
 	m_typedefs.insert
 		( std::make_pair<std::wstring,LType>( pwszName, LType(type) ) ) ;

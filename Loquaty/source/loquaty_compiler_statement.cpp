@@ -547,6 +547,11 @@ LCompiler::CodeNestPtr LCompiler::PopNest( CodeNestPtr pNest )
 		m_ctx->m_dbgVarInfos.push_back( dlvi ) ;
 	}
 
+	if ( m_ctx->m_codeBuf != nullptr )
+	{
+		m_ctx->m_iCurStCode = m_ctx->m_codeBuf->m_buffer.size() ;
+	}
+
 	return	m_ctx->m_curNest ;
 }
 
@@ -1780,7 +1785,7 @@ void LCompiler::ParseStatement_typedef
 	}
 	else
 	{
-		pNamespace->DefineTypeAs( strTypeName.c_str(), typeDef ) ;
+		pNamespace->DefineTypeAs( strTypeName.c_str(), typeDef, true ) ;
 	}
 }
 

@@ -2996,13 +2996,13 @@ void LArrayClass::ImplementClass( void )
 {
 	if ( m_pElementType == nullptr )
 	{
-		DefineTypeAs( L"@Type", LType( m_vm.GetObjectClass() ) ) ;
-		DefineTypeAs( L"@ArrayType", LType( m_vm.GetArrayClass() ) ) ;
+		DefineTypeAs( L"@Type", LType( m_vm.GetObjectClass() ), false ) ;
+		DefineTypeAs( L"@ArrayType", LType( m_vm.GetArrayClass() ), false ) ;
 	}
 	else
 	{
-		DefineTypeAs( L"@Type", LType( m_pElementType ) ) ;
-		DefineTypeAs( L"@ArrayType", LType( m_vm.GetArrayClassAs( m_pElementType ) ) ) ;
+		DefineTypeAs( L"@Type", LType( m_pElementType ), false ) ;
+		DefineTypeAs( L"@ArrayType", LType( m_vm.GetArrayClassAs( m_pElementType ) ), false ) ;
 	}
 	AddClassMemberDefinitions( s_MemberDesc ) ;
 }
@@ -3170,13 +3170,13 @@ void LMapClass::ImplementClass( void )
 {
 	if ( m_pElementType == nullptr )
 	{
-		DefineTypeAs( L"@Type", LType( m_vm.GetObjectClass() ) ) ;
-		DefineTypeAs( L"@MapType", LType( m_vm.GetMapClass() ) ) ;
+		DefineTypeAs( L"@Type", LType( m_vm.GetObjectClass() ), false ) ;
+		DefineTypeAs( L"@MapType", LType( m_vm.GetMapClass() ), false ) ;
 	}
 	else
 	{
-		DefineTypeAs( L"@Type", LType( m_pElementType ) ) ;
-		DefineTypeAs( L"@MapType", LType( m_vm.GetMapClassAs( m_pElementType ) ) ) ;
+		DefineTypeAs( L"@Type", LType( m_pElementType ), false ) ;
+		DefineTypeAs( L"@MapType", LType( m_vm.GetMapClassAs( m_pElementType ) ), false ) ;
 	}
 	AddClassMemberDefinitions( s_MemberDesc ) ;
 }
@@ -3769,7 +3769,7 @@ LObject * LTaskClass::DuplicateObject( void ) const
 // クラス定義処理（ネイティブな実装）
 void LTaskClass::ImplementClass( void )
 {
-	DefineTypeAs( L"@Type", m_typeReturn ) ;
+	DefineTypeAs( L"@Type", m_typeReturn, false ) ;
 	AddClassMemberDefinitions( s_MemberDesc ) ;
 }
 
@@ -3905,7 +3905,7 @@ LObject * LThreadClass::DuplicateObject( void ) const
 // クラス定義処理（ネイティブな実装）
 void LThreadClass::ImplementClass( void )
 {
-	DefineTypeAs( L"@Type", m_typeReturn ) ;
+	DefineTypeAs( L"@Type", m_typeReturn, false ) ;
 	AddClassMemberDefinitions( s_MemberDesc ) ;
 }
 

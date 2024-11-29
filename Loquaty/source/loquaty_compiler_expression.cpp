@@ -1075,7 +1075,8 @@ LExprValuePtr LCompiler::GetExprSymbolAs
 			{
 				LExprValuePtr	xval =
 					GetSymbolWithNamespaceAs
-						( pwszName, psparsExpr, pNest->m_namespace.Ptr() ) ;
+						( pwszName, psparsExpr,
+							pNest->m_namespace.Ptr(), pnslLocal ) ;
 				if ( xval != nullptr )
 				{
 					return	xval ;
@@ -1105,7 +1106,7 @@ LExprValuePtr LCompiler::GetExprSymbolAs
 			{
 				LExprValuePtr	xval =
 						GetSymbolWithNamespaceAs
-							( pwszName, psparsExpr, pnsLocal ) ;
+							( pwszName, psparsExpr, pnsLocal, pnslLocal ) ;
 				if ( xval != nullptr )
 				{
 					return	xval ;
@@ -1117,14 +1118,15 @@ LExprValuePtr LCompiler::GetExprSymbolAs
 
 	// グローバル空間から探す
 	return	GetSymbolWithNamespaceAs
-				( pwszName, psparsExpr, m_vm.Global().Ptr() ) ;
+				( pwszName, psparsExpr, m_vm.Global().Ptr(), pnslLocal ) ;
 }
 
 // 名前空間から探す（見つからなければ nullptr）
 //////////////////////////////////////////////////////////////////////////////
 LExprValuePtr LCompiler::GetSymbolWithNamespaceAs
 	( const wchar_t * pwszName,
-		LStringParser * psparsExpr, LNamespace * pnsLocal )
+		LStringParser * psparsExpr, LNamespace * pnsLocal,
+		const LNamespaceList * pnslLocal )
 {
 	assert( pnsLocal != nullptr ) ;
 	LClass *	pLocalClass = dynamic_cast<LClass*>( pnsLocal ) ;
@@ -1227,7 +1229,7 @@ LExprValuePtr LCompiler::GetSymbolWithNamespaceAs
 		&& (psparsExpr != nullptr) )
 	{
 		pNamespace = ParseGenericType
-			( *psparsExpr, pwszName, pGenType, true, pnsLocal ) ;
+			( *psparsExpr, pwszName, pGenType, true, pnslLocal ) ;
 		if ( pNamespace != nullptr )
 		{
 			pClass = dynamic_cast<LClass*>( pNamespace.Ptr() ) ;
@@ -1252,7 +1254,7 @@ LExprValuePtr LCompiler::GetSymbolWithNamespaceAs
 		{
 			LExprValuePtr	xval =
 				GetSymbolWithNamespaceAs
-					( pwszName, psparsExpr, pSuperClass ) ;
+					( pwszName, psparsExpr, pSuperClass, pnslLocal ) ;
 			if ( xval != nullptr )
 			{
 				return	xval ;
@@ -1263,7 +1265,7 @@ LExprValuePtr LCompiler::GetSymbolWithNamespaceAs
 			LExprValuePtr	xval =
 				GetSymbolWithNamespaceAs
 					( pwszName, psparsExpr,
-						pLocalClass->GetImplementClasses().at(i) ) ;
+						pLocalClass->GetImplementClasses().at(i), pnslLocal ) ;
 			if ( xval != nullptr )
 			{
 				return	xval ;
@@ -1358,7 +1360,7 @@ LPtr<LFunctionObj> LCompiler::GetStaticFunctionOfNamespaceAs
 LPtr<LNamespace> LCompiler::ParseGenericType
 	( LStringParser& sparsExpr, const wchar_t * pwszName,
 		const LNamespace::GenericDef * pGenType,
-		bool instantiateGenType, LNamespace * pnsLocal )
+		bool instantiateGenType, const LNamespaceList * pnslLocal )
 {
 	const size_t	iSaveIndex = sparsExpr.GetIndex() ;
 
@@ -1366,12 +1368,8 @@ LPtr<LNamespace> LCompiler::ParseGenericType
 	LString				strGenTypeName ;
 	std::vector<LType>	vecTypes ;
 
-	LNamespaceList	nslNamespace ;
-	nslNamespace.AddNamespace( pnsLocal ) ;
-	AddScopeToNamespaceList( nslNamespace ) ;
-
 	if ( !sparsExpr.ParseGenericArgList
-		( vecTypes, strGenTypeName, false, pwszName, m_vm, &nslNamespace ) )
+		( vecTypes, strGenTypeName, false, pwszName, m_vm, pnslLocal ) )
 	{
 		sparsExpr.SeekIndex( iSaveIndex ) ;
 		return	nullptr ;
@@ -1457,13 +1455,19 @@ LExprValuePtr LCompiler::GetExprVarMember
 	}
 	if ( xvalVar->IsNamespace() )
 	{
+		LNamespaceList	nslLocal ;
+		AddScopeToNamespaceList( nslLocal ) ;
 		return	GetSymbolWithNamespaceAs
-					( pwszName, nullptr, xvalVar->GetNamespace().Ptr() ) ;
+					( pwszName, nullptr,
+						xvalVar->GetNamespace().Ptr(), &nslLocal ) ;
 	}
 	if ( xvalVar->IsConstExprClass() )
 	{
+		LNamespaceList	nslLocal ;
+		AddScopeToNamespaceList( nslLocal ) ;
 		return	GetSymbolWithNamespaceAs
-					( pwszName, nullptr, xvalVar->GetConstExprClass() ) ;
+					( pwszName, nullptr,
+						xvalVar->GetConstExprClass(), &nslLocal ) ;
 	}
 	if ( xvalVar->GetType().IsPrimitive() )
 	{
@@ -1602,7 +1606,10 @@ LExprValuePtr LCompiler::GetExprVarMember
 		}
 	}
 
-	return	GetSymbolWithNamespaceAs( pwszName, nullptr, pClass ) ;
+	LNamespaceList	nslLocal ;
+	AddScopeToNamespaceList( nslLocal ) ;
+	return	GetSymbolWithNamespaceAs
+				( pwszName, nullptr, pClass, &nslLocal ) ;
 }
 
 // ローカル変数を探す（見つからなければ nullptr）
@@ -1654,8 +1661,12 @@ LExprValuePtr LCompiler::GetLocalVariable( const wchar_t * pwszName )
 			LClass *	pClass = GetExprVarClassOf( pNest->m_xvalObj ) ;
 			if ( pClass != nullptr )
 			{
+				LNamespaceList	nslLocal ;
+				AddScopeToNamespaceList( nslLocal ) ;
+
 				LExprValuePtr	xval =
-					GetSymbolWithNamespaceAs( pwszName, nullptr, pClass ) ;
+					GetSymbolWithNamespaceAs
+						( pwszName, nullptr, pClass, &nslLocal ) ;
 				if ( xval != nullptr )
 				{
 					return	xval ;
@@ -1664,9 +1675,13 @@ LExprValuePtr LCompiler::GetLocalVariable( const wchar_t * pwszName )
 		}
 		if ( pNest->m_namespace != nullptr )
 		{
+			LNamespaceList	nslLocal ;
+			AddScopeToNamespaceList( nslLocal ) ;
+
 			LExprValuePtr	xval =
 				GetSymbolWithNamespaceAs
-					( pwszName, nullptr, pNest->m_namespace.Ptr() ) ;
+					( pwszName, nullptr,
+						pNest->m_namespace.Ptr(), &nslLocal ) ;
 			if ( xval != nullptr )
 			{
 				return	xval ;
@@ -3590,8 +3605,13 @@ LExprValuePtr LCompiler::ParseOperatorStaticMemberOf
 	}
 
 	// 静的なメンバ
+	LNamespaceList	nslLocal ;
+	nslLocal.AddNamespace( pNamespace ) ;
+	AddScopeToNamespaceList( nslLocal ) ;
+
 	LExprValuePtr	xvalMember =
-		GetSymbolWithNamespaceAs( strMember.c_str(), &sparsExpr, pNamespace ) ;
+		GetSymbolWithNamespaceAs
+			( strMember.c_str(), &sparsExpr, pNamespace, &nslLocal ) ;
 	if ( xvalMember == nullptr )
 	{
 		OnError( errorInvalidMember, strMember.c_str() ) ;

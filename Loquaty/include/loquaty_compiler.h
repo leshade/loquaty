@@ -402,7 +402,8 @@ namespace	Loquaty
 		// 名前空間から探す（見つからなければ nullptr）
 		LExprValuePtr GetSymbolWithNamespaceAs
 			( const wchar_t * pwszName,
-				LStringParser * psparsExpr, LNamespace * pnsLocal ) ;
+				LStringParser * psparsExpr, LNamespace * pnsLocal,
+				const LNamespaceList * pnslLocal ) ;
 		// 適合する静的な関数を探す（見つからなければ nullptr）
 		LPtr<LFunctionObj> GetStaticFunctionAs
 			( const wchar_t * pwszName,
@@ -416,7 +417,8 @@ namespace	Loquaty
 			( LStringParser& sparsExpr,
 				const wchar_t * pwszName,
 				const LNamespace::GenericDef * pGenType,
-				bool instantiateGenType, LNamespace * pnsLocal ) ;
+				bool instantiateGenType,
+				const LNamespaceList * pnslLocal ) ;
 		// バッファを参照する式をポインタに変換可能なら変換する（型情報の正規化のみ）
 		LExprValuePtr DiscloseRefPointerType( LExprValuePtr xvalRef ) ;
 		// メンバから探す（見つからなければ nullptr）

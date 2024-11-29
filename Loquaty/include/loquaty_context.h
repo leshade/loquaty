@@ -416,6 +416,7 @@ namespace	Loquaty
 		void micro_instruction_Throw( void ) ;
 		void micro_instruction_ThrowNullException( void ) ;
 		void micro_instruction_ThrowIndexOutOfBounds( void ) ;
+		void micro_instruction_ThrowPointerOutOfBounds( void ) ;
 		void micro_instruction_ThrowAlignmentMismatch( void ) ;
 		void micro_instruction_ThrowUnimplemented( LFunctionObj * pFunc ) ;
 		void micro_instruction_ThrowNoVirtualVector
