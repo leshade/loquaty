@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>GenAffine&lt;float,double&gt;</title>
+</head>
+<body>
+<div class="chapter">GenAffine&lt;float,double&gt;</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct GenAffine&lt;float,double&gt;<br/>
+{<br/>
+&nbsp; &nbsp; float[2][3]&nbsp; &nbsp; a ;<br/>
+}</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;elementary.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="GenAffine{float,double}.xhtml">GenAffine&lt;float,double&gt;</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_a">a</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_GenAffine&lt;float,double&gt;">GenAffine&lt;float,double&gt;</a><br/>
+	<a href="#virtual_addTranslation">addTranslation</a><br/>
+	<a href="#virtual_determinant">determinant</a><br/>
+	<a href="#virtual_getRotation">getRotation</a><br/>
+	<a href="#virtual_inverse">inverse</a><br/>
+	<a href="#virtual_mulScale">mulScale</a><br/>
+	<a href="#virtual_scale">scale</a><br/>
+	<a href="#virtual_setRotation">setRotation</a><br/>
+	<a href="#virtual_toString">toString</a><br/>
+	<a href="#virtual_transformVectors">transformVectors</a><br/>
+	<a href="#virtual_translate">translate</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_mul">operator *</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_a"/>
+<div class="headline">a</div>
+<div class="usage">public float[2][3]&#9; a = [[1., 0., 0.], [0., 1., 0.]]</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_GenAffine&lt;float,double&gt;"/>
+<div class="headline">GenAffine&lt;float,double&gt;</div>
+<div class="usage">public GenAffine&lt;float,double&gt;( double a11, double a12, double a13, double a21, double a22, double a23 )</div>
+<br/>
+<div class="headline">GenAffine&lt;float,double&gt;</div>
+<div class="usage">public GenAffine&lt;float,double&gt;( const GenAffine&lt;float,double&gt;* af )</div>
+<br/>
+
+<a name="virtual_addTranslation"/>
+<div class="headline">addTranslation</div>
+<div class="usage">public GenAffine&lt;float,double&gt;* addTranslation( double x, double y )</div>
+<br/>
+
+<a name="virtual_determinant"/>
+<div class="headline">determinant</div>
+<div class="usage">public float determinant( ) const</div>
+<div class="normal">
+２×２行列の行列式<br/></div>
+<br/>
+
+<a name="virtual_getRotation"/>
+<div class="headline">getRotation</div>
+<div class="usage">public double getRotation( ) const</div>
+<div class="normal">
+回転角取得 [rad]<br/></div>
+<br/>
+
+<a name="virtual_inverse"/>
+<div class="headline">inverse</div>
+<div class="usage">public GenAffine&lt;float,double&gt;* inverse( ) const</div>
+<div class="normal">
+逆行列<br/></div>
+<br/>
+
+<a name="virtual_mulScale"/>
+<div class="headline">mulScale</div>
+<div class="usage">public GenAffine&lt;float,double&gt;* mulScale( double x, double y )</div>
+<br/>
+
+<a name="virtual_scale"/>
+<div class="headline">scale</div>
+<div class="usage">public GenAffine&lt;float,double&gt;* scale( double x, double y ) const</div>
+<div class="normal">
+スケール<br/></div>
+<br/>
+
+<a name="virtual_setRotation"/>
+<div class="headline">setRotation</div>
+<div class="usage">public GenAffine&lt;float,double&gt;* setRotation( double rad )</div>
+<div class="normal">
+回転行列設定<br/></div>
+<br/>
+
+<a name="virtual_toString"/>
+<div class="headline">toString</div>
+<div class="usage">public String toString( ) const</div>
+<div class="normal">
+文字列表現<br/></div>
+<br/>
+
+<a name="virtual_transformVectors"/>
+<div class="headline">transformVectors</div>
+<div class="usage">public void transformVectors( GenVector2&lt;float,double&gt;* pvDst, const GenVector2&lt;float,double&gt;* pvSrc, ulong count )</div>
+<div class="normal">
+アフィン行列×ベクトル配列<br/></div>
+<br/>
+
+<a name="virtual_translate"/>
+<div class="headline">translate</div>
+<div class="usage">public GenAffine&lt;float,double&gt;* translate( double x, double y ) const</div>
+<div class="normal">
+平行移動<br/></div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_mul"/>
+<div class="headline">operator *</div>
+<div class="usage">public GenAffine&lt;float,double&gt;* operator *( const GenAffine&lt;float,double&gt;* af ) const</div>
+<div class="normal">
+アフィン行列×アフィン行列<br/></div>
+<br/>
+<div class="headline">operator *</div>
+<div class="usage">public GenVector2&lt;float,double&gt;* operator *( const GenVector2&lt;float,double&gt;* pv )</div>
+<div class="normal">
+アフィン行列×ベクトル<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

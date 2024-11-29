@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>GenMatrix3&lt;double,double&gt;</title>
+</head>
+<body>
+<div class="chapter">GenMatrix3&lt;double,double&gt;</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct GenMatrix3&lt;double,double&gt;<br/>
+{<br/>
+&nbsp; &nbsp; double[3][3]&nbsp; &nbsp; m ;<br/>
+}</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;elementary.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="GenMatrix3{double,double}.xhtml">GenMatrix3&lt;double,double&gt;</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_m">m</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_angleFor">angleFor</a><br/>
+	<a href="#func_angleOn">angleOn</a><br/>
+	<a href="#func_rotationOnVector">rotationOnVector</a><br/>
+	<a href="#func_rotationVectorTo">rotationVectorTo</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_GenMatrix3&lt;double,double&gt;">GenMatrix3&lt;double,double&gt;</a><br/>
+	<a href="#virtual_determinant">determinant</a><br/>
+	<a href="#virtual_inverse">inverse</a><br/>
+	<a href="#virtual_rotateOnX">rotateOnX</a><br/>
+	<a href="#virtual_rotateOnY">rotateOnY</a><br/>
+	<a href="#virtual_rotateOnZ">rotateOnZ</a><br/>
+	<a href="#virtual_toString">toString</a><br/>
+	<a href="#virtual_transformVectors">transformVectors</a><br/>
+	<a href="#virtual_transpose">transpose</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_add">operator +</a><br/>
+	<a href="#operator_sub">operator -</a><br/>
+	<a href="#operator_mul">operator *</a><br/>
+	<a href="#operator_div">operator /</a><br/>
+	<a href="#operator_sadd">operator +=</a><br/>
+	<a href="#operator_ssub">operator -=</a><br/>
+	<a href="#operator_smul">operator *=</a><br/>
+	<a href="#operator_sdiv">operator /=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_m"/>
+<div class="headline">m</div>
+<div class="usage">public double[3][3]&#9; m = [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]</div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_angleFor"/>
+<div class="headline">angleFor</div>
+<div class="usage">public static GenMatrix3&lt;double,double&gt;* angleFor( const GenVector3&lt;double,double&gt;* a )</div>
+<div class="normal">
+{0,0,z} がベクトル a と平行になる回転<br/></div>
+<br/>
+
+<a name="func_angleOn"/>
+<div class="headline">angleOn</div>
+<div class="usage">public static GenMatrix3&lt;double,double&gt;* angleOn( const GenVector3&lt;double,double&gt;* a )</div>
+<div class="normal">
+ベクトル a が {0,0,z} になる回転行列<br/></div>
+<br/>
+
+<a name="func_rotationOnVector"/>
+<div class="headline">rotationOnVector</div>
+<div class="usage">public static GenMatrix3&lt;double,double&gt;* rotationOnVector( const GenVector3&lt;double,double&gt;* v, double sin_v, double cos_v )</div>
+<div class="normal">
+ベクトル v 回り回転行列（回転方向は rotateOnZ と同じ）<br/></div>
+<br/>
+
+<a name="func_rotationVectorTo"/>
+<div class="headline">rotationVectorTo</div>
+<div class="usage">public static GenMatrix3&lt;double,double&gt;* rotationVectorTo( const GenVector3&lt;double,double&gt;* v0, const GenVector3&lt;double,double&gt;* v1 )</div>
+<div class="normal">
+ベクトル v0 を回転してベクトル v1 と平行にする回転行列<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_GenMatrix3&lt;double,double&gt;"/>
+<div class="headline">GenMatrix3&lt;double,double&gt;</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;( double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33 )</div>
+<br/>
+<div class="headline">GenMatrix3&lt;double,double&gt;</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;( double m11, double m22, double m33 )</div>
+<br/>
+<div class="headline">GenMatrix3&lt;double,double&gt;</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<br/>
+
+<a name="virtual_determinant"/>
+<div class="headline">determinant</div>
+<div class="usage">public double determinant( ) const</div>
+<div class="normal">
+行列式<br/></div>
+<br/>
+
+<a name="virtual_inverse"/>
+<div class="headline">inverse</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* inverse( ) const</div>
+<div class="normal">
+逆行列<br/></div>
+<br/>
+
+<a name="virtual_rotateOnX"/>
+<div class="headline">rotateOnX</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* rotateOnX( double sin_x, double cos_x )</div>
+<div class="normal">
+ｘ軸周り回転<br/></div>
+<br/>
+
+<a name="virtual_rotateOnY"/>
+<div class="headline">rotateOnY</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* rotateOnY( double sin_y, double cos_y )</div>
+<div class="normal">
+ｙ軸周り回転<br/></div>
+<br/>
+
+<a name="virtual_rotateOnZ"/>
+<div class="headline">rotateOnZ</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* rotateOnZ( double sin_z, double cos_z )</div>
+<div class="normal">
+ｚ軸周り回転<br/>※仮に座標系が x right / y up / z forword なら向かって反時計回り<br/></div>
+<br/>
+
+<a name="virtual_toString"/>
+<div class="headline">toString</div>
+<div class="usage">public String toString( ) const</div>
+<div class="normal">
+文字列表現<br/></div>
+<br/>
+
+<a name="virtual_transformVectors"/>
+<div class="headline">transformVectors</div>
+<div class="usage">public void transformVectors( GenVector3&lt;double,double&gt;* pvDst, const GenVector3&lt;double,double&gt;* pvSrc, ulong count )</div>
+<div class="normal">
+行列×ベクトル配列<br/></div>
+<br/>
+
+<a name="virtual_transpose"/>
+<div class="headline">transpose</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* transpose( ) const</div>
+<div class="normal">
+転置行列<br/></div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_sadd"/>
+<div class="headline">operator +=</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator +=( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<div class="normal">
+行列和<br/></div>
+<br/>
+
+<a name="operator_add"/>
+<div class="headline">operator +</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator +( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<br/>
+
+<a name="operator_ssub"/>
+<div class="headline">operator -=</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator -=( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<div class="normal">
+行列差<br/></div>
+<br/>
+
+<a name="operator_sub"/>
+<div class="headline">operator -</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator -( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<br/>
+
+<a name="operator_smul"/>
+<div class="headline">operator *=</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator *=( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<div class="normal">
+行列積<br/></div>
+<br/>
+
+<a name="operator_mul"/>
+<div class="headline">operator *</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator *( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<br/>
+<div class="headline">operator *=</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator *=( double s )</div>
+<div class="normal">
+行列×スカラ<br/></div>
+<br/>
+<div class="headline">operator *</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator *( double s )</div>
+<br/>
+
+<a name="operator_sdiv"/>
+<div class="headline">operator /=</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator /=( double s )</div>
+<div class="normal">
+行列÷スカラ<br/></div>
+<br/>
+
+<a name="operator_div"/>
+<div class="headline">operator /</div>
+<div class="usage">public GenMatrix3&lt;double,double&gt;* operator /( double s )</div>
+<br/>
+<div class="headline">operator *</div>
+<div class="usage">public GenVector3&lt;double,double&gt;* operator *( const GenVector3&lt;double,double&gt;* pv )</div>
+<div class="normal">
+行列×ベクトル<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

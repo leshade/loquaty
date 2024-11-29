@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>ImageRect</title>
+</head>
+<body>
+<div class="chapter">ImageRect</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct ImageRect<br/>
+{<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; x ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; y ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; w ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; h ;<br/>
+}</div>
+<div class="normal">
+矩形<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;elementary.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="GenVector2{int,long}.xhtml">GenVector2&lt;int,long&gt;</a>
+<div class="indent1"><a href="ImageRect.xhtml">ImageRect</a>
+</div></div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_x">x</a><br/>
+	<a href="#member_y">y</a><br/>
+	<a href="#member_w">w</a><br/>
+	<a href="#member_h">h</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_ImageRect">ImageRect</a><br/>
+	<a href="#virtual_equals">equals</a><br/>
+	<a href="#virtual_isEmpty">isEmpty</a><br/>
+	<a href="#virtual_toString">toString</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_mul">operator *</a><br/>
+	<a href="#operator_div">operator /</a><br/>
+	<a href="#operator_and">operator &amp;</a><br/>
+	<a href="#operator_or">operator |</a><br/>
+	<a href="#operator_eq">operator ==</a><br/>
+	<a href="#operator_ne">operator !=</a><br/>
+	<a href="#operator_smul">operator *=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_x"/>
+<div class="headline">x</div>
+<div class="usage">public int&#9; x = 0</div>
+<br/>
+<a name="member_y"/>
+<div class="headline">y</div>
+<div class="usage">public int&#9; y = 0</div>
+<br/>
+<a name="member_w"/>
+<div class="headline">w</div>
+<div class="usage">public int&#9; w = 0</div>
+<div class="normal">
+幅<br/></div>
+<br/>
+<a name="member_h"/>
+<div class="headline">h</div>
+<div class="usage">public int&#9; h = 0</div>
+<div class="normal">
+高さ<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_ImageRect"/>
+<div class="headline">ImageRect</div>
+<div class="usage">public ImageRect( long _x, long _y, long _w, long _h )</div>
+<br/>
+<div class="headline">ImageRect</div>
+<div class="usage">public ImageRect( const ImageRect* irct )</div>
+<br/>
+
+<a name="virtual_equals"/>
+<div class="headline">equals</div>
+<div class="usage">public boolean equals( const ImageRect* irct ) const</div>
+<br/>
+
+<a name="virtual_isEmpty"/>
+<div class="headline">isEmpty</div>
+<div class="usage">public boolean isEmpty( ) const</div>
+<div class="normal">
+空か？<br/></div>
+<br/>
+
+<a name="virtual_toString"/>
+<div class="headline">toString</div>
+<div class="usage">public String toString( ) const</div>
+<div class="normal">
+文字列表現<br/></div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_eq"/>
+<div class="headline">operator ==</div>
+<div class="usage">public boolean operator ==( const ImageRect* irct ) const</div>
+<div class="normal">
+比較<br/></div>
+<br/>
+
+<a name="operator_ne"/>
+<div class="headline">operator !=</div>
+<div class="usage">public boolean operator !=( const ImageRect* irct ) const</div>
+<br/>
+
+<a name="operator_mul"/>
+<div class="headline">operator *</div>
+<div class="usage">public ImageRect* operator *( long s ) const</div>
+<div class="normal">
+積<br/></div>
+<br/>
+
+<a name="operator_or"/>
+<div class="headline">operator |</div>
+<div class="usage">public ImageRect* operator |( const ImageRect* irct ) const</div>
+<div class="normal">
+外接矩形<br/></div>
+<br/>
+
+<a name="operator_smul"/>
+<div class="headline">operator *=</div>
+<div class="usage">public ImageRect* operator *=( long s )</div>
+<div class="normal">
+積<br/></div>
+<br/>
+
+<a name="operator_div"/>
+<div class="headline">operator /</div>
+<div class="usage">public ImageRect* operator /( long s )</div>
+<div class="normal">
+除算<br/></div>
+<br/>
+
+<a name="operator_and"/>
+<div class="headline">operator &amp;</div>
+<div class="usage">public ImageRect* operator &amp;( const ImageRect* irct ) const</div>
+<div class="normal">
+矩形積<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

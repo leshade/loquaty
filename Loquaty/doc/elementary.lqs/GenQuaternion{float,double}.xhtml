@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>GenQuaternion&lt;float,double&gt;</title>
+</head>
+<body>
+<div class="chapter">GenQuaternion&lt;float,double&gt;</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct GenQuaternion&lt;float,double&gt;<br/>
+{<br/>
+&nbsp; &nbsp; float[4]&nbsp; &nbsp; q ;<br/>
+}</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;elementary.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="GenQuaternion{float,double}.xhtml">GenQuaternion&lt;float,double&gt;</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_q">q</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_rodriguesRotaion">rodriguesRotaion</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_GenQuaternion&lt;float,double&gt;">GenQuaternion&lt;float,double&gt;</a><br/>
+	<a href="#virtual_absolute">absolute</a><br/>
+	<a href="#virtual_inverse">inverse</a><br/>
+	<a href="#virtual_lerp">lerp</a><br/>
+	<a href="#virtual_normalize">normalize</a><br/>
+	<a href="#virtual_slerp">slerp</a><br/>
+	<a href="#virtual_toMatrix3">toMatrix3</a><br/>
+	<a href="#virtual_toString">toString</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_add">operator +</a><br/>
+	<a href="#operator_sub">operator -</a><br/>
+	<a href="#operator_mul">operator *</a><br/>
+	<a href="#operator_div">operator /</a><br/>
+	<a href="#operator_or">operator |</a><br/>
+	<a href="#operator_sadd">operator +=</a><br/>
+	<a href="#operator_ssub">operator -=</a><br/>
+	<a href="#operator_smul">operator *=</a><br/>
+	<a href="#operator_sdiv">operator /=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_q"/>
+<div class="headline">q</div>
+<div class="usage">public float[4]&#9; q = [1., 0., 0., 0.]</div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_rodriguesRotaion"/>
+<div class="headline">rodriguesRotaion</div>
+<div class="usage">public static GenQuaternion&lt;float,double&gt;* rodriguesRotaion( const GenVector3&lt;float,double&gt;* pv, double rad )</div>
+<div class="normal">
+回転軸と回転角[rad]の四元数<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_GenQuaternion&lt;float,double&gt;"/>
+<div class="headline">GenQuaternion&lt;float,double&gt;</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;( double q1, double q2, double q3, double q4 )</div>
+<br/>
+<div class="headline">GenQuaternion&lt;float,double&gt;</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;( const GenQuaternion&lt;float,double&gt;* pq )</div>
+<br/>
+<div class="headline">GenQuaternion&lt;float,double&gt;</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;( const GenMatrix3&lt;float,double&gt;* mat )</div>
+<div class="normal">
+３次元行列から変換<br/></div>
+<br/>
+
+<a name="virtual_absolute"/>
+<div class="headline">absolute</div>
+<div class="usage">public double absolute( ) const</div>
+<div class="normal">
+ノルム<br/></div>
+<br/>
+
+<a name="virtual_inverse"/>
+<div class="headline">inverse</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* inverse( ) const</div>
+<div class="normal">
+逆数<br/></div>
+<br/>
+
+<a name="virtual_lerp"/>
+<div class="headline">lerp</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* lerp( const GenQuaternion&lt;float,double&gt;* pq, double t ) const</div>
+<div class="normal">
+線形補完<br/></div>
+<br/>
+
+<a name="virtual_normalize"/>
+<div class="headline">normalize</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* normalize( ) const</div>
+<div class="normal">
+正規化<br/></div>
+<br/>
+
+<a name="virtual_slerp"/>
+<div class="headline">slerp</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* slerp( const GenQuaternion&lt;float,double&gt;* pq, double t ) const</div>
+<div class="normal">
+曲面補間<br/></div>
+<br/>
+
+<a name="virtual_toMatrix3"/>
+<div class="headline">toMatrix3</div>
+<div class="usage">public GenMatrix3&lt;float,double&gt;* toMatrix3( ) const</div>
+<div class="normal">
+３次元行列へ変換<br/></div>
+<br/>
+
+<a name="virtual_toString"/>
+<div class="headline">toString</div>
+<div class="usage">public String toString( ) const</div>
+<div class="normal">
+文字列表現<br/></div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_add"/>
+<div class="headline">operator +</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* operator +( const GenQuaternion&lt;float,double&gt;* pq ) const</div>
+<div class="normal">
+和<br/></div>
+<br/>
+
+<a name="operator_sadd"/>
+<div class="headline">operator +=</div>
+<div class="usage">public const GenQuaternion&lt;float,double&gt;* operator +=( const GenQuaternion&lt;float,double&gt;* pq )</div>
+<br/>
+
+<a name="operator_sub"/>
+<div class="headline">operator -</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* operator -( const GenQuaternion&lt;float,double&gt;* pq ) const</div>
+<div class="normal">
+差<br/></div>
+<br/>
+
+<a name="operator_ssub"/>
+<div class="headline">operator -=</div>
+<div class="usage">public const GenQuaternion&lt;float,double&gt;* operator -=( const GenQuaternion&lt;float,double&gt;* pq )</div>
+<br/>
+
+<a name="operator_mul"/>
+<div class="headline">operator *</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* operator *( const GenQuaternion&lt;float,double&gt;* pq ) const</div>
+<div class="normal">
+積<br/></div>
+<br/>
+
+<a name="operator_smul"/>
+<div class="headline">operator *=</div>
+<div class="usage">public const GenQuaternion&lt;float,double&gt;* operator *=( const GenQuaternion&lt;float,double&gt;* pq )</div>
+<br/>
+<div class="headline">operator *</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* operator *( double s ) const</div>
+<div class="normal">
+四元数×スカラ<br/></div>
+<br/>
+<div class="headline">operator *=</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* operator *=( double s )</div>
+<br/>
+
+<a name="operator_div"/>
+<div class="headline">operator /</div>
+<div class="usage">public GenQuaternion&lt;float,double&gt;* operator /( double s ) const</div>
+<div class="normal">
+四元数÷スカラ<br/></div>
+<br/>
+
+<a name="operator_sdiv"/>
+<div class="headline">operator /=</div>
+<div class="usage">public const GenQuaternion&lt;float,double&gt;* operator /=( double s )</div>
+<br/>
+
+<a name="operator_or"/>
+<div class="headline">operator |</div>
+<div class="usage">public float operator |( const GenQuaternion&lt;float,double&gt;* pq ) const</div>
+<div class="normal">
+内積<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

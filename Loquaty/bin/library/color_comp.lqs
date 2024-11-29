@@ -1,0 +1,214 @@
+﻿
+
+struct	RGBA8 ;
+struct	ARGB8 ;
+
+
+//////////////////////////////////////////////////////////////////////////////
+// RGBA8 ピクセル構成 (ビッグエンディアンで RGBA)
+//////////////////////////////////////////////////////////////////////////////
+
+struct	RGBA8
+{
+	uint8	r, g, b, a ;
+
+	public RGBA8( const RGBA8* rgba )
+	{
+		this := rgba ;
+	}
+	public RGBA8( const ARGB8* argb )
+	{
+		r = argb.r ;
+		g = argb.g ;
+		b = argb.b ;
+		a = argb.a ;
+	}
+	public RGBA8( uint _r, uint _g, uint _b, uint _a = 0xff )
+	{
+		r = (uint8) _r ;
+		g = (uint8) _g ;
+		b = (uint8) _b ;
+		a = (uint8) _a ;
+	}
+
+	// 代入
+	public RGBA8* operator := ( const RGBA8* rgba )
+	{
+		this := rgba ;
+		return	this ;
+	}
+	public RGBA8* operator := ( const ARGB8* argb )
+	{
+		r = argb.r ;
+		g = argb.g ;
+		b = argb.b ;
+		a = argb.a ;
+		return	this ;
+	}
+
+	// 飽和加算
+	public RGBA8* operator + ( const RGBA8* rgba ) const
+	{
+		return	RGBA8( (uint) Math.min( r + rgba.r, 0xff ),
+						(uint) Math.min( g + rgba.g, 0xff ),
+						(uint) Math.min( b + rgba.b, 0xff ),
+						(uint) Math.min( a + rgba.a, 0xff ) ) ;
+	}
+	public RGBA8* operator += ( const RGBA8* rgba )
+	{
+		r = (uint8) Math.min( r + rgba.r, 0xff ) ;
+		g = (uint8) Math.min( g + rgba.g, 0xff ) ;
+		b = (uint8) Math.min( b + rgba.b, 0xff ) ;
+		a = (uint8) Math.min( a + rgba.a, 0xff ) ;
+		return	this ;
+	}
+
+	// ゼロクリップ減算
+	public RGBA8* operator - ( const RGBA8* rgba ) const
+	{
+		return	RGBA8( (uint) Math.max( r - rgba.r, 0 ),
+						(uint) Math.max( g - rgba.g, 0 ),
+						(uint) Math.max( b - rgba.b, 0 ),
+						(uint) Math.max( a - rgba.a, 0 ) ) ;
+	}
+	public RGBA8* operator -= ( const RGBA8* rgba )
+	{
+		r = (uint8) Math.max( r - rgba.r, 0 ) ;
+		g = (uint8) Math.max( g - rgba.g, 0 ) ;
+		b = (uint8) Math.max( b - rgba.b, 0 ) ;
+		a = (uint8) Math.max( a - rgba.a, 0 ) ;
+		return	this ;
+	}
+
+	// 乗算 [0,1]
+	public RGBA8* operator * ( double w ) const
+	{
+		uint	d = (uint) Math.clamp( (long) Math.round( w * 0x100 ), 0, 0x100 ) ;
+		return	RGBA8( (d * r) >> 8, (d * g) >> 8, (d * b) >> 8, (d * a) >> 8 ) ;
+	}
+	public RGBA8* operator *= ( double w )
+	{
+		uint	d = (uint) Math.clamp( (long) Math.round( w * 0x100 ), 0, 0x100 ) ;
+		r = (uint8) ((d * r) >> 8) ;
+		g = (uint8) ((d * g) >> 8) ;
+		b = (uint8) ((d * b) >> 8) ;
+		a = (uint8) ((d * a) >> 8) ;
+		return	this ;
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"rgba(" + String.integerOf(r,2,16)
+					+ "," + String.integerOf(g,2,16)
+					+ "," + String.integerOf(b,2,16)
+					+ "," + String.integerOf(a,2,16) + ")" ;
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+// ARGB8 ピクセル構成（Windows DIB (リトルエンディアンで ARGB) / BGRA_EXT）
+//////////////////////////////////////////////////////////////////////////////
+
+struct	ARGB8
+{
+	uint8	b, g, r, a ;
+
+	public ARGB8( const ARGB8* argb )
+	{
+		this := argb ;
+	}
+	public ARGB8( const RGBA8* rgba )
+	{
+		b = rgba.b ;
+		g = rgba.g ;
+		r = rgba.r ;
+		a = rgba.a ;
+	}
+	public ARGB8( uint _r, uint _g, uint _b, uint _a = 0xff )
+	{
+		b = (uint8) _b ;
+		g = (uint8) _g ;
+		r = (uint8) _r ;
+		a = (uint8) _a ;
+	}
+
+	// 代入
+	public ARGB8* operator := ( const ARGB8* argb )
+	{
+		this := argb ;
+		return	this ;
+	}
+	public ARGB8* operator := ( const RGBA8* rgba )
+	{
+		b = rgba.b ;
+		g = rgba.g ;
+		r = rgba.r ;
+		a = rgba.a ;
+		return	this ;
+	}
+
+	// 飽和加算
+	public ARGB8* operator + ( const ARGB8* argb ) const
+	{
+		return	ARGB8( (uint) Math.min( r + argb.r, 0xff ),
+						(uint) Math.min( g + argb.g, 0xff ),
+						(uint) Math.min( b + argb.b, 0xff ),
+						(uint) Math.min( a + argb.a, 0xff ) ) ;
+	}
+	public ARGB8* operator += ( const ARGB8* argb )
+	{
+		b = (uint8) Math.min( b + argb.b, 0xff ) ;
+		g = (uint8) Math.min( g + argb.g, 0xff ) ;
+		r = (uint8) Math.min( r + argb.r, 0xff ) ;
+		a = (uint8) Math.min( a + argb.a, 0xff ) ;
+		return	this ;
+	}
+
+	// ゼロクリップ減算
+	public ARGB8* operator - ( const ARGB8* argb ) const
+	{
+		return	ARGB8( (uint) Math.max( r - argb.r, 0 ),
+						(uint) Math.max( g - argb.g, 0 ),
+						(uint) Math.max( b - argb.b, 0 ),
+						(uint) Math.max( a - argb.a, 0 ) ) ;
+	}
+	public ARGB8* operator -= ( const ARGB8* argb )
+	{
+		b = (uint8) Math.max( b - argb.b, 0 ) ;
+		g = (uint8) Math.max( g - argb.g, 0 ) ;
+		r = (uint8) Math.max( r - argb.r, 0 ) ;
+		a = (uint8) Math.max( a - argb.a, 0 ) ;
+		return	this ;
+	}
+
+	// 乗算 [0,1]
+	public ARGB8* operator * ( double w ) const
+	{
+		uint	d = (uint) Math.clamp( (long) Math.round( w * 0x100 ), 0, 0x100 ) ;
+		return	ARGB8( (d * r) >> 8, (d * g) >> 8, (d * b) >> 8, (d * a) >> 8 ) ;
+	}
+	public ARGB8* operator *= ( double w )
+	{
+		uint	d = (uint) Math.clamp( (long) Math.round( w * 0x100 ), 0, 0x100 ) ;
+		b = (uint8) ((d * b) >> 8) ;
+		g = (uint8) ((d * g) >> 8) ;
+		r = (uint8) ((d * r) >> 8) ;
+		a = (uint8) ((d * a) >> 8) ;
+		return	this ;
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"bgra(" + String.integerOf(b,2,16)
+					+ "," + String.integerOf(g,2,16)
+					+ "," + String.integerOf(r,2,16)
+					+ "," + String.integerOf(a,2,16) + ")" ;
+	}
+}
+
+
+
+

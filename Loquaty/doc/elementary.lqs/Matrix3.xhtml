@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Matrix3</title>
+</head>
+<body>
+<div class="chapter">Matrix3</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct Matrix3<br/>
+{<br/>
+&nbsp; &nbsp; float[3][3]&nbsp; &nbsp; m ;<br/>
+}</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;elementary.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="GenMatrix3{float,double}.xhtml">GenMatrix3&lt;float,double&gt;</a>
+<div class="indent1"><a href="Matrix3.xhtml">Matrix3</a>
+</div></div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_m">m</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Matrix3">Matrix3</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_m"/>
+<div class="headline">m</div>
+<div class="usage">public float[3][3]&#9; m = [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Matrix3"/>
+<div class="headline">Matrix3</div>
+<div class="usage">public Matrix3( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public Matrix3* operator :=( const GenMatrix3&lt;float,double&gt;* mat )</div>
+<br/>
+<div class="headline">operator :=</div>
+<div class="usage">public Matrix3* operator :=( const GenMatrix3&lt;double,double&gt;* mat )</div>
+<br/>
+<br/><br/>
+</body>
+</html>

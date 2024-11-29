@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Affine</title>
+</head>
+<body>
+<div class="chapter">Affine</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct Affine<br/>
+{<br/>
+&nbsp; &nbsp; float[2][3]&nbsp; &nbsp; a ;<br/>
+}</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;elementary.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="GenAffine{float,double}.xhtml">GenAffine&lt;float,double&gt;</a>
+<div class="indent1"><a href="Affine.xhtml">Affine</a>
+</div></div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_a">a</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_a"/>
+<div class="headline">a</div>
+<div class="usage">public float[2][3]&#9; a = [[1., 0., 0.], [0., 1., 0.]]</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public Affine* operator :=( const GenAffine&lt;float,double&gt;* aff )</div>
+<br/>
+<br/><br/>
+</body>
+</html>

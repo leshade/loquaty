@@ -1,0 +1,1968 @@
+﻿
+
+//////////////////////////////////////////////////////////////////////////////
+// ２次元座標
+//////////////////////////////////////////////////////////////////////////////
+
+struct	GenVector2<_T,_S>
+{
+	_T	x, y ;
+
+	public GenVector2<_T,_S>( _S _x, _S _y )
+	{
+		x = (_T) _x ;
+		y = (_T) _y ;
+	}
+
+	public GenVector2<_T,_S>( const GenVector2<_T,_S>* pv )
+	{
+		x = pv.x ;
+		y = pv.y ;
+	}
+
+	// ベクトル和
+	public GenVector2<_T,_S>* operator + ( const GenVector2<_T,_S>* pv ) const
+	{
+		return	GenVector2<_T,_S>( x + pv.x, y + pv.y ) ;
+	}
+	public const GenVector2<_T,_S>* operator += ( const GenVector2<_T,_S>* pv )
+	{
+		x += pv.x ;
+		y += pv.y ;
+		return	this ;
+	}
+
+	// ベクトル差
+	public GenVector2<_T,_S>* operator - ( const GenVector2<_T,_S>* pv ) const
+	{
+		return	GenVector2<_T,_S>( x - pv.x, y - pv.y ) ;
+	}
+	public const GenVector2<_T,_S>* operator -= ( const GenVector2<_T,_S>* pv )
+	{
+		x -= pv.x ;
+		y -= pv.y ;
+		return	this ;
+	}
+
+	// （複素数としての）積
+	public GenVector2<_T,_S>* operator * ( const GenVector2<_T,_S>* pv ) const
+	{
+		return	GenVector2<_T,_S>( x * pv.x - y * pv.y, y * pv.x + x * pv.y ) ;
+	}
+	public GenVector2<_T,_S>* operator * ( const GenVector2<_T,_S>* pv )
+	{
+		const _T	_x = x * pv.x - y * pv.y ;
+		const _T	_y = y * pv.x + x * pv.y ;
+		x = _x ;
+		y = _y ;
+		return	this ;
+	}
+
+	// ベクトル×スカラ
+	public GenVector2<_T,_S>* operator * ( _S s ) const
+	{
+		return	GenVector2<_T,_S>( x * s, y * s ) ;
+	}
+	public GenVector2<_T,_S>* operator *= ( _S s )
+	{
+		x *= (_T) s ;
+		y *= (_T) s ;
+		return	this ;
+	}
+
+	// （複素数としての）除算
+	public GenVector2<_T,_S>* operator / ( const GenVector2<_T,_S>* pv )
+	{
+		GenVector2<_T,_S>*	t = GenVector2<_T,_S>( this ) ;
+		t /= pv ;
+		return	t ;
+	}
+	public GenVector2<_T,_S>* operator /= ( const GenVector2<_T,_S>* pv )
+	{
+		double		d = pv.x * pv.x + pv.y * pv.y ;
+		const _T	_x = x * pv.x + y * pv.y ;
+		const _T	_y = y * pv.x - x * pv.y ;
+		x = _x / (_T) d ;
+		y = _y / (_T) d ;
+		return	this ;
+	}
+
+	// ベクトル÷スカラ
+	public GenVector2<_T,_S>* operator / ( _S s ) const
+	{
+		return	GenVector2<_T,_S>( x / s, y / s ) ;
+	}
+	public GenVector2<_T,_S>* operator /= ( _S s )
+	{
+		x /= (_T) s ;
+		y /= (_T) s ;
+		return	this ;
+	}
+
+	// 比較
+	public boolean operator == ( const GenVector2<_T,_S>* pv ) const
+	{
+		return	equals( pv ) ;
+	}
+
+	public boolean operator != ( const GenVector2<_T,_S>* pv ) const
+	{
+		return	!equals( pv ) ;
+	}
+
+	public boolean equals( const GenVector2<_T,_S>* pv ) const
+	{
+		return	(x == pv.x) && (y == pv.y) ;
+	}
+
+	// 内積
+	public _T operator | ( const GenVector2<_T,_S>* pv ) const
+	{
+		return	x * pv.x + y * pv.y ;
+	}
+
+	// 絶対値
+	public double absolute() const
+	{
+		return	Math.sqrt( x * x + y * y ) ;
+	}
+
+	// 正規化
+	public GenVector2<_T,_S>* normalize() const
+	{
+		double	d = absolute() ;
+		if ( d > 0.0 )
+		{
+			d = (1.0 / d) ;
+		}
+		return	GenVector2<_T,_S>( (_S) (x * d), (_S)(y * d) ) ;
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"(" + x + ", " + y + ")" ;
+	}
+}
+
+typedef	Point = GenVector2<int,long> ;
+typedef	Size = GenVector2<int,long> ;
+
+struct	GenVector2<float,double> ;
+struct	GenVector2<double,double> ;
+
+struct	Vector2		extends GenVector2<float,double>
+{
+	public Vector2( const GenVector2<double,double>* pv )
+		: GenVector2<float,double>( pv.x, pv.y )
+	{
+	}
+
+	public Vector2* operator := ( const GenVector2<float,double>* pv )
+	{
+		super := pv ;
+		return	this ;
+	}
+
+	public Vector2* operator := ( const GenVector2<double,double>* pv )
+	{
+		x = (float) pv.x ;
+		y = (float) pv.y ;
+		return	this ;
+	}
+}
+
+struct	Vector2d	extends GenVector2<double,double>
+{
+	public Vector2d( const GenVector2<float,double>* pv )
+		: GenVector2<double,double>( pv.x, pv.y )
+	{
+	}
+
+	public Vector2d* operator := ( const GenVector2<float,double>* pv )
+	{
+		x = pv.x ;
+		y = pv.y ;
+		return	this ;
+	}
+
+	public Vector2d* operator := ( const GenVector2<double,double>* pv )
+	{
+		super := pv ;
+		return	this ;
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+// 矩形
+//////////////////////////////////////////////////////////////////////////////
+
+struct	ImageRect	extends GenVector2<int,long>
+{
+	// 幅
+	int	w ;
+	// 高さ
+	int	h ;
+
+	public ImageRect( long _x, long _y, long _w, long _h )
+		: GenVector2<int,long>( _x, _y )
+	{
+		w = (int) _w ;
+		h = (int) _h ;
+	}
+
+	public ImageRect( const ImageRect* irct )
+		: GenVector2<int,long>( irct )
+	{
+		w = irct.w ;
+		h = irct.h ;
+	}
+
+	// 積
+	public ImageRect* operator * ( long s ) const
+	{
+		return	ImageRect( x * s, y * s, w * s, h * s ) ;
+	}
+
+	// 積
+	public ImageRect* operator *= ( long s )
+	{
+		x *= (int) s ;
+		y *= (int) s ;
+		w *= (int) s ;
+		h *= (int) s ;
+		return	this ;
+	}
+
+	// 除算
+	public ImageRect* operator / ( long s ) const
+	{
+		return	ImageRect( x / s, y / s, w / s, h / s ) ;
+	}
+
+	// 除算
+	public ImageRect* operator / ( long s )
+	{
+		x /= (int) s ;
+		y /= (int) s ;
+		w /= (int) s ;
+		h /= (int) s ;
+		return	this ;
+	}
+
+	// 比較
+	public boolean operator == ( const ImageRect* irct ) const
+	{
+		return	equals( irct ) ;
+	}
+
+	public boolean operator != ( const ImageRect* irct ) const
+	{
+		return	!equals( irct ) ;
+	}
+
+	public boolean equals( const ImageRect* irct ) const
+	{
+		return	(x == irct.x) && (y == irct.y)
+					&& (w == irct.w) && (h == irct.h) ;
+	}
+
+	// 外接矩形
+	public ImageRect* operator | ( const ImageRect* irct ) const
+	{
+		const long	left = Math.min( x, irct.x ) ;
+		const long	top = Math.min( y, irct.y ) ;
+		const long	right = Math.max( x + w, irct.x + irct.w ) ;
+		const long	bottom = Math.max( y + h, irct.y + irct.h ) ;
+		return	ImageRect( left, top, right - left, bottom - top ) ;
+	}
+
+	// 矩形積
+	public ImageRect* operator & ( const ImageRect* irct ) const
+	{
+		const long	left = Math.max( x, irct.x ) ;
+		const long	top = Math.max( y, irct.y ) ;
+		const long	right = Math.min( x + w, irct.x + irct.w ) ;
+		const long	bottom = Math.min( y + h, irct.y + irct.h ) ;
+		return	ImageRect( left, top, Math.max( right - left, 0 ),
+										Math.max( bottom - top, 0 ) ) ;
+	}
+
+	// 空か？
+	public boolean isEmpty() const
+	{
+		return	(w == 0) || (h == 0) ;
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"rect(" + x + ", " + y + ", " + w + ", " + h + ")" ;
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+// ３次元座標
+//////////////////////////////////////////////////////////////////////////////
+
+struct	GenVector3<_T,_S>	extends GenVector2<_T,_S>
+{
+	_T	z ;
+
+	public GenVector3<_T,_S>( _S _x, _S _y, _S _z )
+		: GenVector2<_T,_S>( _x, _y )
+	{
+		z = (_T) _z ;
+	}
+
+	public GenVector3<_T,_S>( const GenVector3<_T,_S>* pv )
+		: GenVector2<_T,_S>( pv )
+	{
+		z = pv.z ;
+	}
+
+	// ベクトル和
+	public GenVector3<_T,_S>* operator + ( const GenVector3<_T,_S>* pv ) const
+	{
+		return	GenVector3<_T,_S>( x + pv.x, y + pv.y, z + pv.z ) ;
+	}
+	public GenVector3<_T,_S>* operator += ( const GenVector3<_T,_S>* pv )
+	{
+		x += pv.x ;
+		y += pv.y ;
+		z += pv.z ;
+		return	this ;
+	}
+
+	// ベクトル差
+	public GenVector3<_T,_S>* operator - ( const GenVector3<_T,_S>* pv ) const
+	{
+		return	GenVector3<_T,_S>( x - pv.x, y - pv.y, z - pv.z ) ;
+	}
+	public GenVector3<_T,_S>* operator -= ( const GenVector3<_T,_S>* pv )
+	{
+		x -= pv.x ;
+		y -= pv.y ;
+		z -= pv.z ;
+		return	this ;
+	}
+
+	// ベクトル×スカラ
+	public GenVector3<_T,_S>* operator * ( _S s ) const
+	{
+		return	GenVector3<_T,_S>( x * s, y * s, z * s ) ;
+	}
+	public GenVector3<_T,_S>* operator *= ( _S s )
+	{
+		x *= (_T) s ;
+		y *= (_T) s ;
+		z *= (_T) s ;
+		return	this ;
+	}
+
+	// ベクトル÷スカラ
+	public GenVector3<_T,_S>* operator / ( _S s ) const
+	{
+		return	GenVector3<_T,_S>( x / s, y / s, z / s ) ;
+	}
+	public GenVector3<_T,_S>* operator /= ( _S s )
+	{
+		x /= (_T) s ;
+		y /= (_T) s ;
+		z /= (_T) s ;
+		return	this ;
+	}
+
+	// 外積
+	public GenVector3<_T,_S>* operator * ( const GenVector3<_T,_S>* pv ) const
+	{
+		return	GenVector3<_T,_S>( y * pv.z - z * pv.y,
+									z * pv.x - x * pv.z,
+									x * pv.y - y * pv.x ) ;
+	}
+
+	// 内積
+	public _T operator | ( const GenVector3<_T,_S>* pv ) const
+	{
+		return	x * pv.x + y * pv.y + z * pv.z ;
+	}
+
+	// 比較
+	public boolean operator == ( const GenVector3<_T,_S>* pv ) const
+	{
+		return	equals( pv ) ;
+	}
+
+	public boolean operator != ( const GenVector3<_T,_S>* pv ) const
+	{
+		return	!equals( pv ) ;
+	}
+
+	public boolean equals( const GenVector3<_T,_S>* pv ) const
+	{
+		return	(x == pv.x) && (y == pv.y) && (z == pv.z) ;
+	}
+
+	// 絶対値
+	public double absolute() const
+	{
+		return	Math.sqrt( x * x + y * y + z * z ) ;
+	}
+
+	// 正規化
+	public GenVector3<_T,_S>* normalize() const
+	{
+		double	d = absolute() ;
+		if ( d > 0.0 )
+		{
+			d = (1.0 / d) ;
+		}
+		return	GenVector3<_T,_S>( (_S) (x * d), (_S)(y * d), (_S)(z * d) ) ;
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"(" + x + ", " + y + ", " + z + ")" ;
+	}
+}
+
+struct	GenVector3<float,double> ;
+struct	GenVector3<double,double> ;
+
+struct	Vector3		extends GenVector3<float,double>
+{
+	public Vector3( const GenVector3<double,double>* pv )
+		: GenVector3<float,double>( pv.x, pv.y, pv.z )
+	{
+	}
+
+	public Vector3* operator := ( const GenVector3<float,double>* pv )
+	{
+		super := pv ;
+		return	this ;
+	}
+
+	public Vector3* operator := ( const GenVector3<double,double>* pv )
+	{
+		x = (float) pv.x ;
+		y = (float) pv.y ;
+		z = (float) pv.z ;
+		return	this ;
+	}
+}
+
+struct	Vector3d	extends GenVector3<double,double>
+{
+	public Vector3d( const GenVector3<float,double>* pv )
+		: GenVector3<double,double>( pv.x, pv.y, pv.z )
+	{
+	}
+
+	public Vector3d* operator := ( const GenVector3<float,double>* pv )
+	{
+		x = pv.x ;
+		y = pv.y ;
+		z = pv.z ;
+		return	this ;
+	}
+
+	public Vector3d* operator := ( const GenVector3<double,double>* pv )
+	{
+		super := pv ;
+		return	this ;
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+// ４次元座標（主に同次座標系）
+//////////////////////////////////////////////////////////////////////////////
+
+struct	GenVector4<_T,_S>	extends GenVector3<_T,_S>
+{
+	_T	w = (_T) 1 ;
+
+	public GenVector4<_T,_S>( _S _x, _S _y, _S _z, _S _w )
+		: GenVector3<_T,_S>( _x, _y, _z )
+	{
+		w = (_T) _w ;
+	}
+
+	public GenVector4<_T,_S>( const GenVector4<_T,_S>* pv )
+		: GenVector3<_T,_S>( pv )
+	{
+		w = pv.w ;
+	}
+
+	// ベクトル和
+	public GenVector4<_T,_S>* operator + ( const GenVector4<_T,_S>* pv ) const
+	{
+		return	GenVector4<_T,_S>( x + pv.x, y + pv.y, z + pv.z, w + pv.w ) ;
+	}
+	public GenVector4<_T,_S>* operator += ( const GenVector4<_T,_S>* pv )
+	{
+		x += pv.x ;
+		y += pv.y ;
+		z += pv.z ;
+		w += pv.w ;
+		return	this ;
+	}
+
+	// ベクトル差
+	public GenVector4<_T,_S>* operator - ( const GenVector4<_T,_S>* pv ) const
+	{
+		return	GenVector4<_T,_S>( x - pv.x, y - pv.y, z - pv.z, w - pv.w ) ;
+	}
+	public GenVector4<_T,_S>* operator -= ( const GenVector4<_T,_S>* pv )
+	{
+		x -= pv.x ;
+		y -= pv.y ;
+		z -= pv.z ;
+		w -= pv.w ;
+		return	this ;
+	}
+
+	// ベクトル×スカラ
+	public GenVector4<_T,_S>* operator * ( _S s ) const
+	{
+		return	GenVector4<_T,_S>( x * s, y * s, z * s, w * s ) ;
+	}
+	public GenVector4<_T,_S>* operator *= ( _S s )
+	{
+		x *= (_T) s ;
+		y *= (_T) s ;
+		z *= (_T) s ;
+		w *= (_T) s ;
+		return	this ;
+	}
+
+	// ベクトル÷スカラ
+	public GenVector4<_T,_S>* operator / ( _S s ) const
+	{
+		return	GenVector4<_T,_S>( x / s, y / s, z / s, w / s ) ;
+	}
+	public GenVector4<_T,_S>* operator /= ( _S s )
+	{
+		x /= (_T) s ;
+		y /= (_T) s ;
+		z /= (_T) s ;
+		w /= (_T) s ;
+		return	this ;
+	}
+
+	// 内積
+	public _T operator | ( const GenVector4<_T,_S>* pv ) const
+	{
+		return	x * pv.x + y * pv.y + z * pv.z + w * pv.w ;
+	}
+
+	// 比較
+	public boolean operator == ( const GenVector4<_T,_S>* pv ) const
+	{
+		return	equals( pv ) ;
+	}
+
+	public boolean operator != ( const GenVector4<_T,_S>* pv ) const
+	{
+		return	!equals( pv ) ;
+	}
+
+	public boolean equals( const GenVector4<_T,_S>* pv ) const
+	{
+		return	(x == pv.x) && (y == pv.y) && (z == pv.z) && (w == pv.w) ;
+	}
+
+	// 絶対値
+	public double absolute() const
+	{
+		return	Math.sqrt( x * x + y * y + z * z + w * w ) ;
+	}
+
+	// 正規化
+	public GenVector4<_T,_S>* normalize() const
+	{
+		double	d = absolute() ;
+		if ( d > 0.0 )
+		{
+			d = (1.0 / d) ;
+		}
+		return	GenVector4<_T,_S>
+					( (_S) (x * d), (_S) (y * d), (_S) (z * d), (_S) (w * d) ) ;
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"(" + x + ", " + y + ", " + z + ", " + w + ")" ;
+	}
+}
+
+struct	GenVector4<float,double> ;
+struct	GenVector4<double,double> ;
+
+struct	Vector4		extends GenVector4<float,double>
+{
+	public Vector4( const GenVector4<double,double>* pv )
+		: GenVector4<float,double>( pv.x, pv.y, pv.z, pv.w )
+	{
+	}
+
+	public Vector4* operator := ( const GenVector4<float,double>* pv )
+	{
+		super := pv ;
+		return	this ;
+	}
+
+	public Vector4* operator := ( const GenVector4<double,double>* pv )
+	{
+		x = (float) pv.x ;
+		y = (float) pv.y ;
+		z = (float) pv.z ;
+		w = (float) pv.w ;
+		return	this ;
+	}
+}
+
+struct	Vector4d	extends GenVector4<double,double>
+{
+	public Vector4d( const GenVector4<float,double>* pv )
+		: GenVector4<double,double>( pv.x, pv.y, pv.z, pv.w )
+	{
+	}
+
+	public Vector4d* operator := ( const GenVector4<float,double>* pv )
+	{
+		x = pv.x ;
+		y = pv.y ;
+		z = pv.z ;
+		w = pv.w ;
+		return	this ;
+	}
+
+	public Vector4d* operator := ( const GenVector4<double,double>* pv )
+	{
+		super := pv ;
+		return	this ;
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+// アフィン
+//////////////////////////////////////////////////////////////////////////////
+
+struct	GenAffine<_T,_S>
+{
+	_T[2][3]	a = [ [ 1, 0, 0 ], [ 0, 1, 0 ] ] ;
+
+	public GenAffine<_T,_S>
+			( _S a11, _S a12, _S a13,
+				_S a21, _S a22, _S a23 )
+	{
+		a[0][0] = (_T) a11 ;
+		a[0][1] = (_T) a12 ;
+		a[0][2] = (_T) a13 ;
+		a[1][0] = (_T) a21 ;
+		a[1][1] = (_T) a22 ;
+		a[1][2] = (_T) a23 ;
+	}
+
+	public GenAffine<_T,_S>( const GenAffine<_T,_S>* af )
+	{
+		this := af ;
+	}
+
+	// 回転行列設定
+	public GenAffine<_T,_S>* setRotation( double rad )
+	{
+		a[0][0] = (_T) Math.cos( rad ) ;
+		a[0][1] = (_T) - Math.sin( rad ) ;
+		a[1][0] = (_T) Math.sin( rad ) ;
+		a[1][1] = (_T) Math.cos( rad ) ;
+		return	this ;
+	}
+
+	// 回転角取得 [rad]
+	public double getRotation() const
+	{
+		return	Math.atan2( a[1][0], a[1][1] ) ;
+	}
+
+	// スケール
+	public GenAffine<_T,_S>* scale( _S x, _S y ) const
+	{
+		return	GenAffine<_T,_S>
+					( a[0][0] * x, a[0][1] * x, a[0][2] * x,
+						a[1][0] * y, a[1][1] * y, a[1][2] * y ) ;
+	}
+	public GenAffine<_T,_S>* mulScale( _S x, _S y )
+	{
+		a[0][0] *= (_T) x ;
+		a[0][1] *= (_T) x ;
+		a[0][2] *= (_T) x ;
+		a[1][0] *= (_T) y ;
+		a[1][1] *= (_T) y ;
+		a[1][2] *= (_T) y ;
+		return	this ;
+	}
+
+	// 平行移動
+	public GenAffine<_T,_S>* translate( _S x, _S y ) const
+	{
+		return	GenAffine<_T,_S>
+					( a[0][0], a[0][1], a[0][2] + x,
+						a[1][0], a[1][1], a[1][2] + y ) ;
+	}
+	public GenAffine<_T,_S>* addTranslation ( _S x, _S y )
+	{
+		a[0][2] += (_T) x ;
+		a[1][2] += (_T) y ;
+		return	this ;
+	}
+
+	// アフィン行列×アフィン行列
+	public GenAffine<_T,_S>* operator * ( const GenAffine<_T,_S>* af ) const
+	{
+		return	GenAffine<_T,_S>
+					( (a[0][0] * af.a[0][0] + a[0][1] * af.a[1][0]),
+							(a[0][0] * af.a[0][1] + a[0][1] * af.a[1][1]),
+							a[0][2] + (a[0][0] * af.a[0][2] + a[0][1] * af.a[1][2]),
+						(a[1][0] * af.a[0][0] + a[1][1] * af.a[1][0]),
+							(a[1][0] * af.a[0][1] + a[1][1] * af.a[1][1]),
+							a[1][2] + (a[1][0] * af.a[0][2] + a[1][1] * af.a[1][2]) ) ;
+	}
+
+	// ２×２行列の行列式
+	public _T determinant() const
+	{
+		return	a[0][0] * a[1][1] - a[0][1] * a[1][0] ;
+	}
+
+	// 逆行列
+	public GenAffine<_T,_S>* inverse() const
+	{
+		_T	d = determinant() ;
+		if ( d != (_T) 0.0 )
+		{
+			d = (_T) 1.0 / d ;
+		}
+		const float	a11 =   a[1][1] * d ;
+		const float	a12 = - a[0][1] * d ;
+		const float	a21 = - a[1][0] * d ;
+		const float	a22 =   a[0][0] * d ;
+		const float	a13 = - (a11 * a[0][2] + a12 * a[1][2]) ;
+		const float	a23 = - (a21 * a[0][2] + a22 * a[1][2]) ;
+		return	GenAffine<_T,_S>( a11, a12, a13, a21, a22, a23 ) ;
+	}
+
+	// アフィン行列×ベクトル
+	public GenVector2<_T,_S>* operator * ( const GenVector2<_T,_S>* pv )
+	{
+		return	GenVector2<_T,_S>
+					( a[0][0] * pv.x + a[0][1] * pv.y + a[0][2],
+						a[1][0] * pv.x + a[1][1] * pv.y + a[1][2] ) ;
+	}
+
+	// アフィン行列×ベクトル配列
+	public void transformVectors
+		( GenVector2<_T,_S>* pvDst,
+			const GenVector2<_T,_S>* pvSrc, ulong count )
+	{
+		const _T	a11 = a[0][0] ;
+		const _T	a12 = a[0][1] ;
+		const _T	a13 = a[0][2] ;
+		const _T	a21 = a[1][0] ;
+		const _T	a22 = a[1][1] ;
+		const _T	a23 = a[1][2] ;
+
+		for ( ulong i = 0; i < count; ++ i )
+		{
+			fetch_addr GenVector2<_T,_S>*		dst = pvDst + i ;
+			fetch_addr const GenVector2<_T,_S>*	src = pvSrc + i ;
+			const _T	x = a11 * src.x + a12 * src.y + a13 ;
+			const _T	y = a21 * src.x + a22 * src.y + a23 ;
+			dst.x = x ;
+			dst.y = y ;
+		}
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"[ [" + a[0][0] + ", " + a[0][1] + ", " + a[0][2]
+				+ " ], [" + a[1][0] + ", " + a[1][1] + ", " + a[1][2] + "] ]" ;
+	}
+}
+
+struct	GenAffine<float,double> ;
+
+struct	Affine	extends GenAffine<float,double>
+{
+	public Affine* operator := ( const GenAffine<float,double>* aff )
+	{
+		super := aff ;
+		return	this ;
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+// ３次元行列
+//////////////////////////////////////////////////////////////////////////////
+
+struct	GenMatrix3<_T,_S>
+{
+	_T[3][3]	m = [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 1 ] ] ;
+
+	public GenMatrix3<_T,_S>
+			( _S m11, _S m12, _S m13,
+				_S m21, _S m22, _S m23,
+				_S m31, _S m32, _S m33 )
+	{
+		m[0][0] = (_T) m11 ;
+		m[0][1] = (_T) m12 ;
+		m[0][2] = (_T) m13 ;
+		m[1][0] = (_T) m21 ;
+		m[1][1] = (_T) m22 ;
+		m[1][2] = (_T) m23 ;
+		m[2][0] = (_T) m31 ;
+		m[2][1] = (_T) m32 ;
+		m[2][2] = (_T) m33 ;
+	}
+
+	public GenMatrix3<_T,_S>( _S m11, _S m22, _S m33 )
+	{
+		m[0][0] = (_T) m11 ;
+		m[0][1] = (_T) 0 ;
+		m[0][2] = (_T) 0 ;
+		m[1][0] = (_T) 0 ;
+		m[1][1] = (_T) m22 ;
+		m[1][2] = (_T) 0 ;
+		m[2][0] = (_T) 0 ;
+		m[2][1] = (_T) 0 ;
+		m[2][2] = (_T) m33 ;
+	}
+
+	public GenMatrix3<_T,_S>( const GenMatrix3<_T,_S>* mat )
+	{
+		this := mat ;
+	}
+
+	// 行列和
+	public GenMatrix3<_T,_S>* operator += ( const GenMatrix3<_T,_S>* mat )
+	{
+		for ( int i = 0; i < 3; ++ i )
+		{
+			m[i][0] += mat.m[i][0] ;
+			m[i][1] += mat.m[i][1] ;
+			m[i][2] += mat.m[i][2] ;
+		}
+		return	this ;
+	}
+	public GenMatrix3<_T,_S>* operator + ( const GenMatrix3<_T,_S>* mat )
+	{
+		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
+		t += mat ;
+		return	t ;
+	}
+
+	// 行列差
+	public GenMatrix3<_T,_S>* operator -= ( const GenMatrix3<_T,_S>* mat )
+	{
+		for ( int i = 0; i < 3; ++ i )
+		{
+			m[i][0] -= mat.m[i][0] ;
+			m[i][1] -= mat.m[i][1] ;
+			m[i][2] -= mat.m[i][2] ;
+		}
+		return	this ;
+	}
+	public GenMatrix3<_T,_S>* operator - ( const GenMatrix3<_T,_S>* mat )
+	{
+		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
+		t -= mat ;
+		return	t ;
+	}
+
+	// 行列積
+	public GenMatrix3<_T,_S>* operator *= ( const GenMatrix3<_T,_S>* mat )
+	{
+		for ( int i = 0; i < 3; ++ i )
+		{
+			const _T	t1 = m[i][0] ;
+			const _T	t2 = m[i][1] ;
+			const _T	t3 = m[i][2] ;
+			m[i][0] = (t1 * mat.m[0][0] + t2 * mat.m[1][0] + t3 * mat.m[2][0]) ;
+			m[i][1] = (t1 * mat.m[0][1] + t2 * mat.m[1][1] + t3 * mat.m[2][1]) ;
+			m[i][2] = (t1 * mat.m[0][2] + t2 * mat.m[1][2] + t3 * mat.m[2][2]) ;
+		}
+		return	this ;
+	}
+	public GenMatrix3<_T,_S>* operator * ( const GenMatrix3<_T,_S>* mat )
+	{
+		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
+		t *= mat ;
+		return	t ;
+	}
+
+	// 行列×スカラ
+	public GenMatrix3<_T,_S>* operator *= ( _S s )
+	{
+		for ( int i = 0; i < 3; ++ i )
+		{
+			m[i][0] *= (_T) s ;
+			m[i][1] *= (_T) s ;
+			m[i][2] *= (_T) s ;
+		}
+		return	this ;
+	}
+	public GenMatrix3<_T,_S>* operator * ( _S s )
+	{
+		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
+		t *= s ;
+		return	t ;
+	}
+
+	// 行列÷スカラ
+	public GenMatrix3<_T,_S>* operator /= ( _S s )
+	{
+		for ( int i = 0; i < 3; ++ i )
+		{
+			m[i][0] /= (_T) s ;
+			m[i][1] /= (_T) s ;
+			m[i][2] /= (_T) s ;
+		}
+		return	this ;
+	}
+	public GenMatrix3<_T,_S>* operator / ( _S s )
+	{
+		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
+		t /= s ;
+		return	t ;
+	}
+
+	// 行列×ベクトル
+	public GenVector3<_T,_S>* operator * ( const GenVector3<_T,_S>* pv )
+	{
+		return	GenVector3<_T,_S>
+					( m[0][0] * pv.x + m[0][1] * pv.y + m[0][2] * pv.z,
+						m[1][0] * pv.x + m[1][1] * pv.y + m[1][2] * pv.z,
+						m[2][0] * pv.x + m[2][1] * pv.y + m[2][2] * pv.z ) ;
+	}
+
+	// ｘ軸周り回転
+	public GenMatrix3<_T,_S>* rotateOnX( _S sin_x, _S cos_x )
+	{
+		//   ( 1    0       0    )
+		// X ( 0  cos(x)  sin(x) )
+		//   ( 0 -sin(x)  cos(x) )
+		for ( int i = 0; i < 3; ++ i )
+		{
+			const _T	r1 = m[i][1] ;
+			const _T	r2 = m[i][2] ;
+			m[i][1] = (_T) (cos_x * r1 - sin_x * r2) ;
+			m[i][2] = (_T) (cos_x * r2 + sin_x * r1) ;
+		}
+		return	this ;
+	}
+
+	// ｙ軸周り回転
+	public GenMatrix3<_T,_S>* rotateOnY( _S sin_y, _S cos_y )
+	{
+		//   (  cos(y)  0  sin(y) )
+		// X (    0     1    0    )
+		//   ( -sin(y)  0  cos(y) )
+		for ( int i = 0; i < 3; ++ i )
+		{
+			const _T	r1 = m[i][0] ;
+			const _T	r2 = m[i][2] ;
+			m[i][0] = (_T) (cos_y * r1 - sin_y * r2) ;
+			m[i][2] = (_T) (sin_y * r1 + cos_y * r2) ;
+		}
+		return	this ;
+	}
+
+	// ｚ軸周り回転
+	// ※仮に座標系が x right / y up / z forword なら向かって反時計回り
+	public GenMatrix3<_T,_S>* rotateOnZ( _S sin_z, _S cos_z )
+	{
+		//   ( cos(z) -sin(z)  0 )
+		// X ( sin(z)  cos(z)  0 )
+		//   (   0       0     1 )
+		for ( int i = 0; i < 3; ++ i )
+		{
+			const _T	r1 = m[i][0] ;
+			const _T	r2 = m[i][1] ;
+			m[i][0] = (_T) (cos_z * r1 + sin_z * r2) ;
+			m[i][1] = (_T) (cos_z * r2 - sin_z * r1) ;
+		}
+		return	this ;
+	}
+
+	// 転置行列
+	public GenMatrix3<_T,_S>* transpose() const
+	{
+		return	GenMatrix3<_T,_S>
+					( m[0][0], m[1][0], m[2][0],
+						m[0][1], m[1][1], m[2][1],
+						m[0][2], m[1][2], m[2][2] ) ;
+	}
+
+	// 行列式
+	public _T determinant() const
+	{
+		return	m[0][0] * (m[1][1] * m[2][2] - m[2][1] * m[1][2])
+				+ m[0][1] * (m[1][2] * m[2][0] - m[2][2] * m[1][0])
+				+ m[0][2] * (m[1][0] * m[2][1] - m[2][0] * m[1][1]) ;
+	}
+
+	// 逆行列
+	public GenMatrix3<_T,_S>* inverse() const
+	{
+		_T	d = determinant() ;
+		if ( d != 0.0 )
+		{
+			d = (_T) 1.0 / d ;
+		}
+		const _T	m11 = d * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) ;
+		const _T	m12 = d * (m[2][1] * m[0][2] - m[2][2] * m[0][1]) ;
+		const _T	m13 = d * (m[0][1] * m[1][2] - m[0][2] * m[1][1]) ;
+		const _T	m21 = d * (m[1][2] * m[2][0] - m[1][0] * m[2][2]) ;
+		const _T	m22 = d * (m[2][2] * m[0][0] - m[2][0] * m[0][2]) ;
+		const _T	m23 = d * (m[0][2] * m[1][0] - m[0][0] * m[1][2]) ;
+		const _T	m31 = d * (m[1][0] * m[2][1] - m[1][1] * m[2][0]) ;
+		const _T	m32 = d * (m[2][0] * m[0][1] - m[2][1] * m[0][0]) ;
+		const _T	m33 = d * (m[0][0] * m[1][1] - m[0][1] * m[1][0]) ;
+		return	GenMatrix3<_T,_S>
+					( m11, m12, m13,  m21, m22, m23,  m31, m32, m33 ) ;
+	}
+
+	// 行列×ベクトル配列
+	public void transformVectors
+		( GenVector3<_T,_S>* pvDst,
+			const GenVector3<_T,_S>* pvSrc, ulong count )
+	{
+		const _T	m11 = m[0][0] ;
+		const _T	m12 = m[0][1] ;
+		const _T	m13 = m[0][2] ;
+		const _T	m21 = m[1][0] ;
+		const _T	m22 = m[1][1] ;
+		const _T	m23 = m[1][2] ;
+		const _T	m31 = m[2][0] ;
+		const _T	m32 = m[2][1] ;
+		const _T	m33 = m[2][2] ;
+
+		for ( ulong i = 0; i < count; ++ i )
+		{
+			fetch_addr GenVector3<_T,_S>*		dst = pvDst + i ;
+			fetch_addr const GenVector3<_T,_S>*	src = pvSrc + i ;
+			const _T	x = m11 * src.x + m12 * src.y + m13 * src.z ;
+			const _T	y = m21 * src.x + m22 * src.y + m23 * src.z ;
+			const _T	z = m31 * src.x + m32 * src.y + m33 * src.z ;
+			dst.x = x ;
+			dst.y = y ;
+			dst.z = z ;
+		}
+	}
+
+	// ベクトル a が {0,0,z} になる回転行列
+	public static GenMatrix3<_T,_S>* angleOn( const GenVector3<_T,_S>* a )
+	{
+		GenMatrix3<_T,_S>*	mat = GenMatrix3<_T,_S>( 1, 1, 1 ) ;
+		_T	xx_zz = a.x * a.x + a.z * a.z ;
+		_T	sqr_xz = (_T) Math.sqrt( xx_zz ) ;
+		_T	sqrt_xyz = (_T) Math.sqrt( xx_zz + a.y * a.y ) ;
+		if ( sqrt_xyz > 1.0e-10 )
+		{
+			mat.rotateOnX( (- a.y / sqrt_xyz), (sqr_xz / sqrt_xyz) ) ;
+		}
+		if ( sqr_xz > 1.0e-10 )
+		{
+			mat.rotateOnY( (- a.x / sqr_xz), (a.z / sqr_xz) ) ;
+		}
+		return	mat ;
+	}
+
+	// {0,0,z} がベクトル a と平行になる回転
+	public static GenMatrix3<_T,_S>* angleFor( const GenVector3<_T,_S>* a )
+	{
+		GenMatrix3<_T,_S>*	mat = GenMatrix3<_T,_S>( 1, 1, 1 ) ;
+		_T	xx_zz = a.x * a.x + a.z * a.z ;
+		_T	sqrt_xz = (_T) Math.sqrt( xx_zz ) ;
+		_T	sqrt_xyz = (_T) Math.sqrt( xx_zz + a.y * a.y ) ;
+		if ( sqrt_xz > 1.0e-10 )
+		{
+			mat.rotateOnY( (a.x / sqrt_xz), (a.z / sqrt_xz) ) ;
+		}
+		if ( sqrt_xyz > 1.0e-10 )
+		{
+			mat.rotateOnX( (a.y / sqrt_xyz), (sqrt_xz / sqrt_xyz) ) ;
+		}
+		return	mat ;
+	}
+
+	// ベクトル v 回り回転行列（回転方向は rotateOnZ と同じ）
+	public static GenMatrix3<_T,_S>* rotationOnVector
+				( const GenVector3<_T,_S>* v, _S sin_v, _S cos_v )
+	{
+		GenMatrix3<_T,_S>*	matV = angleOn( v ) ;
+		GenMatrix3<_T,_S>*	mat = matV.inverse() ;
+		mat.rotateOnZ( sin_v, cos_v ) ;
+		mat *= matV ;
+		return	mat ;
+	}
+
+	// ベクトル v0 を回転してベクトル v1 と平行にする回転行列
+	public static GenMatrix3<_T,_S>* rotationVectorTo
+				( const GenVector3<_T,_S>* v0, const GenVector3<_T,_S>* v1 )
+	{
+		GenVector3<_T,_S>*	vx = v0 * v1 ;
+		if ( vx.absolute() > 1.0e-10 )
+		{
+			GenMatrix3<_T,_S>*	matV = angleOn( vx ) ;
+			GenVector3<_T,_S>*	vn0 = matV * v0.normalize() ;
+			GenVector3<_T,_S>*	vn1 = matV * v1.normalize() ;
+
+			_S	cos_v = (_S) (vn0.x * vn1.x + vn0.y * vn1.y) ;
+			_S	sin_v = (_S) (vn0.x * vn1.y - vn0.y * vn1.x) ;
+
+			GenMatrix3<_T,_S>*	mat = matV.inverse() ;
+			mat.rotateOnZ( sin_v, cos_v ) ;
+			mat *= matV ;
+			return	mat ;
+		}
+		else if ( (v0 | v1) < 0 )
+		{
+			GenMatrix3<_T,_S>*	matV = angleOn( v0 ) ;
+			GenMatrix3<_T,_S>*	mat = matV.inverse() ;
+			mat.rotateOnY( 0, -1 ) ;
+			mat *= matV ;
+			return	mat ;
+		}
+		else
+		{
+			return	GenMatrix3<_T,_S>( 1, 1, 1 ) ;
+		}
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"[ [" + m[0][0] + ", " + m[0][1] + ", " + m[0][2]
+				+ " ], [" + m[1][0] + ", " + m[1][1] + ", " + m[1][2]
+				+ " ], [" + m[2][0] + ", " + m[2][1] + ", " + m[2][2] + "] ]" ;
+	}
+}
+
+struct	GenMatrix3<float,double> ;
+struct	GenMatrix3<double,double> ;
+
+struct	Matrix3		extends GenMatrix3<float,double>
+{
+	public Matrix3( const GenMatrix3<double,double>* mat )
+		: GenMatrix3<float,double>
+			( mat.m[0][0], mat.m[0][1], mat.m[0][2],
+				mat.m[1][0], mat.m[1][1], mat.m[1][2],
+				mat.m[2][0], mat.m[2][1], mat.m[2][2] )
+	{
+	}
+
+	public Matrix3 * operator := ( const GenMatrix3<float,double>* mat )
+	{
+		super := mat ;
+		return	this ;
+	}
+
+	public Matrix3 * operator := ( const GenMatrix3<double,double>* mat )
+	{
+		for ( int i = 0; i < 3; ++ i )
+		{
+			m[i][0] = (float) mat.m[i][0] ;
+			m[i][1] = (float) mat.m[i][1] ;
+			m[i][2] = (float) mat.m[i][2] ;
+		}
+		return	this ;
+	}
+}
+
+struct	Matrix3d	extends GenMatrix3<double,double>
+{
+	public Matrix3d( const GenMatrix3<float,double>* mat )
+		: GenMatrix3<double,double>
+			( mat.m[0][0], mat.m[0][1], mat.m[0][2],
+				mat.m[1][0], mat.m[1][1], mat.m[1][2],
+				mat.m[2][0], mat.m[2][1], mat.m[2][2] )
+	{
+	}
+
+	public Matrix3d * operator := ( const GenMatrix3<double,double>* mat )
+	{
+		super := mat ;
+		return	this ;
+	}
+
+	public Matrix3d * operator := ( const GenMatrix3<float,double>* mat )
+	{
+		for ( int i = 0; i < 3; ++ i )
+		{
+			m[i][0] = mat.m[i][0] ;
+			m[i][1] = mat.m[i][1] ;
+			m[i][2] = mat.m[i][2] ;
+		}
+		return	this ;
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+// 四元数
+//////////////////////////////////////////////////////////////////////////////
+
+struct	GenQuaternion<_T,_S>
+{
+	_T[4]	q = [ 1, 0, 0, 0 ] ;
+
+	public GenQuaternion<_T,_S>( _S q1, _S q2, _S q3, _S q4 )
+	{
+		q[0] = (_T) q1 ;
+		q[1] = (_T) q2 ;
+		q[2] = (_T) q3 ;
+		q[3] = (_T) q4 ;
+	}
+
+	public GenQuaternion<_T,_S>( const GenQuaternion<_T,_S>* pq )
+	{
+		this := pq ;
+	}
+
+	// ３次元行列から変換
+	public GenQuaternion<_T,_S>( const GenMatrix3<_T,_S>* mat )
+	{
+		q[0] = (_T) (( mat.m[0][0] + mat.m[1][1] + mat.m[2][2] + 1) * 0.25) ;
+		q[1] = (_T) (( mat.m[0][0] - mat.m[1][1] - mat.m[2][2] + 1) * 0.25) ;
+		q[2] = (_T) ((-mat.m[0][0] + mat.m[1][1] - mat.m[2][2] + 1) * 0.25) ;
+		q[3] = (_T) ((-mat.m[0][0] - mat.m[1][1] + mat.m[2][2] + 1) * 0.25) ;
+		//
+		if ( q[0] < 0 )	q[0] = 0 ;
+		if ( q[1] < 0 )	q[1] = 0 ;
+		if ( q[2] < 0 )	q[2] = 0 ;
+		if ( q[3] < 0 )	q[3] = 0 ;
+		q[0] = (_T) Math.sqrt( q[0] ) ;
+		q[1] = (_T) Math.sqrt( q[1] ) ;
+		q[2] = (_T) Math.sqrt( q[2] ) ;
+		q[3] = (_T) Math.sqrt( q[3] ) ;
+		//
+		if ( (q[0] < 1.0e-10) && (q[1] < 1.0e-10) )
+		{
+			q[0] = 0 ;
+			q[1] = 0 ;
+			if ( mat.m[2][1] + mat.m[1][2] < 0 )
+			{
+				q[3] = - q[3] ;
+			}
+		}
+		else if ( q[0] < 1.0e-10 )
+		{
+			q[0] = 0 ;
+			if ( mat.m[1][0] + mat.m[0][2] < 0 )
+			{
+				q[2] = - q[2] ;
+			}
+			if ( mat.m[0][2] + mat.m[2][0] < 0 )
+			{
+				q[3] = - q[3] ;
+			}
+		}
+		else
+		{
+			if ( mat.m[2][1] - mat.m[1][2] < 0 )
+			{
+				q[1] = - q[1] ;
+			}
+			if ( mat.m[0][2] - mat.m[2][0] < 0 )
+			{
+				q[2] = - q[2] ;
+			}
+			if ( mat.m[1][0] - mat.m[0][1] < 0 )
+			{
+				q[3] = - q[3] ;
+			}
+		}
+		double	d = absolute() ;
+		if ( d > 0.0 )
+		{
+			d = (1.0 / d) ;
+		}
+		q[0] *= (_T) d ;
+		q[1] *= (_T) d ;
+		q[2] *= (_T) d ;
+		q[3] *= (_T) d ;
+	}
+
+	// ３次元行列へ変換
+	public GenMatrix3<_T,_S>* toMatrix3() const
+	{
+		GenMatrix3<_T,_S>*	mat = new GenMatrix3<_T,_S> ;
+		mat.m[0][0] = q[0]*q[0] + q[1]*q[1] - q[2]*q[2] - q[3]*q[3] ;
+		mat.m[0][1] = (_T) 2 * (q[1] * q[2] - q[0] * q[3]) ;
+		mat.m[0][2] = (_T) 2 * (q[1] * q[3] + q[0] * q[2]) ;
+		//
+		mat.m[1][0] = (_T) 2 * (q[1] * q[2] + q[0] * q[3]) ;
+		mat.m[1][1] = q[0]*q[0] - q[1]*q[1] + q[2]*q[2] - q[3]*q[3] ;
+		mat.m[1][2] = (_T) 2 * (q[2] * q[3] - q[0] * q[1]) ;
+		//
+		mat.m[2][0] = (_T) 2 * (q[1] * q[3] - q[0] * q[2]) ;
+		mat.m[2][1] = (_T) 2 * (q[2] * q[3] + q[0] * q[1]) ;
+		mat.m[2][2] = q[0]*q[0] - q[1]*q[1] - q[2]*q[2] + q[3]*q[3] ;
+		return	mat ;
+	}
+
+	// 回転軸と回転角[rad]の四元数
+	public static GenQuaternion<_T,_S>*
+			rodriguesRotaion( const GenVector3<_T,_S>* pv, _S rad )
+	{
+		double	r = rad * 0.5 ;
+		_S		sinR = (_T) Math.sin( r ) ;
+		double	d = pv.absolute() ;
+		if ( d > 0.0 )
+		{
+			sinR /= (_S) d ;
+		}
+		const _S	q1 = (_S) Math.cos( r ) ;
+		const _S	q2 = pv.x * sinR ;
+		const _S	q3 = pv.y * sinR ;
+		const _S	q4 = pv.z * sinR ;
+		return	GenQuaternion<_T,_S>( q1, q2, q3, q4 ) ;
+	}
+
+	// 和
+	public GenQuaternion<_T,_S>* operator + ( const GenQuaternion<_T,_S>* pq ) const
+	{
+		return	GenQuaternion<_T,_S>
+					( q[0] + pq.q[0], q[1] + pq.q[1],
+						q[2] + pq.q[2], q[3] + pq.q[3] ) ;
+	}
+	public const GenQuaternion<_T,_S>* operator += ( const GenQuaternion<_T,_S>* pq )
+	{
+		q[0] += pq.q[0] ;
+		q[1] += pq.q[1] ;
+		q[2] += pq.q[2] ;
+		q[3] += pq.q[3] ;
+		return	this ;
+	}
+
+	// 差
+	public GenQuaternion<_T,_S>* operator - ( const GenQuaternion<_T,_S>* pq ) const
+	{
+		return	GenQuaternion<_T,_S>
+					( q[0] - pq.q[0], q[1] - pq.q[1],
+						q[2] - pq.q[2], q[3] - pq.q[3] ) ;
+	}
+	public const GenQuaternion<_T,_S>* operator -= ( const GenQuaternion<_T,_S>* pq )
+	{
+		q[0] -= pq.q[0] ;
+		q[1] -= pq.q[1] ;
+		q[2] -= pq.q[2] ;
+		q[3] -= pq.q[3] ;
+		return	this ;
+	}
+
+	// 積
+	public GenQuaternion<_T,_S>* operator * ( const GenQuaternion<_T,_S>* pq ) const
+	{
+		return	GenQuaternion<_T,_S>
+					( q[0] * pq.q[0] - q[1] * pq.q[1]
+							- q[2] * pq.q[2] - q[3] * pq.q[3],
+						q[0] * pq.q[1] + q[1] * pq.q[0]
+							+ q[2] * pq.q[3] - q[3] * pq.q[2],
+						q[0] * pq.q[2] - q[1] * pq.q[3]
+							+ q[2] * pq.q[0] + q[3] * pq.q[1],
+						q[0] * pq.q[3] + q[1] * pq.q[2]
+							- q[2] * pq.q[1] + q[3] * pq.q[0] ) ;
+	}
+	public const GenQuaternion<_T,_S>* operator *= ( const GenQuaternion<_T,_S>* pq )
+	{
+		const _T	q1 = q[0] * pq.q[0] - q[1] * pq.q[1]
+							- q[2] * pq.q[2] - q[3] * pq.q[3] ;
+		const _T	q2 = q[0] * pq.q[1] + q[1] * pq.q[0]
+							+ q[2] * pq.q[3] - q[3] * pq.q[2] ;
+		const _T	q3 = q[0] * pq.q[2] - q[1] * pq.q[3]
+							+ q[2] * pq.q[0] + q[3] * pq.q[1] ;
+		const _T	q4 = q[0] * pq.q[3] + q[1] * pq.q[2]
+							- q[2] * pq.q[1] + q[3] * pq.q[0] ;
+		q[0] = q1 ;
+		q[1] = q2 ;
+		q[2] = q3 ;
+		q[3] = q4 ;
+		return	this ;
+	}
+
+	// 四元数×スカラ
+	public GenQuaternion<_T,_S>* operator * ( _S s ) const
+	{
+		return	GenQuaternion<_T,_S>( q[0] * s, q[1] * s, q[2] * s, q[3] * s ) ;
+	}
+	public GenQuaternion<_T,_S>* operator *= ( _S s )
+	{
+		q[0] *= (_T) s ;
+		q[1] *= (_T) s ;
+		q[2] *= (_T) s ;
+		q[3] *= (_T) s ;
+		return	this ;
+	}
+
+	// 四元数÷スカラ
+	public GenQuaternion<_T,_S>* operator / ( _S s ) const
+	{
+		return	GenQuaternion<_T,_S>( q[0] / s, q[1] / s, q[2] / s, q[3] / s ) ;
+	}
+	public const GenQuaternion<_T,_S>* operator /= ( _S s )
+	{
+		q[0] /= (_T) s ;
+		q[1] /= (_T) s ;
+		q[2] /= (_T) s ;
+		q[3] /= (_T) s ;
+		return	this ;
+	}
+
+	// 逆数
+	public GenQuaternion<_T,_S>* inverse() const
+	{
+		// ※処理速度を考慮しない手抜き実装
+		GenQuaternion<_T,_S>*	t = GenQuaternion<_T,_S>( this ) ;
+		GenQuaternion<_T,_S>	i( 0, 1, 0, 0 ) ;
+		GenQuaternion<_T,_S>	j( 0, 0, 1, 0 ) ;
+		GenQuaternion<_T,_S>	k( 0, 0, 0, 1 ) ;
+		t += (i * this * i) ;
+		t += (j * this * j) ;
+		t += (k * this * k) ;
+		t *= (_S) (-0.5 / absolute()) ;
+		return	t ;
+	}
+
+	// 内積
+	public _T operator | ( const GenQuaternion<_T,_S>* pq ) const
+	{
+		return	q[0] * pq.q[0] + q[1] * pq.q[1]
+				+ q[2] * pq.q[2] + q[3] * pq.q[3] ;
+	}
+
+	// ノルム
+	public double absolute() const
+	{
+		return	Math.sqrt( q[0] * q[0] + q[1] * q[1]
+							+ q[2] * q[2] + q[3] * q[3] ) ;
+	}
+
+	// 正規化
+	public GenQuaternion<_T,_S>* normalize() const
+	{
+		double	d = absolute() ;
+		if ( d > 0.0 )
+		{
+			d = (1.0 / d) ;
+		}
+		return	GenQuaternion<_T,_S>
+					( (_S) (q[0] * d), (_S) (q[1] * d),
+						(_S) (q[2] * d), (_S) (q[3] * d) ) ;
+	}
+
+	// 線形補完
+	public GenQuaternion<_T,_S>* lerp( const GenQuaternion<_T,_S>* pq, _S t ) const
+	{
+		_S	qr = q[0] * pq.q[0] + q[1] * pq.q[1]
+					+ q[2] * pq.q[2] + q[3] * pq.q[3] ;
+		_S	nt = (_S) 1.0 - t ;
+		if ( qr < 0.0 )
+		{
+			nt = - nt ;
+		}
+		const _S	q1 = q[0] * nt + pq.q[0] * t ;
+		const _S	q2 = q[1] * nt + pq.q[1] * t ;
+		const _S	q3 = q[2] * nt + pq.q[2] * t ;
+		const _S	q4 = q[3] * nt + pq.q[3] * t ;
+		double		d = Math.sqrt( q1 * q1 + q2 * q2 + q3 * q3 + q4 * q4 ) ;
+		if ( d > 0.0 )
+		{
+			d = 1.0 / d ;
+		}
+		return	GenQuaternion<_T,_S>
+					( (_S) (q1 * d), (_S) (q2 * d),
+						(_S) (q3 * d), (_S) (q4 * d) ) ;
+	}
+
+	// 曲面補間
+	public GenQuaternion<_T,_S>* slerp( const GenQuaternion<_T,_S>* pq, _S t ) const
+	{
+		_S	qr = q[0] * pq.q[0] + q[1] * pq.q[1]
+					+ q[2] * pq.q[2] + q[3] * pq.q[3] ;
+		if ( qr * qr >= 1.0 - 1.0e-10 )
+		{
+			return	GenQuaternion<_T,_S>( this ) ;
+		}
+		else
+		{
+			_S	r = (_S) 1.0 ;
+			if ( qr < 0.0 )
+			{
+				qr = - qr ;
+				r = (_S) -1 ;
+			}
+			const _S	rad = (_S) Math.acos( qr ) ;
+			const _S	sr = (_S) (1.0 / Math.sin( rad )) ;
+			const _S	st1 = (_S) Math.sin( rad * (1 - t) ) * sr * r ;
+			const _S	st2 = (_S) Math.sin( rad * t ) * sr ;
+			//
+			const _S	q1 = q[0] * st1 + pq.q[0] * st2 ;
+			const _S	q2 = q[1] * st1 + pq.q[1] * st2 ;
+			const _S	q3 = q[2] * st1 + pq.q[2] * st2 ;
+			const _S	q4 = q[3] * st1 + pq.q[3] * st2 ;
+			//
+			double		d = Math.sqrt( q1 * q1 + q2 * q2 + q3 * q3 + q4 * q4 ) ;
+			if ( d > 0.0 )
+			{
+				d = 1.0 / d ;
+			}
+			return	GenQuaternion<_T,_S>
+						( (_S) (q1 * d), (_S) (q2 * d),
+							(_S) (q3 * d), (_S) (q4 * d) ) ;
+		}
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"(" + q[0] + ", " + q[1] + ", " + q[2] + ", " + q[3] + ")" ;
+	}
+}
+
+struct	GenQuaternion<float,double> ;
+struct	GenQuaternion<double,double> ;
+
+struct	Quaternion	extends	GenQuaternion<float,double>
+{
+	public Quaternion( const GenQuaternion<double,double>* pq )
+		: GenQuaternion<float,double>( pq.q[0], pq.q[1], pq.q[2], pq.q[3] )
+	{
+	}
+
+	public Quaternion* operator := ( const GenQuaternion<float,double>* pq )
+	{
+		super := pq ;
+		return	this ;
+	}
+
+	public Quaternion* operator := ( const GenQuaternion<double,double>* pq )
+	{
+		q[0] = (float) pq.q[0] ;
+		q[1] = (float) pq.q[1] ;
+		q[2] = (float) pq.q[2] ;
+		q[3] = (float) pq.q[3] ;
+		return	this ;
+	}
+}
+
+struct	Quaterniond	extends	GenQuaternion<double,double>
+{
+	public Quaterniond( const GenQuaternion<float,double>* pq )
+		: GenQuaternion<double,double>( pq.q[0], pq.q[1], pq.q[2], pq.q[3] )
+	{
+	}
+
+	public Quaterniond* operator := ( const GenQuaternion<double,double>* pq )
+	{
+		super := pq ;
+		return	this ;
+	}
+
+	public Quaterniond* operator := ( const GenQuaternion<float,double>* pq )
+	{
+		q[0] = pq.q[0] ;
+		q[1] = pq.q[1] ;
+		q[2] = pq.q[2] ;
+		q[3] = pq.q[3] ;
+		return	this ;
+	}
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+// ４次元行列
+//////////////////////////////////////////////////////////////////////////////
+
+struct	GenMatrix4<_T,_S>
+{
+	_T[4][4]	m = [ [ 1, 0, 0, 0 ],
+						[ 0, 1, 0, 0 ],
+						[ 0, 0, 1, 0 ],
+						[ 0, 0, 0, 1 ] ] ;
+
+	public GenMatrix4<_T,_S>
+			( _S m11, _S m12, _S m13, _S m14,
+				_S m21, _S m22, _S m23, _S m24,
+				_S m31, _S m32, _S m33, _S m34,
+				_S m41, _S m42, _S m43, _S m44 )
+	{
+		m[0][0] = (_T) m11 ;
+		m[0][1] = (_T) m12 ;
+		m[0][2] = (_T) m13 ;
+		m[0][3] = (_T) m14 ;
+		m[1][0] = (_T) m21 ;
+		m[1][1] = (_T) m22 ;
+		m[1][2] = (_T) m23 ;
+		m[1][3] = (_T) m24 ;
+		m[2][0] = (_T) m31 ;
+		m[2][1] = (_T) m32 ;
+		m[2][2] = (_T) m33 ;
+		m[2][3] = (_T) m34 ;
+		m[3][0] = (_T) m41 ;
+		m[3][1] = (_T) m42 ;
+		m[3][2] = (_T) m43 ;
+		m[3][3] = (_T) m44 ;
+	}
+
+	public GenMatrix4<_T,_S>( _S m11, _S m22, _S m33, _S m44 )
+	{
+		m[0][0] = (_T) m11 ;
+		m[0][1] = (_T) 0 ;
+		m[0][2] = (_T) 0 ;
+		m[0][3] = (_T) 0 ;
+		m[1][0] = (_T) 0 ;
+		m[1][1] = (_T) m22 ;
+		m[1][2] = (_T) 0 ;
+		m[1][3] = (_T) 0 ;
+		m[2][0] = (_T) 0 ;
+		m[2][1] = (_T) 0 ;
+		m[2][2] = (_T) m33 ;
+		m[2][3] = (_T) 0 ;
+		m[3][0] = (_T) 0 ;
+		m[3][1] = (_T) 0 ;
+		m[3][2] = (_T) 0 ;
+		m[3][3] = (_T) m44 ;
+	}
+
+	public GenMatrix4<_T,_S>( const GenMatrix4<_T,_S>* mat )
+	{
+		this := mat ;
+	}
+
+	public GenMatrix4<_T,_S>
+		( const GenMatrix3<_T,_S>* mat, const GenVector3<_T,_S>* pv )
+	{
+		m[0][0] = mat.m[0][0] ;
+		m[0][1] = mat.m[0][1] ;
+		m[0][2] = mat.m[0][2] ;
+		m[0][3] = pv.x ;
+		m[1][0] = mat.m[1][0] ;
+		m[1][1] = mat.m[1][1] ;
+		m[1][2] = mat.m[1][2] ;
+		m[1][3] = pv.y ;
+		m[2][0] = mat.m[2][0] ;
+		m[2][1] = mat.m[2][1] ;
+		m[2][2] = mat.m[2][2] ;
+		m[2][3] = pv.z ;
+		m[3][0] = (_T) 0 ;
+		m[3][1] = (_T) 0 ;
+		m[3][2] = (_T) 0 ;
+		m[3][3] = (_T) 1 ;
+	}
+
+	// 行列和
+	public GenMatrix4<_T,_S>* operator += ( const GenMatrix4<_T,_S>* mat )
+	{
+		for ( int i = 0; i < 4; ++ i )
+		{
+			m[i][0] += mat.m[i][0] ;
+			m[i][1] += mat.m[i][1] ;
+			m[i][2] += mat.m[i][2] ;
+			m[i][3] += mat.m[i][3] ;
+		}
+		return	this ;
+	}
+	public GenMatrix4<_T,_S>* operator + ( const GenMatrix4<_T,_S>* mat )
+	{
+		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
+		t += mat ;
+		return	t ;
+	}
+
+	// 行列差
+	public const GenMatrix4<_T,_S>* operator -= ( const GenMatrix4<_T,_S>* mat )
+	{
+		for ( int i = 0; i < 4; ++ i )
+		{
+			m[i][0] -= mat.m[i][0] ;
+			m[i][1] -= mat.m[i][1] ;
+			m[i][2] -= mat.m[i][2] ;
+			m[i][3] -= mat.m[i][3] ;
+		}
+		return	this ;
+	}
+	public GenMatrix4<_T,_S>* operator - ( const GenMatrix4<_T,_S>* mat )
+	{
+		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
+		t -= mat ;
+		return	t ;
+	}
+
+	// 行列積
+	public const GenMatrix4<_T,_S>* operator *= ( const GenMatrix4<_T,_S>* mat )
+	{
+		for ( int i = 0; i < 3; ++ i )
+		{
+			const _T	t1 = m[i][0] ;
+			const _T	t2 = m[i][1] ;
+			const _T	t3 = m[i][2] ;
+			const _T	t4 = m[i][3] ;
+			m[i][0] = (t1 * mat.m[0][0] + t2 * mat.m[1][0]
+						+ t3 * mat.m[2][0] + t4 * mat.m[3][0]) ;
+			m[i][1] = (t1 * mat.m[0][1] + t2 * mat.m[1][1]
+						+ t3 * mat.m[2][1] + t4 * mat.m[3][1]) ;
+			m[i][2] = (t1 * mat.m[0][2] + t2 * mat.m[1][2]
+						+ t3 * mat.m[2][2] + t4 * mat.m[3][2]) ;
+			m[i][3] = (t1 * mat.m[0][3] + t2 * mat.m[1][3]
+						+ t3 * mat.m[2][3] + t4 * mat.m[3][3]) ;
+		}
+		return	this ;
+	}
+	public GenMatrix4<_T,_S>* operator * ( const GenMatrix4<_T,_S>* mat )
+	{
+		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
+		t *= mat ;
+		return	t ;
+	}
+
+	// 行列×スカラ
+	public GenMatrix4<_T,_S>* operator *= ( _S s )
+	{
+		for ( int i = 0; i < 4; ++ i )
+		{
+			m[i][0] *= (_T) s ;
+			m[i][1] *= (_T) s ;
+			m[i][2] *= (_T) s ;
+			m[i][3] *= (_T) s ;
+		}
+		return	this ;
+	}
+	public GenMatrix4<_T,_S>* operator * ( _S s )
+	{
+		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
+		t *= s ;
+		return	t ;
+	}
+
+	// 行列÷スカラ
+	public GenMatrix4<_T,_S>* operator /= ( _S s )
+	{
+		for ( int i = 0; i < 4; ++ i )
+		{
+			m[i][0] /= (_T) s ;
+			m[i][1] /= (_T) s ;
+			m[i][2] /= (_T) s ;
+			m[i][3] /= (_T) s ;
+		}
+		return	this ;
+	}
+	public GenMatrix4<_T,_S>* operator / ( _S s )
+	{
+		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
+		t /= s ;
+		return	t ;
+	}
+
+	// 行列×ベクトル
+	public GenVector4<_T,_S>* operator * ( const GenVector4<_T,_S>* pv )
+	{
+		const _T	x = pv.x ;
+		const _T	y = pv.y ;
+		const _T	z = pv.z ;
+		const _T	w = pv.w ;
+		return	GenVector4<_T,_S>
+					( m[0][0] * x + m[0][1] * y + m[0][2] * z + m[0][3] * w,
+						m[1][0] * x + m[1][1] * y + m[1][2] * z + m[1][3] * w,
+						m[2][0] * x + m[2][1] * y + m[2][2] * z + m[2][3] * w,
+						m[3][0] * x + m[3][1] * y + m[3][2] * z + m[3][3] * w ) ;
+	}
+
+	// スケール
+	public GenMatrix4<_T,_S>* mulScale( _S x, _S y, _S z )
+	{
+		for ( int i = 0; i < 4; ++ i )
+		{
+			m[i][0] *= (_T) x ;
+			m[i][1] *= (_T) y ;
+			m[i][2] *= (_T) z ;
+		}
+		return	this ;
+	}
+
+	// 平行移動
+	public GenMatrix4<_T,_S>* addTranslation( _S x, _S y, _S z )
+	{
+		for ( int i = 0; i < 4; ++ i )
+		{
+			m[i][3] += (_T) (m[i][0] * x + m[i][1] * y + m[i][2] * z) ;
+		}
+		return	this ;
+	}
+
+	// 転置行列
+	public GenMatrix4<_T,_S>* transpose() const
+	{
+		return	GenMatrix4<_T,_S>
+					( m[0][0], m[1][0], m[2][0], m[3][0],
+						m[0][1], m[1][1], m[2][1], m[3][1],
+						m[0][2], m[1][2], m[2][2], m[3][2],
+						m[0][3], m[1][3], m[2][3], m[3][3] ) ;
+	}
+
+	// 行列式
+	public _T determinant() const
+	{
+		_T	d = (_T) 0 ;
+		for ( int i = 0; i < 4; ++ i )
+		{
+			int	j = (int) (i == 0) ;
+			int	k = 1 + (int) (i <= 1) ;
+			int	l = 2 + (int) (i <= 2) ;
+			_T	a = m[1][j] * (m[2][k] * m[3][l] - m[3][k] * m[2][l])
+					+ m[1][k] * (m[2][l] * m[3][j] - m[3][l] * m[2][j])
+					+ m[1][l] * (m[2][j] * m[3][k] - m[3][j] * m[2][k]) ;
+			if ( i & 0x01 )
+			{
+				d -= m[0][i] * a ;
+			}
+			else
+			{
+				d += m[0][i] * a ;
+			}
+		}
+		return	d ;
+	}
+
+	// 逆行列
+	public GenMatrix4<_T,_S>* inverse() const
+	{
+		_T	d = determinant() ;
+		if ( d != (_T) 0.0 )
+		{
+			d = (_T) 1.0 / d ;
+		}
+		GenMatrix4<_T,_S>*	mat = GenMatrix4<_T,_S>() ;
+		for ( int i = 0; i < 4; ++ i )
+		{
+			const int	j0 = (int) (i == 0) ;
+			const int	j1 = 1 + (int) (i <= 1) ;
+			const int	j2 = 2 + (int) (i <= 2) ;
+			//
+			for ( int j = 0; j < 4; ++ j )
+			{
+				const int	i0 = (int) (j == 0) ;
+				const int	i1 = 1 + (int) (j <= 1) ;
+				const int	i2 = 2 + (int) (j <= 2) ;
+				//
+				_T	a = m[i0][j0]
+							* (m[i1][j1] * m[i2][j2]
+									- m[i2][j1] * m[i1][j2])
+						+ m[i0][j1]
+							* (m[i1][j2] * m[i2][j0]
+									- m[i2][j2] * m[i1][j0])
+						+ m[i0][j2]
+							* (m[i1][j0] * m[i2][j1]
+									- m[i2][j0] * m[i1][j1]) ;
+				if ( (i ^ j) & 0x01 )
+				{
+					a = - a ;
+				}
+				mat.m[i][j] = a * d ;
+			}
+		}
+		return	mat ;
+	}
+
+	// 文字列表現
+	public String toString() const
+	{
+		return	"[ [" + m[0][0] + ", " + m[0][1] + ", " + m[0][2] + ", " + m[0][3]
+				+ " ], [" + m[1][0] + ", " + m[1][1] + ", " + m[1][2] + ", " + m[1][3]
+				+ " ], [" + m[2][0] + ", " + m[2][1] + ", " + m[2][2] + ", " + m[2][3]
+				+ " ], [" + m[3][0] + ", " + m[3][1] + ", " + m[3][2] + ", " + m[3][3] + "] ]" ;
+	}
+}
+
+struct	GenMatrix4<float,double> ;
+struct	GenMatrix4<double,double> ;
+
+struct	Matrix4		extends	GenMatrix4<float,double>
+{
+	public Matrix4( const GenMatrix4<double,double>* mat )
+		: GenMatrix4<float,double>
+			( mat.m[0][0], mat.m[0][1], mat.m[0][2], mat.m[0][3],
+				mat.m[1][0], mat.m[1][1], mat.m[1][2], mat.m[1][3],
+				mat.m[2][0], mat.m[2][1], mat.m[2][2], mat.m[2][3],
+				mat.m[3][0], mat.m[3][1], mat.m[3][2], mat.m[3][3] )
+	{
+	}
+
+	public Matrix4* operator := ( const GenMatrix4<float,double>* mat )
+	{
+		super := mat ;
+		return	this ;
+	}
+
+	public Matrix4* operator := ( const GenMatrix4<double,double>* mat )
+	{
+		for ( int i = 0; i < 4; ++ i )
+		{
+			m[i][0] = (float) mat.m[i][0] ;
+			m[i][1] = (float) mat.m[i][1] ;
+			m[i][2] = (float) mat.m[i][2] ;
+			m[i][3] = (float) mat.m[i][3] ;
+		}
+		return	this ;
+	}
+}
+
+
+struct	Matrix4d	extends	GenMatrix4<double,double>
+{
+	public Matrix4d( const GenMatrix4<float,double>* mat )
+		: GenMatrix4<double,double>
+			( mat.m[0][0], mat.m[0][1], mat.m[0][2], mat.m[0][3],
+				mat.m[1][0], mat.m[1][1], mat.m[1][2], mat.m[1][3],
+				mat.m[2][0], mat.m[2][1], mat.m[2][2], mat.m[2][3],
+				mat.m[3][0], mat.m[3][1], mat.m[3][2], mat.m[3][3] )
+	{
+	}
+
+	public Matrix4d* operator := ( const GenMatrix4<double,double>* mat )
+	{
+		super := mat ;
+		return	this ;
+	}
+
+	public Matrix4d* operator := ( const GenMatrix4<float,double>* mat )
+	{
+		for ( int i = 0; i < 4; ++ i )
+		{
+			m[i][0] = mat.m[i][0] ;
+			m[i][1] = mat.m[i][1] ;
+			m[i][2] = mat.m[i][2] ;
+			m[i][3] = mat.m[i][3] ;
+		}
+		return	this ;
+	}
+}
+
+
+

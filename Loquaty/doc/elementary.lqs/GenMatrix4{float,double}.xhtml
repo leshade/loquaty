@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>GenMatrix4&lt;float,double&gt;</title>
+</head>
+<body>
+<div class="chapter">GenMatrix4&lt;float,double&gt;</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct GenMatrix4&lt;float,double&gt;<br/>
+{<br/>
+&nbsp; &nbsp; float[4][4]&nbsp; &nbsp; m ;<br/>
+}</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;elementary.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="GenMatrix4{float,double}.xhtml">GenMatrix4&lt;float,double&gt;</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_m">m</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_GenMatrix4&lt;float,double&gt;">GenMatrix4&lt;float,double&gt;</a><br/>
+	<a href="#virtual_addTranslation">addTranslation</a><br/>
+	<a href="#virtual_determinant">determinant</a><br/>
+	<a href="#virtual_inverse">inverse</a><br/>
+	<a href="#virtual_mulScale">mulScale</a><br/>
+	<a href="#virtual_toString">toString</a><br/>
+	<a href="#virtual_transpose">transpose</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_add">operator +</a><br/>
+	<a href="#operator_sub">operator -</a><br/>
+	<a href="#operator_mul">operator *</a><br/>
+	<a href="#operator_div">operator /</a><br/>
+	<a href="#operator_sadd">operator +=</a><br/>
+	<a href="#operator_ssub">operator -=</a><br/>
+	<a href="#operator_smul">operator *=</a><br/>
+	<a href="#operator_sdiv">operator /=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_m"/>
+<div class="headline">m</div>
+<div class="usage">public float[4][4]&#9; m = [[1., 0., 0., 0.], [0., 1., 0., 0.], [0., 0., 1., 0.], [0., 0., 0., 1.]]</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_GenMatrix4&lt;float,double&gt;"/>
+<div class="headline">GenMatrix4&lt;float,double&gt;</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;( double m11, double m12, double m13, double m14, double m21, double m22, double m23, double m24, double m31, double m32, double m33, double m34, double m41, double m42, double m43, double m44 )</div>
+<br/>
+<div class="headline">GenMatrix4&lt;float,double&gt;</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;( double m11, double m22, double m33, double m44 )</div>
+<br/>
+<div class="headline">GenMatrix4&lt;float,double&gt;</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;( const GenMatrix4&lt;float,double&gt;* mat )</div>
+<br/>
+<div class="headline">GenMatrix4&lt;float,double&gt;</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;( const GenMatrix3&lt;float,double&gt;* mat, const GenVector3&lt;float,double&gt;* pv )</div>
+<br/>
+
+<a name="virtual_addTranslation"/>
+<div class="headline">addTranslation</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* addTranslation( double x, double y, double z )</div>
+<div class="normal">
+平行移動<br/></div>
+<br/>
+
+<a name="virtual_determinant"/>
+<div class="headline">determinant</div>
+<div class="usage">public float determinant( ) const</div>
+<div class="normal">
+行列式<br/></div>
+<br/>
+
+<a name="virtual_inverse"/>
+<div class="headline">inverse</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* inverse( ) const</div>
+<div class="normal">
+逆行列<br/></div>
+<br/>
+
+<a name="virtual_mulScale"/>
+<div class="headline">mulScale</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* mulScale( double x, double y, double z )</div>
+<div class="normal">
+スケール<br/></div>
+<br/>
+
+<a name="virtual_toString"/>
+<div class="headline">toString</div>
+<div class="usage">public String toString( ) const</div>
+<div class="normal">
+文字列表現<br/></div>
+<br/>
+
+<a name="virtual_transpose"/>
+<div class="headline">transpose</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* transpose( ) const</div>
+<div class="normal">
+転置行列<br/></div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_sadd"/>
+<div class="headline">operator +=</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* operator +=( const GenMatrix4&lt;float,double&gt;* mat )</div>
+<div class="normal">
+行列和<br/></div>
+<br/>
+
+<a name="operator_add"/>
+<div class="headline">operator +</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* operator +( const GenMatrix4&lt;float,double&gt;* mat )</div>
+<br/>
+
+<a name="operator_ssub"/>
+<div class="headline">operator -=</div>
+<div class="usage">public const GenMatrix4&lt;float,double&gt;* operator -=( const GenMatrix4&lt;float,double&gt;* mat )</div>
+<div class="normal">
+行列差<br/></div>
+<br/>
+
+<a name="operator_sub"/>
+<div class="headline">operator -</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* operator -( const GenMatrix4&lt;float,double&gt;* mat )</div>
+<br/>
+
+<a name="operator_smul"/>
+<div class="headline">operator *=</div>
+<div class="usage">public const GenMatrix4&lt;float,double&gt;* operator *=( const GenMatrix4&lt;float,double&gt;* mat )</div>
+<div class="normal">
+行列積<br/></div>
+<br/>
+
+<a name="operator_mul"/>
+<div class="headline">operator *</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* operator *( const GenMatrix4&lt;float,double&gt;* mat )</div>
+<br/>
+<div class="headline">operator *=</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* operator *=( double s )</div>
+<div class="normal">
+行列×スカラ<br/></div>
+<br/>
+<div class="headline">operator *</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* operator *( double s )</div>
+<br/>
+
+<a name="operator_sdiv"/>
+<div class="headline">operator /=</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* operator /=( double s )</div>
+<div class="normal">
+行列÷スカラ<br/></div>
+<br/>
+
+<a name="operator_div"/>
+<div class="headline">operator /</div>
+<div class="usage">public GenMatrix4&lt;float,double&gt;* operator /( double s )</div>
+<br/>
+<div class="headline">operator *</div>
+<div class="usage">public GenVector4&lt;float,double&gt;* operator *( const GenVector4&lt;float,double&gt;* pv )</div>
+<div class="normal">
+行列×ベクトル<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

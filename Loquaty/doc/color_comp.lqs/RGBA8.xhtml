@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>RGBA8</title>
+</head>
+<body>
+<div class="chapter">RGBA8</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct RGBA8<br/>
+{<br/>
+&nbsp; &nbsp; uint8&nbsp; &nbsp; r ;<br/>
+&nbsp; &nbsp; uint8&nbsp; &nbsp; g ;<br/>
+&nbsp; &nbsp; uint8&nbsp; &nbsp; b ;<br/>
+&nbsp; &nbsp; uint8&nbsp; &nbsp; a ;<br/>
+}</div>
+<div class="normal">
+RGBA8 ピクセル構成 (ビッグエンディアンで RGBA)<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;color_comp.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="RGBA8.xhtml">RGBA8</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_r">r</a><br/>
+	<a href="#member_g">g</a><br/>
+	<a href="#member_b">b</a><br/>
+	<a href="#member_a">a</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_RGBA8">RGBA8</a><br/>
+	<a href="#virtual_toString">toString</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_add">operator +</a><br/>
+	<a href="#operator_sub">operator -</a><br/>
+	<a href="#operator_mul">operator *</a><br/>
+	<a href="#operator_smov">operator :=</a><br/>
+	<a href="#operator_sadd">operator +=</a><br/>
+	<a href="#operator_ssub">operator -=</a><br/>
+	<a href="#operator_smul">operator *=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_r"/>
+<div class="headline">r</div>
+<div class="usage">public uint8&#9; r = 0</div>
+<br/>
+<a name="member_g"/>
+<div class="headline">g</div>
+<div class="usage">public uint8&#9; g = 0</div>
+<br/>
+<a name="member_b"/>
+<div class="headline">b</div>
+<div class="usage">public uint8&#9; b = 0</div>
+<br/>
+<a name="member_a"/>
+<div class="headline">a</div>
+<div class="usage">public uint8&#9; a = 0</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_RGBA8"/>
+<div class="headline">RGBA8</div>
+<div class="usage">public RGBA8( const RGBA8* rgba )</div>
+<br/>
+<div class="headline">RGBA8</div>
+<div class="usage">public RGBA8( const ARGB8* argb )</div>
+<br/>
+<div class="headline">RGBA8</div>
+<div class="usage">public RGBA8( uint _r, uint _g, uint _b, uint _a = 255 )</div>
+<br/>
+
+<a name="virtual_toString"/>
+<div class="headline">toString</div>
+<div class="usage">public String toString( ) const</div>
+<div class="normal">
+文字列表現<br/></div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public RGBA8* operator :=( const RGBA8* rgba )</div>
+<div class="normal">
+代入<br/></div>
+<br/>
+<div class="headline">operator :=</div>
+<div class="usage">public RGBA8* operator :=( const ARGB8* argb )</div>
+<br/>
+
+<a name="operator_add"/>
+<div class="headline">operator +</div>
+<div class="usage">public RGBA8* operator +( const RGBA8* rgba ) const</div>
+<div class="normal">
+飽和加算<br/></div>
+<br/>
+
+<a name="operator_sadd"/>
+<div class="headline">operator +=</div>
+<div class="usage">public RGBA8* operator +=( const RGBA8* rgba )</div>
+<br/>
+
+<a name="operator_sub"/>
+<div class="headline">operator -</div>
+<div class="usage">public RGBA8* operator -( const RGBA8* rgba ) const</div>
+<div class="normal">
+ゼロクリップ減算<br/></div>
+<br/>
+
+<a name="operator_ssub"/>
+<div class="headline">operator -=</div>
+<div class="usage">public RGBA8* operator -=( const RGBA8* rgba )</div>
+<br/>
+
+<a name="operator_mul"/>
+<div class="headline">operator *</div>
+<div class="usage">public RGBA8* operator *( double w ) const</div>
+<div class="normal">
+乗算 [0,1]<br/></div>
+<br/>
+
+<a name="operator_smul"/>
+<div class="headline">operator *=</div>
+<div class="usage">public RGBA8* operator *=( double w )</div>
+<br/>
+<br/><br/>
+</body>
+</html>

@@ -1922,7 +1922,7 @@ boolean の false 値を表現します。
 [ <italic>modifier-list</italic> ]&opt;&nbsp; <italic>type-expr</italic>&nbsp; <italic>var-difinition-list</italic> <bold>;</bold><br/>
 <br/>
 <italic>var-difinition-list</italic>:<br/>
-&tab;<italic>var-name</italic> [<bold>=</bold> <italic>init-expr</italic> ]&opt; [<bold>,</bold> <italic>var-difinition-list</italic>]&opt;<br/>
+&tab;<italic>var-name</italic> [ { <bold>=</bold> <italic>init-expr</italic> | <bold>(</bold> <italic>arg-list</italic> <bold>)</bold> }&opt; ]&opt; [<bold>,</bold> <italic>var-difinition-list</italic>]&opt;<br/>
 <br/>
 <italic>modifier-list</italic>:<br/>
 &tab; { <bold>static</bold><br/>
@@ -1938,12 +1938,19 @@ boolean の false 値を表現します。
 <div class="normal">
 
 　その名前空間に <italic>type-expr</italic> 型の新しい変数 <italic>var-name</italic> を作成し、<italic>init-expr</italic> で初期化します。<br/>
+　構造体をローカル変数に直接定義する場合には構築関数の引数を指定することができます。<br/>
 
 
 <div class="code_quote">
 	&exam;
 	int a = 1, b = 2 ;&r;
-	public static const String d = "abcd" ;
+	public static const String d = "abcd" ;&r;
+	&r;
+	public void foo()&r;
+	{&r;
+	&tab;Hoge&tab;h1( 1, 2 ) ;&r;
+	&tab;Hoge* &nbsp; h2 = Hoge( 3, 4 ) ;&r;
+	}&r;
 </div>
 
 </div>

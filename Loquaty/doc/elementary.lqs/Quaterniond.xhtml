@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Quaterniond</title>
+</head>
+<body>
+<div class="chapter">Quaterniond</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct Quaterniond<br/>
+{<br/>
+&nbsp; &nbsp; double[4]&nbsp; &nbsp; q ;<br/>
+}</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;elementary.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="GenQuaternion{double,double}.xhtml">GenQuaternion&lt;double,double&gt;</a>
+<div class="indent1"><a href="Quaterniond.xhtml">Quaterniond</a>
+</div></div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_q">q</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Quaterniond">Quaterniond</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_q"/>
+<div class="headline">q</div>
+<div class="usage">public double[4]&#9; q = [1., 0., 0., 0.]</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Quaterniond"/>
+<div class="headline">Quaterniond</div>
+<div class="usage">public Quaterniond( const GenQuaternion&lt;float,double&gt;* pq )</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public Quaterniond* operator :=( const GenQuaternion&lt;double,double&gt;* pq )</div>
+<br/>
+<div class="headline">operator :=</div>
+<div class="usage">public Quaterniond* operator :=( const GenQuaternion&lt;float,double&gt;* pq )</div>
+<br/>
+<br/><br/>
+</body>
+</html>
