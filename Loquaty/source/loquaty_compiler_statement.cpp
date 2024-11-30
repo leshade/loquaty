@@ -1255,7 +1255,12 @@ void LCompiler::ParseStatement_incllude
 	}
 
 	// インクルード
-	IncludeScript( strSourceName.c_str(), sparsSrc.GetFileDirectory() ) ;
+	LString	strSourceDir = LURLSchemer::GetDirectoryOf
+									( sparsSrc.GetFileName().c_str() ) ;
+	IncludeScript
+		( LURLSchemer::SubPath
+			( strSourceDir.c_str(),
+				strSourceName.c_str() ).c_str(), sparsSrc.GetFileDirectory() ) ;
 }
 
 // @error ...

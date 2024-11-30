@@ -508,7 +508,8 @@ LString LURLSchemer::SubPath
 LFilePtr LSubDirectory::OpenFile
 	( const wchar_t * pwszPath, long nOpenFlags )
 {
-	return	m_dir->OpenFile( MakePath(pwszPath).c_str(), nOpenFlags ) ;
+	LDirectory*	pDir = (m_dir != nullptr) ? m_dir.get() : &LURLSchemer::s_schemer ;
+	return	pDir->OpenFile( MakePath(pwszPath).c_str(), nOpenFlags ) ;
 }
 
 // 可能なら同等のディレクトリを複製する
@@ -520,7 +521,8 @@ std::shared_ptr<LDirectory> LSubDirectory::Duplicate( void )
 // ファイル情報取得
 bool LSubDirectory::QueryFileState( State& state, const wchar_t * pwszPath )
 {
-	return	m_dir->QueryFileState( state, MakePath(pwszPath).c_str() ) ;
+	LDirectory*	pDir = (m_dir != nullptr) ? m_dir.get() : &LURLSchemer::s_schemer ;
+	return	pDir->QueryFileState( state, MakePath(pwszPath).c_str() ) ;
 }
 
 // ファイル（サブディレクトリ含む）列挙
@@ -528,20 +530,23 @@ bool LSubDirectory::QueryFileState( State& state, const wchar_t * pwszPath )
 void LSubDirectory::ListFiles
 	( std::vector<LString>& files, const wchar_t * pwszSubDirPath )
 {
-	return	m_dir->ListFiles( files, MakePath(pwszSubDirPath).c_str() ) ;
+	LDirectory*	pDir = (m_dir != nullptr) ? m_dir.get() : &LURLSchemer::s_schemer ;
+	return	pDir->ListFiles( files, MakePath(pwszSubDirPath).c_str() ) ;
 }
 
 // ファイル削除
 bool LSubDirectory::DeleteFile( const wchar_t * pwszPath )
 {
-	return	m_dir->DeleteFile( MakePath(pwszPath).c_str() ) ;
+	LDirectory*	pDir = (m_dir != nullptr) ? m_dir.get() : &LURLSchemer::s_schemer ;
+	return	pDir->DeleteFile( MakePath(pwszPath).c_str() ) ;
 }
 
 // ファイル名変更
 bool LSubDirectory::RenameFile
 	( const wchar_t * pwszOldPath, const wchar_t * pwszNewPath )
 {
-	return	m_dir->RenameFile
+	LDirectory*	pDir = (m_dir != nullptr) ? m_dir.get() : &LURLSchemer::s_schemer ;
+	return	pDir->RenameFile
 				( MakePath(pwszOldPath).c_str(),
 					MakePath(pwszNewPath).c_str() ) ;
 }
@@ -549,13 +554,15 @@ bool LSubDirectory::RenameFile
 // サブディレクトリ作成
 bool LSubDirectory::CreateDirectory( const wchar_t * pwszPath )
 {
-	return	m_dir->CreateDirectory( MakePath(pwszPath).c_str() ) ;
+	LDirectory*	pDir = (m_dir != nullptr) ? m_dir.get() : &LURLSchemer::s_schemer ;
+	return	pDir->CreateDirectory( MakePath(pwszPath).c_str() ) ;
 }
 
 // サブディレクトリ削除
 bool LSubDirectory::DeleteDirectory( const wchar_t * pwszPath )
 {
-	return	m_dir->DeleteDirectory( MakePath(pwszPath).c_str() ) ;
+	LDirectory*	pDir = (m_dir != nullptr) ? m_dir.get() : &LURLSchemer::s_schemer ;
+	return	pDir->DeleteDirectory( MakePath(pwszPath).c_str() ) ;
 }
 
 // 修飾されたパスを取得する
