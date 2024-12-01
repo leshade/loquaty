@@ -30,6 +30,13 @@ struct	RGBA8
 		b = (uint8) _b ;
 		a = (uint8) _a ;
 	}
+	public RGBA8( uint rgba )
+	{
+		r = (uint8) (rgba >> 24) ;
+		g = (uint8) (rgba >> 16) ;
+		b = (uint8) (rgba >> 8) ;
+		a = (uint8) rgba ;
+	}
 
 	// 代入
 	public RGBA8* operator := ( const RGBA8* rgba )
@@ -44,6 +51,20 @@ struct	RGBA8
 		b = argb.b ;
 		a = argb.a ;
 		return	this ;
+	}
+	public RGBA8* operator := ( uint rgba )
+	{
+		r = (uint8) (rgba >> 24) ;
+		g = (uint8) (rgba >> 16) ;
+		b = (uint8) (rgba >> 8) ;
+		a = (uint8) rgba ;
+		return	this ;
+	}
+
+	// パックト形式（ビッグエンディアン）
+	public uint getPacked() const
+	{
+		return	(((uint)r) << 24) | (((uint)g) << 16) | (((uint)b) << 8) | a ;
 	}
 
 	// 飽和加算
@@ -133,6 +154,14 @@ struct	ARGB8
 		r = (uint8) _r ;
 		a = (uint8) _a ;
 	}
+	public ARGB8( uint argb )
+	{
+		b = (uint8) argb ;
+		g = (uint8) (argb >> 8) ;
+		r = (uint8) (argb >> 16) ;
+		a = (uint8) (argb >> 24) ;
+	}
+
 
 	// 代入
 	public ARGB8* operator := ( const ARGB8* argb )
@@ -147,6 +176,20 @@ struct	ARGB8
 		r = rgba.r ;
 		a = rgba.a ;
 		return	this ;
+	}
+	public ARGB8* operator := ( uint argb )
+	{
+		b = (uint8) argb ;
+		g = (uint8) (argb >> 8) ;
+		r = (uint8) (argb >> 16) ;
+		a = (uint8) (argb >> 24) ;
+		return	this ;
+	}
+
+	// パックト形式（リトルエンディアン）
+	public uint getPacked() const
+	{
+		return	(((uint)a) << 24) | (((uint)r) << 16) | (((uint)g) << 8) | b ;
 	}
 
 	// 飽和加算
