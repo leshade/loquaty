@@ -63,6 +63,7 @@ int LoquatyApp::ParseCmdLine( int argc, char* argv[], char* envp[] )
 			else if ( strArg == "/x" )
 			{
 				m_verb = verbRun ;
+				m_optNologo = true ;
 			}
 			else if ( (strArg == "/help") || (strArg == "/?") )
 			{
@@ -104,6 +105,12 @@ int LoquatyApp::ParseCmdLine( int argc, char* argv[], char* envp[] )
 				m_strMakeTarget = LString( argv[++ iArg] ) ;
 				m_verb = verbMakeCppStub ;
 			}
+			else if ( (iArg + 1 < argc)
+					&& ((strArg == "/cpp_stubs") || (strArg == "/CSs")) )
+			{
+				m_strMakeTarget = LString( argv[++ iArg] ) ;
+				m_verb = verbMakeCppStubs ;
+			}
 			else if ( (iArg + 1 < argc) && (strArg == "/out") )
 			{
 				m_strMakeOutput = LString( argv[++ iArg] ) ;
@@ -126,6 +133,7 @@ int LoquatyApp::ParseCmdLine( int argc, char* argv[], char* envp[] )
 			if ( m_verb == verbNo )
 			{
 				m_verb = verbRun ;
+				m_optNologo = true ;
 			}
 			break ;
 		}
@@ -211,6 +219,10 @@ int LoquatyApp::Run( void )
 		nExit = MakeNativeFuncStubClass() ;
 		break ;
 
+	case	verbMakeCppStubs:
+		nExit = MakeNativeFuncStubClassInPackage() ;
+		break ;
+
 	case	verbHelp:
 	default:
 		PrintHelp() ;
@@ -260,6 +272,8 @@ void LoquatyApp::PrintHelp( void )
 		"           : クラスに含まれる native 関数の C++ 用スタブコードを出力 (/CS)\n"
 		"             ※クラスや構造体に対応する C++ 側の名前は任意であるため\n"
 		"               便宜的に一定の規則で命名して出力します。\n"
+		"/cpp_stubs <package-name>\n"
+		"           : パッケージに含まれる native 関数の C++ 用スタブコードを出力 (/CSs)\n"
 		"/out <output-directory>\n"
 		"           : ドキュメント化／C++スタブを出力するディレクトリ\n"
 		"\n"
@@ -1994,8 +2008,11 @@ int LoquatyApp::MakeNativeFuncStubClass( void )
 					m_strMakeTarget.ToString().c_str() ) ;
 		return	1 ;
 	}
-	LClass *	pClass = type.GetClass() ;
+	return	MakeNativeFuncStubClass( type.GetClass() ) ;
+}
 
+int LoquatyApp::MakeNativeFuncStubClass( LClass * pClass )
+{
 	// 出力ファイルを開く
 	LString		strHeaderFile =
 		LURLSchemer::SubPath
@@ -2028,8 +2045,7 @@ int LoquatyApp::MakeNativeFuncStubClass( void )
 	LString	strCppClass = m_strCppClass ;
 	if ( strCppClass.IsEmpty() )
 	{
-		strCppClass = L"L" ;
-		strCppClass += pClass->GetClassName() ;
+		strCppClass = MakeCppClassName( pClass ) ;
 	}
 	LOutputUTF8Stream	osHeader( fileHdr ) ;
 	LOutputUTF8Stream	osCpp( fileCpp ) ;
@@ -2040,7 +2056,7 @@ int LoquatyApp::MakeNativeFuncStubClass( void )
 			<< L"using namespace Loquaty ;\r\n"
 			<< L"\r\n\r\n" ;
 
-	int	Exit = MakeNativeFuncStubClass
+	int	nExit = MakeNativeFuncStubClass
 					( osHeader, osCpp, pClass, strCppClass.c_str() ) ;
 
 	osHeader << L"\r\n\r\n" ;
@@ -2239,8 +2255,8 @@ int LoquatyApp::MakeNativeFunctionStub
 				LType	typeData = pPtrClass->GetDataType() ;
 				if ( typeData.IsStructure() )
 				{
-					osCpp << L"	LQT_FUNC_ARG_STRUCT( L"
-							<< typeData.GetClass()->GetClassName()
+					osCpp << L"	LQT_FUNC_ARG_STRUCT( "
+							<< MakeCppClassName(typeData.GetClass())
 							<< L", " << strArgName << L" ) ;\r\n" ;
 				}
 				else
@@ -2262,15 +2278,15 @@ int LoquatyApp::MakeNativeFunctionStub
 
 				if ( IsNativeClass( pArgClass ) )
 				{
-					osCpp << L"	LQT_FUNC_ARG_NOBJ( L"
-							<< pArgClass->GetClassName()
+					osCpp << L"	LQT_FUNC_ARG_NOBJ( "
+							<< MakeCppClassName(pArgClass)
 							<< L", " << strArgName << L" ) ;\r\n" ;
 				}
 				else
 				{
-					osCpp << L"	LQT_FUNC_ARG_OBJECT( L"
-							<< pArgClass->GetClassName()
-							<< L"Obj, " << strArgName << L" ) ;\r\n" ;
+					osCpp << L"	LQT_FUNC_ARG_OBJECT( "
+							<< MakeCppClassName(pArgClass)
+							<< L", " << strArgName << L" ) ;\r\n" ;
 				}
 				osCpp << L"	LQT_VERIFY_NULL_PTR( " << strArgName << L" ) ;\r\n" ;
 			}
@@ -2331,7 +2347,7 @@ int LoquatyApp::MakeNativeFunctionStub
 				LType	typeData = pPtrClass->GetDataType() ;
 				if ( typeData.IsStructure() )
 				{
-					osCpp << L"L" << typeData.GetClass()->GetClassName()
+					osCpp << MakeCppClassName(typeData.GetClass())
 							<< L"\t" << strRetValueName << L" ;\r\n" ;
 				}
 				else
@@ -2407,11 +2423,11 @@ int LoquatyApp::MakeNativeFunctionStub
 				assert( pRetClass != nullptr ) ;
 				if ( IsNativeClass( pRetClass ) )
 				{
-					osCpp << L"	// ToDo: set std::shared_ptr<L"
-								<< pRetClass->GetClassName() << L"> to return\r\n" ;
+					osCpp << L"	// ToDo: set std::shared_ptr<"
+								<< MakeCppClassName(pRetClass) << L"> to return\r\n" ;
 					osCpp << L"	" << strRetValueName
-							<< L"->SetNative( std::make_shared<L"
-								<< pRetClass->GetClassName() << L">() ) ;\r\n\r\n" ;
+							<< L"->SetNative( std::make_shared<"
+								<< MakeCppClassName(pRetClass) << L">() ) ;\r\n\r\n" ;
 				}
 				osCpp << L"	LQT_RETURN_OBJECT( " << strRetValueName << L" ) ;\r\n" ;
 			}
@@ -2488,6 +2504,78 @@ void LoquatyApp::OutputStubFuncArgList
 	{
 		osCpp << L" const" ;
 	}
+}
+
+// パッケージに含まれるクラスの native 関数の宣言・実装のテンプレートを出力する
+int LoquatyApp::MakeNativeFuncStubClassInPackage( void )
+{
+	int	nExit = LoadSource() ;
+	if ( nExit != 0 )
+	{
+		return	nExit ;
+	}
+
+	// パッケージ取得
+	LPackagePtr	pPackage = nullptr ;
+	for ( auto p : m_vm->GetPackageList() )
+	{
+		if ( p->GetName() == m_strMakeTarget )
+		{
+			pPackage = p ;
+			break ;
+		}
+	}
+	if ( pPackage == nullptr )
+	{
+		printf( "\n\'%s\' パッケージが見つかりません\n",
+					m_strMakeTarget.ToString().c_str() ) ;
+		return	1 ;
+	}
+
+	return	MakeNativeFuncStubClassInPackage( pPackage ) ;
+}
+
+int LoquatyApp::MakeNativeFuncStubClassInPackage( LPackagePtr pPackage )
+{
+	int	nExit = 0 ;
+	for ( LClass * pClass : pPackage->GetClasses() )
+	{
+		if ( HasClassNativeFunction( pClass ) )
+		{
+			nExit += MakeNativeFuncStubClass( pClass ) ;
+		}
+	}
+	return	nExit ;
+}
+
+bool LoquatyApp::HasClassNativeFunction( LClass * pClass )
+{
+	for ( auto iter : pClass->GetStaticFunctionList() )
+	{
+		for ( size_t i = 0; i < iter.second.size(); i ++ )
+		{
+			LPtr<LFunctionObj>	pFunc = iter.second.at(i) ;
+			if ( (pFunc != nullptr)
+				&& (pFunc->GetPrototype() != nullptr)
+				&& (pFunc->GetPrototype()->GetModifiers() & LType::modifierNative) )
+			{
+				return	true ;
+			}
+		}
+	}
+	const LVirtualFuncVector&	vecVirtuals = pClass->GetVirtualVector() ;
+	for ( size_t i = 0; i < vecVirtuals.size(); i ++ )
+	{
+		LPtr<LFunctionObj>	pFunc = vecVirtuals.GetFunctionAt( i ) ;
+		if ( (pFunc != nullptr)
+			&& (pFunc->GetThisClass() == pClass)
+			&& (pFunc->GetPrototype() != nullptr)
+			&& (pFunc->GetPrototype()->GetModifiers() & LType::modifierNative) )
+		{
+			return	true ;
+		}
+	}
+	return	false ;
 }
 
 bool LoquatyApp::IsNativeClass( LClass * pClass )
@@ -2572,6 +2660,80 @@ LString LoquatyApp::MakeStubFunctionName( const LString& strFuncName, int& nExit
 		nExit ++ ;
 	}
 	return	LString( L"_" ) + strFuncName.Replace( L".", L"__" ) ;
+}
+
+LString LoquatyApp::MakeCppClassName( LClass * pClass )
+{
+	if ( (dynamic_cast<LGenericObjClass*>( pClass ) == nullptr)
+		&& (dynamic_cast<LStructureClass*>( pClass ) == nullptr) )
+	{
+		if ( dynamic_cast<LPointerClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LPointerObj") ;
+		}
+		if ( dynamic_cast<LIntegerClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LIntegerObj") ;
+		}
+		if ( dynamic_cast<LDoubleClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LDoubleObj") ;
+		}
+		if ( dynamic_cast<LStringClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LStringObj") ;
+		}
+		if ( dynamic_cast<LStringBufClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LStringBufObj") ;
+		}
+		if ( dynamic_cast<LArrayClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LArrayObj") ;
+		}
+		if ( dynamic_cast<LMapClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LMapObj") ;
+		}
+		if ( dynamic_cast<LFunctionClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LFunctionObj") ;
+		}
+		if ( dynamic_cast<LExceptionClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LExceptionObj") ;
+		}
+		if ( dynamic_cast<LTaskClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LTaskObj") ;
+		}
+		if ( dynamic_cast<LThreadClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LThreadObj") ;
+		}
+	}
+	LPtr<LNamespace>	pParent = pClass->GetParentNamespace() ;
+	if ( (pParent != nullptr) && !pParent->GetName().IsEmpty() )
+	{
+		return	MakeCppNamespaceName( pParent.Ptr() ) + L"_" + pClass->GetName() ;
+	}
+	else
+	{
+		return	LString(L"L") + pClass->GetName() ;
+	}
+}
+
+LString LoquatyApp::MakeCppNamespaceName( LNamespace * pNamespace )
+{
+	LPtr<LNamespace>	pParent = pNamespace->GetParentNamespace() ;
+	if ( (pParent != nullptr) && !pParent->GetName().IsEmpty() )
+	{
+		return	MakeCppNamespaceName( pParent.Ptr() ) + L"_" + pNamespace->GetName() ;
+	}
+	else
+	{
+		return	LString(L"L") + pNamespace->GetName() ;
+	}
 }
 
 

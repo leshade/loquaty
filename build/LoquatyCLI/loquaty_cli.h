@@ -23,6 +23,7 @@ private:
 		verbMakeDocPackage,
 		verbMakeDocAll,
 		verbMakeCppStub,
+		verbMakeCppStubs,
 	} ;
 	Verb						m_verb ;
 	bool						m_optNologo ;
@@ -126,6 +127,7 @@ public:
 
 	// クラスの native 関数宣言・実装のテンプレートを出力する
 	int MakeNativeFuncStubClass( void ) ;
+	int MakeNativeFuncStubClass( LClass * pClass ) ;
 	int MakeNativeFuncStubClass
 		( LOutputStream& osHeader, LOutputStream& osCpp,
 			LClass * pClass, const wchar_t * pwszCppClass ) ;
@@ -135,9 +137,16 @@ public:
 	void OutputStubFuncArgList
 		( LOutputStream& osCpp, LPtr<LFunctionObj> pFunc ) ;
 
+	// パッケージに含まれるクラスの native 関数の宣言・実装のテンプレートを出力する
+	int MakeNativeFuncStubClassInPackage( void ) ;
+	int MakeNativeFuncStubClassInPackage( LPackagePtr pPackage ) ;
+	static bool HasClassNativeFunction( LClass * pClass ) ;
+
 	static bool IsNativeClass( LClass * pClass ) ;
 	static LString GetPrimitiveTypeName( LType::Primitive type ) ;
 	static LString MakeStubFunctionName( const LString& strFuncName, int& nExit ) ;
+	static LString MakeCppClassName( LClass * pClass ) ;
+	static LString MakeCppNamespaceName( LNamespace * pNamespace ) ;
 
 } ;
 
