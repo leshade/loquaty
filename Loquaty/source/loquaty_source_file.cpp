@@ -24,7 +24,17 @@ bool LTextFileParser::LoadTextFile
 	SeekIndex( 0 ) ;
 	SetBounds( 0, SIZE_MAX ) ;
 
-	m_pDirectory = pDirPath ;
+	LString	strDirPath = LURLSchemer::GetDirectoryOf( pwszFile ) ;
+	if ( pDirPath != nullptr )
+	{
+		m_pDirectory = std::make_shared<LSubDirectory>
+							( pDirPath->Duplicate(), strDirPath.c_str() ) ;
+	}
+	else
+	{
+		m_pDirectory = std::make_shared<LSubDirectory>
+							( nullptr, strDirPath.c_str() ) ;
+	}
 	m_strFilePath = pwszFile ;
 	return	true ;
 }
@@ -108,7 +118,7 @@ LString LTextFileParser::GetFileName( void ) const
 }
 
 // 開いたディレクトリを取得する
-LDirectory * LTextFileParser::GetFileDirectory( void ) const
+LDirectoryPtr LTextFileParser::GetFileDirectory( void ) const
 {
 	return	m_pDirectory ;
 }
@@ -206,9 +216,7 @@ bool LSourceFile::PassSpace( void )
 // ロード済みソース取得
 LSourceFilePtr LSourceProducer::GetSourceFile( const wchar_t * pwszFile )
 {
-	LString	strFile = pwszFile ;
-	strFile.MakeLower() ;
-
+	LString	strFile = NormalizeFilePath( pwszFile ) ;
 	auto	iter = m_mapSources.find( strFile.c_str() ) ;
 	if ( iter == m_mapSources.end() )
 	{
@@ -236,9 +244,7 @@ LSourceFilePtr LSourceProducer::LoadSourceFile
 			return	nullptr ;
 		}
 	}
-	LString	strFile = pwszFile ;
-	strFile.MakeLower() ;
-
+	LString	strFile = NormalizeFilePath( pwszFile ) ;
 	m_mapSources.insert
 		( std::make_pair<std::wstring,LSourceFilePtr>
 			( strFile.c_str(), LSourceFilePtr(pSource) ) ) ;
@@ -286,5 +292,22 @@ const LSourceProducer&
 	m_dirPath = srcp.m_dirPath ;
 	return	*this ;
 }
+
+// ファイル名の正規化
+LString LSourceProducer::NormalizeFilePath( const wchar_t * pwszFile )
+{
+	LString	strFile = pwszFile ;
+	strFile.MakeLower() ;
+
+	for ( size_t i = 0; i < strFile.GetLength(); i ++ )
+	{
+		if ( strFile.GetAt(i) == L'\\' )
+		{
+			strFile.SetAt( i, L'/' ) ;
+		}
+	}
+	return	strFile ;
+}
+
 
 

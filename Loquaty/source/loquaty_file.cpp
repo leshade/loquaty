@@ -356,7 +356,14 @@ LFilePtr LURLSchemer::OpenFile( const wchar_t * pwszPath, long nOpenFlags )
 // 可能なら同等のディレクトリを複製する
 std::shared_ptr<LDirectory> LURLSchemer::Duplicate( void )
 {
-	return	std::make_shared<LURLSchemer>( *this ) ;
+	if ( &s_schemer == this )
+	{
+		return	std::make_shared<LSubDirectory>() ;
+	}
+	else
+	{
+		return	std::make_shared<LURLSchemer>( *this ) ;
+	}
 }
 
 // ファイルを開く

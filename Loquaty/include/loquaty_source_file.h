@@ -11,7 +11,7 @@ namespace	Loquaty
 	class	LTextFileParser : public LStringParser
 	{
 	protected:
-		LDirectory *	m_pDirectory ;
+		LDirectoryPtr	m_pDirectory ;
 		LString			m_strFilePath ;
 
 	public:
@@ -39,7 +39,7 @@ namespace	Loquaty
 		// この文字列を読み込んだ元のファイル名を取得する
 		virtual LString GetFileName( void ) const ;
 		// 開いたディレクトリを取得する
-		virtual LDirectory * GetFileDirectory( void ) const ;
+		virtual LDirectoryPtr GetFileDirectory( void ) const ;
 
 	} ;
 
@@ -110,6 +110,11 @@ namespace	Loquaty
 		{
 			return	m_dirPath ;
 		}
+
+	protected:
+		// ファイル名の正規化
+		static LString NormalizeFilePath( const wchar_t * pwszFile ) ;
+
 	} ;
 
 

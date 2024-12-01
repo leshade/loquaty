@@ -1273,7 +1273,7 @@ LString LStringParser::GetFileName( void ) const
 }
 
 // 開いたディレクトリを取得する
-LDirectory * LStringParser::GetFileDirectory( void ) const
+LDirectoryPtr LStringParser::GetFileDirectory( void ) const
 {
 	return	nullptr ;
 }

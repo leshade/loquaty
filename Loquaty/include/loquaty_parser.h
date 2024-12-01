@@ -301,7 +301,7 @@ namespace	Loquaty
 		// この文字列を読み込んだ元のファイル名を取得する
 		virtual LString GetFileName( void ) const ;
 		// 開いたディレクトリを取得する
-		virtual LDirectory * GetFileDirectory( void ) const ;
+		virtual LDirectoryPtr GetFileDirectory( void ) const ;
 
 	} ;
 
