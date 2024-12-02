@@ -1,10 +1,10 @@
 @echo off
 
-@echo PATH=%~dp0bin\win64;%PATH%
-@echo LOQUATY_HOME=%~dp0..
-@echo LOQUATY_INCLUDE_PATH=%~dp0bin\library
+echo PATH=%~dp0bin\win64;%PATH%
+echo LOQUATY_HOME=%~dp0..
+echo LOQUATY_INCLUDE_PATH=%~dp0bin\library
 
-@echo 環境変数を更新します。
+echo 環境変数を更新します。
 
 set /P YN=よろしいですか？ (Y/N) 
 
@@ -23,15 +23,14 @@ if %len% GEQ 1024 (
 ) else (
 	setx PATH "%~dp0bin\win64;%PATH%"
 )
-@echo PATH=%PATH%
 
 setx LOQUATY_HOME "%~dp0.."
-@echo LOQUATY_HOME=%~dp0..
+echo LOQUATY_HOME=%~dp0..
 
 setx LOQUATY_INCLUDE_PATH "%~dp0bin\library"
-@echo LOQUATY_INCLUDE_PATH=%~dp0bin\library
+echo LOQUATY_INCLUDE_PATH=%~dp0bin\library
 
-@echo 環境変数を更新しました。
+echo 環境変数を更新しました。
 goto :LabelExit
 
 
