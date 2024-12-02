@@ -10,7 +10,7 @@ namespace	Loquaty
 
 	struct	LDateTime
 	{
-		LUint16	year ;		// 1-
+		LInt16	year ;		// 1-
 		LUint8	month ;		// [1, 12]
 		LUint8	day ;		// [1, 31]
 		LUint8	week ;		// [0, 6]   0:Sunday, 1:Monday, ...

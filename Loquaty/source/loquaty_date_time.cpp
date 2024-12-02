@@ -41,7 +41,7 @@ void LDateTime::SetNumberOfDays( std::int64_t nDays )
 	std::uint32_t	year1 = (std::uint32_t) (nDays / daysOf1Year) ;
 	nDays %= daysOf1Year ;
 
-	year = (LUint16) (year400 * 400 + year100 * 100
+	year = (LInt16) (year400 * 400 + year100 * 100
 								+ year4 * 4 + year1 + 1) ;
 	month = 0 ;
 	for ( int m = 1; m <= 12; m ++ )

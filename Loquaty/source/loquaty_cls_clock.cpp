@@ -231,7 +231,7 @@ const LClass::NativeFuncDesc		LDateTimeStructure::s_Virtuals[8] =
 const LClass::VariableDesc			LDateTimeStructure::s_Variables[17] =
 {
 	{
-		L"year", L"public", L"uint16", nullptr, nullptr, L"西暦年（1～）",
+		L"year", L"public", L"int16", nullptr, nullptr, L"西暦年（1～）",
 	},
 	{
 		L"month", L"public", L"uint8", nullptr, nullptr, L"月（1～12）",
