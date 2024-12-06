@@ -555,6 +555,10 @@ int LoquatyApp::MakeDocClass( void )
 	{
 		return	1 ;
 	}
+	m_mapDocClass.insert
+		( std::make_pair<LClass*,LString>
+			( type.GetClass(), pStream->GetFile()->GetFilePath() ) ) ;
+
 	return	MakeDocClass( *pStream, type.GetClass() ) ;
 }
 
