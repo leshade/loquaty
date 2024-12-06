@@ -367,7 +367,7 @@ namespace LoquatyTest
 		TEST_METHOD(SourceComment)
 		{
 			LSourceFile	source =
-				L" abc\n"
+				L" abc // line comment\n"
 				L"  // comment1\n"
 				L"	//comment2\n"
 				L"	def\n"
@@ -383,6 +383,9 @@ namespace LoquatyTest
 				L"\n"
 				L"	mno\n" ;
 			Assert::IsTrue( source.HasNextToken( L"abc" ) ) ;
+			source.PassSpaceInLine() ;
+			Assert::IsTrue( source.GetCommentBefore() == L"line comment\n" ) ;
+			source.ClearComment() ;
 			Assert::IsTrue( source.HasNextToken( L"def" ) ) ;
 			Assert::IsTrue( source.GetCommentBefore() == L"comment1\ncomment2\n" ) ;
 			Assert::IsTrue( source.HasNextToken( L"ghi" ) ) ;
@@ -1088,7 +1091,7 @@ namespace LoquatyTest
 
 			LSourceFile		src11 = L"0o45678" ;
 			LExprValuePtr	xval11 = compiler.EvaluateExpression( src11 ) ;
-			Assert::IsTrue( compiler.GetErrorCount() > 1 ) ;
+			Assert::IsTrue( compiler.GetErrorCount() >= 1 ) ;
 		}
 
 		TEST_METHOD(LiteralFloat)

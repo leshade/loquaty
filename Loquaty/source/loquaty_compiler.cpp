@@ -367,8 +367,8 @@ void LCompiler::Error
 {
 	if ( t_pCurrent != nullptr )
 	{
-		t_pCurrent->OnError( err, opt1, opt2 ) ;
 		t_pCurrent->ClearErrorOnCurrent() ;
+		t_pCurrent->OnError( err, opt1, opt2 ) ;
 	}
 	else
 	{

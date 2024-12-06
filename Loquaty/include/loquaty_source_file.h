@@ -67,10 +67,24 @@ namespace	Loquaty
 		// 空白文字を読み飛ばす（終端に到達した場合は false を返す）
 		virtual bool PassSpace( void ) ;
 
+		// 空白文字を読み飛ばす（終端又は次の行頭に到達した場合は false を返す）
+		virtual bool PassSpaceInLine( void ) ;
+
 		// 直前のコメントを取得する
 		const LString& GetCommentBefore( void ) const
 		{
 			return	m_strComment ;
+		}
+		// 直前にコメントがあったか？
+		bool HasCommentBefore( void ) const
+		{
+			return	m_hasComment ;
+		}
+		// コメントをクリアする
+		void ClearComment( void )
+		{
+			m_hasComment = false ;
+			m_strComment = L"" ;
 		}
 	} ;
 
@@ -90,7 +104,8 @@ namespace	Loquaty
 
 	public:
 		// ロード済みソース取得
-		LSourceFilePtr GetSourceFile( const wchar_t * pwszFile ) ;
+		LSourceFilePtr GetSourceFile
+			( const wchar_t * pwszFile, LDirectory * pDirPath = nullptr ) ;
 		// ソースを読み込んで取得
 		// 既にロード済みならそれを取得
 		LSourceFilePtr LoadSourceFile
@@ -112,8 +127,9 @@ namespace	Loquaty
 		}
 
 	protected:
-		// ファイル名の正規化
-		static LString NormalizeFilePath( const wchar_t * pwszFile ) ;
+		// ファイル名の正規化（二重読み込み防止のための）
+		LString NormalizeFilePath
+			( const wchar_t * pwszFile, LDirectory * pDirPath ) ;
 
 	} ;
 

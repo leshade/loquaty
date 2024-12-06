@@ -144,6 +144,9 @@ namespace	Loquaty
 		// 空白文字を読み飛ばす（終端に到達した場合は false を返す）
 		virtual bool PassSpace( void ) ;
 
+		// 空白文字を読み飛ばす（終端又は次の行頭に到達した場合は false を返す）
+		virtual bool PassSpaceInLine( void ) ;
+
 		// 空白を除いた次の文字が指定のいずれかの文字であるならそれを取得する
 		// 但し指標はその文字のまま進めない
 		wchar_t CheckNextChars( const wchar_t * pwszNext ) ;

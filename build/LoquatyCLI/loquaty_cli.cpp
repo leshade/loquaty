@@ -1349,7 +1349,7 @@ void LoquatyApp::MakeDocFunctionDesc
 	if ( pComment != nullptr )
 	{
 		MakeDocXMLSummary( strm, *pComment ) ;
-		MakeDocXMLParams( strm, *pComment ) ;
+		MakeDocXMLParams( strm, *pComment, &argList ) ;
 		MakeDocXMLDescription( strm, *pComment ) ;
 	}
 
@@ -1392,9 +1392,9 @@ void LoquatyApp::MakeDocBinaryOperatorDesc
 
 	if ( bodef.m_pwszComment != nullptr )
 	{
-		LType::LComment	comment = bodef.m_pwszComment ;
+		LType::LComment		comment = bodef.m_pwszComment ;
 		MakeDocXMLSummary( strm, comment ) ;
-		MakeDocXMLParams( strm, comment ) ;
+		MakeDocXMLParams( strm, comment, nullptr ) ;
 		MakeDocXMLDescription( strm, comment ) ;
 	}
 
@@ -1409,10 +1409,14 @@ void LoquatyApp::MakeComment( LType::LComment& comment )
 	{
 		LXMLDocParser	xmlParser = comment ;
 		comment.m_xmlDoc = xmlParser.ParseDocument() ;
-		if ( (comment.m_xmlDoc->GetElementCount() == 1)
-			&& (comment.m_xmlDoc->FindElement( LXMLDocument::typeText ) == 0) )
+		if ( (xmlParser.GetErrorCount() > 0)
+			|| ((comment.m_xmlDoc->GetElementCount() == 1)
+				&& (comment.m_xmlDoc->FindElement( LXMLDocument::typeText ) == 0)) )
 		{
 			xmlParser = comment.Replace( L"\r\n", L"\n" ).
+								Replace( L"&", L"&amp;" ).
+								Replace( L"<", L"&lt;" ).
+								Replace( L">", L"&gt;" ).
 								Replace( L"\n", L"<br/>\r\n" ) ;
 			LXMLDocPtr	pSummary = xmlParser.ParseDocument() ;
 			pSummary->SetTag( L"summary" ) ;
@@ -1463,18 +1467,37 @@ void LoquatyApp::MakeDocXMLSummary
 // <param name="引数名">引数の説明</param>
 // <return>返り値の説明</return>
 void LoquatyApp::MakeDocXMLParams
-		( LOutputStream& strm, LType::LComment& comment )
+		( LOutputStream& strm, LType::LComment& comment,
+						const LNamedArgumentListType* pArgList )
 {
 	MakeComment( comment ) ;
 
 	if ( (comment.m_xmlDoc->GetTagAs(L"param") == nullptr)
 		&& (comment.m_xmlDoc->GetTagAs(L"return") == nullptr) )
 	{
-		return ;
+		if ( (pArgList == nullptr) || (pArgList->size() == 0) )
+		{
+			return ;
+		}
+		bool	flagHasArgComment = false ;
+		for ( size_t i = 0; i < pArgList->size(); i ++ )
+		{
+			LType::LComment *	pComment = pArgList->at(i).GetComment() ;
+			if ( pComment != nullptr )
+			{
+				flagHasArgComment = true ;
+				break ;
+			}
+		}
+		if ( !flagHasArgComment )
+		{
+			return ;
+		}
 	}
 	strm << L"<div class=\"notes_parameter\">\r\n" ;
 
-	LXMLDocParser	xmlParser ;
+	std::set<LString>	setParams ;
+	LXMLDocParser		xmlParser ;
 	for ( size_t i = 0; i < comment.m_xmlDoc->GetElementCount(); i ++ )
 	{
 		LXMLDocPtr	pTag = comment.m_xmlDoc->GetElementAt( i ) ;
@@ -1485,12 +1508,35 @@ void LoquatyApp::MakeDocXMLParams
 		{
 			continue ;
 		}
+
+		LString	strName = pTag->GetAttrString( L"name" ) ;
+		setParams.insert( strName ) ;
+
 		strm << L"<div class=\"param_name\">"
-				<< LXMLDocParser::EncodeXMLString
-					( pTag->GetAttrString( L"name" ).c_str() ) << L"</div>\r\n" ;
+				<< LXMLDocParser::EncodeXMLString( strName.c_str() ) << L"</div>\r\n" ;
 		strm << L"<div class=\"param_desc\">\r\n" ;
 		xmlParser.SerializeElements( strm, *pTag ) ;
 		strm << L"</div>\r\n" ;
+	}
+	if ( pArgList != nullptr )
+	{
+		for ( size_t i = 0; i < pArgList->size(); i ++ )
+		{
+			if ( setParams.count( pArgList->GetArgNameAt(i) ) > 0 )
+			{
+				continue ;
+			}
+			LType::LComment *	pComment = pArgList->at(i).GetComment() ;
+			if ( pComment != nullptr )
+			{
+				strm << L"<div class=\"param_name\">"
+						<< LXMLDocParser::EncodeXMLString
+								( pArgList->GetArgNameAt(i) ) << L"</div>\r\n" ;
+				strm << L"<div class=\"param_desc\">\r\n"
+						<< LXMLDocParser::EncodeXMLString
+								( pComment->c_str() ) << L"</div>\r\n" ;
+			}
+		}
 	}
 
 	LXMLDocPtr	pReturn = comment.m_xmlDoc->GetTagAs( L"return" ) ;
@@ -2017,11 +2063,11 @@ int LoquatyApp::MakeNativeFuncStubClass( LClass * pClass )
 	LString		strHeaderFile =
 		LURLSchemer::SubPath
 			( m_strMakeOutput.c_str(),
-				(MakeClassDocFileName( pClass, pClass ) + L".h").c_str() ) ;
+				(MakeClassStubFileName( pClass ) + L".h").c_str() ) ;
 	LString		strCppFile =
 		LURLSchemer::SubPath
 			( m_strMakeOutput.c_str(),
-				(MakeClassDocFileName( pClass, pClass ) + L".cpp").c_str() ) ;
+				(MakeClassStubFileName( pClass ) + L".cpp").c_str() ) ;
 
 	LFilePtr	fileHdr =
 		LURLSchemer::Open( strHeaderFile.c_str(), LDirectory::modeCreate ) ;
@@ -2052,6 +2098,8 @@ int LoquatyApp::MakeNativeFuncStubClass( LClass * pClass )
 	osHeader << L"\r\n\r\n" ;
 	osCpp << L"\r\n"
 			<< L"#include <loquaty.h>\r\n"
+			<< L"#include \""
+				<< MakeClassStubFileName( pClass ) << L".h\"\r\n" 
 			<< L"\r\n"
 			<< L"using namespace Loquaty ;\r\n"
 			<< L"\r\n\r\n" ;
@@ -2506,6 +2554,19 @@ void LoquatyApp::OutputStubFuncArgList
 	}
 }
 
+LString LoquatyApp::MakeClassStubFileName( LClass * pClass )
+{
+	LString	strFileName = MakeClassDocFileName( pClass, pClass ) ;
+	for ( size_t i = 0; i < strFileName.GetLength(); i ++ )
+	{
+		if ( strFileName.GetAt(i) == L'.' )
+		{
+			strFileName.SetAt( i, L'_' ) ;
+		}
+	}
+	return	strFileName ;
+}
+
 // パッケージに含まれるクラスの native 関数の宣言・実装のテンプレートを出力する
 int LoquatyApp::MakeNativeFuncStubClassInPackage( void )
 {
@@ -2710,6 +2771,10 @@ LString LoquatyApp::MakeCppClassName( LClass * pClass )
 		if ( dynamic_cast<LThreadClass*>( pClass ) != nullptr )
 		{
 			return	LString(L"LThreadObj") ;
+		}
+		if ( dynamic_cast<LFileClass*>( pClass ) != nullptr )
+		{
+			return	LString(L"LPureFile") ;
 		}
 	}
 	LPtr<LNamespace>	pParent = pClass->GetParentNamespace() ;

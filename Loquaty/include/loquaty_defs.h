@@ -44,6 +44,11 @@
 // dll とそれ用の lib をマクロスイッチ(/D) _DLL_IMPORT_LOQUATY を定義してビルドする。
 // また C++ のラインタイムライブラリには dll を選択する(/MD, /MDd)。
 
+#if	!defined(_DLL_EXPORT_LOQUATY) && !defined(_DLL_IMPORT_LOQUATY)
+#define	_DLL_EXPORT_LOQUATY
+#endif
+
+
 // 共有したい static な変数や関数は LOQUATY_DLL_EXPORT で宣言し、
 // LOQUATY_DLL_DECL(x); で定義する。
 

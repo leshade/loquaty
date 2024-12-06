@@ -106,7 +106,9 @@ public:
 	void MakeComment( LType::LComment& comment ) ;
 	bool HasCommentSummary( LType::LComment& comment ) ;
 	void MakeDocXMLSummary( LOutputStream& strm, LType::LComment& comment ) ;
-	void MakeDocXMLParams( LOutputStream& strm, LType::LComment& comment ) ;
+	void MakeDocXMLParams
+		( LOutputStream& strm, LType::LComment& comment,
+							const LNamedArgumentListType* pArgList ) ;
 	void MakeDocXMLDescription( LOutputStream& strm, LType::LComment& comment ) ;
 
 	// css ファイルを出力する
@@ -136,6 +138,7 @@ public:
 			LPtr<LFunctionObj> pFunc, const wchar_t * pwszCppClass ) ;
 	void OutputStubFuncArgList
 		( LOutputStream& osCpp, LPtr<LFunctionObj> pFunc ) ;
+	LString MakeClassStubFileName( LClass * pClass ) ;
 
 	// パッケージに含まれるクラスの native 関数の宣言・実装のテンプレートを出力する
 	int MakeNativeFuncStubClassInPackage( void ) ;

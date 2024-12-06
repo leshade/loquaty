@@ -207,6 +207,87 @@ bool LSourceFile::PassSpace( void )
 	return	false ;
 }
 
+// 空白文字を読み飛ばす（終端又は次の行頭に到達した場合は false を返す）
+bool LSourceFile::PassSpaceInLine( void )
+{
+	bool	hasComment = false ;
+	while ( !IsEndOfString() )
+	{
+		wchar_t	wch = CurrentChar() ;
+		if ( IsCharSpace( wch ) )
+		{
+			NextChar() ;
+
+			if ( wch == L'\n' )
+			{
+				if ( !hasComment )
+				{
+					m_strComment = L"" ;
+				}
+				return	false ;
+			}
+		}
+		else if ( wch == L'/' )
+		{
+			if ( CurrentAt(1) == L'/' )
+			{
+				// コメントを読み飛ばす
+				size_t	iComment = SkipIndex( 2 ) ;
+				while ( CurrentChar() == L'/' )
+				{
+					iComment = SkipIndex( 1 ) ;
+				}
+				if ( (CurrentChar() == L' ') || (CurrentChar() == L'\t') )
+				{
+					iComment = SkipIndex( 1 ) ;
+				}
+				bool	flagEmptyLine = ((CurrentChar() == L'\r')
+										|| (CurrentChar() == L'\n')) ;
+				SeekString( L"\n" ) ;
+
+				if ( !flagEmptyLine )
+				{
+					hasComment = true ;
+					m_strComment += Middle( iComment, GetIndex() - iComment ) ;
+				}
+				m_hasComment = hasComment ;
+				return	false ;
+			}
+			else if ( CurrentAt(1) == L'*' )
+			{
+				/* コメントを読み飛ばす */
+				size_t	iComment = SkipIndex( 2 ) ;
+				while ( (CurrentChar() == L'*') && (CurrentAt(1) != L'/') )
+				{
+					iComment = SkipIndex( 1 ) ;
+				}
+				size_t	iEnd = SeekString( L"*/" )
+								? GetIndex() - 2 : GetIndex() ;
+				hasComment = true ;
+
+				LString	strComment = Middle( iComment, iEnd - iComment ) ;
+				while ( strComment.GetBackAt(0) == L'*' )
+				{
+					strComment.ChopRight( 1 ) ;
+				}
+				m_strComment += strComment.GetTrimmed() ;
+			}
+			else
+			{
+				m_hasComment = hasComment ;
+				return	true ;
+			}
+		}
+		else
+		{
+			m_hasComment = hasComment ;
+			return	true ;
+		}
+	}
+	m_hasComment = hasComment ;
+	return	false ;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -214,9 +295,10 @@ bool LSourceFile::PassSpace( void )
 //////////////////////////////////////////////////////////////////////////////
 
 // ロード済みソース取得
-LSourceFilePtr LSourceProducer::GetSourceFile( const wchar_t * pwszFile )
+LSourceFilePtr LSourceProducer::GetSourceFile
+	( const wchar_t * pwszFile, LDirectory * pDirPath )
 {
-	LString	strFile = NormalizeFilePath( pwszFile ) ;
+	LString	strFile = NormalizeFilePath( pwszFile, pDirPath ) ;
 	auto	iter = m_mapSources.find( strFile.c_str() ) ;
 	if ( iter == m_mapSources.end() )
 	{
@@ -230,7 +312,7 @@ LSourceFilePtr LSourceProducer::GetSourceFile( const wchar_t * pwszFile )
 LSourceFilePtr LSourceProducer::LoadSourceFile
 		( const wchar_t * pwszFile, LDirectory * pDirPath )
 {
-	LSourceFilePtr	pSource = GetSourceFile( pwszFile ) ;
+	LSourceFilePtr	pSource = GetSourceFile( pwszFile, pDirPath ) ;
 	if ( pSource != nullptr )
 	{
 		return	pSource ;
@@ -244,7 +326,7 @@ LSourceFilePtr LSourceProducer::LoadSourceFile
 			return	nullptr ;
 		}
 	}
-	LString	strFile = NormalizeFilePath( pwszFile ) ;
+	LString	strFile = NormalizeFilePath( pwszFile, pDirPath ) ;
 	m_mapSources.insert
 		( std::make_pair<std::wstring,LSourceFilePtr>
 			( strFile.c_str(), LSourceFilePtr(pSource) ) ) ;
@@ -293,10 +375,32 @@ const LSourceProducer&
 	return	*this ;
 }
 
-// ファイル名の正規化
-LString LSourceProducer::NormalizeFilePath( const wchar_t * pwszFile )
+// ファイル名の正規化（二重読み込み防止のための）
+LString LSourceProducer::NormalizeFilePath
+		( const wchar_t * pwszFile, LDirectory * pDirPath )
 {
-	LString	strFile = pwszFile ;
+	LFilePtr	file ;
+	if ( pDirPath != nullptr )
+	{
+		file = pDirPath->OpenFile( pwszFile ) ;
+	}
+	if ( file == nullptr )
+	{
+		file = LURLSchemer::Open( pwszFile ) ;
+	}
+	if ( file == nullptr )
+	{
+		file = m_dirPath.OpenFile( pwszFile ) ;
+	}
+	LString	strFile ;
+	if ( file != nullptr )
+	{
+		strFile = file->GetFilePath() ;
+	}
+	if ( strFile.IsEmpty() )
+	{
+		strFile = pwszFile ;
+	}
 	strFile.MakeLower() ;
 
 	for ( size_t i = 0; i < strFile.GetLength(); i ++ )

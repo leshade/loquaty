@@ -568,22 +568,59 @@ namespace	Loquaty
 
 		void SetNativeObject( size_t index, std::shared_ptr<Object> pObj ) ;
 	} ;
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// ネイティブ関数定義リスト
+	//////////////////////////////////////////////////////////////////////////
+
+	// ネイティブ関数
+	typedef	void (*PFN_NativeProc)( LContext& _context ) ;
+
+	// ネイティブ関数簡易実装用
+	struct	NativeFuncDesc
+	{
+		const wchar_t *			pwszFuncName ;		// クラス名 _ メンバ名 ...
+		PFN_NativeProc			pfnNativeProc ;		// 関数
+		const NativeFuncDesc *	pnfdNext ;			// 次の NativeFuncDesc
+	} ;
+
+	struct	NativeFuncDeclList
+	{
+		const NativeFuncDesc *		pnfdDesc ;
+		const NativeFuncDeclList *	pNext ;
+
+		NativeFuncDeclList
+			( const NativeFuncDesc * pnfd, const NativeFuncDeclList*& pFirst )
+		{
+			pnfdDesc = pnfd ;
+			pNext = pFirst ;
+			pFirst = this ;
+		}
+	} ;
+
 }
 
+static const Loquaty::NativeFuncDeclList*	s_pnfdlFirst = nullptr ;
 
 // ネイティブ関数簡易宣言
 #define	DECL_LOQUATY_FUNC(func_name)	\
-	extern const Loquaty::LVirtualMachine::NativeFuncDesc	s_loquaty_desc_##func_name ;	\
+	extern const Loquaty::NativeFuncDesc	s_loquaty_desc_##func_name ;	\
+	static const NativeFuncDeclList	s_loquaty_decl_##func_name( &s_loquaty_desc_##func_name, s_pnfdlFirst ) ;	\
 	void loquaty_func_##func_name( Loquaty::LContext& _context )
 
 #define	DECL_LOQUATY_CONSTRUCTOR(class_name)	DECL_LOQUATY_FUNC(class_name)
 #define	DECL_LOQUATY_CONSTRUCTOR_N(class_name,n)	DECL_LOQUATY_FUNC(class_name##_##n)
 
+// 宣言されたネイティブ関数を実装する
+#define	DEF_LOQUATY_FUNC_LIST(vm)	(vm)->AddNativeFuncDefinitions(s_pnfdlFirst)
+
 // ネイティブ関数簡易実装
 // func_name_str は Loquaty での名前
 // 先頭が '_' から始まる場合には、先頭の1文字を取り除いたのち、'__' を '.' に置き換える
 #define	IMPL_LOQUATY_FUNC_NAME(func_name,func_name_str)	\
-	const Loquaty::LVirtualMachine::NativeFuncDesc	s_loquaty_desc_##func_name =	\
+	const Loquaty::NativeFuncDesc	s_loquaty_desc_##func_name =	\
 	{	\
 		func_name_str,	\
 		&loquaty_func_##func_name,	\

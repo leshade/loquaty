@@ -70,6 +70,29 @@ bool LStringParser::PassSpace( void )
 	return	false ;
 }
 
+
+// 空白文字を読み飛ばす（終端又は次の行頭に到達した場合は false を返す）
+bool LStringParser::PassSpaceInLine( void )
+{
+	while ( !IsEndOfString() )
+	{
+		wchar_t	wch = LString::at(m_index) ;
+		if ( IsCharSpace( wch ) )
+		{
+			m_index ++ ;
+			if ( wch == L'\n' )
+			{
+				return	false ;
+			}
+		}
+		else
+		{
+			return	true ;
+		}
+	}
+	return	false ;
+}
+
 // 空白を除いた次の文字が指定のいずれかの文字であるならそれを取得する
 // 但し指標はその文字のまま進めない
 wchar_t LStringParser::CheckNextChars( const wchar_t * pwszNext )

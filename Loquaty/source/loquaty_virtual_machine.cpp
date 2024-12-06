@@ -965,9 +965,23 @@ void LVirtualMachine::AddNativeFuncDefinitions( const NativeFuncDesc * pFuncDesc
 	}
 }
 
+void LVirtualMachine::AddNativeFuncDefinitions( const NativeFuncDeclList * pFuncDeclList )
+{
+	auto	lock = m_pGlobal->GetLock() ;
+
+	while ( pFuncDeclList != nullptr )
+	{
+		const NativeFuncDesc *	pnfdDesc = pFuncDeclList->pnfdDesc ;
+		LString	strFuncName = GetActualFunctionName( pnfdDesc->pwszFuncName ) ;
+
+		AddNativeFuncDefinition( strFuncName.c_str(), pnfdDesc->pfnNativeProc ) ;
+
+		pFuncDeclList = pFuncDeclList->pNext ;
+	}
+}
+
 void LVirtualMachine::AddNativeFuncDefinition
-	( const wchar_t * pwszFullFuncName,
-			LVirtualMachine::PFN_NativeProc pfnNativeProc )
+	( const wchar_t * pwszFullFuncName, PFN_NativeProc pfnNativeProc )
 {
 	auto	iFunc = m_mapNativeFuncs.find( pwszFullFuncName ) ;
 	if ( iFunc != m_mapNativeFuncs.end() )
@@ -1083,17 +1097,15 @@ LString LVirtualMachine::GetActualFunctionName( const wchar_t * pwszFuncName )
 }
 
 // s_pnfdFirstDesc チェーンに pnfdDesc を追加（挿入）
-const LVirtualMachine::NativeFuncDesc *
-	LVirtualMachine::AddNativeFuncDesc
-		( const LVirtualMachine::NativeFuncDesc * pnfdDesc )
+const NativeFuncDesc *
+	LVirtualMachine::AddNativeFuncDesc( const NativeFuncDesc * pnfdDesc )
 {
 	const NativeFuncDesc *	pnfdNext = s_pnfdFirstDesc ;
 	s_pnfdFirstDesc = pnfdDesc ;
 	return	pnfdNext ;
 }
 
-const LVirtualMachine::NativeFuncDesc *
-		LVirtualMachine::s_pnfdFirstDesc = nullptr ;
+const NativeFuncDesc * LVirtualMachine::s_pnfdFirstDesc = nullptr ;
 
 
 // 複製する（要素も全て複製処理する）

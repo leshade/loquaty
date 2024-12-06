@@ -148,18 +148,6 @@ namespace	Loquaty
 		// 実行中のスレッドを強制終了する
 		void TerminateAllThreads( void ) ;
 
-	public:
-		// ネイティブ関数
-		typedef	void (*PFN_NativeProc)( LContext& _context ) ;
-
-		// ネイティブ関数簡易実装用
-		struct	NativeFuncDesc
-		{
-			const wchar_t *			pwszFuncName ;		// クラス名 _ メンバ名 ...
-			PFN_NativeProc			pfnNativeProc ;		// 関数
-			const NativeFuncDesc *	pnfdNext ;			// 次の NativeFuncDesc
-		} ;
-
 	protected:
 		std::map< std::wstring,
 					std::vector< LPtr<LFunctionObj> > >	m_mapSolvedFuncs ;
@@ -171,6 +159,7 @@ namespace	Loquaty
 		// ネイティブ関数定義追加
 		void AddNativeFuncDefinitions( void ) ;
 		void AddNativeFuncDefinitions( const NativeFuncDesc * pFuncDescs ) ;
+		void AddNativeFuncDefinitions( const NativeFuncDeclList * pFuncDeclList ) ;
 		void AddNativeFuncDefinition
 			( const wchar_t * pwszFullFuncName, PFN_NativeProc pfnNativeProc ) ;
 

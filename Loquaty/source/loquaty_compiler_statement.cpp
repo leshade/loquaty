@@ -861,6 +861,12 @@ void LCompiler::ParsePrototypeArgmentList
 	( LStringParser& sparsExpr, LPrototype& proto,
 		const LNamespaceList * pnslLocal, const wchar_t * pwszEscChars )
 {
+	LPtr<LNamespace>	pNamespace = GetCurrentNamespace() ;
+	LSourceFile *		pSource = dynamic_cast<LSourceFile*>( &sparsExpr ) ;
+	if ( pSource != nullptr )
+	{
+		pSource->ClearComment() ;
+	}
 	while ( sparsExpr.PassSpace() )
 	{
 		if ( LStringParser::IsCharContained
@@ -936,6 +942,19 @@ void LCompiler::ParsePrototypeArgmentList
 			proto.DefaultArgList().push_back( LValue() ) ;
 		}
 		assert( proto.GetDefaultArgList().size() == proto.GetArgListType().size() ) ;
+
+		if ( (pSource != nullptr) && (pNamespace != nullptr) )
+		{
+			pSource->PassSpaceInLine() ;
+			if ( !pSource->GetCommentBefore().IsEmpty() )
+			{
+				typeArg.SetComment
+					( pNamespace->MakeComment
+						( pSource->GetCommentBefore().c_str() ) ) ;
+				proto.ArgListType().SetArgTypeAt( iArg, typeArg ) ;
+				pSource->ClearComment() ;
+			}
+		}
 	}
 }
 
@@ -4278,7 +4297,11 @@ void LCompiler::ParseMemberFunction
 
 	ParsePrototypeArgmentList( sparsSrc, *pProto, pnslLocal, L")" ) ;
 
-	if ( sparsSrc.HasNextChars( L")" ) != L')' )
+	if ( HasErrorOnCurrent() )
+	{
+		sparsSrc.PassStatement( L")", L":{}" ) ;
+	}
+	else if ( sparsSrc.HasNextChars( L")" ) != L')' )
 	{
 		OnError( errorMismatchParentheses ) ;
 		sparsSrc.PassStatement( L")", L":{}" ) ;
