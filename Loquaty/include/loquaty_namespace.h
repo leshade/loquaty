@@ -4,6 +4,8 @@
 
 namespace	Loquaty
 {
+	class	LPackage ;
+
 	//////////////////////////////////////////////////////////////////////////
 	// 名前空間
 	//////////////////////////////////////////////////////////////////////////
@@ -36,6 +38,7 @@ namespace	Loquaty
 		LVirtualMachine&	m_vm ;			// 仮想マシン
 		LPtr<LNamespace>	m_parent ;		// より大域の名前空間へのチェーン
 		LString				m_name ;		// 空間名
+		LPackage *			m_pPackage ;		// 含まれているパッケージ
 
 		LArrangementBuffer	m_arrangement ;	// 静的なメンバ変数配置
 
@@ -80,6 +83,16 @@ namespace	Loquaty
 		LPtr<LNamespace> GetParentNamespace( void ) const
 		{
 			return	m_parent ;
+		}
+
+		// パッケージ情報
+		LPackage * GetPackage( void ) const
+		{
+			return	m_pPackage ;
+		}
+		void SetPackage( LPackage * pPackage )
+		{
+			m_pPackage = pPackage ;
 		}
 
 	public:
@@ -255,7 +268,7 @@ namespace	Loquaty
 	protected:
 		Type						m_type ;
 		LString						m_name ;
-		std::vector<LClass*>		m_classes ;
+		std::vector<LNamespace*>	m_classes ;
 		std::vector<TypeDefDesc>	m_types ;
 
 		static thread_local LPackage *	t_pCurrent ;
@@ -275,12 +288,12 @@ namespace	Loquaty
 			return	m_name ;
 		}
 		// クラス追加
-		void AddClass( LClass* pClass )
+		void AddClass( LNamespace* pClass )
 		{
 			m_classes.push_back( pClass ) ;
 		}
 		// クラスリスト
-		const std::vector<LClass*>& GetClasses( void ) const
+		const std::vector<LNamespace*>& GetClasses( void ) const
 		{
 			return	m_classes ;
 		}

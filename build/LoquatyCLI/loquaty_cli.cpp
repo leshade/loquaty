@@ -556,24 +556,24 @@ int LoquatyApp::MakeDocClass( void )
 		return	1 ;
 	}
 	m_mapDocClass.insert
-		( std::make_pair<LClass*,LString>
+		( std::make_pair<LNamespace*,LString>
 			( type.GetClass(), pStream->GetFile()->GetFilePath() ) ) ;
 
 	return	MakeDocClass( *pStream, type.GetClass() ) ;
 }
 
 // クラスの出力ファイル名を生成する
-LString LoquatyApp::MakeClassDocFileName( LClass * pClass, LClass * pFromClass )
+LString LoquatyApp::MakeClassDocFileName( LNamespace * pClass, LNamespace * pFromClass )
 {
-	LString	strClassName = pClass->GetFullClassName() ;
+	LString	strClassName = pClass->GetFullName() ;
 	LString	strClassFile = MakeTypeFileName( strClassName ) ;
 
 	return	MakeClassDocFileDir( pClass, pFromClass ) + strClassFile ;
 }
 
-LString LoquatyApp::MakeClassDocFileName( LClass * pClass, LPackage * pFromPackage )
+LString LoquatyApp::MakeClassDocFileName( LNamespace * pClass, LPackage * pFromPackage )
 {
-	LString	strClassName = pClass->GetFullClassName() ;
+	LString	strClassName = pClass->GetFullName() ;
 	LString	strClassFile = MakeTypeFileName( strClassName ) ;
 
 	return	MakeClassDocFileDir( pClass, pFromPackage ) + strClassFile ;
@@ -613,14 +613,14 @@ LString LoquatyApp::MakeTypeFileName( const LString& strTypeName )
 				} ) ;
 }
 
-LString LoquatyApp::MakeClassDocFileDir( LClass * pClass, LClass * pFromClass )
+LString LoquatyApp::MakeClassDocFileDir( LNamespace * pClass, LNamespace * pFromClass )
 {
 	return	MakeClassDocFileDir
 				( pClass, (pFromClass != nullptr)
 							? pFromClass->GetPackage() : nullptr ) ;
 }
 
-LString LoquatyApp::MakeClassDocFileDir( LClass * pClass, LPackage * pFromPackage )
+LString LoquatyApp::MakeClassDocFileDir( LNamespace * pClass, LPackage * pFromPackage )
 {
 	LPackage *	pPackage = pClass->GetPackage() ;
 	if ( pPackage != nullptr )
@@ -642,7 +642,7 @@ LString LoquatyApp::MakeClassDocFileDir( LClass * pClass, LPackage * pFromPackag
 }
 
 // 出力ファイルを開く
-std::shared_ptr<LOutputStream> LoquatyApp::OpenClassDocFile( LClass * pClass )
+std::shared_ptr<LOutputStream> LoquatyApp::OpenClassDocFile( LNamespace * pClass )
 {
 	return	OpenDocFile
 		( (MakeClassDocFileName( pClass, (LPackage*) nullptr ) + L".xhtml").c_str() ) ;
@@ -722,9 +722,9 @@ int LoquatyApp::MakeDocTypeDef
 }
 
 // クラスを文書化する
-int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
+int LoquatyApp::MakeDocClass( LOutputStream& strm, LNamespace * pNamespace )
 {
-	LString	strClassName = pClass->GetFullClassName() ;
+	LString	strClassName = pNamespace->GetFullName() ;
 	LString	strXClassName = LXMLDocParser::EncodeXMLString( strClassName.c_str() ) ;
 
 	// ヘッダ・見出し
@@ -741,14 +741,14 @@ int LoquatyApp::MakeDocClass( LOutputStream& strm, LClass * pClass )
 			L"<body>\r\n"
 			L"<div class=\"chapter\">" << strXClassName << L"</div>\r\n\r\n" ;
 
-	return	MakeDocClassDefs( strm, pClass, pClass->GetPackage() ) ;
+	return	MakeDocClassDefs( strm, pNamespace, pNamespace->GetPackage() ) ;
 }
 
 int LoquatyApp::MakeDocClassDefs
-	( LOutputStream& strm, LClass * pClass, LPackage * pPackage )
+	( LOutputStream& strm, LNamespace * pNamespace, LPackage * pPackage )
 {
 	// クラス概要
-	MakeDocClassSummary( strm, pClass ) ;
+	MakeDocClassSummary( strm, pNamespace ) ;
 
 	// パッケージ
 	if ( (pPackage != nullptr)
@@ -770,48 +770,56 @@ int LoquatyApp::MakeDocClassDefs
 	}
 
 	// クラス派生ツリー
-	strm << L"<div class=\"headline\">Super Classes</div>\r\n"
-			L"<div class=\"indent1\"><a href=\"index.xhtml\">&lt;index&gt;</a></div>\r\n" ;
-
-	strm << MakeDocSuperClass( strm, pClass, pPackage ) ;
-
-	if ( dynamic_cast<LStructureClass*>( pClass ) != nullptr )
+	LClass *	pClass = dynamic_cast<LClass*>( pNamespace ) ;
+	if ( pClass != nullptr )
 	{
-		const std::vector<LClass*>&	vImplements = pClass->GetImplementClasses() ;
-		for ( size_t i = 0; i < vImplements.size(); i ++ )
-		{
-			strm << MakeDocSuperClass
-					( strm, vImplements.at(i), pPackage ) ;
-		}
-	}
-	strm << L"<br/>\r\n\r\n" ;
+		strm << L"<div class=\"headline\">Super Classes</div>\r\n"
+				L"<div class=\"indent1\"><a href=\"index.xhtml\">&lt;index&gt;</a></div>\r\n" ;
 
-	// 実装クラスリスト
-	const std::vector<LClass*>&	vImplements = pClass->GetImplementClasses() ;
-	if ( (vImplements.size() > 0)
-		&& (dynamic_cast<LStructureClass*>( pClass ) == nullptr) )
-	{
-		strm << L"<div class=\"headline\">Implement Classes</div>\r\n" ;
-		for ( size_t i = 0; i < vImplements.size(); i ++ )
+		strm << MakeDocSuperClass( strm, pClass, pPackage ) ;
+
+		if ( dynamic_cast<LStructureClass*>( pClass ) != nullptr )
 		{
-			LString	strImplName = vImplements.at(i)->GetFullClassName() ;
-			LString	strXImplName = LXMLDocParser::EncodeXMLString( strImplName.c_str() ) ;
-			strm << L"<div class=\"indent1\"><a href=\""
-					<< LXMLDocParser::EncodeXMLString
-							( MakeClassDocFileName( vImplements.at(i), pClass ).c_str() )
-					<< L".xhtml\">" << strXImplName << L"</a></div>\r\n" ;
+			const std::vector<LClass*>&	vImplements = pClass->GetImplementClasses() ;
+			for ( size_t i = 0; i < vImplements.size(); i ++ )
+			{
+				strm << MakeDocSuperClass
+						( strm, vImplements.at(i), pPackage ) ;
+			}
 		}
 		strm << L"<br/>\r\n\r\n" ;
 	}
 
+	// 実装クラスリスト
+	if ( pClass != nullptr )
+	{
+		const std::vector<LClass*>&	vImplements = pClass->GetImplementClasses() ;
+		if ( (vImplements.size() > 0)
+			&& (dynamic_cast<LStructureClass*>( pClass ) == nullptr) )
+		{
+			strm << L"<div class=\"headline\">Implement Classes</div>\r\n" ;
+			for ( size_t i = 0; i < vImplements.size(); i ++ )
+			{
+				LString	strImplName = vImplements.at(i)->GetFullClassName() ;
+				LString	strXImplName = LXMLDocParser::EncodeXMLString( strImplName.c_str() ) ;
+				strm << L"<div class=\"indent1\"><a href=\""
+						<< LXMLDocParser::EncodeXMLString
+								( MakeClassDocFileName( vImplements.at(i), pClass ).c_str() )
+						<< L".xhtml\">" << strXImplName << L"</a></div>\r\n" ;
+			}
+			strm << L"<br/>\r\n\r\n" ;
+		}
+	}
+
 	// サブクラス
-	if ( pClass->GetNamespaceList().size() > 0 )
+	if ( (pClass != nullptr)
+		&& (pClass->GetNamespaceList().size() > 0) )
 	{
 		strm << L"<div class=\"headline\">Classes</div>\r\n" ;
 		for ( auto iter : pClass->GetNamespaceList() )
 		{
-			LClass *	pSubClass = dynamic_cast<LClass*>( iter.second.Ptr() ) ;
-			LString		strSubName = pSubClass->GetFullClassName() ;
+			LNamespace*	pSubClass = iter.second.Ptr() ;
+			LString		strSubName = pSubClass->GetFullName() ;
 			LString		strXSubName = LXMLDocParser::EncodeXMLString( strSubName.c_str() ) ;
 			strm << L"<div class=\"indent2\"><a href=\""
 					<< LXMLDocParser::EncodeXMLString
@@ -822,36 +830,40 @@ int LoquatyApp::MakeDocClassDefs
 	}
 
 	// 静的メンバ変数リスト
-	if ( (pClass->GetElementCount() > 0)
-		|| (pClass->GetStaticArrangement().GetAlignedBytes() > 0) )
+	if ( (pNamespace->GetElementCount() > 0)
+		|| (pNamespace->GetStaticArrangement().GetAlignedBytes() > 0) )
 	{
 		strm << L"<div class=\"headline\">Static Members</div>\r\n"
 				L"<div class=\"indent2\">\r\n" ;
-		pClass->AddRef() ;
+		pNamespace->AddRef() ;
 		MakeDocVariableList
-			( strm, L"static_", LObjPtr(pClass), pClass->GetStaticArrangement() ) ;
+			( strm, L"static_",
+				LObjPtr(pNamespace), pNamespace->GetStaticArrangement() ) ;
 		strm << L"</div><br/>\r\n\r\n" ;
 	}
 
 	// メンバ変数リスト
-	if ( ((pClass->GetPrototypeObject() != nullptr)
-			&& (pClass->GetPrototypeObject()->GetElementCount() > 0))
-		|| (pClass->GetProtoArrangemenet().GetAlignedBytes() > 0) )
+	if ( pClass != nullptr )
 	{
-		strm << L"<div class=\"headline\">Members</div>\r\n"
-				L"<div class=\"indent2\">\r\n" ;
-		MakeDocVariableList
-			( strm, L"member_", pClass->GetPrototypeObject(),
-								pClass->GetProtoArrangemenet() ) ;
-		strm << L"</div><br/>\r\n\r\n" ;
+		if ( ((pClass->GetPrototypeObject() != nullptr)
+				&& (pClass->GetPrototypeObject()->GetElementCount() > 0))
+			|| (pClass->GetProtoArrangemenet().GetAlignedBytes() > 0) )
+		{
+			strm << L"<div class=\"headline\">Members</div>\r\n"
+					L"<div class=\"indent2\">\r\n" ;
+			MakeDocVariableList
+				( strm, L"member_", pClass->GetPrototypeObject(),
+									pClass->GetProtoArrangemenet() ) ;
+			strm << L"</div><br/>\r\n\r\n" ;
+		}
 	}
 
 	// 静的関数リスト
-	if ( pClass->GetStaticFunctionList().size() > 0 )
+	if ( pNamespace->GetStaticFunctionList().size() > 0 )
 	{
 		strm << L"<div class=\"headline\">Static Functions</div>\r\n"
 				L"<div class=\"indent2\">\r\n" ;
-		for ( auto iter : pClass->GetStaticFunctionList() )
+		for ( auto iter : pNamespace->GetStaticFunctionList() )
 		{
 			strm << L"	<a href=\"#func_"
 					<< LXMLDocParser::EncodeXMLString( iter.first.c_str() ) << L"\">"
@@ -862,19 +874,22 @@ int LoquatyApp::MakeDocClassDefs
 	}
 
 	// 仮想関数リスト
-	const LVirtualFuncVector&	vecVirtuals = pClass->GetVirtualVector() ;
 	std::set<LString>			setVirtualNames ;
-	for ( size_t i = 0; i < vecVirtuals.size(); i ++ )
+	if ( pClass != nullptr )
 	{
-		LPtr<LFunctionObj>	pFunc = vecVirtuals.GetFunctionAt( i ) ;
-		if ( (pFunc == nullptr)
-			|| (pFunc->GetPrototype() == nullptr)
-			|| (pFunc->GetPrototype()->GetThisClass() != pClass)
-			|| (pFunc->GetName().Left(9) == L"operator ") )
+		const LVirtualFuncVector&	vecVirtuals = pClass->GetVirtualVector() ;
+		for ( size_t i = 0; i < vecVirtuals.size(); i ++ )
 		{
-			continue ;
+			LPtr<LFunctionObj>	pFunc = vecVirtuals.GetFunctionAt( i ) ;
+			if ( (pFunc == nullptr)
+				|| (pFunc->GetPrototype() == nullptr)
+				|| (pFunc->GetPrototype()->GetThisClass() != pClass)
+				|| (pFunc->GetName().Left(9) == L"operator ") )
+			{
+				continue ;
+			}
+			setVirtualNames.insert( pFunc->GetName() ) ;
 		}
-		setVirtualNames.insert( pFunc->GetName() ) ;
 	}
 	if ( setVirtualNames.size() > 0 )
 	{
@@ -896,18 +911,21 @@ int LoquatyApp::MakeDocClassDefs
 	}
 
 	// 演算子リスト
-	const std::vector<Symbol::BinaryOperatorDef>&
-						vBinOperators = pClass->GetBinaryOperators() ;
 	std::set<Symbol::OperatorIndex>	setOperators ;
-	if ( vBinOperators.size() > 0 )
+	if ( pClass != nullptr )
 	{
-		for ( size_t i = 0; i < vBinOperators.size(); i ++ )
+		const std::vector<Symbol::BinaryOperatorDef>&
+							vBinOperators = pClass->GetBinaryOperators() ;
+		if ( vBinOperators.size() > 0 )
 		{
-			if ( vBinOperators.at(i).m_pThisClass != pClass )
+			for ( size_t i = 0; i < vBinOperators.size(); i ++ )
 			{
-				continue ;
+				if ( vBinOperators.at(i).m_pThisClass != pClass )
+				{
+					continue ;
+				}
+				setOperators.insert( vBinOperators.at(i).m_opIndex ) ;
 			}
-			setOperators.insert( vBinOperators.at(i).m_opIndex ) ;
 		}
 	}
 	if ( setOperators.size() > 0 )
@@ -933,33 +951,37 @@ int LoquatyApp::MakeDocClassDefs
 	}
 
 	// 静的メンバ変数
-	if ( (pClass->GetElementCount() > 0)
-		|| (pClass->GetStaticArrangement().GetAlignedBytes() > 0) )
+	if ( (pNamespace->GetElementCount() > 0)
+		|| (pNamespace->GetStaticArrangement().GetAlignedBytes() > 0) )
 	{
 		strm << L"<div class=\"chapter\">Static Members</div>\r\n" ;
-		pClass->AddRef() ;
+		pNamespace->AddRef() ;
 		MakeDocVariableDesc
-			( strm, L"static_", LObjPtr(pClass), pClass->GetStaticArrangement() ) ;
+			( strm, L"static_",
+				LObjPtr(pNamespace), pNamespace->GetStaticArrangement() ) ;
 		strm << L"\r\n\r\n" ;
 	}
 
 	// メンバ変数
-	if ( ((pClass->GetPrototypeObject() != nullptr)
-			&& (pClass->GetPrototypeObject()->GetElementCount() > 0))
-		|| (pClass->GetProtoArrangemenet().GetAlignedBytes() > 0) )
+	if ( pClass != nullptr )
 	{
-		strm << L"<div class=\"chapter\">Members</div>\r\n" ;
-		MakeDocVariableDesc
-			( strm, L"member_", pClass->GetPrototypeObject(),
-								pClass->GetProtoArrangemenet() ) ;
-		strm << L"\r\n\r\n" ;
+		if ( ((pClass->GetPrototypeObject() != nullptr)
+				&& (pClass->GetPrototypeObject()->GetElementCount() > 0))
+			|| (pClass->GetProtoArrangemenet().GetAlignedBytes() > 0) )
+		{
+			strm << L"<div class=\"chapter\">Members</div>\r\n" ;
+			MakeDocVariableDesc
+				( strm, L"member_", pClass->GetPrototypeObject(),
+									pClass->GetProtoArrangemenet() ) ;
+			strm << L"\r\n\r\n" ;
+		}
 	}
 
 	// 静的関数リスト
-	if ( pClass->GetStaticFunctionList().size() > 0 )
+	if ( pNamespace->GetStaticFunctionList().size() > 0 )
 	{
 		strm << L"<div class=\"chapter\">Static Functions</div>\r\n" ;
-		for ( auto iter : pClass->GetStaticFunctionList() )
+		for ( auto iter : pNamespace->GetStaticFunctionList() )
 		{
 			strm << L"\r\n<a name=\"func_"
 				<< LXMLDocParser::EncodeXMLString( iter.first.c_str() ) << L"\"/>\r\n" ;
@@ -974,6 +996,7 @@ int LoquatyApp::MakeDocClassDefs
 	// 仮想関数リスト
 	if ( setVirtualNames.size() > 0 )
 	{
+		const LVirtualFuncVector&	vecVirtuals = pClass->GetVirtualVector() ;
 		strm << L"<div class=\"chapter\">Methods</div>\r\n" ;
 		for ( auto iter : setVirtualNames )
 		{
@@ -1009,6 +1032,8 @@ int LoquatyApp::MakeDocClassDefs
 	// 演算子リスト
 	if ( setOperators.size() > 0 )
 	{
+		const std::vector<Symbol::BinaryOperatorDef>&
+							vBinOperators = pClass->GetBinaryOperators() ;
 		std::set<Symbol::OperatorIndex>	setPrintedOperators ;
 		strm << L"<div class=\"chapter\">Operators</div>\r\n" ;
 		for ( size_t i = 0; i < vBinOperators.size(); i ++ )
@@ -1036,18 +1061,19 @@ int LoquatyApp::MakeDocClassDefs
 }
 
 // クラス概要
-void LoquatyApp::MakeDocClassSummary( LOutputStream& strm, LClass * pClass )
+void LoquatyApp::MakeDocClassSummary( LOutputStream& strm, LNamespace * pNamespace )
 {
 	strm << L"<div class=\"headline\">Summary</div>\r\n" ;
 	strm << L"<div class=\"usage\">" ;
-	if ( dynamic_cast<LStructureClass*>( pClass ) != nullptr )
+	if ( dynamic_cast<LStructureClass*>( pNamespace ) != nullptr )
 	{
 		strm << L"struct "
 				<< LXMLDocParser::EncodeXMLString
-						( pClass->GetName().c_str() ) << L"<br/>\r\n" ;
+						( pNamespace->GetName().c_str() ) << L"<br/>\r\n" ;
 		strm << L"{<br/>\r\n" ;
 
-		const LArrangementBuffer&	arrange = pClass->GetProtoArrangemenet() ;
+		LStructureClass*	pStruct = dynamic_cast<LStructureClass*>( pNamespace ) ;
+		const LArrangementBuffer&	arrange = pStruct->GetProtoArrangemenet() ;
 		std::vector<LString>		names ;
 		arrange.GetOrderedNameList( names ) ;
 		for ( size_t i = 0; i < names.size(); i ++ )
@@ -1064,20 +1090,20 @@ void LoquatyApp::MakeDocClassSummary( LOutputStream& strm, LClass * pClass )
 
 		strm << L"}" ;
 	}
-	else if ( dynamic_cast<LClass*>( pClass ) != nullptr )
+	else if ( dynamic_cast<LClass*>( pNamespace ) != nullptr )
 	{
 		strm << L"class "
 				<< LXMLDocParser::EncodeXMLString
-						( pClass->GetName().c_str() ) << L" ;" ;
+						( pNamespace->GetName().c_str() ) << L" ;" ;
 	}
 	else
 	{
 		strm << L"namespace "
-				<< LXMLDocParser::EncodeXMLString( pClass->GetName().c_str() ) ;
+				<< LXMLDocParser::EncodeXMLString( pNamespace->GetName().c_str() ) ;
 	}
 	strm << L"</div>\r\n" ;
 
-	LType::LComment *	pComment = pClass->GetSelfComment() ;
+	LType::LComment *	pComment = pNamespace->GetSelfComment() ;
 	if ( (pComment != nullptr) && HasCommentSummary( *pComment ) )
 	{
 		MakeDocXMLSummary( strm, *pComment ) ;
@@ -1112,8 +1138,8 @@ LString LoquatyApp::MakeDocSuperClass
 		if ( pStream != nullptr )
 		{
 			m_mapDocClass.insert
-				( std::make_pair<LClass*,LString>
-					( (LClass*) pClass, pStream->GetFile()->GetFilePath() ) ) ;
+				( std::make_pair<LNamespace*,LString>
+					( (LNamespace*) pClass, pStream->GetFile()->GetFilePath() ) ) ;
 
 			MakeDocClass( *pStream, pClass ) ;
 		}
@@ -1853,21 +1879,22 @@ int LoquatyApp::MakeDocClassesInPackage
 {
 	int	nExitCode = 0 ;
 
-	std::map<LString,LClass*>	mapClasses ;
-	for ( LClass * pClass : pPackage->GetClasses() )
+	std::map<LString,LNamespace*>	mapClasses ;
+	for ( LNamespace * pNamespace : pPackage->GetClasses() )
 	{
-		if ( pClass->IsGenericInstance() )
+		LClass *	pClass = dynamic_cast<LClass*>( pNamespace ) ;
+		if ( (pClass != nullptr) && pClass->IsGenericInstance() )
 		{
 			continue ;
 		}
 		mapClasses.insert
-			( std::make_pair<LString,LClass*>
-				( pClass->GetFullClassName(), (LClass*) pClass ) ) ;
+			( std::make_pair<LString,LNamespace*>
+				( pNamespace->GetFullName(), (LNamespace*) pNamespace ) ) ;
 	}
 	for ( auto iter = mapClasses.begin(); iter != mapClasses.end(); iter ++ )
 	{
 		LString		strName = iter->first ;
-		LClass *	pClass = iter->second ;
+		LNamespace*	pClass = iter->second ;
 		LString		strXName = LXMLDocParser::EncodeXMLString( strName.c_str() ) ;
 		strm << L"<div class=\"indent2\"><a href=\""
 				<< LXMLDocParser::EncodeXMLString
@@ -1882,8 +1909,8 @@ int LoquatyApp::MakeDocClassesInPackage
 			if ( pStream != nullptr )
 			{
 				m_mapDocClass.insert
-					( std::make_pair<LClass*,LString>
-						( (LClass*) pClass, pStream->GetFile()->GetFilePath() ) ) ;
+					( std::make_pair<LNamespace*,LString>
+						( (LNamespace*) pClass, pStream->GetFile()->GetFilePath() ) ) ;
 
 				nExitCode += MakeDocClass( *pStream, pClass ) ;
 			}
@@ -2012,9 +2039,11 @@ int LoquatyApp::MakeDocAllPackages( void )
 size_t LoquatyApp::CoundClassesInPackage( LPackagePtr pPackage ) const
 {
 	size_t	nNoGenClasses = 0 ;
-	for ( LClass * pClass : pPackage->GetClasses() )
+	for ( LNamespace * pNamespace : pPackage->GetClasses() )
 	{
-		if ( !pClass->IsGenericInstance() )
+		LClass *	pClass = dynamic_cast<LClass*>( pNamespace ) ;
+		if ( (pClass == nullptr)
+			|| !pClass->IsGenericInstance() )
 		{
 			nNoGenClasses ++ ;
 			break ;
@@ -2061,7 +2090,7 @@ int LoquatyApp::MakeNativeFuncStubClass( void )
 	return	MakeNativeFuncStubClass( type.GetClass() ) ;
 }
 
-int LoquatyApp::MakeNativeFuncStubClass( LClass * pClass )
+int LoquatyApp::MakeNativeFuncStubClass( LNamespace * pClass )
 {
 	// 出力ファイルを開く
 	LString		strHeaderFile =
@@ -2118,10 +2147,10 @@ int LoquatyApp::MakeNativeFuncStubClass( LClass * pClass )
 
 int LoquatyApp::MakeNativeFuncStubClass
 	( LOutputStream& osHeader, LOutputStream& osCpp,
-			LClass * pClass, const wchar_t * pwszCppClass )
+		LNamespace * pNamespace, const wchar_t * pwszCppClass )
 {
 	int	nExit = 0 ;
-	for ( auto iter : pClass->GetStaticFunctionList() )
+	for ( auto iter : pNamespace->GetStaticFunctionList() )
 	{
 		for ( size_t i = 0; i < iter.second.size(); i ++ )
 		{
@@ -2137,17 +2166,21 @@ int LoquatyApp::MakeNativeFuncStubClass
 	}
 
 	// 仮想関数リスト
-	const LVirtualFuncVector&	vecVirtuals = pClass->GetVirtualVector() ;
-	for ( size_t i = 0; i < vecVirtuals.size(); i ++ )
+	LClass *	pClass = dynamic_cast<LClass*>( pNamespace ) ;
+	if ( pClass != nullptr )
 	{
-		LPtr<LFunctionObj>	pFunc = vecVirtuals.GetFunctionAt( i ) ;
-		if ( (pFunc != nullptr)
-			&& (pFunc->GetThisClass() == pClass)
-			&& (pFunc->GetPrototype() != nullptr)
-			&& (pFunc->GetPrototype()->GetModifiers() & LType::modifierNative) )
+		const LVirtualFuncVector&	vecVirtuals = pClass->GetVirtualVector() ;
+		for ( size_t i = 0; i < vecVirtuals.size(); i ++ )
 		{
-			nExit += MakeNativeFunctionStub
-						( osHeader, osCpp, pFunc, pwszCppClass ) ;
+			LPtr<LFunctionObj>	pFunc = vecVirtuals.GetFunctionAt( i ) ;
+			if ( (pFunc != nullptr)
+				&& (pFunc->GetThisClass() == pClass)
+				&& (pFunc->GetPrototype() != nullptr)
+				&& (pFunc->GetPrototype()->GetModifiers() & LType::modifierNative) )
+			{
+				nExit += MakeNativeFunctionStub
+							( osHeader, osCpp, pFunc, pwszCppClass ) ;
+			}
 		}
 	}
 
@@ -2272,10 +2305,13 @@ int LoquatyApp::MakeNativeFunctionStub
 			&& (pFunc->GetThisClass() != nullptr) )
 		{
 			LClass *	pClass = pFunc->GetThisClass() ;
-			const bool	flagNativeObjClass = IsNativeClass( pClass ) ;
-			if ( flagNativeObjClass )
+			if ( IsNativeClass( pClass ) )
 			{
 				osCpp << L"	LQT_FUNC_THIS_NOBJ( " << pwszCppClass << L", pThis ) ;\r\n" ;
+			}
+			else if ( IsStructureClass( pClass ) )
+			{
+				osCpp << L"	LQT_FUNC_THIS_POINTER( " << pwszCppClass << L", pThis ) ;\r\n" ;
 			}
 			else
 			{
@@ -2558,7 +2594,7 @@ void LoquatyApp::OutputStubFuncArgList
 	}
 }
 
-LString LoquatyApp::MakeClassStubFileName( LClass * pClass )
+LString LoquatyApp::MakeClassStubFileName( LNamespace * pClass )
 {
 	LString	strFileName = MakeClassDocFileName( pClass, pClass ) ;
 	for ( size_t i = 0; i < strFileName.GetLength(); i ++ )
@@ -2603,7 +2639,7 @@ int LoquatyApp::MakeNativeFuncStubClassInPackage( void )
 int LoquatyApp::MakeNativeFuncStubClassInPackage( LPackagePtr pPackage )
 {
 	int	nExit = 0 ;
-	for ( LClass * pClass : pPackage->GetClasses() )
+	for ( LNamespace * pClass : pPackage->GetClasses() )
 	{
 		if ( HasClassNativeFunction( pClass ) )
 		{
@@ -2613,9 +2649,9 @@ int LoquatyApp::MakeNativeFuncStubClassInPackage( LPackagePtr pPackage )
 	return	nExit ;
 }
 
-bool LoquatyApp::HasClassNativeFunction( LClass * pClass )
+bool LoquatyApp::HasClassNativeFunction( LNamespace * pNamespace )
 {
-	for ( auto iter : pClass->GetStaticFunctionList() )
+	for ( auto iter : pNamespace->GetStaticFunctionList() )
 	{
 		for ( size_t i = 0; i < iter.second.size(); i ++ )
 		{
@@ -2628,16 +2664,20 @@ bool LoquatyApp::HasClassNativeFunction( LClass * pClass )
 			}
 		}
 	}
-	const LVirtualFuncVector&	vecVirtuals = pClass->GetVirtualVector() ;
-	for ( size_t i = 0; i < vecVirtuals.size(); i ++ )
+	LClass *	pClass = dynamic_cast<LClass*>( pNamespace ) ;
+	if ( pClass != nullptr )
 	{
-		LPtr<LFunctionObj>	pFunc = vecVirtuals.GetFunctionAt( i ) ;
-		if ( (pFunc != nullptr)
-			&& (pFunc->GetThisClass() == pClass)
-			&& (pFunc->GetPrototype() != nullptr)
-			&& (pFunc->GetPrototype()->GetModifiers() & LType::modifierNative) )
+		const LVirtualFuncVector&	vecVirtuals = pClass->GetVirtualVector() ;
+		for ( size_t i = 0; i < vecVirtuals.size(); i ++ )
 		{
-			return	true ;
+			LPtr<LFunctionObj>	pFunc = vecVirtuals.GetFunctionAt( i ) ;
+			if ( (pFunc != nullptr)
+				&& (pFunc->GetThisClass() == pClass)
+				&& (pFunc->GetPrototype() != nullptr)
+				&& (pFunc->GetPrototype()->GetModifiers() & LType::modifierNative) )
+			{
+				return	true ;
+			}
 		}
 	}
 	return	false ;
@@ -2654,6 +2694,15 @@ bool LoquatyApp::IsNativeClass( LClass * pClass )
 		return	true ;
 	}
 	return	IsNativeClass( pClass->GetSuperClass() ) ;
+}
+
+bool LoquatyApp::IsStructureClass( LClass * pClass )
+{
+	if ( pClass == nullptr )
+	{
+		return	false ;
+	}
+	return	(dynamic_cast<LStructureClass*>( pClass ) != nullptr ) ;
 }
 
 LString LoquatyApp::GetPrimitiveTypeName( LType::Primitive type )
@@ -2727,7 +2776,7 @@ LString LoquatyApp::MakeStubFunctionName( const LString& strFuncName, int& nExit
 	return	LString( L"_" ) + strFuncName.Replace( L".", L"__" ) ;
 }
 
-LString LoquatyApp::MakeCppClassName( LClass * pClass )
+LString LoquatyApp::MakeCppClassName( LNamespace * pClass )
 {
 	if ( (dynamic_cast<LGenericObjClass*>( pClass ) == nullptr)
 		&& (dynamic_cast<LStructureClass*>( pClass ) == nullptr) )

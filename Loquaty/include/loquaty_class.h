@@ -13,7 +13,6 @@ namespace	Loquaty
 	protected:
 		bool					m_flagCompleted ;	// 定義済みか？
 		bool					m_flagGenInstance ;	// ジェネリック・インスタンス
-		LPackage *				m_pPackage ;		// 含まれているパッケージ
 
 		LClass *				m_pSuperClass ;		// 継承元クラス
 		std::vector<LClass*>	m_vecImplements ;
@@ -47,7 +46,6 @@ namespace	Loquaty
 			: LNamespace( vm, pNamespace, pClass, pwszName ),
 				m_flagCompleted( false ),
 				m_flagGenInstance( false ),
-				m_pPackage( nullptr ),
 				m_pSuperClass( nullptr ),
 				m_pFuncFinalize( nullptr ),
 				m_protoBuffer( 1 ),
@@ -57,7 +55,6 @@ namespace	Loquaty
 			: LNamespace( cls ),
 				m_flagCompleted( false ),
 				m_flagGenInstance( false ),
-				m_pPackage( nullptr ),
 				m_pSuperClass( cls.m_pSuperClass ),
 				m_vecImplements( cls.m_vecImplements ),
 				m_vfvVirtualFuncs( cls.m_vfvVirtualFuncs ),
@@ -91,16 +88,6 @@ namespace	Loquaty
 		void SetGenericInstanceFlag( void )
 		{
 			m_flagGenInstance = true ;
-		}
-
-		// パッケージ情報
-		LPackage * GetPackage( void ) const
-		{
-			return	m_pPackage ;
-		}
-		void SetPackage( LPackage * pPackage )
-		{
-			m_pPackage = pPackage ;
 		}
 
 	public:

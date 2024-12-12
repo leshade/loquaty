@@ -179,15 +179,28 @@ namespace	Loquaty
 		virtual LLong GetElementLongAt( size_t index, LLong valDefault = 0 ) ;
 		virtual LDouble GetElementDoubleAt( size_t index, LDouble valDefault = 0.0 ) ;
 		virtual LString GetElementStringAt( size_t index, const wchar_t * valDefault = nullptr ) ;
+		virtual std::uint8_t * GetElementPointerAt( size_t index, size_t nBytes ) ;
+		virtual std::shared_ptr<Object> GetElementNativeObjectAt( size_t index ) ;
+		template <class T> std::shared_ptr<T> GetElementNativeAt( size_t index )
+		{
+			return	std::dynamic_pointer_cast<T>( GetElementNativeObjectAt( index ) ) ;
+		}
 		virtual LLong GetElementLongAs( const wchar_t * name, LLong valDefault = 0 ) ;
 		virtual LDouble GetElementDoubleAs( const wchar_t * name, LDouble valDefault = 0.0 ) ;
 		virtual LString GetElementStringAs( const wchar_t * name, const wchar_t * valDefault = nullptr ) ;
+		virtual std::uint8_t * GetElementPointerAs( const wchar_t * name, size_t nBytes ) ;
+		virtual std::shared_ptr<Object> GetElementNativeObjectAs( const wchar_t * name ) ;
+		template <class T> std::shared_ptr<T> GetElementNativeAs( const wchar_t * name )
+		{
+			return	std::dynamic_pointer_cast<T>( GetElementNativeObjectAs( name ) ) ;
+		}
 		virtual void SetElementLongAt( size_t index, LLong value ) ;
 		virtual void SetElementDoubleAt( size_t index, LDouble value ) ;
 		virtual void SetElementStringAt( size_t index, const wchar_t * value ) ;
 		virtual void SetElementLongAs( const wchar_t * name, LLong value ) ;
 		virtual void SetElementDoubleAs( const wchar_t * name, LDouble value ) ;
 		virtual void SetElementStringAs( const wchar_t * name, const wchar_t * value ) ;
+		virtual void SetElementPointerAs( const wchar_t * name, std::shared_ptr<LArrayBuffer> buf ) ;
 
 	public:
 		// 排他同期取得（成功なら true, false の場合は WaitSynchronized で取得）

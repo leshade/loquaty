@@ -297,6 +297,30 @@ LString LObject::GetElementStringAt( size_t index, const wchar_t * valDefault )
 	return	valDefault ;
 }
 
+std::uint8_t * LObject::GetElementPointerAt( size_t index, size_t nBytes )
+{
+	LObjPtr	pObj = GetElementAt( index ) ;
+	if ( pObj != nullptr )
+	{
+		LPtr<LPointerObj>	pPtr = pObj->GetBufferPoiner() ;
+		if ( pPtr != nullptr )
+		{
+			return	pPtr->GetPointer( 0, nBytes ) ;
+		}
+	}
+	return	nullptr ;
+}
+
+std::shared_ptr<Object> LObject::GetElementNativeObjectAt( size_t index )
+{
+	LObjPtr	pObj = GetElementAt( index ) ;
+	if ( pObj != nullptr )
+	{
+		return	LNativeObj::GetNativeObject( pObj.Ptr() ) ;
+	}
+	return	nullptr ;
+}
+
 LLong LObject::GetElementLongAs( const wchar_t * name, LLong valDefault )
 {
 	LLong	val ;
@@ -344,6 +368,38 @@ LString LObject::GetElementStringAs( const wchar_t * name, const wchar_t * valDe
 		return	str ;
 	}
 	return	valDefault ;
+}
+
+std::uint8_t * LObject::GetElementPointerAs( const wchar_t * name, size_t nBytes )
+{
+	LObjPtr	pObj = GetElementAs( name ) ;
+	if ( pObj != nullptr )
+	{
+		LPtr<LPointerObj>	pPtr = pObj->GetBufferPoiner() ;
+		if ( pPtr != nullptr )
+		{
+			return	pPtr->GetPointer( 0, nBytes ) ;
+		}
+		return	nullptr ;
+	}
+	LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+	LArrangement::Desc	desc ;
+	if ( (pPtr != nullptr)
+		&& m_pClass->GetProtoArrangemenet().GetDescAs( desc, name ) )
+	{
+		return	pPtr->GetPointer( desc.m_location, nBytes ) ;
+	}
+	return	nullptr ;
+}
+
+std::shared_ptr<Object> LObject::GetElementNativeObjectAs( const wchar_t * name )
+{
+	LObjPtr	pObj = GetElementAs( name ) ;
+	if ( pObj != nullptr )
+	{
+		return	LNativeObj::GetNativeObject( pObj.Ptr() ) ;
+	}
+	return	nullptr ;
 }
 
 void LObject::SetElementLongAt( size_t index, LLong value )
@@ -432,6 +488,21 @@ void LObject::SetElementStringAs( const wchar_t * name, const wchar_t * value )
 	assert( m_pClass != nullptr ) ;
 	LClass *	pStrClass = m_pClass->VM().GetStringBufClass() ;
 	LObject::ReleaseRef( SetElementAs( name, new LStringBufObj( pStrClass, value ) ) ) ;
+}
+
+void LObject::SetElementPointerAs
+			( const wchar_t * name, std::shared_ptr<LArrayBuffer> buf )
+{
+	if ( buf != nullptr )
+	{
+		assert( m_pClass != nullptr ) ;
+		LClass *	pPtrClass = m_pClass->VM().GetPointerClass() ;
+		LObject::ReleaseRef( SetElementAs( name, new LPointerObj( pPtrClass, buf ) ) ) ;
+	}
+	else
+	{
+		LObject::ReleaseRef( SetElementAs( name, nullptr ) ) ;
+	}
 }
 
 // 排他同期取得（成功なら true, false の場合は WaitSynchronized で取得）

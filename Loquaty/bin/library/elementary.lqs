@@ -145,8 +145,25 @@ struct	GenVector2<_T,_S>
 	}
 }
 
-typedef	Point = GenVector2<int,long> ;
-typedef	Size = GenVector2<int,long> ;
+struct	GenVector2<int,long> ;
+
+struct	Point	extends GenVector2<int,long>
+{
+	public Point* operator := ( const GenVector2<int,long>* pt )
+	{
+		super := pt ;
+		return	this ;
+	}
+}
+
+struct	Size	extends GenVector2<int,long>
+{
+	public Size* operator := ( const GenVector2<int,long>* pt )
+	{
+		super := pt ;
+		return	this ;
+	}
+}
 
 struct	GenVector2<float,double> ;
 struct	GenVector2<double,double> ;

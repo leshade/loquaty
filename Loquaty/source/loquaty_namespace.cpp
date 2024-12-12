@@ -124,6 +124,7 @@ LNamespace::LNamespace
 	: LGenericObj( pClass ),
 		m_vm( vm ), m_parent( pParent ),
 		m_name( pwszName ),
+		m_pPackage( nullptr ),
 		m_arrangement( 1 )
 {
 }
@@ -133,6 +134,7 @@ LNamespace::LNamespace( const LNamespace& ns )
 		m_vm( ns.m_vm ),
 		m_parent( ns.m_parent ),
 		m_name( ns.m_name ),
+		m_pPackage( nullptr ),
 		m_arrangement( ns.m_arrangement ),
 		m_funcs( ns.m_funcs ),
 		m_namespaces( ns.m_namespaces ),
@@ -374,12 +376,8 @@ bool LNamespace::AddNamespace
 	LPackage *	pPackage = LPackage::GetCurrent() ;
 	if ( pPackage != nullptr )
 	{
-		LClass *	pClass = dynamic_cast<LClass*>( pNamespace.Ptr() ) ;
-		if ( pClass != nullptr )
-		{
-			pPackage->AddClass( pClass ) ;
-			pClass->SetPackage( pPackage ) ;
-		}
+		pPackage->AddClass( pNamespace.Ptr() ) ;
+		pNamespace->SetPackage( pPackage ) ;
 	}
 	m_namespaces.insert
 		( std::make_pair< std::wstring, LPtr<LNamespace> >

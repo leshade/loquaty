@@ -37,7 +37,7 @@ private:
 	LPtr<LVirtualMachine>		m_vm ;
 	int							m_warnLevel ;
 
-	std::map<LClass*,LString>	m_mapDocClass ;
+	std::map<LNamespace*,LString>	m_mapDocClass ;
 
 public:
 	LoquatyApp( void ) ;
@@ -69,20 +69,20 @@ public:
 	// クラスを文書化する
 	int MakeDocClass( void ) ;
 
-	LString MakeClassDocFileName( LClass * pClass, LClass * pFromClass ) ;
-	LString MakeClassDocFileName( LClass * pClass, LPackage * pFromPackage ) ;
+	LString MakeClassDocFileName( LNamespace * pClass, LNamespace * pFromClass ) ;
+	LString MakeClassDocFileName( LNamespace * pClass, LPackage * pFromPackage ) ;
 	LString MakeTypeFileName( const LString& strTypeName ) ;
-	LString MakeClassDocFileDir( LClass * pClass, LClass * pFromClass ) ;
-	LString MakeClassDocFileDir( LClass * pClass, LPackage * pFromPackage ) ;
-	std::shared_ptr<LOutputStream> OpenClassDocFile( LClass * pClass ) ;
+	LString MakeClassDocFileDir( LNamespace * pClass, LNamespace * pFromClass ) ;
+	LString MakeClassDocFileDir( LNamespace * pClass, LPackage * pFromPackage ) ;
+	std::shared_ptr<LOutputStream> OpenClassDocFile( LNamespace * pClass ) ;
 	std::shared_ptr<LOutputStream> OpenDocFile( const wchar_t * pwszFileName ) ;
 
 	int MakeDocTypeDef
 		( LOutputStream& strm,
 			const wchar_t * pwszName, const LType type, LPackage * pPackage ) ;
-	int MakeDocClass( LOutputStream& strm, LClass * pClass ) ;
-	int MakeDocClassDefs( LOutputStream& strm, LClass * pClass, LPackage * pPackage ) ;
-	void MakeDocClassSummary( LOutputStream& strm, LClass * pClass ) ;
+	int MakeDocClass( LOutputStream& strm, LNamespace * pNamespace ) ;
+	int MakeDocClassDefs( LOutputStream& strm, LNamespace * pClass, LPackage * pPackage ) ;
+	void MakeDocClassSummary( LOutputStream& strm, LNamespace * pClass ) ;
 
 	LString MakeDocSuperClass
 		( LOutputStream& strm, LClass * pClass, LPackage * pFromPackage ) ;
@@ -129,26 +129,27 @@ public:
 
 	// クラスの native 関数宣言・実装のテンプレートを出力する
 	int MakeNativeFuncStubClass( void ) ;
-	int MakeNativeFuncStubClass( LClass * pClass ) ;
+	int MakeNativeFuncStubClass( LNamespace * pClass ) ;
 	int MakeNativeFuncStubClass
 		( LOutputStream& osHeader, LOutputStream& osCpp,
-			LClass * pClass, const wchar_t * pwszCppClass ) ;
+			LNamespace * pClass, const wchar_t * pwszCppClass ) ;
 	int MakeNativeFunctionStub
 		( LOutputStream& osHeader, LOutputStream& osCpp,
 			LPtr<LFunctionObj> pFunc, const wchar_t * pwszCppClass ) ;
 	void OutputStubFuncArgList
 		( LOutputStream& osCpp, LPtr<LFunctionObj> pFunc ) ;
-	LString MakeClassStubFileName( LClass * pClass ) ;
+	LString MakeClassStubFileName( LNamespace * pClass ) ;
 
 	// パッケージに含まれるクラスの native 関数の宣言・実装のテンプレートを出力する
 	int MakeNativeFuncStubClassInPackage( void ) ;
 	int MakeNativeFuncStubClassInPackage( LPackagePtr pPackage ) ;
-	static bool HasClassNativeFunction( LClass * pClass ) ;
+	static bool HasClassNativeFunction( LNamespace * pClass ) ;
 
 	static bool IsNativeClass( LClass * pClass ) ;
+	static bool IsStructureClass( LClass * pClass ) ;
 	static LString GetPrimitiveTypeName( LType::Primitive type ) ;
 	static LString MakeStubFunctionName( const LString& strFuncName, int& nExit ) ;
-	static LString MakeCppClassName( LClass * pClass ) ;
+	static LString MakeCppClassName( LNamespace * pClass ) ;
 	static LString MakeCppNamespaceName( LNamespace * pNamespace ) ;
 
 } ;
