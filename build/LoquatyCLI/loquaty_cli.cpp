@@ -37,6 +37,7 @@ int main( int argc, char* argv[], char* envp[] )
 LoquatyApp::LoquatyApp( void )
 	: m_verb( verbNo ),
 		m_optNologo( false ),
+		m_optMeasureTime( false ),
 		m_warnLevel( LCompiler::warning3 )
 {
 	m_vm = new LVirtualMachine ;
@@ -68,6 +69,10 @@ int LoquatyApp::ParseCmdLine( int argc, char* argv[], char* envp[] )
 			else if ( (strArg == "/help") || (strArg == "/?") )
 			{
 				m_verb = verbHelp ;
+			}
+			else if ( strArg == "/measure_time" )
+			{
+				m_optMeasureTime = true ;
 			}
 			else if ( (iArg + 1 < argc) && (strArg == "/I") )
 			{
@@ -260,6 +265,8 @@ void LoquatyApp::PrintHelp( void )
 		"/W2        : レベル１と２の警告を出力\n"
 		"/W3        : レベル１～３の警告を出力（デフォルト）\n"
 		"/W4        : 全ての警告と情報を出力\n"
+		"/measure_time\n"
+		"           : 処理時間を計測する\n"
 		"/dump_func <func-name>\n"
 		"           : 関数のニーモニックダンプを出力 (/DF)\n"
 		"/doc_class <class-name>\n"
@@ -287,6 +294,7 @@ void LoquatyApp::PrintHelp( void )
 // ソースを読み込んでコンパイルする
 int LoquatyApp::LoadSource( void )
 {
+	m_tpStart = std::chrono::system_clock::now() ;
 	m_vm->Initialize() ;
 
 	LSourceFilePtr	pSource =
@@ -310,12 +318,26 @@ int LoquatyApp::LoadSource( void )
 	compiler.SetWarningLevel( m_warnLevel ) ;
 	compiler.DoCompile( pSource.get() ) ;
 
+	if ( m_optMeasureTime )
+	{
+		printf( "Script loading completed: %f [sec]\n", CountElapsedTime() ) ;
+	}
+
 	if ( compiler.GetErrorCount() > 0 )
 	{
 		printf( "\n%d errors\n", (int) compiler.GetErrorCount() ) ;
 		return	(int) compiler.GetErrorCount() ;
 	}
 	return	0 ;
+}
+
+// 経過時間 [秒]
+double LoquatyApp::CountElapsedTime( void ) const
+{
+	std::int64_t	umsec =
+		std::chrono::duration_cast<std::chrono::microseconds>
+			( std::chrono::system_clock::now() - m_tpStart ).count() ;
+	return	(double) umsec / 1000000.0 ;
 }
 
 // main 関数を実行する
@@ -345,6 +367,11 @@ int LoquatyApp::RunMain( void )
 	auto [valRet, pExcept] =
 		pThread->SyncCallFunctionAs
 			( nullptr, L"main", args.data(), args.size() ) ;
+
+	if ( m_optMeasureTime )
+	{
+		printf( "Execution completed: %f [sec]\n", CountElapsedTime() ) ;
+	}
 
 	if ( pExcept != nullptr )
 	{

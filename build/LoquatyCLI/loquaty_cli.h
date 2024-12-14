@@ -27,6 +27,7 @@ private:
 	} ;
 	Verb						m_verb ;
 	bool						m_optNologo ;
+	bool						m_optMeasureTime ;
 	LString						m_strDumpFunc ;
 	LString						m_strMakeOutput ;
 	LString						m_strMakeTarget ;
@@ -34,6 +35,8 @@ private:
 	LString						m_strSourceFile ;
 	std::vector<LString>		m_argsScript ;
 
+		std::chrono::system_clock::time_point
+								m_tpStart ;
 	LPtr<LVirtualMachine>		m_vm ;
 	int							m_warnLevel ;
 
@@ -58,6 +61,9 @@ public:
 
 	// ソースを読み込んでコンパイルする
 	int LoadSource( void ) ;
+
+	// 経過時間 [秒]
+	double CountElapsedTime( void ) const ;
 
 	// main 関数を実行する
 	int RunMain( void ) ;
