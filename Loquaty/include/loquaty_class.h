@@ -142,6 +142,8 @@ namespace	Loquaty
 		virtual void CompleteClass( void ) ;
 		// クラス定義済みか？
 		bool IsClassCompleted( void ) const ;
+		// 抽象クラスか？
+		bool IsAbstractClass( void ) const ;
 
 	public:
 		// 親クラス取得

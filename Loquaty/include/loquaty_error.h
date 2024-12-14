@@ -144,6 +144,7 @@ namespace	Loquaty
 		errorNonDerivableClass,
 		errorIsNotStructName,
 		errorIsNotNamespace,
+		errorCannotCreateAbstractClass,
 		errorUnavailableDefineFunc,
 		errorUnavailableCodeBlock,
 		errorUnavailableInitVarName,

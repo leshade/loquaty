@@ -306,6 +306,8 @@ const Symbol::ErrorDesc	Symbol::s_ErrorDesc[errorMessageTotalCount] =
 		L"構造体名ではありません" },
 	{ errorIsNotNamespace,
 		L"名前空間ではありません" },
+	{ errorCannotCreateAbstractClass,
+		L"抽象クラスを構築しようとしています" },
 	{ errorUnavailableDefineFunc,
 		L"ここで関数を定義できません" },
 	{ errorUnavailableCodeBlock,

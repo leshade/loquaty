@@ -2391,6 +2391,10 @@ LExprValuePtr LCompiler::ParseTypeConstruction
 			OnError( errorMismatchParentheses ) ;
 			return	std::make_shared<LExprValue>() ;
 		}
+		if ( pTypeClass->IsAbstractClass() )
+		{
+			OnError( errorCannotCreateAbstractClass ) ;
+		}
 
 		// 構築関数を探す
 		LArgumentListType	argListType ;

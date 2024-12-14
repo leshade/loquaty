@@ -301,9 +301,11 @@ void LTaskObj::method_waitFor0( LContext& _context )
 	_context.SetAwaiting
 		( [&_context,pTaskObj,remaining]( std::int64_t msecTimeout )
 		{
-			msecTimeout = remaining->Remaining( msecTimeout ) ;
-			if ( remaining->IsFinished()
-				|| pTaskObj->WaitForThread( msecTimeout ) )
+			if ( remaining->IsFinished() )
+			{
+				return	true ;
+			}
+			if ( pTaskObj->WaitForThread( remaining->Remaining( msecTimeout ) ) )
 			{
 				remaining->Finish() ;
 				_context.SetReturnValue
@@ -333,16 +335,18 @@ void LTaskObj::method_waitFor1( LContext& _context )
 	_context.SetAwaiting
 		( [&_context,pTaskObj,remaining]( std::int64_t msecTimeout )
 		{
-			msecTimeout = remaining->Remaining( msecTimeout ) ;
-			if ( remaining->IsFinished()
-				|| pTaskObj->WaitForThread( msecTimeout ) )
+			if ( remaining->IsFinished() )
+			{
+				return	true ;
+			}
+			if ( pTaskObj->WaitForThread( remaining->Remaining( msecTimeout ) ) )
 			{
 				remaining->Finish() ;
 				_context.SetReturnValue
 					( LValue(LType::typeBoolean, LValue::MakeBool(true) ) ) ;
 				return	true ;
 			}
-			return	(msecTimeout == 0) ;
+			return	remaining->IsTimeout() ;
 		} ) ;
 
 	LQT_RETURN_BOOL( false ) ;

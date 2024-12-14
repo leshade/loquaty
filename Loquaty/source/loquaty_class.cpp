@@ -389,6 +389,19 @@ bool LClass::IsClassCompleted( void ) const
 	return	m_flagCompleted ;
 }
 
+// 抽象クラスか？
+bool LClass::IsAbstractClass( void ) const
+{
+	for ( auto func : m_vfvVirtualFuncs )
+	{
+		if ( func->GetPrototype()->GetModifiers() & LType::modifierAbstract )
+		{
+			return	true ;
+		}
+	}
+	return	false ;
+}
+
 // 配置情報からメンバ変数を追加
 void LClass::AddMemberArrangement
 	( LArrangementBuffer& arrangeDst, const LArrangementBuffer& arrangeSrc )
