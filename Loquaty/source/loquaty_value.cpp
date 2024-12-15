@@ -41,6 +41,30 @@ LValue LValue::Clone( void ) const
 }
 
 // 値を評価
+LBoolean LValue::AsBoolean( void ) const
+{
+	if ( m_type.IsPrimitive() )
+	{
+		if ( m_type.IsInteger() )
+		{
+			return	(m_value.longValue != 0) ;
+		}
+		else if ( m_type.IsBoolean() )
+		{
+			return	m_value.boolValue ;
+		}
+		else
+		{
+			assert( m_type.IsFloatingPointNumber() ) ;
+			return	(m_value.dblValue != 0.0) ;
+		}
+	}
+	else
+	{
+		return	(m_pObject != nullptr) ;
+	}
+}
+
 LLong LValue::AsInteger( void ) const
 {
 	if ( m_type.IsPrimitive() )

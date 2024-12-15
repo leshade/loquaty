@@ -136,6 +136,7 @@ namespace	Loquaty
 		LValue Clone( void ) const ;
 
 		// 値を評価
+		LBoolean AsBoolean( void ) const ;
 		LLong AsInteger( void ) const ;
 		LDouble AsDouble( void ) const ;
 		LString AsString( void ) const ;
