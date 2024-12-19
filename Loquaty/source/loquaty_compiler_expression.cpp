@@ -5392,11 +5392,18 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 	if ( !explicitCast && (castMethod >= LType::castableExplicitly) )
 	{
 		// 警告
-		OnWarning( warningImplicitCast_opt1_opt2,
-					(castMethod >= LType::castableDangerous)
-									? warning1 : warning2,
-					xval->GetType().GetTypeName().c_str(),
-					typeCast.GetTypeName().c_str() ) ;
+		if ( xval->IsConstExpr() && (castMethod == LType::castableConstCast) )
+		{
+			xval = std::make_shared<LExprValue>( xval->Clone() ) ;
+		}
+		else
+		{
+			OnWarning( warningImplicitCast_opt1_opt2,
+						(castMethod >= LType::castableDangerous)
+										? warning1 : warning2,
+						xval->GetType().GetTypeName().c_str(),
+						typeCast.GetTypeName().c_str() ) ;
+		}
 	}
 	if ( (castMethod == LType::castableDataToPtr)
 		|| (castMethod == LType::castableConstDataToPtr) )
