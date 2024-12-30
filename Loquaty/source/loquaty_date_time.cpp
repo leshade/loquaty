@@ -32,6 +32,7 @@ void LDateTime::SetNumberOfDays( std::int64_t nDays )
 	const std::uint32_t	daysOf100Years = 365 * 100 + 24 ;
 	const std::uint32_t	daysOf4Years = 365 * 4 + 1 ;
 	const std::uint32_t	daysOf1Year = 365 ;
+	const std::int64_t	daysTotal = nDays ;
 	std::uint32_t	year400 = (std::uint32_t) (nDays / daysOf400Years) ;
 	nDays %= daysOf400Years ;
 	std::uint32_t	year100 = (std::uint32_t) (nDays / daysOf100Years) ;
@@ -43,6 +44,11 @@ void LDateTime::SetNumberOfDays( std::int64_t nDays )
 
 	year = (LInt16) (year400 * 400 + year100 * 100
 								+ year4 * 4 + year1 + 1) ;
+	if ( (nDays == 0) && (daysTotal + 1 == NumberOfDays( year, 1, 1 )) )
+	{
+		year -- ;
+		nDays += daysOf1Year ;
+	}
 	month = 0 ;
 	for ( int m = 1; m <= 12; m ++ )
 	{
