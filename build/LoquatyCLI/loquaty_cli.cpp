@@ -1586,12 +1586,17 @@ void LoquatyApp::MakeDocXMLParams
 			LType::LComment *	pComment = pArgList->at(i).GetComment() ;
 			if ( pComment != nullptr )
 			{
+				LString	strParamComment =
+						pComment->Replace( L"\r\n", L"\n" ).
+									Replace( L"&", L"&amp;" ).
+									Replace( L"<", L"&lt;" ).
+									Replace( L">", L"&gt;" ).
+									Replace( L"\n", L"<br/>\r\n" ) ;
 				strm << L"<div class=\"param_name\">"
 						<< LXMLDocParser::EncodeXMLString
 								( pArgList->GetArgNameAt(i) ) << L"</div>\r\n" ;
 				strm << L"<div class=\"param_desc\">\r\n"
-						<< LXMLDocParser::EncodeXMLString
-								( pComment->c_str() ) << L"</div>\r\n" ;
+						<< strParamComment << L"</div>\r\n" ;
 			}
 		}
 	}
