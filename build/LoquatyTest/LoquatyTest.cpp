@@ -780,6 +780,30 @@ namespace LoquatyTest
 			Assert::IsTrue( LDateTime::DayOfWeek( 2024, 11, 2 ) == LDateTime::Saturday ) ;
 		}
 
+		TEST_METHOD(DayNextToBoundary)
+		{
+			static const int	years[] = { 1900, 2000, 2004, 2022, 2024, 2026, 2100 } ;
+			for ( int i = 0; i < sizeof(years)/sizeof(years[0]); i ++ )
+			{
+				LDateTime	dt ;
+				std::int64_t	days = LDateTime::NumberOfDays( years[i] - 1, 12, 31 ) ;
+				dt.SetNumberOfDays( days ) ;
+				Assert::IsTrue( (dt.year == (years[i] - 1)) && (dt.month == 12) && (dt.day == 31) ) ;
+
+				days = LDateTime::NumberOfDays( years[i], 1, 1 ) ;
+				dt.SetNumberOfDays( days ) ;
+				Assert::IsTrue( (dt.year == years[i]) && (dt.month == 1) && (dt.day == 1) ) ;
+
+				days = LDateTime::NumberOfDays( years[i], 12, 31 ) ;
+				dt.SetNumberOfDays( days ) ;
+				Assert::IsTrue( (dt.year == years[i]) && (dt.month == 12) && (dt.day == 31) ) ;
+
+				days = LDateTime::NumberOfDays( years[i] + 1, 1, 1 ) ;
+				dt.SetNumberOfDays( days ) ;
+				Assert::IsTrue( (dt.year == (years[i] + 1)) && (dt.month == 1) && (dt.day == 1) ) ;
+			}
+		}
+
 		TEST_METHOD(TimeZone)
 		{
 			LDateTime	dtLocal ;
