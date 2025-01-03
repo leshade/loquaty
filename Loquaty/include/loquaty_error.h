@@ -50,6 +50,8 @@ namespace	Loquaty
 		errorExpressionTooComplex,
 		errorInitExpressionError,
 		errorInitExprErrorTooMuchElement,
+		errorNoExprForEnumerator,
+		errorNotConstExprForEnumerator,
 		errorNoInitExprForAutoVar,
 		errorUnavailableAutoType,
 		errorNotConstExprInitExpr,

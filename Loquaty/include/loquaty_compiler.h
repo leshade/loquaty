@@ -1015,6 +1015,10 @@ namespace	Loquaty
 		void ParseStatement_todo
 			( LStringParser& sparsSrc,
 				Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal ) ;
+		// enum
+		void ParseStatement_enum
+			( LStringParser& sparsSrc,
+				Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal ) ;
 		// class, struct, namespace
 		void ParseStatement_class
 			( LStringParser& sparsSrc,

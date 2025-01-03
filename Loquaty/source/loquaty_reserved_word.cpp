@@ -12,6 +12,7 @@ const Symbol::ReservedWordDesc
 	{	rwiInclude,			L"@include"		},
 	{	rwiError,			L"@error"		},
 	{	rwiTodo,			L"@todo"		},
+	{	rwiEnum,			L"enum"			},
 	{	rwiClass,			L"class"		},
 	{	rwiStruct,			L"struct"		},
 	{	rwiNamespace,		L"namespace"	},

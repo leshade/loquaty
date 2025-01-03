@@ -56,6 +56,22 @@ namespace	Loquaty
 		} ;
 		typedef	std::uint32_t	Modifiers ;
 
+		// 別名情報（型名定義や列挙型等）
+		class	Alias
+		{
+		public:
+			LString			m_name ;		// 型名（フルパス名）
+			LClass*			m_pClass ;		// 列挙型など
+			Modifiers		m_accMod ;		// 含まれるアクセス修飾子
+		public:
+			Alias( const wchar_t * name,  LClass* pClass, LType::Modifiers accMod = 0 )
+				: m_name( name ), m_pClass( pClass ), m_accMod( accMod ) {}
+			Alias( const Alias& alias )
+				: m_name( alias.m_name ),
+					m_pClass( alias.m_pClass ), m_accMod( alias.m_accMod ) {}
+		} ;
+		typedef	std::shared_ptr<Alias>	AliasPtr ;
+
 		// コメント情報
 		class	LComment	: public LString
 		{
@@ -69,6 +85,7 @@ namespace	Loquaty
 		Primitive	m_type ;
 		Modifiers	m_accMod ;	// アクセス修飾子 (enum AccessModifier の組み合わせ）
 		LClass *	m_pClass ;
+		AliasPtr	m_pAlias ;
 		LComment *	m_pComment ;
 
 	public:
@@ -128,12 +145,14 @@ namespace	Loquaty
 			: m_type( type.m_type ),
 				m_accMod( type.m_accMod
 						| (constModify ? modifierConst : 0) ),
-				m_pClass( type.m_pClass ), m_pComment( type.m_pComment ) { }
+				m_pClass( type.m_pClass ),
+				m_pAlias( type.m_pAlias ), m_pComment( type.m_pComment ) { }
 		const LType& operator = ( const LType& type )
 		{
 			m_type = type.m_type ;
 			m_accMod = type.m_accMod ;
 			m_pClass = type.m_pClass ;
+			m_pAlias = type.m_pAlias ;
 			m_pComment = type.m_pComment ;
 			return	*this ;
 		}
@@ -244,6 +263,11 @@ namespace	Loquaty
 
 		// 型名取得
 		LString GetTypeName( void ) const ;
+
+		// 別名取得
+		AliasPtr GetAlias( void ) const ;
+		// 別名設定
+		void SetAlias( AliasPtr pAlias ) ;
 
 		// コメントデータ
 		LComment * GetComment( void ) const ;

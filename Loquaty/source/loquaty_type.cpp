@@ -519,10 +519,17 @@ size_t LType::GetDataBytes( void ) const
 // 型名取得
 LString LType::GetTypeName( void ) const
 {
-	if ( IsPrimitive() )
+	LString				strBaseType ;
+	LType::Modifiers	accMod = m_accMod ;
+	if ( (m_pAlias != nullptr) && !(m_pAlias->m_name.IsEmpty()) )
+	{
+		strBaseType = m_pAlias->m_name ;
+		accMod &= ~(m_pAlias->m_accMod) ;
+	}
+	else if ( IsPrimitive() )
 	{
 		assert( (size_t) m_type < typePrimitiveCount ) ;
-		if ( IsConst() )
+		if ( accMod & LType::modifierConst )
 		{
 			LString	strType = L"const " ;
 			strType += s_pwszPrimitiveTypeName[m_type] ;
@@ -533,34 +540,50 @@ LString LType::GetTypeName( void ) const
 			return	s_pwszPrimitiveTypeName[m_type] ;
 		}
 	}
-	if ( m_pClass != nullptr )
+	else if ( m_pClass != nullptr )
+	{
+		strBaseType = m_pClass->GetFullClassName() ;
+	}
+	if ( !strBaseType.IsEmpty() )
 	{
 		LString	strType ;
-		if ( m_accMod & LType::modifierFetchAddr )
+		if ( accMod & LType::modifierFetchAddr )
 		{
 			strType += L"fetch_addr " ;
 		}
-		if ( IsPointer() || IsDataArray() )
+		if ( IsPointer() )
 		{
-			strType += m_pClass->GetFullClassName() ;
-			if ( IsConst() )
+			strType += strBaseType ;
+			if ( accMod & LType::modifierConst )
 			{
 				strType += L"const" ;
 			}
 			return	strType ;
 		}
-		if ( IsConst() )
+		if ( accMod & LType::modifierConst )
 		{
 			strType += L"const " ;
-			strType += m_pClass->GetFullClassName() ;
+			strType += strBaseType ;
 			return	strType ;
 		}
 		else
 		{
-			return	strType + m_pClass->GetFullClassName() ;
+			return	strType + strBaseType ;
 		}
 	}
-	return	IsConst() ? L"const void" : L"void" ;
+	return	(accMod & LType::modifierConst) ? L"const void" : L"void" ;
+}
+
+// 別名取得
+LType::AliasPtr LType::GetAlias( void ) const
+{
+	return	m_pAlias ;
+}
+
+// 別名設定
+void LType::SetAlias( LType::AliasPtr pAlias )
+{
+	m_pAlias = pAlias ;
 }
 
 // コメントデータ
@@ -784,7 +807,11 @@ LType::CastMethod LType::CanCastTo( const LType& type ) const
 			LClass::ResultInstanceOf	rs = m_pClass->TestInstanceOf( type.m_pClass ) ;
 			if ( rs == LClass::instanceAvailable )
 			{
-				if ( !IsConst() || type.IsConst() )
+				if ( IsString() && type.IsString() )
+				{
+					return	castableUpCast ;
+				}
+				else if ( !IsConst() || type.IsConst() )
 				{
 					return	IsPointer() ? castableUpCastPtr : castableUpCast ;
 				}

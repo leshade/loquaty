@@ -420,11 +420,12 @@ const std::map< std::wstring, LPtr<LNamespace> >&
 
 // 型定義を追加
 bool LNamespace::DefineTypeAs
-	( const wchar_t * pwszName, const LType& type, bool flagPackage )
+	( const wchar_t * pwszName, const LType& type,
+			bool flagPackage, LClass * pAliasType )
 {
 	auto	lock = GetLock() ;
-	auto	iter = m_typedefs.find( pwszName ) ;
-	if ( iter != m_typedefs.end() )
+	auto	iterTemp = m_typedefs.find( pwszName ) ;
+	if ( iterTemp != m_typedefs.end() )
 	{
 		return	false ;
 	}
@@ -438,6 +439,23 @@ bool LNamespace::DefineTypeAs
 	}
 	m_typedefs.insert
 		( std::make_pair<std::wstring,LType>( pwszName, LType(type) ) ) ;
+
+	if ( flagPackage || (pAliasType != nullptr) )
+	{
+		auto	iter = m_typedefs.find( pwszName ) ;
+		assert( iter != m_typedefs.end() ) ;
+
+		LString	strTypeName = GetFullName() ;
+		if ( !strTypeName.IsEmpty())
+		{
+			strTypeName += L"." ;
+		}
+		strTypeName += pwszName ;
+
+		iter->second.SetAlias
+			( std::make_shared<LType::Alias>
+				( strTypeName.c_str(), pAliasType, type.GetModifiers() ) ) ;
+	}
 	return	true ;
 }
 

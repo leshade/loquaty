@@ -175,7 +175,8 @@ namespace	Loquaty
 	public:
 		// 型定義を追加
 		virtual bool DefineTypeAs
-			( const wchar_t * pwszName, const LType& type, bool flagPackage ) ;
+			( const wchar_t * pwszName, const LType& type,
+				bool flagPackage, LClass * pAliasType = nullptr ) ;
 		// 定義された型を取得
 		const LType * GetTypeAs( const wchar_t * pwszName ) ;
 

@@ -75,6 +75,7 @@
 	<a href="#usage_include">@include 文</a><br/>
 	<a href="#usage_error">@error 文</a><br/>
 	<a href="#usage_todo">@todo 文</a><br/>
+	<a href="#usage_enum">enum 文</a><br/>
 	<a href="#usage_class">class 文</a><br/>
 	<a href="#usage_struct">struct 文</a><br/>
 	<a href="#usage_namespace">namespace 文</a><br/>
@@ -2197,6 +2198,74 @@ boolean の false 値を表現します。
 
 
 
+<!--=============================== enum 文 ================================-->
+<a name="usage_enum"/>
+<div class="headline">enum 文</div>
+
+<div class="usage">
+<bold>enum</bold> [<bold>using</bold>]&opt; <italic>enum-name</italic> [<bold>&lt;</bold> <italic>type-expr</italic> <bold>&gt;</bold>]&opt; <bold>{</bold> <italic>enumerator-list</italic> <bold>}</bold><br/>
+<br/>
+<italic>enumerator-list</italic>:<br/>
+&tab; <italic>enumerator-name</italic> [<bold>=</bold> <italic>const-expr</italic>]&opt; [<bold>,</bold> <italic>enumerator-list</italic> ]&opt;<br/>
+</div>
+<br/>
+
+<div class="normal">
+
+　列挙型を定義します。<br/>
+　Loquaty の列挙型は C/C++ 言語と似ていますが、列挙子の型として <italic>type-expr</italic> で定数式で使用できる型を指定できます。<br/>
+
+<div class="code_quote">
+	&exam;
+	enum Foo&lt;String&gt;&r;
+	{&r;
+	&tab;boo = "boo",&r;
+	&tab;bar = "bar",&r;
+	}&r;
+</div>
+
+　列挙子は列挙型の名前空間内に定義されます。
+
+<div class="code_quote">
+	&exam;
+	Foo&tab; f = Foo.boo ;&r;
+	String&nbsp; s = Foo.bar ;&r;
+</div>
+
+　enum using で記述すると C 言語と同じように列挙型と同じ名前空間にも列挙子が定義されます。<br/>
+<br/>
+
+　列挙子の型を省略した場合には int 型になります。<br/>
+　列挙子が整数型の場合、各列挙子に定義する値は省略でき、その値はひとつ前の列挙子 + 1 の値になります。また先頭の列挙子のデフォルトは 0 です。<br/>
+
+<div class="code_quote">
+	&exam;
+	enum Hoge&lt;long&gt;&r;
+	{&r;
+	&tab;huge,&tab;// = 0&r;
+	&tab;huga = 100,&r;
+	&tab;haga,&tab;// = 101&r;
+	}&r;
+</div>
+
+　定数式を列挙型変数へ代入する場合、列挙子に含まれている場合は代入できます。<br/>
+　そうでない場合には警告が出力されます。<br/>
+　整数型の場合にはすべての列挙子のビットマスク（ビット毎の論理和）の範囲内であれば無警告で変換できます。<br/>
+
+<div class="code_quote">
+	&exam;
+	Foo &tab; f1 = "boo" ;&nbsp; // OK&r;
+	Foo &tab; f2 = "bao" ;&nbsp; // Warning&r;
+	Hoge&tab; h1 = 101 ;&tab;// OK (0b01100101)&r;
+	Hoge&tab; h2 = 97 ;&tab; // OK (0b01100001)&r;
+	Hoge&tab; h3 = 102 ;&tab;// Warning (0b011001<bold>1</bold>0)&r;
+</div>
+
+</div>
+<br/>
+
+
+
 <!--============================== class 文 ================================-->
 <a name="usage_class"/>
 <div class="headline">class 文</div>
@@ -2233,6 +2302,7 @@ boolean の false 値を表現します。
 　更に、クラスのローカルクラスの宣言を行うことも出来ます。
 
 <div class="code_quote">
+	&exam;
 	class Foo ;&r;
 	class Foo::Bar ;
 </div>

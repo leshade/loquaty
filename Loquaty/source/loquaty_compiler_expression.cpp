@@ -5384,9 +5384,43 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 					typeCast.GetTypeName().c_str() ) ;
 		return	xval ;
 	}
+	LType::AliasPtr	pAlias ;
+	if ( (typeCast.GetAlias() != nullptr)
+		&& (typeCast.GetAlias()->m_pClass != nullptr) )
+	{
+		// 列挙型へのキャスト
+		LEnumerativeClass *	pEnumCast =
+			dynamic_cast<LEnumerativeClass*>( typeCast.GetAlias()->m_pClass ) ;
+		if ( (pEnumCast != nullptr)
+			&& ((xval->GetType().GetAlias() == nullptr)
+				|| (xval->GetType().GetAlias()->m_pClass != pEnumCast)) )
+		{
+			if ( !xval->IsConstExpr()
+				|| !pEnumCast->IsConformableValue( *xval ) )
+			{
+				OnWarning( warningImplicitCast_opt1_opt2, warning2,
+							xval->GetType().GetTypeName().c_str(),
+							typeCast.GetTypeName().c_str() ) ;
+			}
+		}
+		pAlias = typeCast.GetAlias() ;
+	}
 	if ( xval->GetType() == typeCast )
 	{
 		// 同じ型はそのまま
+		if ( pAlias != nullptr )
+		{
+			if ( xval->IsConstExpr() )
+			{
+				xval = std::make_shared<LExprValue>( *xval ) ;
+			}
+			else
+			{
+				xval = ExprLoadClone( std::move(xval) ) ;
+				assert( IsUniqueExprValue( xval ) ) ;
+			}
+			xval->Type().SetAlias( pAlias ) ;
+		}
 		return	xval ;
 	}
 	if ( !explicitCast && (castMethod >= LType::castableExplicitly) )
@@ -5514,7 +5548,7 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 			// 定数式
 			if ( typeCast.IsFloatingPointNumber() )
 			{
-				return	std::make_shared<LExprValue>
+				xval = std::make_shared<LExprValue>
 							( typeCast.GetPrimitive(),
 								LValue::MakeDouble( xval->AsDouble() ), true ) ;
 			}
@@ -5534,10 +5568,16 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 						val >>= (64 - nBits) ;
 					}
 				}
-				return	std::make_shared<LExprValue>
+				xval = std::make_shared<LExprValue>
 							( typeCast.GetPrimitive(),
 									LValue::MakeLong( val ), true ) ;
 			}
+			if ( pAlias != nullptr )
+			{
+				xval = std::make_shared<LExprValue>( *xval ) ;
+				xval->Type().SetAlias( pAlias ) ;
+			}
+			return	xval ;
 		}
 		xval = ExprMakeOnStack( std::move(xval) ) ;
 		assert( IsExprValueOnStack( xval ) ) ;
@@ -5616,6 +5656,11 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 		}
 		xval->Type() = LType( typeCast.GetPrimitive(),
 								xval->GetType().GetModifiers() ) ;
+		if ( pAlias != nullptr )
+		{
+			xval = std::make_shared<LExprValue>( *xval ) ;
+			xval->Type().SetAlias( pAlias ) ;
+		}
 		return	xval ;
 	}
 

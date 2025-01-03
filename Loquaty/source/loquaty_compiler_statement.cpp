@@ -1120,6 +1120,7 @@ const LCompiler::PFN_ParseStatement
 	&LCompiler::ParseStatement_incllude,		// @include
 	&LCompiler::ParseStatement_error,			// @error
 	&LCompiler::ParseStatement_todo,			// @todo
+	&LCompiler::ParseStatement_enum,			// enum
 	&LCompiler::ParseStatement_class,			// class
 	&LCompiler::ParseStatement_class,			// struct
 	&LCompiler::ParseStatement_class,			// namespace
@@ -1306,6 +1307,216 @@ void LCompiler::ParseStatement_todo
 	sparsSrc.NextLine( strLine ) ;
 
 	OnWarning( errorUserMessage_opt1, warning3, strLine.c_str() ) ;
+}
+
+// enum
+///////////////////////////////////////////////////////////////////////////////
+void LCompiler::ParseStatement_enum
+	( LStringParser& sparsSrc,
+		Symbol::ReservedWordIndex rwIndex, const LNamespaceList * pnslLocal )
+{
+	if ( !MustBeInNamespace() )
+	{
+		sparsSrc.PassStatementBlock() ;
+		return ;
+	}
+	LPtr<LNamespace>	pNamespace = GetCurrentNamespace() ;
+	assert( pNamespace != nullptr ) ;
+
+	// enum [using] Name [<element-type>]
+	const bool	flagUsing =
+		sparsSrc.HasNextToken
+			( GetReservedWordDesc(Symbol::rwiUsing).pwszName /*L"using"*/ ) ;
+
+	LString	strName ;
+	if ( sparsSrc.NextToken( strName ) == LStringParser::tokenNothing )
+	{
+		OnError( errorSyntaxError ) ;
+		return ;
+	}
+	if ( !IsValidUserName( strName.c_str() ) )
+	{
+		OnError( errorConnotAsUserSymbol_opt1, strName.c_str() ) ;
+		if ( strName != L";" )
+		{
+			sparsSrc.PassStatement
+				( (strName == L"{") ? L"};" : L";" ) ;
+		}
+		return ;
+	}
+
+	LType	typeElement( LType::typeInt32 ) ;
+	if ( sparsSrc.HasNextChars( L"<" ) == L'<' )
+	{
+		if ( !sparsSrc.NextTypeExpr
+				( typeElement, true, m_vm, pnslLocal ) )
+		{
+			sparsSrc.PassStatementBlock() ;
+			return ;
+		}
+		if ( sparsSrc.HasNextChars( L">" ) != L'>' )
+		{
+			OnError( errorMismatchAngleBrackets ) ;
+			sparsSrc.PassStatementBlock() ;
+			return ;
+		}
+	}
+
+	// 列挙型登録
+	LEnumerativeClass *	pEnumerative =
+		new LEnumerativeClass
+			( m_vm, pNamespace,
+				m_vm.GetClassClass(), strName.c_str(), typeElement ) ;
+	pEnumerative->SetUsingEnumFlag( flagUsing ) ;
+
+	LPtr<LNamespace>	pEnumClass = pEnumerative ;
+	if ( !m_commentBefore.IsEmpty() )
+	{
+		pEnumClass->SetSelfComment( m_commentBefore.c_str() ) ;
+		m_commentBefore = L"" ;
+	}
+	pNamespace->AddNamespace( strName.c_str(), pEnumClass ) ;
+	pNamespace->DefineTypeAs
+		( strName.c_str(), typeElement, false, pEnumerative ) ;
+
+	// { <enum-name> [= <const-expr>] [, ...] }
+	if ( sparsSrc.HasNextChars( L"{" ) != L'{' )
+	{
+		OnError( errorNotFoundSyntax_opt1, L"{" ) ;
+		sparsSrc.PassStatementBlock() ;
+		return ;
+	}
+	LType	typeVar = typeElement ;
+	typeVar.SetModifiers
+		( typeVar.GetModifiers()
+			| LType::modifierPublic
+			| LType::modifierStatic
+			| LType::modifierConst ) ;
+	typeVar.SetAlias
+		( std::make_shared<LType::Alias>
+			( pEnumClass->GetFullName().c_str(), pEnumerative ) ) ;
+
+	LSourceFile*	pSource = dynamic_cast<LSourceFile*>( &sparsSrc ) ;
+	std::uint64_t	enumMask = 0 ;
+	std::int64_t	enumNext = 0 ;
+	for ( ; ; )
+	{
+		if ( !sparsSrc.PassSpace() )
+		{
+			OnError( errorMismatchBraces ) ;
+			return ;
+		}
+		if ( sparsSrc.HasNextChars( L"}" ) == L'}' )
+		{
+			break ;
+		}
+
+		// コメント
+		typeVar.SetComment( nullptr ) ;
+		if ( (pSource != nullptr)
+			&& !pSource->GetCommentBefore().IsEmpty() )
+		{
+			typeVar.SetComment
+				( pNamespace->MakeComment( pSource->GetCommentBefore().c_str() ) ) ;
+			pSource->ClearComment() ;
+		}
+
+		// 列挙子名
+		LString	strElementName ;
+		if ( sparsSrc.NextToken( strElementName ) == LStringParser::tokenNothing )
+		{
+			OnError( errorSyntaxError ) ;
+			sparsSrc.PassStatement( L"}" ) ;
+			return ;
+		}
+		if ( !IsValidUserName( strElementName.c_str() ) )
+		{
+			OnError( errorConnotAsUserSymbol_opt1, strElementName.c_str() ) ;
+			sparsSrc.PassStatement( L"}" ) ;
+			return ;
+		}
+
+		// 定義値
+		LExprValuePtr	xvalEnum ;
+		if ( sparsSrc.HasNextChars( L"=" ) == L'=' )
+		{
+			xvalEnum =
+				EvaluateExpression( sparsSrc, pnslLocal, L",}" ) ;
+			xvalEnum = EvalCastTypeTo( std::move(xvalEnum), typeElement ) ;
+
+			if ( xvalEnum == nullptr )
+			{
+				OnError( errorInitExpressionError, strElementName.c_str() ) ;
+				sparsSrc.PassStatement( L"}" ) ;
+				return ;
+			}
+			else
+			{
+				xvalEnum->Type().SetAlias( typeVar.GetAlias() ) ;
+			}
+			if ( !xvalEnum->IsConstExpr() )
+			{
+				OnError( errorNotConstExprForEnumerator, strElementName.c_str() ) ;
+				xvalEnum = nullptr ;
+			}
+			else if ( typeElement.IsInteger() )
+			{
+				const LLong	enumVal = xvalEnum->AsInteger() ;
+				enumMask |= enumVal ;
+				enumNext = enumVal + 1 ;
+			}
+		}
+		else
+		{
+			if ( !typeElement.IsInteger() )
+			{
+				OnError( errorNoExprForEnumerator, strElementName.c_str() ) ;
+			}
+			else
+			{
+				enumMask |= enumNext ;
+				xvalEnum = LExprValue::MakeConstExprInt( enumNext ++ ) ;
+			}
+		}
+
+		// public static const な変数として定義
+		if ( typeVar.CanArrangeOnBuf() )
+		{
+			DefineVariableOnArrangeBuf
+				( pEnumClass->StaticArrangement(),
+					typeVar, strElementName.c_str(), xvalEnum ) ;
+			if ( flagUsing )
+			{
+				DefineVariableOnArrangeBuf
+					( pNamespace->StaticArrangement(),
+						typeVar, strElementName.c_str(), xvalEnum ) ;
+			}
+		}
+		else
+		{
+			DefineStaticVariable
+				( pEnumClass, typeVar, strElementName.c_str(), xvalEnum ) ;
+			if ( flagUsing )
+			{
+				DefineStaticVariable
+					( pNamespace, typeVar, strElementName.c_str(), xvalEnum ) ;
+			}
+		}
+
+		// 継続／終了判定
+		wchar_t	wch = sparsSrc.HasNextChars( L",}" ) ;
+		if ( wch == L'}' )
+		{
+			break ;
+		}
+		if ( wch != L',' )
+		{
+			OnError( errorNotFoundSyntax_opt1, L"," ) ;
+			sparsSrc.PassStatement( L"}" ) ;
+			return ;
+		}
+	}
+	pEnumerative->SetIntEnumMask( enumMask ) ;
 }
 
 // class, struct, namespace

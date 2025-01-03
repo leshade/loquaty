@@ -41,6 +41,7 @@
 #include <loquaty_namespace.h>
 #include <loquaty_virtual_machine.h>
 #include <loquaty_class.h>
+#include <loquaty_enum.h>
 
 #include <loquaty_compiler.h>
 

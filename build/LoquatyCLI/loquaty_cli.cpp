@@ -1123,6 +1123,18 @@ void LoquatyApp::MakeDocClassSummary( LOutputStream& strm, LNamespace * pNamespa
 				<< LXMLDocParser::EncodeXMLString
 						( pNamespace->GetName().c_str() ) << L" ;" ;
 	}
+	else if ( dynamic_cast<LEnumerativeClass*>( pNamespace ) != nullptr )
+	{
+		LEnumerativeClass *	pEnumClass = dynamic_cast<LEnumerativeClass*>( pNamespace ) ;
+		const wchar_t *		pwszUsing = pEnumClass->IsUsingEnumerator()
+														? L"using " : L"" ;
+		strm << L"enum " << pwszUsing
+				<< LXMLDocParser::EncodeXMLString
+						( pNamespace->GetName().c_str() ) << L"<"
+				<< LXMLDocParser::EncodeXMLString
+						( pEnumClass->GetEnumElementType().GetTypeName().c_str() )
+				<< L"> ;" ;
+	}
 	else
 	{
 		strm << L"namespace "

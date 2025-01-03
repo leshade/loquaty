@@ -751,6 +751,10 @@ bool LStringParser::NextTypeExpr
 		if ( HasNextChars( L"*" ) == L'*' )
 		{
 			type = LType( vm.GetPointerClassAs( type ) ) ;
+			if ( HasNextToken( L"const" ) )
+			{
+				type.SetModifiers( LType::modifierConst ) ;
+			}
 		}
 	}
 	if ( type.CanArrangeOnBuf() )
@@ -807,6 +811,10 @@ bool LStringParser::NextTypeExpr
 		if ( HasNextChars( L"*" ) == L'*' )
 		{
 			type = LType( vm.GetPointerClassAs( type ) ) ;
+			if ( HasNextToken( L"const" ) )
+			{
+				type.SetModifiers( LType::modifierConst ) ;
+			}
 		}
 		return	true ;
 	}
@@ -1009,6 +1017,17 @@ bool LStringParser::ParseTypeName
 	}
 	if ( pNamespace != nullptr )
 	{
+		LEnumerativeClass *	pEnumClass =
+				dynamic_cast<LEnumerativeClass*>( pNamespace.Ptr() ) ;
+		if ( pEnumClass != nullptr )
+		{
+			type = pEnumClass->GetEnumElementType() ;
+			type.SetModifiers( accMod ) ;
+			type.SetAlias
+				( std::make_shared<LType::Alias>
+					( pEnumClass->GetFullClassName().c_str(), pEnumClass ) ) ;
+			return	true ;
+		}
 		pClass = dynamic_cast<LClass*>( pNamespace.Ptr() ) ;
 		if ( pClass != nullptr )
 		{
