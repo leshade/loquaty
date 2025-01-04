@@ -1117,12 +1117,6 @@ void LoquatyApp::MakeDocClassSummary( LOutputStream& strm, LNamespace * pNamespa
 
 		strm << L"}" ;
 	}
-	else if ( dynamic_cast<LClass*>( pNamespace ) != nullptr )
-	{
-		strm << L"class "
-				<< LXMLDocParser::EncodeXMLString
-						( pNamespace->GetName().c_str() ) << L" ;" ;
-	}
 	else if ( dynamic_cast<LEnumerativeClass*>( pNamespace ) != nullptr )
 	{
 		LEnumerativeClass *	pEnumClass = dynamic_cast<LEnumerativeClass*>( pNamespace ) ;
@@ -1130,10 +1124,16 @@ void LoquatyApp::MakeDocClassSummary( LOutputStream& strm, LNamespace * pNamespa
 														? L"using " : L"" ;
 		strm << L"enum " << pwszUsing
 				<< LXMLDocParser::EncodeXMLString
-						( pNamespace->GetName().c_str() ) << L"<"
+						( pNamespace->GetName().c_str() ) << L"&lt;"
 				<< LXMLDocParser::EncodeXMLString
 						( pEnumClass->GetEnumElementType().GetTypeName().c_str() )
-				<< L"> ;" ;
+				<< L"&gt; ;" ;
+	}
+	else if ( dynamic_cast<LClass*>( pNamespace ) != nullptr )
+	{
+		strm << L"class "
+				<< LXMLDocParser::EncodeXMLString
+						( pNamespace->GetName().c_str() ) << L" ;" ;
 	}
 	else
 	{

@@ -87,27 +87,28 @@ class StringParser	extends NativeObject
 	// <param name="strToken">現在の指標位置から空白を除いた次のトークンと一致判定する文字列</param>
 	public native boolean hasNextToken( String strToken ) ;
 
-	// トークン種別：空白（終端に到達した）
-	public static const int	tokenNothing = 0 ;
-
-	// トークン種別：数字と記号以外の文字から始まる記号以外の文字列
-	public static const int	tokenSymbol = 1 ;
-
-	// トークン種別：数字から始まる記号以外の文字列（数値リテラルではないことに注意）
-	public static const int	tokenNumber = 2 ;
-
-	//トークン種別：記号文字列（但し特殊記号で分割される）
-	public static const int	tokenMark = 3 ;
+	//トークン種別
+	enum using TokenType
+	{
+		// トークン種別：空白（終端に到達した）
+		tokenNothing,
+		// トークン種別：数字と記号以外の文字から始まる記号以外の文字列
+		tokenSymbol,
+		// トークン種別：数字から始まる記号以外の文字列（数値リテラルではないことに注意）
+		tokenNumber,
+		//トークン種別：記号文字列（但し特殊記号で分割される）
+		tokenMark,
+	}
 
 	// １トークンの終端位置まで読み飛ばします。
 	// <return>読み飛ばしたトークン種別：tokenNothing, tokenSymbol, tokenNumber, tokenMark</return>
-	public native int passToken() ;
+	public native TokenType passToken() ;
 
 	// 次の１トークンを取得して指標を進めます。
 	// <param name="pTokenType">取得したトークンの種別を受け取る int 変数。
 	// 		null の場合には受け取らない。</param>
 	// <return>取得したトークン文字列</return>
-	public native String nextToken( int* pTokenType = null ) ;
+	public native String nextToken( TokenType* pTokenType = null ) ;
 
 	// 現在の位置から空白文字（タブや改行、BOM等を含む）で
 	// 区切られた文字列を取得します。

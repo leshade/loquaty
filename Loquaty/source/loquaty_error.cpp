@@ -370,7 +370,7 @@ const Symbol::ErrorDesc	Symbol::s_ErrorDesc[errorMessageTotalCount] =
 	{ warningInvalidFetchAddr,
 		L"fetch_addr 修飾は無効です" },
 	{ warningImplicitCast_opt1_opt2,
-		L"\'%(0)\' を \'%(1)\' を暗黙に変換しています" },
+		L"\'%(0)\' を \'%(1)\' に暗黙に変換しています" },
 	{ warningCallDeprecatedFunc,
 		L"使用が推奨されない関数を呼び出しています" },
 	{ warningRefDeprecatedVar,
