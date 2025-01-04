@@ -19,6 +19,25 @@ bool LEnumerativeClass::IsConformableValue( const LValue& value ) const
 			return	(value.AsInteger() & ~m_maskEnum) == 0 ;
 		}
 	}
+	else if ( m_typeElement.IsFloatingPointNumber() )
+	{
+		if ( value.GetType().IsFloatingPointNumber() )
+		{
+			LDouble	fpValue = value.AsDouble() ;
+			for ( size_t i = 0; i < GetElementCount(); i ++ )
+			{
+				LObjPtr	pElement = GetElementAt( i ) ;
+				LDouble	dblElement ;
+				if ( (pElement != nullptr) && pElement->AsDouble( dblElement ) )
+				{
+					if ( fpValue == dblElement )
+					{
+						return	true ;
+					}
+				}
+			}
+		}
+	}
 	else if ( m_typeElement.IsString() )
 	{
 		if ( value.GetType().IsString() )
