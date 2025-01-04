@@ -132,15 +132,16 @@ namespace	Loquaty
 		}
 
 	public:
-		LType( LClass * pClass = nullptr, LType::Modifiers accMod = 0 )
+		LType( LClass * pClass = nullptr, LType::Modifiers accMod = 0, AliasPtr pAlias = nullptr )
 			: m_type( typeObject ), m_accMod( accMod ),
-				m_pClass( pClass ), m_pComment( nullptr ) { }
-		LType( Primitive type, LType::Modifiers accMod = 0 )
+				m_pClass( pClass ), m_pAlias( pAlias ), m_pComment( nullptr ) { }
+		LType( Primitive type, LType::Modifiers accMod = 0, AliasPtr pAlias = nullptr )
 			: m_type( type ), m_accMod( accMod ),
-				m_pClass( nullptr ), m_pComment( nullptr ) { }
-		LType( Primitive type, LClass * pClass, LType::Modifiers accMod = 0 )
+				m_pClass( nullptr ), m_pAlias( pAlias ), m_pComment( nullptr ) { }
+		LType( Primitive type, LClass * pClass,
+				LType::Modifiers accMod = 0, AliasPtr pAlias = nullptr )
 			: m_type( type ), m_accMod( accMod ),
-				m_pClass( pClass ), m_pComment( nullptr ) { }
+				m_pClass( pClass ), m_pAlias( pAlias ), m_pComment( nullptr ) { }
 		LType( const LType& type, bool constModify = false )
 			: m_type( type.m_type ),
 				m_accMod( type.m_accMod
@@ -339,7 +340,7 @@ namespace	Loquaty
 		LType ExConst( void ) const
 		{
 			return	LType( m_type, m_pClass,
-							(m_accMod & ~modifierConst) ) ;
+							(m_accMod & ~modifierConst), m_pAlias ) ;
 		}
 
 		// アクセス可能判定

@@ -4791,6 +4791,30 @@ LExprValuePtr LCompiler::EvalPrimitiveBinaryOperator
 		xval1 = ExprLoadClone( xval1 ) ;
 	}
 
+	// 列挙型の判定
+	LType::AliasPtr	pAlias1 = xval1->GetType().GetAlias() ;
+	LType::AliasPtr	pAlias2 = xval2->GetType().GetAlias() ;
+	LType::AliasPtr	pAlias ;
+	if ( ((opPrimitive == Symbol::opBitAnd)
+			|| (opPrimitive == Symbol::opBitOr))
+		&& xval1->GetType().IsInteger()
+		&& xval2->GetType().IsInteger()
+		&& (xval1->GetType().GetAlias() != nullptr)
+		&& (xval2->GetType().GetAlias() != nullptr)
+		&& (xval1->GetType().GetAlias()->m_pClass
+				== xval2->GetType().GetAlias()->m_pClass) )
+	{
+		pAlias = xval1->GetType().GetAlias() ;
+
+		LEnumerativeClass *	pEnumClass =
+				dynamic_cast<LEnumerativeClass*>( pAlias->m_pClass ) ;
+		if ( (pEnumClass == nullptr)
+			|| !(pEnumClass->GetEnumElementType().IsInteger()) )
+		{
+			pAlias = nullptr ;
+		}
+	}
+
 	// プリミティブ型を揃える
 	assert( xval2->GetType().IsPrimitive() ) ;
 	LType::Primitive	primRet =
@@ -4856,6 +4880,10 @@ LExprValuePtr LCompiler::EvalPrimitiveBinaryOperator
 						pbopDef->m_opIndex,
 						pbopDef->m_pfnOp,
 						pbopDef->m_pInstance, pbopDef->m_pOpFunc ) ;
+		if ( pAlias != nullptr )
+		{
+			xval1->Type().SetAlias( pAlias ) ;
+		}
 
 		if ( GetOperatorDesc(opIndex).leftValue )
 		{
@@ -4867,6 +4895,10 @@ LExprValuePtr LCompiler::EvalPrimitiveBinaryOperator
 	if ( pbopDef->m_typeRet.IsBoolean() )
 	{
 		xval1->Type() = pbopDef->m_typeRet ;
+	}
+	if ( pAlias != nullptr )
+	{
+		xval1->Type().SetAlias( pAlias ) ;
 	}
 
 	return	xval1 ;
@@ -6742,18 +6774,22 @@ LExprValuePtr LCompiler::EvalLoadToDiscloseRef( LExprValuePtr xval )
 			{
 				LValue::Primitive	primValue ;
 				primValue.longValue = pPtrObj->LoadIntegerAt( 0, primType ) ;
-				return	std::make_shared<LExprValue>( primType, primValue, true ) ;
+				xval = std::make_shared<LExprValue>( primType, primValue, true ) ;
 			}
 			else
 			{
 				LValue::Primitive	primValue ;
 				primValue.dblValue = pPtrObj->LoadDoubleAt( 0, primType ) ;
-				return	std::make_shared<LExprValue>( primType, primValue, true ) ;
+				xval = std::make_shared<LExprValue>( primType, primValue, true ) ;
 			}
+			xval->Type().SetAlias( typeElement.GetAlias() ) ;
+			return	xval ;
 		}
 		// ポインタ先をロード
-		return	ExprLoadPtrPrimitive
+		xval = ExprLoadPtrPrimitive
 					( typeElement.GetPrimitive(), std::move(xval) ) ;
+		xval->Type().SetAlias( typeElement.GetAlias() ) ;
+		return	xval ;
 	}
 	else if ( xval->IsOnLocal() )
 	{
