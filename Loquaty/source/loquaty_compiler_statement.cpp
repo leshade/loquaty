@@ -1476,6 +1476,7 @@ void LCompiler::ParseStatement_enum
 			{
 				enumMask |= enumNext ;
 				xvalEnum = LExprValue::MakeConstExprInt( enumNext ++ ) ;
+				xvalEnum->Type().SetAlias( typeVar.GetAlias() ) ;
 			}
 		}
 

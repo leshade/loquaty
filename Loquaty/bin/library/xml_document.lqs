@@ -115,23 +115,22 @@ class XMLDocParser	extends StringParser
 
 class XMLDocument	extends NativeObject
 {
-	// 要素タイプ：XML 文書全体を保持するコンテナ
-	public static const int	typeRoot		= 0 ;
-
-	// 要素タイプ：タグ要素
-	public static const int	typeTag			= 1 ;
-
-	// 要素タイプ：定義タグ要素
-	public static const int	typeDifinition	= 2 ;
-
-	// 要素タイプ：テキスト要素
-	public static const int	typeText		= 3 ;
-
-	// 要素タイプ：CDATA テキスト要素
-	public static const int	typeCDATA		= 4 ;
-
-	// 要素タイプ：コメント要素
-	public static const int	typeComment		= 5 ;
+	// XML 要素タイプ
+	enum using Type
+	{
+		// XML 文書全体を保持するコンテナ
+		typeRoot,
+		// タグ要素
+		typeTag,
+		// 定義タグ要素
+		typeDifinition,
+		// テキスト要素
+		typeText,
+		// CDATA テキスト要素
+		typeCDATA,
+		// コメント要素
+		typeComment,
+	}
 
 	// XMLDocument を構築します。
 	public native XMLDocument() ;
@@ -144,11 +143,11 @@ class XMLDocument	extends NativeObject
 
 	// この要素タイプを取得します。
 	// <return>要素タイプ<br/>typeRoot, typeTag, typeDifinition, typeText, typeCDATA, typeComment</return>
-	public native int getType() const ;
+	public native Type getType() const ;
 
 	// この要素タイプを設定します。
-	// <param name="type"></param>
-	public native void setType( int type ) ;
+	// <param name="type">要素タイプ</param>
+	public native void setType( Type type ) ;
 
 	// この要素のタグを取得します。
 	public native String getTag() const ;
@@ -156,7 +155,7 @@ class XMLDocument	extends NativeObject
 	// この要素のタグを設定します。
 	// <param name="tag">タグ名</param>
 	// <param name="type">要素タイプ : typeTag, typeDifinition</param>
-	public native void setTag( String tag, int type = typeTag ) ;
+	public native void setTag( String tag, Type type = typeTag ) ;
 
 	// この要素のテキストを取得します。
 	public native String getText() const ;
@@ -164,7 +163,7 @@ class XMLDocument	extends NativeObject
 	// この要素のテキストを設定します。
 	// <param name="text">テキスト要素</param>
 	// <param name="type">要素タイプ : typeText, typeCDATA, typeComment</param>
-	public native void setText( String text, int type = typeText ) ;
+	public native void setText( String text, Type type = typeText ) ;
 
 	// 属性は存在するか
 	// <param name="name">属性名</param>
