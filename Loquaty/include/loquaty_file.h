@@ -299,6 +299,12 @@ namespace	Loquaty
 		// ファイルを開く
 		static LFilePtr Open( const wchar_t * pwszPath, long nOpenFlags = modeRead ) ;
 
+		// LURLSchemer::Open フック用関数ポインタ
+		typedef	LFilePtr (*PFUNC_OpenProc)( const wchar_t * pwszPath, long nOpenFlags ) ;
+		static PFUNC_OpenProc s_pfnOpen ;
+
+		static LFilePtr OpenProc( const wchar_t * pwszPath, long nOpenFlags = modeRead ) ;
+
 	public:
 		// スキームを取得しスキームに対するパスの先頭位置を pos に返す
 		// （':' の後に '//' が存在する場合読み飛ばす）

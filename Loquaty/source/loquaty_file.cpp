@@ -326,6 +326,9 @@ void LDirectorySchemer::ClearDirectories( void )
 LOQUATY_DLL_DECL
 ( LURLSchemer	LURLSchemer::s_schemer ) ;
 
+LURLSchemer::PFUNC_OpenProc	LURLSchemer::s_pfnOpen = &LURLSchemer::OpenProc ;
+
+
 LURLSchemer::LURLSchemer( void )
 {
 	LDirectoryPtr	pFileDir = std::make_shared<LFileDirectory>() ;
@@ -368,6 +371,11 @@ std::shared_ptr<LDirectory> LURLSchemer::Duplicate( void )
 
 // ファイルを開く
 LFilePtr LURLSchemer::Open( const wchar_t * pwszPath, long nOpenFlags )
+{
+	return	s_pfnOpen( pwszPath, nOpenFlags ) ;
+}
+
+LFilePtr LURLSchemer::OpenProc( const wchar_t * pwszPath, long nOpenFlags )
 {
 	return	s_schemer.OpenFile( pwszPath, nOpenFlags ) ;
 }
