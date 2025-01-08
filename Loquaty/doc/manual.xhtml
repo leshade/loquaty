@@ -2248,7 +2248,7 @@ boolean の false 値を表現します。
 	}&r;
 </div>
 
-　定数式を列挙型変数へ代入する場合、列挙子に含まれている場合は代入できます（現在は float, double, String 型のみ）。<br/>
+　定数式を列挙型変数へ代入する場合、列挙子に含まれている場合は代入できます（現在は整数型と float, double, String 型のみ）。<br/>
 　そうでない場合には警告が出力されます。<br/>
 　整数型の場合にはすべての列挙子のビットマスク（ビット毎の論理和）の範囲内であれば無警告で変換できます。<br/>
 
@@ -2259,6 +2259,15 @@ boolean の false 値を表現します。
 	Hoge&tab; h1 = 101 ;&tab;// OK (0b01100101)&r;
 	Hoge&tab; h2 = 97 ;&tab; // OK (0b01100001)&r;
 	Hoge&tab; h3 = 102 ;&tab;// Warning (0b011001<bold>1</bold>0)&r;
+</div>
+
+　また、同じ整数の列挙型同士のビット毎の論理和と論理積は列挙型が保持されます。
+
+<div class="code_quote">
+	&exam;
+	Hoge&tab; h1 = 101 ;&tab; // OK (0b01100101)&r;
+	Hoge&tab; h2 = 97 ; &tab; // OK (0b01100001)&r;
+	Hoge&tab; h3 = h1 | h2 ; // OK&r;
 </div>
 
 </div>

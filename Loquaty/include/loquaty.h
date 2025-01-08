@@ -1,5 +1,6 @@
 ﻿
-// Loquaty スクリプト
+#if !defined(__LOQUATY_H__)
+#define	__LOQUATY_H__	1
 
 #include <loquaty_defs.h>
 #include <loquaty_string.h>
@@ -50,4 +51,6 @@
 #include <loquaty_cls_math.h>
 #include <loquaty_cls_file.h>
 #include <loquaty_cls_loquaty.h>
+
+#endif
 
