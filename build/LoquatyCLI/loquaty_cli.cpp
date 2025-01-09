@@ -725,8 +725,8 @@ int LoquatyApp::MakeDocTypeDef
 	LType::LComment *	pComment = type.GetComment() ;
 	if ( (pComment != nullptr) && HasCommentSummary( *pComment ) )
 	{
-		MakeDocXMLSummary( strm, *pComment ) ;
-		MakeDocXMLDescription( strm, *pComment ) ;
+		bool	lineSpace = MakeDocXMLSummary( strm, *pComment ) ;
+		MakeDocXMLDescription( strm, *pComment, lineSpace ) ;
 	}
 	strm << L"<br/>\r\n\r\n" ;
 
@@ -1145,8 +1145,8 @@ void LoquatyApp::MakeDocClassSummary( LOutputStream& strm, LNamespace * pNamespa
 	LType::LComment *	pComment = pNamespace->GetSelfComment() ;
 	if ( (pComment != nullptr) && HasCommentSummary( *pComment ) )
 	{
-		MakeDocXMLSummary( strm, *pComment ) ;
-		MakeDocXMLDescription( strm, *pComment ) ;
+		bool	lineSpace = MakeDocXMLSummary( strm, *pComment ) ;
+		MakeDocXMLDescription( strm, *pComment, lineSpace ) ;
 	}
 
 	strm << L"<br/>\r\n\r\n" ;
@@ -1291,8 +1291,8 @@ void LoquatyApp::MakeDocVariableDesc
 	LType::LComment *	pComment = typeVar.GetComment() ;
 	if ( (pComment != nullptr) && HasCommentSummary(*pComment) )
 	{
-		MakeDocXMLSummary( strm, *pComment ) ;
-		MakeDocXMLDescription( strm, *pComment ) ;
+		bool	lineSpace = MakeDocXMLSummary( strm, *pComment ) ;
+		MakeDocXMLDescription( strm, *pComment, lineSpace ) ;
 	}
 
 	strm << L"<br/>\r\n" ;
@@ -1417,9 +1417,9 @@ void LoquatyApp::MakeDocFunctionDesc
 	LType::LComment *	pComment = pProto->GetComment() ;
 	if ( pComment != nullptr )
 	{
-		MakeDocXMLSummary( strm, *pComment ) ;
-		MakeDocXMLParams( strm, *pComment, &argList ) ;
-		MakeDocXMLDescription( strm, *pComment ) ;
+		bool	lineSpace = MakeDocXMLSummary( strm, *pComment ) ;
+		lineSpace |= MakeDocXMLParams( strm, *pComment, &argList ) ;
+		MakeDocXMLDescription( strm, *pComment, lineSpace ) ;
 	}
 
 	strm << L"<br/>\r\n" ;
@@ -1462,9 +1462,9 @@ void LoquatyApp::MakeDocBinaryOperatorDesc
 	if ( bodef.m_pwszComment != nullptr )
 	{
 		LType::LComment		comment = bodef.m_pwszComment ;
-		MakeDocXMLSummary( strm, comment ) ;
-		MakeDocXMLParams( strm, comment, nullptr ) ;
-		MakeDocXMLDescription( strm, comment ) ;
+		bool	lineSpace = MakeDocXMLSummary( strm, comment ) ;
+		lineSpace |= MakeDocXMLParams( strm, comment, nullptr ) ;
+		MakeDocXMLDescription( strm, comment, lineSpace ) ;
 	}
 
 	strm << L"<br/>\r\n" ;
@@ -1510,7 +1510,7 @@ bool LoquatyApp::HasCommentSummary( LType::LComment& comment )
 
 // コメントの <summary> タグ内、あるいは先頭のテキスト要素を出力
 // <summary>概要</summary>
-void LoquatyApp::MakeDocXMLSummary
+bool LoquatyApp::MakeDocXMLSummary
 		( LOutputStream& strm, LType::LComment& comment )
 {
 	MakeComment( comment ) ;
@@ -1522,6 +1522,7 @@ void LoquatyApp::MakeDocXMLSummary
 		strm << L"<div class=\"normal\">\r\n" ;
 		xmlParser.SerializeElements( strm, *pSummary ) ;
 		strm << L"</div>\r\n" ;
+		return	true ;
 	}
 	else if ( (comment.m_xmlDoc->GetElementCount() >= 2)
 		&& (comment.m_xmlDoc->FindElement( LXMLDocument::typeText ) == 0) )
@@ -1530,12 +1531,14 @@ void LoquatyApp::MakeDocXMLSummary
 		strm << L"<div class=\"normal\">\r\n" ;
 		xmlParser.Serialize( strm, *(comment.m_xmlDoc->GetElementAt(0)) ) ;
 		strm << L"</div>\r\n" ;
+		return	true ;
 	}
+	return	false ;
 }
 
 // <param name="引数名">引数の説明</param>
 // <return>返り値の説明</return>
-void LoquatyApp::MakeDocXMLParams
+bool LoquatyApp::MakeDocXMLParams
 		( LOutputStream& strm, LType::LComment& comment,
 						const LNamedArgumentListType* pArgList )
 {
@@ -1546,7 +1549,7 @@ void LoquatyApp::MakeDocXMLParams
 	{
 		if ( (pArgList == nullptr) || (pArgList->size() == 0) )
 		{
-			return ;
+			return	false ;
 		}
 		bool	flagHasArgComment = false ;
 		for ( size_t i = 0; i < pArgList->size(); i ++ )
@@ -1560,7 +1563,7 @@ void LoquatyApp::MakeDocXMLParams
 		}
 		if ( !flagHasArgComment )
 		{
-			return ;
+			return	false ;
 		}
 	}
 	strm << L"<div class=\"notes_parameter\">\r\n" ;
@@ -1623,17 +1626,22 @@ void LoquatyApp::MakeDocXMLParams
 	}
 
 	strm << L"</div>\r\n" ;
+	return	true ;
 }
 
 // <desc>関数の詳細説明</desc>
 void LoquatyApp::MakeDocXMLDescription
-		( LOutputStream& strm, LType::LComment& comment )
+		( LOutputStream& strm, LType::LComment& comment, bool flagSpaceLine )
 {
 	MakeComment( comment ) ;
 
 	LXMLDocPtr	pDesc = comment.m_xmlDoc->GetTagAs( L"desc" ) ;
 	if ( pDesc != nullptr )
 	{
+		if ( flagSpaceLine )
+		{
+			strm << L"<br/>\r\n" ;
+		}
 		LXMLDocParser	xmlParser ;
 		strm << L"<div class=\"indent1\">\r\n" ;
 		xmlParser.SerializeElements( strm, *pDesc ) ;

@@ -111,11 +111,12 @@ public:
 
 	void MakeComment( LType::LComment& comment ) ;
 	bool HasCommentSummary( LType::LComment& comment ) ;
-	void MakeDocXMLSummary( LOutputStream& strm, LType::LComment& comment ) ;
-	void MakeDocXMLParams
+	bool MakeDocXMLSummary( LOutputStream& strm, LType::LComment& comment ) ;
+	bool MakeDocXMLParams
 		( LOutputStream& strm, LType::LComment& comment,
 							const LNamedArgumentListType* pArgList ) ;
-	void MakeDocXMLDescription( LOutputStream& strm, LType::LComment& comment ) ;
+	void MakeDocXMLDescription
+		( LOutputStream& strm, LType::LComment& comment, bool flagSpaceLine = false ) ;
 
 	// css ファイルを出力する
 	bool WriteCssFile( const wchar_t * pwszFilePath ) ;
