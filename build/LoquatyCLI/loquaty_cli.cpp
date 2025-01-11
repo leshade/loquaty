@@ -2243,8 +2243,15 @@ int LoquatyApp::MakeNativeFunctionStub
 	( LOutputStream& osHeader, LOutputStream& osCpp,
 		LPtr<LFunctionObj> pFunc, const wchar_t * pwszCppClass )
 {
+	std::shared_ptr<LPrototype>		pProto = pFunc->GetPrototype() ;
+	assert( pProto != nullptr ) ;
+
+	const LNamedArgumentListType&	argList = pProto->GetArgListType() ;
+	const std::vector<LValue>&		argDefaults = pProto->GetDefaultArgList() ;
+
 	int			nExit = 0 ;
 	LClass *	pThisClass = nullptr ;
+	bool		flagDelayInitNativeObj = false ;
 	if ( pFunc->GetName() == LClass::s_Constructor )
 	{
 		//
@@ -2284,8 +2291,16 @@ int LoquatyApp::MakeNativeFunctionStub
 				<< L"	LQT_FUNC_ARG_LIST ;\r\n" ;
 		if ( flagNativeObjClass )
 		{
-			osCpp << L"	LQT_FUNC_THIS_INIT_NOBJ( "
-						<< pwszCppClass << L", pThis, () ) ;\r\n" ;
+			if ( argList.size() == 0 )
+			{
+				osCpp << L"	LQT_FUNC_THIS_INIT_NOBJ( "
+							<< pwszCppClass << L", pThis, () ) ;\r\n" ;
+			}
+			else
+			{
+				osCpp << L"	LQT_FUNC_THIS_OBJ( LNativeObj, pThis ) ;\r\n" ;
+				flagDelayInitNativeObj = true ;
+			}
 		}
 		else
 		{
@@ -2375,12 +2390,7 @@ int LoquatyApp::MakeNativeFunctionStub
 	//
 	// 関数の引数を受け取る
 	//
-	std::shared_ptr<LPrototype>		pProto = pFunc->GetPrototype() ;
-	assert( pProto != nullptr ) ;
-
-	const LNamedArgumentListType&	argList = pProto->GetArgListType() ;
-	const std::vector<LValue>&		argDefaults = pProto->GetDefaultArgList() ;
-	LString							strRetValueName = L"valRet" ;
+	LString	strRetValueName = L"valRet" ;
 	for ( size_t i = 0; i < argList.size(); i ++ )
 	{
 		LType	typeArg = argList.at(i) ;
@@ -2472,6 +2482,14 @@ int LoquatyApp::MakeNativeFunctionStub
 	}
 	osCpp << L"\r\n" ;
 
+	if ( flagDelayInitNativeObj )
+	{
+		osCpp << L"\tpThis->SetNative\r\n"
+				L"		( std::make_shared<"
+				<< pwszCppClass
+				<< ">( /* construction-arg-list */ ) ) ;\r\n\r\n" ;
+	}
+
 	// 返り値変数
 	const LType	typeRet = pProto->GetReturnType() ;
 	if ( !typeRet.IsVoid() )
@@ -2525,7 +2543,10 @@ int LoquatyApp::MakeNativeFunctionStub
 
 	if ( pFunc->GetName() == LClass::s_Constructor )
 	{
-		osCpp << L"	// pThis->Initialize() ;\r\n\r\n" ;
+		if ( !flagDelayInitNativeObj )
+		{
+			osCpp << L"	// pThis->Initialize() ;\r\n\r\n" ;
+		}
 	}
 	else
 	{
