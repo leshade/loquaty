@@ -36,6 +36,12 @@ namespace	Loquaty
 		virtual LObject * DuplicateObject( void ) const ;
 
 	public:
+		// エラー送出ソース位置情報を取得する
+		// 投げられたソース情報を取得する
+		bool GetThrownSourceInfo
+			( LString& strSource, LStringParser::LineInfo& linf ) const ;
+
+	public:
 		// Exception( String msg )
 		static void method_init( LContext& context ) ;
 

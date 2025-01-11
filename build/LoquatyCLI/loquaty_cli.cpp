@@ -387,20 +387,14 @@ int LoquatyApp::RunMain( void )
 				strClass.c_str(), strExcept.ToString().c_str() ) ;
 
 		LExceptionObj *	pExObj = dynamic_cast<LExceptionObj*>( pExcept.Ptr() ) ;
-		if ( (pExObj != nullptr)
-			&& (pExObj->m_pCodeBuf != nullptr)
-			&& (pExObj->m_pCodeBuf->GetSourceFile() != nullptr) )
+		if ( pExObj != nullptr )
 		{
-			LSourceFilePtr	pSource = pExObj->m_pCodeBuf->GetSourceFile() ;
-			const LCodeBuffer::DebugSourceInfo*
-				pdsi = pExObj->m_pCodeBuf->FindDebufSourceInfo( pExObj->m_iThrown ) ;
-			if ( pdsi != nullptr )
+			LStringParser::LineInfo	lineInf ;
+			LString					strSource ;
+			if ( pExObj->GetThrownSourceInfo( strSource, lineInf ) )
 			{
-				LStringParser::LineInfo	linf =
-					pSource->FindLineContainingIndexAt( pdsi->m_iSrcFirst ) ;
-
 				printf( "thrown in \'%s\' at line %d.\n",
-						pSource->GetFileName().ToString().c_str(), (int) linf.iLine ) ;
+						strSource.ToString().c_str(), (int) lineInf.iLine ) ;
 			}
 		}
 	}

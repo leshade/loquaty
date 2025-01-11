@@ -39,6 +39,27 @@ LObject * LExceptionObj::DuplicateObject( void ) const
 	return	new LExceptionObj( *this ) ;
 }
 
+// エラー送出ソース位置情報を取得する
+// 投げられたソース情報を取得する
+bool LExceptionObj::GetThrownSourceInfo
+	( LString& strSource, LStringParser::LineInfo& linf ) const
+{
+	if ( (m_pCodeBuf != nullptr)
+		&& (m_pCodeBuf->GetSourceFile() != nullptr) )
+	{
+		LSourceFilePtr	pSource = m_pCodeBuf->GetSourceFile() ;
+		const LCodeBuffer::DebugSourceInfo*
+			pdsi = m_pCodeBuf->FindDebufSourceInfo( m_iThrown ) ;
+		if ( pdsi != nullptr )
+		{
+			linf = pSource->FindLineContainingIndexAt( pdsi->m_iSrcFirst ) ;
+			strSource = pSource->GetFileName() ;
+			return	(linf.iLine >= 1) ;
+		}
+	}
+	return	false ;
+}
+
 // Exception( String msg )
 void LExceptionObj::method_init( LContext& _context )
 {
