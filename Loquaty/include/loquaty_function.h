@@ -391,6 +391,8 @@ namespace	Loquaty
 		{
 			return	m_iCodePoint ;
 		}
+		// 関数実装コードのデバッグ用出力
+		void TraceCodeMnemonicList( void ) const ;
 
 		// ネイティブ関数
 		void SetNative( std::function<void(LContext&)> func, bool callableInConstExpr = false )

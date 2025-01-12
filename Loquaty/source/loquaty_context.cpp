@@ -300,9 +300,26 @@ size_t LContext::PushArgument
 
 	size_t	nArgPushed = 0 ;
 	m_stack->m_ap = m_stack->m_sp ;
-	for ( size_t i = 0; i < nArgCount; i ++ )
+
+	LClass *	pThisClass = pProto->GetThisClass() ;
+	size_t		iArgFirst = 0 ;
+	if ( pThisClass != nullptr )
 	{
-		LValue	valArg = pArgValues[i] ;
+		// this オブジェクト
+		assert( nArgCount >= 1 ) ;
+		if ( nArgCount >= 1 )
+		{
+			// 一応キャストする
+			LValue	valArg( pArgValues[0].GetObject()->CastClassTo( pThisClass ) ) ;
+			m_stack->Push( valArg.Value() ) ;
+			nArgPushed ++ ;
+		}
+		iArgFirst = 1 ;
+	}
+
+	for ( size_t i = 0; iArgFirst + i < nArgCount; i ++ )
+	{
+		LValue	valArg = pArgValues[iArgFirst + i] ;
 
 		bool	flagObject = false ;
 		if ( (pProto != nullptr)
@@ -320,10 +337,10 @@ size_t LContext::PushArgument
 		nArgPushed ++ ;
 	}
 
-	for ( size_t i = nArgCount; i < pProto->GetDefaultArgList().size(); i ++ )
+	for ( size_t i = nArgCount; i < iArgFirst + pProto->GetDefaultArgList().size(); i ++ )
 	{
 		// デフォルトの引数
-		LValue	valDef = pProto->GetDefaultArgAt(i).Clone() ;
+		LValue	valDef = pProto->GetDefaultArgAt(i - iArgFirst).Clone() ;
 		m_stack->Push( valDef.Value() ) ;
 		nArgPushed ++ ;
 	}

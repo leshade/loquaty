@@ -291,6 +291,21 @@ LString LFunctionObj::GetFullPrintName( void ) const
 	return	LString() ;
 }
 
+// 関数実装コードのデバッグ用出力
+void LFunctionObj::TraceCodeMnemonicList( void ) const
+{
+	if ( m_codeBuf == nullptr )
+	{
+		return ;
+	}
+	const std::vector<LCodeBuffer::Word>&	bufCodes = m_codeBuf->GetBuffer() ;
+	for ( size_t i = 0; i < bufCodes.size(); i ++ )
+	{
+		LTrace( "#%d: %s\n", (int) i,
+			m_codeBuf->MnemonicOf( bufCodes.at(i), i ).ToString().c_str() ) ;
+	}
+}
+
 // 関数キャプチャー引数を追加
 void LFunctionObj::SetCaptureObjectList( const std::vector<LValue>& refObjs )
 {
