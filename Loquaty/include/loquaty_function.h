@@ -281,7 +281,8 @@ namespace	Loquaty
 			}
 		}
 		LFunctionObj( const LFunctionObj& func )
-			: m_name( func.m_name ),
+			: LObject( func ),
+				m_name( func.m_name ),
 				m_iVariation( func.m_iVariation ),
 				m_namespace( func.m_namespace ),
 				m_prototype( func.m_prototype ),

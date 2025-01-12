@@ -210,6 +210,8 @@ namespace	Loquaty
 	public:
 		// 候補ディレクトリを追加する
 		void AddDirectory( LDirectoryPtr dir ) ;
+		// 候補ディレクトリを削除する
+		bool DetachDirectory( LDirectoryPtr dir ) ;
 		// 候補ディレクトリを全て削除する
 		void ClearDirectories( void ) ;
 

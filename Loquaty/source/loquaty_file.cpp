@@ -159,6 +159,20 @@ void LDirectories::AddDirectory( LDirectoryPtr dir )
 	m_dirs.push_back( dir ) ;
 }
 
+// 候補ディレクトリを削除する
+bool LDirectories::DetachDirectory( LDirectoryPtr dir )
+{
+	for ( size_t i = 0; i < m_dirs.size(); i ++ )
+	{
+		if ( m_dirs.at(i) == dir )
+		{
+			m_dirs.erase( m_dirs.begin() + i ) ;
+			return	true ;
+		}
+	}
+	return	false ;
+}
+
 // 候補ディレクトリを全て削除する
 void LDirectories::ClearDirectories( void )
 {
@@ -392,9 +406,11 @@ LString LURLSchemer::ParseSchemeName( const wchar_t * path, size_t& pos )
 	size_t	i = 0 ;
 	while ( path[i] != 0 )
 	{
-		if ( path[i] == L':' )
+		if ( (path[i] == L':')
+			&& (path[i + 1] == L'/')
+			&& (path[i + 2] == L'/') )
 		{
-			pos = i + 1 ;
+			pos = i + 3 ;
 			return	LString( path, i ) ;
 		}
 		i ++ ;
