@@ -128,6 +128,12 @@ LObject * LMapObj::SetElementAs( const wchar_t * name, LObject * pObj )
 // 文字列として評価
 bool LMapObj::AsString( LString& str ) const
 {
+	return	LMapObj::AsExpression( str ) ;
+}
+
+// （式表現に近い）文字列に変換
+bool LMapObj::AsExpression( LString& str, std::uint64_t flags ) const
+{
 	LSpinLock	lockMap( m_mtxMap ) ;
 	LSpinLock	lockArray( m_mtxArray ) ;
 
@@ -141,7 +147,8 @@ bool LMapObj::AsString( LString& str ) const
 		{
 			str += L", " ;
 		}
-		if ( LStringParser::IsValidAsSymbol( iter.first.c_str() ) )
+		if ( !(flags & expressionForJSON)
+			&& LStringParser::IsValidAsSymbol( iter.first.c_str() ) )
 		{
 			str += iter.first ;
 		}
@@ -159,7 +166,7 @@ bool LMapObj::AsString( LString& str ) const
 		{
 			pObj = m_array.at( iter.second ).Ptr() ;
 		}
-		str += ToExpression( pObj ) ;
+		str += ToExpression( pObj, flags ) ;
 		//
 		nCount ++ ;
 	}

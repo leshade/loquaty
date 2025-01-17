@@ -291,6 +291,8 @@ namespace	Loquaty
 		LArrayObj * new_Array( LClass * pElementType ) ;
 		// 例外オブジェクト生成
 		LExceptionObj * new_Exception( ErrorMessageIndex err ) ;
+		// オブジェクト生成
+		LObject * new_Object( const wchar_t * pwszClassPath ) ;
 
 	public:
 		// 同期処理モニタを設定

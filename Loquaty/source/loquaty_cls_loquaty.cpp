@@ -97,14 +97,16 @@ const LClass::NativeFuncDesc	LLoquatyClass::s_Functions[5] =
 		L"public static", L"Loquaty", L"",
 		L"実行している仮想マシンを取得します。", nullptr
 	},
-	{	// public String express( Object obj )
+	{	// public String express( Object obj, ulong flags = 0 )
 		L"express",
 		&LLoquatyClass::method_express, false,
-		L"public static", L"String", L"Object obj",
+		L"public static", L"String", L"Object obj, ulong flags = 0",
 		L"オブジェクトを文字列変換しますが、出来るだけ Loquaty の式として評価できる形式にします。\n"
-		L"null を受け取った場合には &qout;null&quot; が返されます。\n"
+		L"null を受け取った場合には &quot;null&quot; が返されます。\n"
 		L"この関数は簡易的な JSON エンコーダーとして利用できるかもしれません。\n"
 		L"<param name=\"obj\">文字列化したいオブジェクト</param>\n"
+		L"<param name=\"flags\">文字列化フラグ。"
+		L"JSON エンコーダーとして利用するには expressJSON を指定します。</param>\n"
 		L"<return>式として文字列化された String オブジェクト</return>", nullptr
 	},
 	{	// public Object evalConstExpr( String expr )
@@ -129,11 +131,22 @@ const LClass::NativeFuncDesc	LLoquatyClass::s_Functions[5] =
 	},
 } ;
 
+const LClass::VariableDesc	LLoquatyClass::s_VariableDesc[2] =
+{
+	{
+		L"expressJSON", L"public static const", L"uint64", L"1",
+		nullptr, L"express 関数で JSON の互換性を優先します。",
+	},
+	{
+		nullptr, nullptr, nullptr, nullptr, nullptr,
+	},
+} ;
+
 const LClass::ClassMemberDesc	LLoquatyClass::s_MemberDesc =
 {
 	LLoquatyClass::s_Virtuals,
 	LLoquatyClass::s_Functions,
-	nullptr,
+	LLoquatyClass::s_VariableDesc,
 	nullptr,
 	L"Loquaty 仮想マシンのクラスです。"
 } ;
@@ -298,13 +311,14 @@ void LLoquatyClass::method_getCurrent( LContext& _context )
 	LQT_RETURN_OBJECT( pVM ) ;
 }
 
-// public String express( Object obj ) const ;
+// public String express( Object obj, ulong flags = 0 ) const ;
 void LLoquatyClass::method_express( LContext& _context )
 {
 	LQT_FUNC_ARG_LIST ;
 	LQT_FUNC_ARG_OBJECT( LObject, obj ) ;
+	LQT_FUNC_ARG_ULONG( flags ) ;
 
-	LQT_RETURN_STRING( LObject::ToExpression( obj.Ptr() ) ) ;
+	LQT_RETURN_STRING( LObject::ToExpression( obj.Ptr(), flags ) ) ;
 }
 
 // public Object evalConstExpr( String expr ) const ;

@@ -58,7 +58,7 @@ bool LStringObj::AsString( LString& str ) const
 }
 
 // （式表現に近い）文字列に変換
-bool LStringObj::AsExpression( LString& str ) const
+bool LStringObj::AsExpression( LString& str, std::uint64_t flags ) const
 {
 	str = L"\"" ;
 	str += LStringParser::EncodeStringLiteral
@@ -783,10 +783,10 @@ bool LStringBufObj::AsString( LString& str ) const
 }
 
 // （式表現に近い）文字列に変換
-bool LStringBufObj::AsExpression( LString& str ) const
+bool LStringBufObj::AsExpression( LString& str, std::uint64_t flags ) const
 {
 	LSpinLock	lock( m_mutex ) ;
-	return	LStringObj::AsExpression( str ) ;
+	return	LStringObj::AsExpression( str, flags ) ;
 }
 
 // プリミティブな操作の定義

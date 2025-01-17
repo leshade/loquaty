@@ -78,6 +78,12 @@ LType LArrayObj::GetElementTypeAt( size_t index ) const
 // 文字列として評価
 bool LArrayObj::AsString( LString& str ) const
 {
+	return	LArrayObj::AsExpression( str ) ;
+}
+
+// （式表現に近い）文字列に変換
+bool LArrayObj::AsExpression( LString& str, std::uint64_t flags ) const
+{
 	LSpinLock	lock( m_mtxArray ) ;
 	LString	strElement ;
 	str = L"[ " ;
@@ -87,7 +93,7 @@ bool LArrayObj::AsString( LString& str ) const
 		{
 			str += L", " ;
 		}
-		str += ToExpression( m_array.at(i).Ptr() ) ;
+		str += ToExpression( m_array.at(i).Ptr(), flags ) ;
 	}
 	str += L" ]" ;
 	return	true ;

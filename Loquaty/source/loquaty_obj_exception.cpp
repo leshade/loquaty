@@ -16,7 +16,7 @@ bool LExceptionObj::AsString( LString& str ) const
 }
 
 // （式表現に近い）文字列に変換
-bool LExceptionObj::AsExpression( LString& str ) const
+bool LExceptionObj::AsExpression( LString& str, std::uint64_t flags ) const
 {
 	str += L"new " ;
 	str += m_pClass->GetFullClassName() ;

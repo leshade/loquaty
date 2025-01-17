@@ -25,6 +25,7 @@ namespace	Loquaty
 	private:
 		static const NativeFuncDesc		s_Virtuals[8] ;
 		static const NativeFuncDesc		s_Functions[5] ;
+		static const VariableDesc		s_VariableDesc[2] ;
 		static const ClassMemberDesc	s_MemberDesc ;
 
 	public:

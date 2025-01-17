@@ -147,17 +147,17 @@ bool LObject::AsString( LString& str ) const
 }
 
 // （式表現に近い）文字列に変換
-bool LObject::AsExpression( LString& str ) const
+bool LObject::AsExpression( LString& str, std::uint64_t flags ) const
 {
 	return	AsString( str ) ;
 }
 
-LString LObject::ToExpression( LObject * pObj )
+LString LObject::ToExpression( LObject * pObj, std::uint64_t flags )
 {
 	if ( pObj != nullptr )
 	{
 		LString	str ;
-		if ( pObj->AsExpression( str ) )
+		if ( pObj->AsExpression( str, flags ) )
 		{
 			return	str ;
 		}

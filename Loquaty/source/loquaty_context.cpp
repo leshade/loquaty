@@ -760,6 +760,17 @@ LExceptionObj * LContext::new_Exception( ErrorMessageIndex err )
 	return	new LExceptionObj( pClass, GetErrorMessage(err) ) ;
 }
 
+// オブジェクト生成
+LObject * LContext::new_Object( const wchar_t * pwszClassPath )
+{
+	LClass *	pClass = m_vm.GetClassPathAs( pwszClassPath ) ;
+	if ( pClass == nullptr )
+	{
+		return	nullptr ;
+	}
+	return	pClass->CreateInstance() ;
+}
+
 
 // 命令実行関数（特殊化無し）
 //////////////////////////////////////////////////////////////////////////////

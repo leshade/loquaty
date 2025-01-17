@@ -154,9 +154,16 @@ namespace	Loquaty
 		virtual bool AsDouble( LDouble& value ) const ;
 		// 文字列として評価
 		virtual bool AsString( LString& str ) const ;
+
+		// 文字列表現フラグ
+		enum	ExpressionFlag
+		{
+			expressionForJSON	= 0x0001,	// JSON の互換性を優先
+		} ;
+
 		// （式表現に近い）文字列に変換
-		virtual bool AsExpression( LString& str ) const ;
-		static LString ToExpression( LObject * pObj ) ;
+		virtual bool AsExpression( LString& str, std::uint64_t flags = 0 ) const ;
+		static LString ToExpression( LObject * pObj, std::uint64_t flags = 0 ) ;
 
 		// 強制型変換
 		// （可能なら AddRef されたポインタを返す / 不可能なら nullptr）

@@ -1412,7 +1412,7 @@ void LoquatyApp::MakeDocFunctionDesc
 	if ( pComment != nullptr )
 	{
 		bool	lineSpace = MakeDocXMLSummary( strm, *pComment ) ;
-		lineSpace |= MakeDocXMLParams( strm, *pComment, &argList ) ;
+		lineSpace &= !MakeDocXMLParams( strm, *pComment, &argList ) ;
 		MakeDocXMLDescription( strm, *pComment, lineSpace ) ;
 	}
 
@@ -1457,7 +1457,7 @@ void LoquatyApp::MakeDocBinaryOperatorDesc
 	{
 		LType::LComment		comment = bodef.m_pwszComment ;
 		bool	lineSpace = MakeDocXMLSummary( strm, comment ) ;
-		lineSpace |= MakeDocXMLParams( strm, comment, nullptr ) ;
+		lineSpace &= !MakeDocXMLParams( strm, comment, nullptr ) ;
 		MakeDocXMLDescription( strm, comment, lineSpace ) ;
 	}
 
