@@ -32,6 +32,7 @@
 
 <div class="headline">Classes</div>
 <div class="indent2"><a href="StringParser.LineInfo.xhtml">StringParser.LineInfo</a></div>
+<div class="indent2"><a href="StringParser.TokenType.xhtml">StringParser.TokenType</a></div>
 <br/>
 
 <div class="headline">Static Members</div>
@@ -86,25 +87,25 @@
 <div class="chapter">Static Members</div>
 <a name="static_tokenNothing"/>
 <div class="headline">tokenNothing</div>
-<div class="usage">public static const int&#9; tokenNothing = 0</div>
+<div class="usage">public static const StringParser.TokenType&#9; tokenNothing = 0</div>
 <div class="normal">
 トークン種別：空白（終端に到達した）<br/></div>
 <br/>
 <a name="static_tokenSymbol"/>
 <div class="headline">tokenSymbol</div>
-<div class="usage">public static const int&#9; tokenSymbol = 1</div>
+<div class="usage">public static const StringParser.TokenType&#9; tokenSymbol = 1</div>
 <div class="normal">
 トークン種別：数字と記号以外の文字から始まる記号以外の文字列<br/></div>
 <br/>
 <a name="static_tokenNumber"/>
 <div class="headline">tokenNumber</div>
-<div class="usage">public static const int&#9; tokenNumber = 2</div>
+<div class="usage">public static const StringParser.TokenType&#9; tokenNumber = 2</div>
 <div class="normal">
 トークン種別：数字から始まる記号以外の文字列（数値リテラルではないことに注意）<br/></div>
 <br/>
 <a name="static_tokenMark"/>
 <div class="headline">tokenMark</div>
-<div class="usage">public static const int&#9; tokenMark = 3</div>
+<div class="usage">public static const StringParser.TokenType&#9; tokenMark = 3</div>
 <div class="normal">
 トークン種別：記号文字列（但し特殊記号で分割される）<br/></div>
 <br/>
@@ -387,7 +388,7 @@ chCloser に一致する文字を見つけた場合には true、そうでない
 
 <a name="virtual_passToken"/>
 <div class="headline">passToken</div>
-<div class="usage">public native int passToken( )</div>
+<div class="usage">public native StringParser.TokenType passToken( )</div>
 <div class="normal">
 １トークンの終端位置まで読み飛ばします。</div>
 <div class="notes_parameter">

@@ -47,6 +47,7 @@ RGBA8 ピクセル構成 (ビッグエンディアンで RGBA)<br/></div>
 <div class="headline">Methods</div>
 <div class="indent2">
 	<a href="#virtual_RGBA8">RGBA8</a><br/>
+	<a href="#virtual_getPacked">getPacked</a><br/>
 	<a href="#virtual_toString">toString</a><br/>
 </div><br/>
 
@@ -92,6 +93,16 @@ RGBA8 ピクセル構成 (ビッグエンディアンで RGBA)<br/></div>
 <div class="headline">RGBA8</div>
 <div class="usage">public RGBA8( uint _r, uint _g, uint _b, uint _a = 255 )</div>
 <br/>
+<div class="headline">RGBA8</div>
+<div class="usage">public RGBA8( uint rgba )</div>
+<br/>
+
+<a name="virtual_getPacked"/>
+<div class="headline">getPacked</div>
+<div class="usage">public uint getPacked( ) const</div>
+<div class="normal">
+パックト形式（ビッグエンディアン）<br/></div>
+<br/>
 
 <a name="virtual_toString"/>
 <div class="headline">toString</div>
@@ -111,6 +122,9 @@ RGBA8 ピクセル構成 (ビッグエンディアンで RGBA)<br/></div>
 <br/>
 <div class="headline">operator :=</div>
 <div class="usage">public RGBA8* operator :=( const ARGB8* argb )</div>
+<br/>
+<div class="headline">operator :=</div>
+<div class="usage">public RGBA8* operator :=( uint rgba )</div>
 <br/>
 
 <a name="operator_add"/>

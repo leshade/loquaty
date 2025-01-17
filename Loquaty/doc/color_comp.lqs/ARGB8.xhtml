@@ -47,6 +47,7 @@ ARGB8 ピクセル構成（Windows DIB (リトルエンディアンで ARGB) / B
 <div class="headline">Methods</div>
 <div class="indent2">
 	<a href="#virtual_ARGB8">ARGB8</a><br/>
+	<a href="#virtual_getPacked">getPacked</a><br/>
 	<a href="#virtual_toString">toString</a><br/>
 </div><br/>
 
@@ -92,6 +93,16 @@ ARGB8 ピクセル構成（Windows DIB (リトルエンディアンで ARGB) / B
 <div class="headline">ARGB8</div>
 <div class="usage">public ARGB8( uint _r, uint _g, uint _b, uint _a = 255 )</div>
 <br/>
+<div class="headline">ARGB8</div>
+<div class="usage">public ARGB8( uint argb )</div>
+<br/>
+
+<a name="virtual_getPacked"/>
+<div class="headline">getPacked</div>
+<div class="usage">public uint getPacked( ) const</div>
+<div class="normal">
+パックト形式（リトルエンディアン）<br/></div>
+<br/>
 
 <a name="virtual_toString"/>
 <div class="headline">toString</div>
@@ -111,6 +122,9 @@ ARGB8 ピクセル構成（Windows DIB (リトルエンディアンで ARGB) / B
 <br/>
 <div class="headline">operator :=</div>
 <div class="usage">public ARGB8* operator :=( const RGBA8* rgba )</div>
+<br/>
+<div class="headline">operator :=</div>
+<div class="usage">public ARGB8* operator :=( uint argb )</div>
 <br/>
 
 <a name="operator_add"/>

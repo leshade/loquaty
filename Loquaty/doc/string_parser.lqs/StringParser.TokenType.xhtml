@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>StringParser.TokenType</title>
+</head>
+<body>
+<div class="chapter">StringParser.TokenType</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum using TokenType&lt;int&gt; ;</div>
+<div class="normal">
+トークン種別<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;string_parser.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="StringParser.TokenType.xhtml">StringParser.TokenType</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_tokenNothing">tokenNothing</a><br/>
+	<a href="#static_tokenSymbol">tokenSymbol</a><br/>
+	<a href="#static_tokenNumber">tokenNumber</a><br/>
+	<a href="#static_tokenMark">tokenMark</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_tokenNothing"/>
+<div class="headline">tokenNothing</div>
+<div class="usage">public static const StringParser.TokenType&#9; tokenNothing = 0</div>
+<div class="normal">
+トークン種別：空白（終端に到達した）<br/></div>
+<br/>
+<a name="static_tokenSymbol"/>
+<div class="headline">tokenSymbol</div>
+<div class="usage">public static const StringParser.TokenType&#9; tokenSymbol = 1</div>
+<div class="normal">
+トークン種別：数字と記号以外の文字から始まる記号以外の文字列<br/></div>
+<br/>
+<a name="static_tokenNumber"/>
+<div class="headline">tokenNumber</div>
+<div class="usage">public static const StringParser.TokenType&#9; tokenNumber = 2</div>
+<div class="normal">
+トークン種別：数字から始まる記号以外の文字列（数値リテラルではないことに注意）<br/></div>
+<br/>
+<a name="static_tokenMark"/>
+<div class="headline">tokenMark</div>
+<div class="usage">public static const StringParser.TokenType&#9; tokenMark = 3</div>
+<div class="normal">
+トークン種別：記号文字列（但し特殊記号で分割される）<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

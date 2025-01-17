@@ -15,6 +15,7 @@
 <div class="usage">class XMLDocParser ;</div>
 <div class="normal">
 XML ライクな簡易文書パーサークラス</div>
+<br/>
 <div class="indent1">
 <div class="code_quote">// load xml file<br/>XMLDocParser xpars = XMLDocParser() ;<br/>xpars.loadTextFile( &quot;example.xml&quot; ) ;<br/><br/>// parse all tags<br/>XMLDocument xmlDoc = xpars.parseDocument() ;<br/><br/>// get a tag you want<br/>XMLDocument xmlTag = xpars.getTagPathAs( &quot;html&gt;head&gt;title&quot; ) ;<br/>Console.print( xmlTag.getTextElement() ) ; &#32;// title<br/><br/>// save to xml file<br/>xpars.saveToFile( &quot;save.xml&quot;, xmlDoc ) ;<br/></div></div><br/>
 <br/>

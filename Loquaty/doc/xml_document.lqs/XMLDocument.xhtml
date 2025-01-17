@@ -30,6 +30,10 @@ XML ライクな簡易文書データクラス<br/></div>
 <div class="indent1"><a href="XMLDocument.xhtml">XMLDocument</a>
 </div></div></div><br/>
 
+<div class="headline">Classes</div>
+<div class="indent2"><a href="XMLDocument.Type.xhtml">XMLDocument.Type</a></div>
+<br/>
+
 <div class="headline">Static Members</div>
 <div class="indent2">
 	<a href="#static_typeRoot">typeRoot</a><br/>
@@ -82,39 +86,39 @@ XML ライクな簡易文書データクラス<br/></div>
 <div class="chapter">Static Members</div>
 <a name="static_typeRoot"/>
 <div class="headline">typeRoot</div>
-<div class="usage">public static const int&#9; typeRoot = 0</div>
+<div class="usage">public static const XMLDocument.Type&#9; typeRoot = 0</div>
 <div class="normal">
-要素タイプ：XML 文書全体を保持するコンテナ<br/></div>
+XML 文書全体を保持するコンテナ<br/></div>
 <br/>
 <a name="static_typeTag"/>
 <div class="headline">typeTag</div>
-<div class="usage">public static const int&#9; typeTag = 1</div>
+<div class="usage">public static const XMLDocument.Type&#9; typeTag = 1</div>
 <div class="normal">
-要素タイプ：タグ要素<br/></div>
+タグ要素<br/></div>
 <br/>
 <a name="static_typeDifinition"/>
 <div class="headline">typeDifinition</div>
-<div class="usage">public static const int&#9; typeDifinition = 2</div>
+<div class="usage">public static const XMLDocument.Type&#9; typeDifinition = 2</div>
 <div class="normal">
-要素タイプ：定義タグ要素<br/></div>
+定義タグ要素<br/></div>
 <br/>
 <a name="static_typeText"/>
 <div class="headline">typeText</div>
-<div class="usage">public static const int&#9; typeText = 3</div>
+<div class="usage">public static const XMLDocument.Type&#9; typeText = 3</div>
 <div class="normal">
-要素タイプ：テキスト要素<br/></div>
+テキスト要素<br/></div>
 <br/>
 <a name="static_typeCDATA"/>
 <div class="headline">typeCDATA</div>
-<div class="usage">public static const int&#9; typeCDATA = 4</div>
+<div class="usage">public static const XMLDocument.Type&#9; typeCDATA = 4</div>
 <div class="normal">
-要素タイプ：CDATA テキスト要素<br/></div>
+CDATA テキスト要素<br/></div>
 <br/>
 <a name="static_typeComment"/>
 <div class="headline">typeComment</div>
-<div class="usage">public static const int&#9; typeComment = 5</div>
+<div class="usage">public static const XMLDocument.Type&#9; typeComment = 5</div>
 <div class="normal">
-要素タイプ：コメント要素<br/></div>
+コメント要素<br/></div>
 <br/>
 
 
@@ -370,7 +374,7 @@ index 番目の要素。index が範囲外の場合には null</div>
 
 <a name="virtual_getType"/>
 <div class="headline">getType</div>
-<div class="usage">public native int getType( ) const</div>
+<div class="usage">public native XMLDocument.Type getType( ) const</div>
 <div class="normal">
 この要素タイプを取得します。</div>
 <div class="notes_parameter">
@@ -501,7 +505,7 @@ index 番目の要素。index が範囲外の場合には null</div>
 
 <a name="virtual_setTag"/>
 <div class="headline">setTag</div>
-<div class="usage">public native void setTag( String tag, int type = 1 )</div>
+<div class="usage">public native void setTag( String tag, XMLDocument.Type type = 1 )</div>
 <div class="normal">
 この要素のタグを設定します。</div>
 <div class="notes_parameter">
@@ -516,7 +520,7 @@ index 番目の要素。index が範囲外の場合には null</div>
 
 <a name="virtual_setText"/>
 <div class="headline">setText</div>
-<div class="usage">public native void setText( String text, int type = 3 )</div>
+<div class="usage">public native void setText( String text, XMLDocument.Type type = 3 )</div>
 <div class="normal">
 この要素のテキストを設定します。</div>
 <div class="notes_parameter">
@@ -531,13 +535,13 @@ index 番目の要素。index が範囲外の場合には null</div>
 
 <a name="virtual_setType"/>
 <div class="headline">setType</div>
-<div class="usage">public native void setType( int type )</div>
+<div class="usage">public native void setType( XMLDocument.Type type )</div>
 <div class="normal">
 この要素タイプを設定します。</div>
 <div class="notes_parameter">
 <div class="param_name">type</div>
 <div class="param_desc">
-</div>
+要素タイプ</div>
 </div>
 <br/>
 

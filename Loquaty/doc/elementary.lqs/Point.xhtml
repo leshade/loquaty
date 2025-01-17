@@ -11,12 +11,8 @@
 <body>
 <div class="chapter">Point</div>
 
-<div class="headline">Type Summary</div>
-<div class="usage">typedef Point = GenVector2&lt;int,long&gt;</div>
-<br/>
-
 <div class="headline">Summary</div>
-<div class="usage">struct GenVector2&lt;int,long&gt;<br/>
+<div class="usage">struct Point<br/>
 {<br/>
 &nbsp; &nbsp; int&nbsp; &nbsp; x ;<br/>
 &nbsp; &nbsp; int&nbsp; &nbsp; y ;<br/>
@@ -34,7 +30,8 @@
 <div class="indent1"><a href="../system/Object.xhtml">Object</a>
 <div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
 <div class="indent1"><a href="GenVector2{int,long}.xhtml">GenVector2&lt;int,long&gt;</a>
-</div></div></div><br/>
+<div class="indent1"><a href="Point.xhtml">Point</a>
+</div></div></div></div><br/>
 
 <div class="headline">Members</div>
 <div class="indent2">
@@ -42,28 +39,9 @@
 	<a href="#member_y">y</a><br/>
 </div><br/>
 
-<div class="headline">Methods</div>
-<div class="indent2">
-	<a href="#virtual_GenVector2&lt;int,long&gt;">GenVector2&lt;int,long&gt;</a><br/>
-	<a href="#virtual_absolute">absolute</a><br/>
-	<a href="#virtual_equals">equals</a><br/>
-	<a href="#virtual_normalize">normalize</a><br/>
-	<a href="#virtual_toString">toString</a><br/>
-</div><br/>
-
 <div class="headline">Operators</div>
 <div class="indent2">
-	<a href="#operator_add">operator +</a><br/>
-	<a href="#operator_sub">operator -</a><br/>
-	<a href="#operator_mul">operator *</a><br/>
-	<a href="#operator_div">operator /</a><br/>
-	<a href="#operator_or">operator |</a><br/>
-	<a href="#operator_eq">operator ==</a><br/>
-	<a href="#operator_ne">operator !=</a><br/>
-	<a href="#operator_sadd">operator +=</a><br/>
-	<a href="#operator_ssub">operator -=</a><br/>
-	<a href="#operator_smul">operator *=</a><br/>
-	<a href="#operator_sdiv">operator /=</a><br/>
+	<a href="#operator_smov">operator :=</a><br/>
 </div><br/>
 
 <div class="chapter">Members</div>
@@ -77,121 +55,11 @@
 <br/>
 
 
-<div class="chapter">Methods</div>
-
-<a name="virtual_GenVector2&lt;int,long&gt;"/>
-<div class="headline">GenVector2&lt;int,long&gt;</div>
-<div class="usage">public GenVector2&lt;int,long&gt;( long _x, long _y )</div>
-<br/>
-<div class="headline">GenVector2&lt;int,long&gt;</div>
-<div class="usage">public GenVector2&lt;int,long&gt;( const GenVector2&lt;int,long&gt;* pv )</div>
-<br/>
-
-<a name="virtual_absolute"/>
-<div class="headline">absolute</div>
-<div class="usage">public double absolute( ) const</div>
-<div class="normal">
-絶対値<br/></div>
-<br/>
-
-<a name="virtual_equals"/>
-<div class="headline">equals</div>
-<div class="usage">public boolean equals( const GenVector2&lt;int,long&gt;* pv ) const</div>
-<br/>
-
-<a name="virtual_normalize"/>
-<div class="headline">normalize</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* normalize( ) const</div>
-<div class="normal">
-正規化<br/></div>
-<br/>
-
-<a name="virtual_toString"/>
-<div class="headline">toString</div>
-<div class="usage">public String toString( ) const</div>
-<div class="normal">
-文字列表現<br/></div>
-<br/>
-
-
 <div class="chapter">Operators</div>
 
-<a name="operator_eq"/>
-<div class="headline">operator ==</div>
-<div class="usage">public boolean operator ==( const GenVector2&lt;int,long&gt;* pv ) const</div>
-<div class="normal">
-比較<br/></div>
-<br/>
-
-<a name="operator_ne"/>
-<div class="headline">operator !=</div>
-<div class="usage">public boolean operator !=( const GenVector2&lt;int,long&gt;* pv ) const</div>
-<br/>
-
-<a name="operator_add"/>
-<div class="headline">operator +</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator +( const GenVector2&lt;int,long&gt;* pv ) const</div>
-<div class="normal">
-ベクトル和<br/></div>
-<br/>
-
-<a name="operator_sadd"/>
-<div class="headline">operator +=</div>
-<div class="usage">public const GenVector2&lt;int,long&gt;* operator +=( const GenVector2&lt;int,long&gt;* pv )</div>
-<br/>
-
-<a name="operator_sub"/>
-<div class="headline">operator -</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator -( const GenVector2&lt;int,long&gt;* pv ) const</div>
-<div class="normal">
-ベクトル差<br/></div>
-<br/>
-
-<a name="operator_ssub"/>
-<div class="headline">operator -=</div>
-<div class="usage">public const GenVector2&lt;int,long&gt;* operator -=( const GenVector2&lt;int,long&gt;* pv )</div>
-<br/>
-
-<a name="operator_mul"/>
-<div class="headline">operator *</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator *( const GenVector2&lt;int,long&gt;* pv )</div>
-<br/>
-<div class="headline">operator *</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator *( long s ) const</div>
-<div class="normal">
-ベクトル×スカラ<br/></div>
-<br/>
-
-<a name="operator_smul"/>
-<div class="headline">operator *=</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator *=( long s )</div>
-<br/>
-
-<a name="operator_div"/>
-<div class="headline">operator /</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator /( const GenVector2&lt;int,long&gt;* pv )</div>
-<div class="normal">
-（複素数としての）除算<br/></div>
-<br/>
-
-<a name="operator_sdiv"/>
-<div class="headline">operator /=</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator /=( const GenVector2&lt;int,long&gt;* pv )</div>
-<br/>
-<div class="headline">operator /</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator /( long s ) const</div>
-<div class="normal">
-ベクトル÷スカラ<br/></div>
-<br/>
-<div class="headline">operator /=</div>
-<div class="usage">public GenVector2&lt;int,long&gt;* operator /=( long s )</div>
-<br/>
-
-<a name="operator_or"/>
-<div class="headline">operator |</div>
-<div class="usage">public int operator |( const GenVector2&lt;int,long&gt;* pv ) const</div>
-<div class="normal">
-内積<br/></div>
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public Point* operator :=( const GenVector2&lt;int,long&gt;* pt )</div>
 <br/>
 <br/><br/>
 </body>

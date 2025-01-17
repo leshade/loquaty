@@ -23,6 +23,11 @@ Loquaty 仮想マシンのクラスです。</div>
 <div class="indent1"><a href="Loquaty.xhtml">Loquaty</a>
 </div></div><br/>
 
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_expressJSON">expressJSON</a><br/>
+</div><br/>
+
 <div class="headline">Static Functions</div>
 <div class="indent2">
 	<a href="#func_evalConstExpr">evalConstExpr</a><br/>
@@ -41,6 +46,15 @@ Loquaty 仮想マシンのクラスです。</div>
 	<a href="#virtual_includeScript">includeScript</a><br/>
 	<a href="#virtual_release">release</a><br/>
 </div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_expressJSON"/>
+<div class="headline">expressJSON</div>
+<div class="usage">public static const ulong&#9; expressJSON = 1</div>
+<div class="normal">
+express 関数で JSON の互換性を優先します。</div>
+<br/>
+
 
 <div class="chapter">Static Functions</div>
 
@@ -61,13 +75,16 @@ Loquaty 仮想マシンのクラスです。</div>
 
 <a name="func_express"/>
 <div class="headline">express</div>
-<div class="usage">public static String express( Object obj )</div>
+<div class="usage">public static String express( Object obj, ulong flags = 0 )</div>
 <div class="normal">
-オブジェクトを文字列変換しますが、出来るだけ Loquaty の式として評価できる形式にします。null を受け取った場合には null&quot; が返されます。この関数は簡易的な JSON エンコーダーとして利用できるかもしれません。</div>
+オブジェクトを文字列変換しますが、出来るだけ Loquaty の式として評価できる形式にします。null を受け取った場合には &quot;null&quot; が返されます。この関数は簡易的な JSON エンコーダーとして利用できるかもしれません。</div>
 <div class="notes_parameter">
 <div class="param_name">obj</div>
 <div class="param_desc">
 文字列化したいオブジェクト</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+文字列化フラグ。JSON エンコーダーとして利用するには expressJSON を指定します。</div>
 <div class="param_name">Return Value</div>
 <div class="param_desc">
 式として文字列化された String オブジェクト</div>
