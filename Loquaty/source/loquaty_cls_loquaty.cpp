@@ -255,6 +255,18 @@ LPtr<LFunctionObj> LLoquatyClass::CompileFunc
 	( LVirtualMachine& vmMaster, LVirtualMachine& vm,
 		const LString& strExpr, LStringBufObj * pErrMsg, const LType& typeRet )
 {
+	return	CompileFunc
+		( vmMaster, vm, strExpr,
+			((pErrMsg != nullptr) ? &(pErrMsg->m_string) : nullptr), typeRet ) ;
+}
+
+LPtr<LFunctionObj>
+	LLoquatyClass::CompileFunc
+		( LVirtualMachine& vmMaster,
+			LVirtualMachine& vm,
+			const LString& strExpr,
+			LString * pErrMsg, const LType& typeRet )
+{
 	LString	strStatement ;
 	if ( !typeRet.IsVoid() )
 	{
@@ -300,7 +312,7 @@ void LLoquatyClass::Compiler::PrintString( const LString& str )
 
 	if ( m_pErrMsg != nullptr )
 	{
-		m_pErrMsg->m_string += str ;
+		*m_pErrMsg += str ;
 	}
 }
 

@@ -50,6 +50,12 @@ namespace	Loquaty
 					LVirtualMachine& vm,
 					const LString& strExpr,
 					LStringBufObj * pErrMsg, const LType& typeRet ) ;
+		static LPtr<LFunctionObj>
+			CompileFunc
+				( LVirtualMachine& vmMaster,
+					LVirtualMachine& vm,
+					const LString& strExpr,
+					LString * pErrMsg, const LType& typeRet ) ;
 
 		// public static Loquaty getCurrent()
 		static void method_getCurrent( LContext& context ) ;
@@ -64,11 +70,15 @@ namespace	Loquaty
 		class	Compiler	: public LCompiler
 		{
 		protected:
-			LStringBufObj *	m_pErrMsg ;
+			LString *	m_pErrMsg ;
 
 		public:
-			Compiler( LVirtualMachine& vm, LStringBufObj * pErrMsg )
+			Compiler( LVirtualMachine& vm, LString * pErrMsg )
 				: LCompiler( vm ), m_pErrMsg( pErrMsg ) { }
+			Compiler( LVirtualMachine& vm, LStringBufObj * pErrMsg )
+				: LCompiler( vm ),
+					m_pErrMsg( (pErrMsg != nullptr)
+								? &(pErrMsg->m_string) : nullptr ) { }
 
 			// 文字列出力
 			virtual void PrintString( const LString& str ) ;

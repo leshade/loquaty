@@ -855,6 +855,17 @@ LClass * LVirtualMachine::GetThreadClassAs( const LType& typeRet )
 	return	pClass ;
 }
 
+// 式／文を関数としてコンパイルする
+LPtr<LFunctionObj>
+	LVirtualMachine::CompileAsFunc
+		( const wchar_t * pwszExpr,
+			LString* pErrMsg, const LType& typeRet )
+{
+	LString	strExpr = pwszExpr ;
+	return	LLoquatyClass::CompileFunc
+				( *this, *this, strExpr, pErrMsg, typeRet ) ;
+}
+
 // スレッドをリストに追加
 void LVirtualMachine::AttachThread( LThreadObj * pThread )
 {

@@ -139,6 +139,13 @@ namespace	Loquaty
 		LClass * GetThreadClassAs( const LType& typeRet ) ;
 
 	public:
+		// 式／文を関数としてコンパイルする
+		LPtr<LFunctionObj>
+			CompileAsFunc
+				( const wchar_t * pwszExpr,
+					LString* pErrMsg, const LType& typeRet ) ;
+
+	public:
 		// スレッドをリストに追加
 		void AttachThread( LThreadObj * pThread ) ;
 		// スレッドをリストに追加
