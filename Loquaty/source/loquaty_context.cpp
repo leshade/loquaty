@@ -733,6 +733,10 @@ LPointerObj * LContext::new_Pointer( size_t nBytes )
 
 LPointerObj * LContext::new_Pointer( const void * buf, size_t nBytes )
 {
+	if ( buf == nullptr )
+	{
+		return	nullptr ;
+	}
 	return	new_Pointer( std::make_shared<LArrayBufStorage>
 							( (const std::uint8_t*) buf, nBytes ) ) ;
 }
