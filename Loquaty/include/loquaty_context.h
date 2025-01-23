@@ -189,7 +189,9 @@ namespace	Loquaty
 	protected:
 		// 引数をプッシュ
 		size_t PushArgument
-			( LFunctionObj * pFunc, const LValue * pArgValues, size_t nArgCount ) ;
+			( LFunctionObj * pFunc,
+				const LValue * pArgValues, size_t nArgCount,
+				std::vector<LObjPtr>* pCastTempObjs ) ;
 		// 実行状態をリセット
 		void ResetState( ExecutionStatus status = statusRunning ) ;
 		// 実行状態を保存

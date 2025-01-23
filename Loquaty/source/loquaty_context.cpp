@@ -167,7 +167,8 @@ bool LContext::AsyncCallFunction
 	ResetState( statusRunning ) ;
 
 	// 引数をプッシュ
-	size_t	nArgPushed = PushArgument( pFunc, pArgValues, nArgCount ) ;
+	const size_t	nArgPushed =
+		PushArgument( pFunc, pArgValues, nArgCount, nullptr ) ;
 
 	// 関数実行
 	if ( pFunc->IsNativeFunc() )
@@ -238,7 +239,7 @@ void LContext::InterruptFunction
 	m_stack->Push( LValue::MakeVoidPtr( m_pCodeBuf ) ) ;
 
 	// 関数の引数をプッシュする
-	size_t	nArgPushed = PushArgument( pFunc, pArgValues, nArgCount ) ;
+	size_t	nArgPushed = PushArgument( pFunc, pArgValues, nArgCount, nullptr ) ;
 
 	// ゲート用コード
 	LCodeBuffer::ImmediateOperand	immopNull ;
@@ -293,7 +294,9 @@ void LContext::InterruptFunction
 
 // 引数をプッシュ
 size_t LContext::PushArgument
-	( LFunctionObj * pFunc, const LValue * pArgValues, size_t nArgCount )
+	( LFunctionObj * pFunc,
+		const LValue * pArgValues, size_t nArgCount,
+		std::vector<LObjPtr>* pCastTempObjs )
 {
 	LPrototype *	pProto = pFunc->GetPrototype().get() ;
 	assert( pProto != nullptr ) ;
@@ -309,9 +312,18 @@ size_t LContext::PushArgument
 		assert( nArgCount >= 1 ) ;
 		if ( nArgCount >= 1 )
 		{
-			// 一応キャストする
-			LValue	valArg( pArgValues[0].GetObject()->CastClassTo( pThisClass ) ) ;
-			m_stack->Push( valArg.Value() ) ;
+			if ( pCastTempObjs != nullptr )
+			{
+				// 一応キャストする
+				LObjPtr	pTempObj = pArgValues[0].GetObject()->CastClassTo( pThisClass ) ;
+				pCastTempObjs->push_back( pTempObj ) ;
+				LValue	valArg( pTempObj ) ;
+				m_stack->Push( valArg.Value() ) ;
+			}
+			else
+			{
+				m_stack->Push( pArgValues[0].Value() ) ;
+			}
 			nArgPushed ++ ;
 		}
 		iArgFirst = 1 ;
@@ -323,13 +335,16 @@ size_t LContext::PushArgument
 
 		bool	flagObject = false ;
 		if ( (pProto != nullptr)
-			&& (i < pProto->GetArgListType().size()) )
+			&& (i < pProto->GetArgListType().size())
+			&& (pCastTempObjs != nullptr) )
 		{
 			LType	typeArg = pProto->GetArgListType().GetArgTypeAt(i) ;
 			if ( typeArg.IsObject() && !valArg.IsNull() )
 			{
 				// オブジェクトの場合、一応キャストしておく
-				valArg = LValue( valArg.GetObject()->CastClassTo( typeArg.GetClass() ) ) ;
+				LObjPtr	pTempObj = valArg.GetObject()->CastClassTo( typeArg.GetClass() ) ;
+				pCastTempObjs->push_back( pTempObj ) ;
+				valArg = LValue( pTempObj ) ;
 			}
 		}
 
