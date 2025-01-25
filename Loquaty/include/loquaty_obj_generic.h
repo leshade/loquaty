@@ -32,6 +32,8 @@ namespace	Loquaty
 
 		// 文字列として評価
 		virtual bool AsString( LString& str ) const ;
+		// （式表現に近い）文字列に変換
+		virtual bool AsExpression( LString& str, std::uint64_t flags = 0 ) const ;
 
 		// 複製する（要素も全て複製処理する）
 		virtual LObject * CloneObject( void ) const ;

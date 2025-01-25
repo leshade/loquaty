@@ -790,7 +790,7 @@ struct	GenAffine<_T,_S>
 	// アフィン行列×ベクトル配列
 	public void transformVectors
 		( GenVector2<_T,_S>* pvDst,
-			const GenVector2<_T,_S>* pvSrc, ulong count )
+			const GenVector2<_T,_S>* pvSrc, ulong count ) const
 	{
 		const _T	a11 = a[0][0] ;
 		const _T	a12 = a[0][1] ;
@@ -884,7 +884,7 @@ struct	GenMatrix3<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix3<_T,_S>* operator + ( const GenMatrix3<_T,_S>* mat )
+	public GenMatrix3<_T,_S>* operator + ( const GenMatrix3<_T,_S>* mat ) const
 	{
 		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
 		t += mat ;
@@ -902,7 +902,7 @@ struct	GenMatrix3<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix3<_T,_S>* operator - ( const GenMatrix3<_T,_S>* mat )
+	public GenMatrix3<_T,_S>* operator - ( const GenMatrix3<_T,_S>* mat ) const
 	{
 		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
 		t -= mat ;
@@ -923,7 +923,7 @@ struct	GenMatrix3<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix3<_T,_S>* operator * ( const GenMatrix3<_T,_S>* mat )
+	public GenMatrix3<_T,_S>* operator * ( const GenMatrix3<_T,_S>* mat ) const
 	{
 		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
 		t *= mat ;
@@ -941,7 +941,7 @@ struct	GenMatrix3<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix3<_T,_S>* operator * ( _S s )
+	public GenMatrix3<_T,_S>* operator * ( _S s ) const
 	{
 		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
 		t *= s ;
@@ -959,7 +959,7 @@ struct	GenMatrix3<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix3<_T,_S>* operator / ( _S s )
+	public GenMatrix3<_T,_S>* operator / ( _S s ) const
 	{
 		GenMatrix3<_T,_S>*	t = GenMatrix3<_T,_S>( this ) ;
 		t /= s ;
@@ -967,7 +967,7 @@ struct	GenMatrix3<_T,_S>
 	}
 
 	// 行列×ベクトル
-	public GenVector3<_T,_S>* operator * ( const GenVector3<_T,_S>* pv )
+	public GenVector3<_T,_S>* operator * ( const GenVector3<_T,_S>* pv ) const
 	{
 		return	GenVector3<_T,_S>
 					( m[0][0] * pv.x + m[0][1] * pv.y + m[0][2] * pv.z,
@@ -1065,7 +1065,8 @@ struct	GenMatrix3<_T,_S>
 	// 行列×ベクトル配列
 	public void transformVectors
 		( GenVector3<_T,_S>* pvDst,
-			const GenVector3<_T,_S>* pvSrc, ulong count )
+			const GenVector3<_T,_S>* pvSrc, ulong count,
+			const GenVector3<_T,_S>* pvOffset = null ) const
 	{
 		const _T	m11 = m[0][0] ;
 		const _T	m12 = m[0][1] ;
@@ -1076,6 +1077,15 @@ struct	GenMatrix3<_T,_S>
 		const _T	m31 = m[2][0] ;
 		const _T	m32 = m[2][1] ;
 		const _T	m33 = m[2][2] ;
+		_T	xo = 0 ;
+		_T	yo = 0 ;
+		_T	zo = 0 ;
+		if ( pvOffset !== null )
+		{
+			xo = pvOffset.x ;
+			yo = pvOffset.y ;
+			zo = pvOffset.z ;
+		}
 
 		for ( ulong i = 0; i < count; ++ i )
 		{
@@ -1084,9 +1094,9 @@ struct	GenMatrix3<_T,_S>
 			const _T	x = m11 * src.x + m12 * src.y + m13 * src.z ;
 			const _T	y = m21 * src.x + m22 * src.y + m23 * src.z ;
 			const _T	z = m31 * src.x + m32 * src.y + m33 * src.z ;
-			dst.x = x ;
-			dst.y = y ;
-			dst.z = z ;
+			dst.x = x + xo ;
+			dst.y = y + yo ;
+			dst.z = z + zo ;
 		}
 	}
 
@@ -1235,6 +1245,45 @@ struct	Matrix3d	extends GenMatrix3<double,double>
 			m[i][2] = mat.m[i][2] ;
 		}
 		return	this ;
+	}
+
+	// 行列 × Vector4 ベクトル配列
+	public void transformVectors
+		( Vector4* pvDst,
+			const Vector4* pvSrc, ulong count,
+			const Vector3d* pvOffset = null ) const
+	{
+		const double	m11 = m[0][0] ;
+		const double	m12 = m[0][1] ;
+		const double	m13 = m[0][2] ;
+		const double	m21 = m[1][0] ;
+		const double	m22 = m[1][1] ;
+		const double	m23 = m[1][2] ;
+		const double	m31 = m[2][0] ;
+		const double	m32 = m[2][1] ;
+		const double	m33 = m[2][2] ;
+		double	xo = 0 ;
+		double	yo = 0 ;
+		double	zo = 0 ;
+		if ( pvOffset !== null )
+		{
+			xo = pvOffset.x ;
+			yo = pvOffset.y ;
+			zo = pvOffset.z ;
+		}
+
+		for ( ulong i = 0; i < count; ++ i )
+		{
+			fetch_addr Vector4*			dst = pvDst + i ;
+			fetch_addr const Vector4*	src = pvSrc + i ;
+			const double	x = m11 * src.x + m12 * src.y + m13 * src.z ;
+			const double	y = m21 * src.x + m22 * src.y + m23 * src.z ;
+			const double	z = m31 * src.x + m32 * src.y + m33 * src.z ;
+			dst.x = (float) (x + xo) ;
+			dst.y = (float) (y + yo) ;
+			dst.z = (float) (z + zo) ;
+			dst.w = 1.0f ;
+		}
 	}
 }
 
@@ -1706,7 +1755,7 @@ struct	GenMatrix4<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix4<_T,_S>* operator + ( const GenMatrix4<_T,_S>* mat )
+	public GenMatrix4<_T,_S>* operator + ( const GenMatrix4<_T,_S>* mat ) const
 	{
 		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
 		t += mat ;
@@ -1725,7 +1774,7 @@ struct	GenMatrix4<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix4<_T,_S>* operator - ( const GenMatrix4<_T,_S>* mat )
+	public GenMatrix4<_T,_S>* operator - ( const GenMatrix4<_T,_S>* mat ) const
 	{
 		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
 		t -= mat ;
@@ -1752,7 +1801,7 @@ struct	GenMatrix4<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix4<_T,_S>* operator * ( const GenMatrix4<_T,_S>* mat )
+	public GenMatrix4<_T,_S>* operator * ( const GenMatrix4<_T,_S>* mat ) const
 	{
 		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
 		t *= mat ;
@@ -1771,7 +1820,7 @@ struct	GenMatrix4<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix4<_T,_S>* operator * ( _S s )
+	public GenMatrix4<_T,_S>* operator * ( _S s ) const
 	{
 		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
 		t *= s ;
@@ -1790,7 +1839,7 @@ struct	GenMatrix4<_T,_S>
 		}
 		return	this ;
 	}
-	public GenMatrix4<_T,_S>* operator / ( _S s )
+	public GenMatrix4<_T,_S>* operator / ( _S s ) const
 	{
 		GenMatrix4<_T,_S>*	t = GenMatrix4<_T,_S>( this ) ;
 		t /= s ;
@@ -1798,7 +1847,7 @@ struct	GenMatrix4<_T,_S>
 	}
 
 	// 行列×ベクトル
-	public GenVector4<_T,_S>* operator * ( const GenVector4<_T,_S>* pv )
+	public GenVector4<_T,_S>* operator * ( const GenVector4<_T,_S>* pv ) const
 	{
 		const _T	x = pv.x ;
 		const _T	y = pv.y ;

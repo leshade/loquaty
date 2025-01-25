@@ -100,6 +100,15 @@ LPointerObj * LGenericObj::GetBufferPoiner( void )
 // ï∂éöóÒÇ∆ÇµÇƒï]âø
 bool LGenericObj::AsString( LString& str ) const
 {
+	return	LGenericObj::AsExpression( str ) ;
+}
+
+// ÅiéÆï\åªÇ…ãﬂÇ¢Åjï∂éöóÒÇ…ïœä∑
+bool LGenericObj::AsExpression( LString& str, std::uint64_t flags ) const
+{
+	LSpinLock	lockMap( m_mtxMap ) ;
+	LSpinLock	lockArray( m_mtxArray ) ;
+
 	LString	strElement ;
 
 	str = L"{ " ;
@@ -110,7 +119,18 @@ bool LGenericObj::AsString( LString& str ) const
 		{
 			str += L", " ;
 		}
-		str += iter.first ;
+		if ( !(flags & expressionForJSON)
+			&& LStringParser::IsValidAsSymbol( iter.first.c_str() ) )
+		{
+			str += iter.first ;
+		}
+		else
+		{
+			str += L"\"" ;
+			str += LStringParser::EncodeStringLiteral
+						( iter.first.c_str(), iter.first.length() ) ;
+			str += L"\"" ;
+		}
 		str += L": " ;
 		//
 		LObject *	pObj = nullptr ;
@@ -133,7 +153,18 @@ bool LGenericObj::AsString( LString& str ) const
 		{
 			str += L", " ;
 		}
-		str += names.at(i) ;
+		if ( !(flags & expressionForJSON)
+			&& LStringParser::IsValidAsSymbol( names.at(i).c_str() ) )
+		{
+			str += names.at(i) ;
+		}
+		else
+		{
+			str += L"\"" ;
+			str += LStringParser::EncodeStringLiteral
+						( names.at(i).c_str(), names.at(i).length() ) ;
+			str += L"\"" ;
+		}
 		str += L": " ;
 
 		LArrangement::Desc	desc ;

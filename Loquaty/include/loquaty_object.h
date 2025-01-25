@@ -87,6 +87,7 @@ namespace	Loquaty
 		// 参照カウンタ加算
 		int AddRef( void )
 		{
+			assert( m_countRef >= 1 ) ;
 			return	m_countRef.fetch_add(1) + 1 ;
 		}
 		static LObject * AddRef( LObject * pObj )
@@ -101,6 +102,7 @@ namespace	Loquaty
 		int ReleaseRef( void )
 		{
 			int	r = m_countRef.fetch_add(-1) ;
+			assert( r >= 1 ) ;
 			if ( r == 1 )
 			{
 				FinalizeObject() ;
