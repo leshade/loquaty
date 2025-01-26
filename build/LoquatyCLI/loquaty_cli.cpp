@@ -423,6 +423,12 @@ int LoquatyApp::DumpFunction( void )
 	{
 		printf( "\n関数が見つかりません : %s\n",
 					m_strDumpFunc.ToString().c_str() ) ;
+
+		if ( m_strDumpFunc.Find( L"." ) >= 0 )
+		{
+			puts( "\n※静的関数でない場合には \'.\' ではなく "
+					"\'::\' 演算子で記述してください。" ) ;
+		}
 		return	1 ;
 	}
 
