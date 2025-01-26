@@ -101,11 +101,7 @@ void LCompiler::OnBeginStatement( LStringParser& sparsSrc )
 {
 	ClearErrorOnCurrent() ;
 
-	m_iSrcStatement = sparsSrc.GetIndex() ;
-	if ( (m_ctx != nullptr) && (m_ctx->m_codeBuf != nullptr) )
-	{
-		m_ctx->m_iCurStCode = m_ctx->m_codeBuf->m_buffer.size() ;
-	}
+	ResetDebugSourceLineInfo( sparsSrc ) ;
 
 	LSourceFile*	pSource = dynamic_cast<LSourceFile*>( &sparsSrc ) ;
 	if ( pSource != nullptr )
@@ -141,9 +137,28 @@ void LCompiler::OnEndStatement
 			}
 		}
 	}
+	AddDebugSourceInfo( sparsSrc ) ;
+}
+
+// デバッグ用ソースコード行開始位置設定
+///////////////////////////////////////////////////////////////////////////////
+void LCompiler::ResetDebugSourceLineInfo( LStringParser& sparsSrc )
+{
+	m_iSrcStatement = sparsSrc.GetIndex() ;
 	if ( (m_ctx != nullptr) && (m_ctx->m_codeBuf != nullptr) )
 	{
-		if ( m_ctx->m_iCurStCode < m_ctx->m_codeBuf->m_buffer.size() )
+		m_ctx->m_iCurStCode = m_ctx->m_codeBuf->m_buffer.size() ;
+	}
+}
+
+// デバッグ用ソースコード情報追加
+///////////////////////////////////////////////////////////////////////////////
+void LCompiler::AddDebugSourceInfo( LStringParser& sparsSrc )
+{
+	if ( (m_ctx != nullptr) && (m_ctx->m_codeBuf != nullptr) )
+	{
+		if ( (m_ctx->m_iCurStCode < m_ctx->m_codeBuf->m_buffer.size())
+			&& (m_iSrcStatement < sparsSrc.GetIndex()) )
 		{
 			LCodeBuffer::DebugSourceInfo	dbsi ;
 			dbsi.m_iSrcFirst = m_iSrcStatement ;
@@ -2136,6 +2151,7 @@ void LCompiler::ParseStatement_for
 		return ;
 	}
 	ExprCodeFreeTempStack() ;
+	AddDebugSourceInfo( sparsSrc ) ;
 
 	// for 反復実体
 	if ( sparsSrc.HasNextChars( L";" ) == L';' )
@@ -2459,6 +2475,7 @@ void LCompiler::ParseStatement_while
 		return ;
 	}
 	ExprCodeFreeTempStack() ;
+	AddDebugSourceInfo( sparsSrc ) ;
 
 	// while 反復実体
 	ParseOneStatement( sparsSrc, pnslLocal ) ;
@@ -2512,6 +2529,8 @@ void LCompiler::ParseStatement_do
 			( GetReservedWordDesc(Symbol::rwiWhile).pwszName /*L"while"*/ ) )
 	{
 		// 反復条件
+		ResetDebugSourceLineInfo( sparsSrc ) ;
+
 		LExprValuePtr	xvalCond =
 			EvalAsBoolean
 				( EvaluateExpression( sparsSrc, pnslLocal, L";" ) ) ;
@@ -2525,6 +2544,7 @@ void LCompiler::ParseStatement_do
 		}
 		ExprCodeJumpIf( std::move(xvalCond), cpJumpTop ) ;
 
+		AddDebugSourceInfo( sparsSrc ) ;
 		HasSemicolonForEndOfStatement( sparsSrc ) ;
 	}
 	else
@@ -2575,6 +2595,7 @@ void LCompiler::ParseStatement_if
 		return ;
 	}
 	ExprCodeFreeTempStack() ;
+	AddDebugSourceInfo( sparsSrc ) ;
 
 	// if ブロック
 	ParseOneStatement( sparsSrc, pnslLocal ) ;

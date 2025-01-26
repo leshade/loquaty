@@ -73,6 +73,8 @@ void LCodeBuffer::AddDebugSourceInfo
 const LCodeBuffer::DebugSourceInfo *
 	LCodeBuffer::FindDebufSourceInfo( size_t iPos ) const
 {
+	const DebugSourceInfo *	pbdsiPrev = nullptr ;
+	const DebugSourceInfo *	pbdsiNext = nullptr ;
 	for ( size_t i = 0; i < m_dbgSrcInfos.size(); i ++ )
 	{
 		const DebugSourceInfo&	dbsi = m_dbgSrcInfos.at(i) ;
@@ -81,8 +83,24 @@ const LCodeBuffer::DebugSourceInfo *
 		{
 			return	&dbsi ;
 		}
+		if ( (iPos < dbsi.m_iCodeFirst)
+			&& ((pbdsiPrev == nullptr)
+				|| (dbsi.m_iCodeFirst < pbdsiPrev->m_iCodeFirst)) )
+		{
+			pbdsiPrev = &dbsi ;
+		}
+		if ( (iPos >= dbsi.m_iCodeEnd)
+			&& ((pbdsiNext == nullptr)
+				|| (pbdsiNext->m_iCodeEnd < dbsi.m_iCodeEnd)) )
+		{
+			pbdsiNext = &dbsi ;
+		}
 	}
-	return	nullptr ;
+	if ( pbdsiNext != nullptr )
+	{
+		return	pbdsiNext ;
+	}
+	return	pbdsiPrev ;
 }
 
 void LCodeBuffer::AddDebugLocalVarInfo

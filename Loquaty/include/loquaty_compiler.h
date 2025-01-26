@@ -891,6 +891,11 @@ namespace	Loquaty
 		void OnEndStatement
 			( LStringParser& sparsSrc, Symbol::ReservedWordIndex rwIndex ) ;
 
+		// デバッグ用ソースコード行開始位置設定
+		void ResetDebugSourceLineInfo( LStringParser& sparsSrc ) ;
+		// デバッグ用ソースコード情報追加
+		void AddDebugSourceInfo( LStringParser& sparsSrc ) ;
+
 		// 関数ブロック開始
 		ContextPtr BeginFunctionBlock
 			( std::shared_ptr<LPrototype> proto,
