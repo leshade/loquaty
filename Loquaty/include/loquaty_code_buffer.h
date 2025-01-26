@@ -216,9 +216,9 @@ namespace	Loquaty
 			codeLoadLocal,			// type:=op3, push((type)fp[imop.i])
 			codeLoadLocalOffset,	// type:=op3, push((type)fp[imop.i + sp[sop1]])
 			codeLoadStack,			// push(sp[sop1])
-			codeLoadFetchAddr,		// align:=op3, push(addr(sp[sop1], imop.i, imm))   ; align でアライメントチェック
-			codeLoadFetchAddrOffset,// align:=op3, push(addr(sp[sop1], sp[sop2] + imop.i, imm))   ; align でアライメントチェック
-			codeLoadFetchLAddr,		// align:=op3, push(addr(fp[sop1], sp[sop2] + imop.i, imm))   ; align でアライメントチェック
+			codeLoadFetchAddr,		// align:=op3, push(addr(sp[sop1], imop.i, imm))   ; align でアライメントチェック, align==0:nullptrを許可
+			codeLoadFetchAddrOffset,// align:=op3, push(addr(sp[sop1], sp[sop2] + imop.i, imm))   ; align でアライメントチェック, align==0:nullptrを許可
+			codeLoadFetchLAddr,		// align:=op3, push(addr(fp[sop1], sp[sop2] + imop.i, imm))   ; align でアライメントチェック, align==0:nullptrを許可
 			codeCheckLPtrAlign,		// align:=op3, addrchk(fp[imop.i]+sp[sop1]+imm)
 			codeCheckPtrAlign,		// align:=op3, addrchk(sp[sop1]+imm)
 			codeLoadLPtr,			// type:=op3, push((type)[fp[imop.i]+imm])  ; ※fp[imop.i]:Object型, op3:LType::Primitive

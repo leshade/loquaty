@@ -164,7 +164,7 @@
 
 <a name="virtual_transformVectors"/>
 <div class="headline">transformVectors</div>
-<div class="usage">public void transformVectors( GenVector3&lt;float,double&gt;* pvDst, const GenVector3&lt;float,double&gt;* pvSrc, ulong count )</div>
+<div class="usage">public void transformVectors( GenVector3&lt;float,double&gt;* pvDst, const GenVector3&lt;float,double&gt;* pvSrc, ulong count, const GenVector3&lt;float,double&gt;* pvOffset = null ) const</div>
 <div class="normal">
 行列×ベクトル配列<br/></div>
 <br/>
@@ -188,7 +188,7 @@
 
 <a name="operator_add"/>
 <div class="headline">operator +</div>
-<div class="usage">public GenMatrix3&lt;float,double&gt;* operator +( const GenMatrix3&lt;float,double&gt;* mat )</div>
+<div class="usage">public GenMatrix3&lt;float,double&gt;* operator +( const GenMatrix3&lt;float,double&gt;* mat ) const</div>
 <br/>
 
 <a name="operator_ssub"/>
@@ -200,7 +200,7 @@
 
 <a name="operator_sub"/>
 <div class="headline">operator -</div>
-<div class="usage">public GenMatrix3&lt;float,double&gt;* operator -( const GenMatrix3&lt;float,double&gt;* mat )</div>
+<div class="usage">public GenMatrix3&lt;float,double&gt;* operator -( const GenMatrix3&lt;float,double&gt;* mat ) const</div>
 <br/>
 
 <a name="operator_smul"/>
@@ -212,7 +212,7 @@
 
 <a name="operator_mul"/>
 <div class="headline">operator *</div>
-<div class="usage">public GenMatrix3&lt;float,double&gt;* operator *( const GenMatrix3&lt;float,double&gt;* mat )</div>
+<div class="usage">public GenMatrix3&lt;float,double&gt;* operator *( const GenMatrix3&lt;float,double&gt;* mat ) const</div>
 <br/>
 <div class="headline">operator *=</div>
 <div class="usage">public GenMatrix3&lt;float,double&gt;* operator *=( double s )</div>
@@ -220,7 +220,7 @@
 行列×スカラ<br/></div>
 <br/>
 <div class="headline">operator *</div>
-<div class="usage">public GenMatrix3&lt;float,double&gt;* operator *( double s )</div>
+<div class="usage">public GenMatrix3&lt;float,double&gt;* operator *( double s ) const</div>
 <br/>
 
 <a name="operator_sdiv"/>
@@ -232,10 +232,10 @@
 
 <a name="operator_div"/>
 <div class="headline">operator /</div>
-<div class="usage">public GenMatrix3&lt;float,double&gt;* operator /( double s )</div>
+<div class="usage">public GenMatrix3&lt;float,double&gt;* operator /( double s ) const</div>
 <br/>
 <div class="headline">operator *</div>
-<div class="usage">public GenVector3&lt;float,double&gt;* operator *( const GenVector3&lt;float,double&gt;* pv )</div>
+<div class="usage">public GenVector3&lt;float,double&gt;* operator *( const GenVector3&lt;float,double&gt;* pv ) const</div>
 <div class="normal">
 行列×ベクトル<br/></div>
 <br/>

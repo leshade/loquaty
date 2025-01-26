@@ -5040,9 +5040,11 @@ LExprValuePtr LCompiler::EvalPointerBinaryOperator
 	LType	typeRet = xval1->GetType() ;
 	if ( flagComparator )
 	{
-		xval1 = ExprFetchPointerAddr( std::move(xval1), 0, 0 ) ;
+		xval1 = ExprFetchPointerAddr
+					( std::move(xval1), 0, 0, nullptr, false ) ;
 		xval2 = ExprFetchPointerAddr
-				( EvalCastTypeTo( std::move(xval2), typePtr1 ), 0, 0 ) ;
+					( EvalCastTypeTo( std::move(xval2), typePtr1 ),
+						0, 0, nullptr, false ) ;
 		typeRet = pbopDef->m_typeRet ;
 	}
 	else
@@ -5342,7 +5344,8 @@ LExprValuePtr LCompiler::EvalAsBoolean( LExprValuePtr xval )
 		xvalNull->Type() = LType( nullptr, LType::modifierFetchAddr ) ;
 		//
 		return	EvalBinaryOperator
-					( ExprFetchPointerAddr( std::move(xval), 0, 0 ),
+					( ExprFetchPointerAddr
+						( std::move(xval), 0, 0, nullptr, false ),
 							Symbol::opNotEqual, std::move(xvalNull) ) ;
 	}
 	else if ( xval->GetType().IsDataArray()
@@ -5359,7 +5362,8 @@ LExprValuePtr LCompiler::EvalAsBoolean( LExprValuePtr xval )
 	xvalNull->Type() = LType( nullptr, LType::modifierFetchAddr ) ;
 	//
 	return	EvalBinaryOperator
-				( ExprFetchPointerAddr( std::move(xval), 0, 0 ),
+				( ExprFetchPointerAddr
+					( std::move(xval), 0, 0, nullptr, false ),
 						Symbol::opNotEqual, std::move(xvalNull) ) ;
 }
 
@@ -6207,7 +6211,8 @@ LExprValuePtr LCompiler::EvalCheckPointerAlignmenet( LExprValuePtr xvalPtr )
 //////////////////////////////////////////////////////////////////////////////
 LExprValuePtr LCompiler::ExprFetchPointerAddr
 	( LExprValuePtr xval,
-		size_t iOffset, size_t nRange, LLocalVarPtr pAssumeVar )
+		size_t iOffset, size_t nRange,
+		LLocalVarPtr pAssumeVar, bool flagNonNullPtr )
 {
 	if ( xval->IsRefPointer() )
 	{
@@ -6284,6 +6289,10 @@ LExprValuePtr LCompiler::ExprFetchPointerAddr
 			if ( pPtrClass != nullptr )
 			{
 				nAlign = pPtrClass->GetElementAlign() ;
+			}
+			if ( !flagNonNullPtr )
+			{
+				nAlign = 0 ;
 			}
 			if ( xvalPtr->IsOnLocal() && (xvalOffset != nullptr)
 						&& (GetLocalVarIndex( xvalPtr ) < 0x100) )
@@ -6367,6 +6376,10 @@ LExprValuePtr LCompiler::ExprFetchPointerAddr
 		if ( pPtrClass != nullptr )
 		{
 			nAlign = pPtrClass->GetElementAlign() ;
+		}
+		if ( !flagNonNullPtr )
+		{
+			nAlign = 0 ;
 		}
 
 		if ( pAssumeVar != nullptr )

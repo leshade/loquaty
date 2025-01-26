@@ -679,7 +679,8 @@ namespace	Loquaty
 		// ポインタ（参照型の場合にはポインタへ変換して）の実アドレスをフェッチする
 		LExprValuePtr ExprFetchPointerAddr
 			( LExprValuePtr xvalPtr,
-				size_t iOffset, size_t nRange, LLocalVarPtr pAssumeVar = nullptr ) ;
+				size_t iOffset, size_t nRange,
+				LLocalVarPtr pAssumeVar = nullptr, bool flagNonNullPtr = true ) ;
 		// 参照形式の場合ロードして、ポインタのオフセット形式の場合統合して
 		// 必ず単一要素の状態にする
 		LExprValuePtr EvalMakeInstance( LExprValuePtr xval ) ;

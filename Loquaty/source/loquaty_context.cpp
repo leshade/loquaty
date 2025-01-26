@@ -18,7 +18,7 @@ LContext::LContext( LVirtualMachine& vm, size_t nInitSize )
 		m_stack( std::make_shared<LStackBuffer>(nInitSize) ),
 		m_ip( LCodeBuffer::InvalidCodePos ),
 		m_eximm( LValue::MakeVoidPtr(nullptr) ),
-		m_interrupt( false ),
+		m_interrupt( false ), m_throwing( false ),
 		m_jumped( 0 ), m_signal( interruptNo )
 {
 	m_nullThrown = new LExceptionObj( vm.GetExceptionClass(), L"null" ) ;
@@ -700,6 +700,7 @@ void LContext::RunCoreLoop( void )
 	}
 
 	m_interrupt = false ;
+	m_throwing = false ;
 	m_jumped = 0 ;
 
 	while ( !m_interrupt )
@@ -1176,8 +1177,9 @@ void LContext::instruction_LoadFetchAddr( const LCodeBuffer::Word& word )
 	std::uint8_t *	pBuf =
 		micro_instruction_FetchAddr
 			( pStack->BackIndex(word.sop1),
-				(ssize_t) word.imop.value.longValue, (size_t) word.imm ) ;
-	if ( pBuf == nullptr )
+				(ssize_t) word.imop.value.longValue,
+				(size_t) word.imm, word.op3 ) ;
+	if ( m_throwing )
 	{
 		return ;
 	}
@@ -1192,8 +1194,9 @@ void LContext::instruction_LoadFetchAddrOffset( const LCodeBuffer::Word& word )
 		micro_instruction_FetchAddr
 			( pStack->BackIndex(word.sop1),
 				(ssize_t) pStack->BackAt(word.sop2).longValue
-					+ (ssize_t) word.imop.value.longValue, (size_t) word.imm ) ;
-	if ( pBuf == nullptr )
+					+ (ssize_t) word.imop.value.longValue,
+				(size_t) word.imm, word.op3 ) ;
+	if ( m_throwing )
 	{
 		return ;
 	}
@@ -1208,8 +1211,9 @@ void LContext::instruction_LoadFetchLAddr( const LCodeBuffer::Word& word )
 		micro_instruction_FetchAddr
 			( pStack->m_fp + word.sop1,
 				(ssize_t) pStack->BackAt(word.sop2).longValue
-					+ (ssize_t) word.imop.value.longValue, (size_t) word.imm ) ;
-	if ( pBuf == nullptr )
+					+ (ssize_t) word.imop.value.longValue,
+				(size_t) word.imm, word.op3 ) ;
+	if ( m_throwing )
 	{
 		return ;
 	}
@@ -1223,8 +1227,8 @@ void LContext::instruction_CheckLPtrAlign( const LCodeBuffer::Word& word )
 	std::uint8_t *	pBuf =
 		micro_instruction_FetchAddr
 			( pStack->m_fp + (size_t) word.imop.value.longValue,
-				(size_t) pStack->At(word.sop1).longValue + word.imm, 0 ) ;
-	if ( pBuf != nullptr )
+				(size_t) pStack->At(word.sop1).longValue + word.imm, 0, word.op3 ) ;
+	if ( !m_throwing )
 	{
 		micro_instruction_CheckAlignment( pBuf, word.op3 ) ;
 	}
@@ -1235,8 +1239,8 @@ void LContext::instruction_CheckPtrAlign( const LCodeBuffer::Word& word )
 {
 	std::uint8_t *	pBuf =
 		micro_instruction_FetchAddr
-			( m_stack->BackIndex( word.sop1 ), word.imm, 0 ) ;
-	if ( pBuf != nullptr )
+			( m_stack->BackIndex( word.sop1 ), word.imm, 0, word.op3 ) ;
+	if ( !m_throwing )
 	{
 		micro_instruction_CheckAlignment( pBuf, word.op3 ) ;
 	}
@@ -1252,8 +1256,8 @@ void LContext::instruction_LoadLPtr( const LCodeBuffer::Word& word )
 	std::uint8_t *	pBuf =
 		micro_instruction_FetchAddr
 			( pStack->m_fp + (size_t) word.imop.value.longValue,
-				(size_t) word.imm, LType::s_bytesAligned[type] ) ;
-	if ( pBuf == nullptr )
+				(size_t) word.imm, LType::s_bytesAligned[type], 1 ) ;
+	if ( (pBuf == nullptr) || m_throwing )
 	{
 		return ;
 	}
@@ -1271,8 +1275,8 @@ void LContext::instruction_LoadLPtrOffset( const LCodeBuffer::Word& word )
 		micro_instruction_FetchAddr
 			( pStack->m_fp + (size_t) word.imop.value.longValue,
 				(size_t) pStack->BackAt(word.sop1).longValue
-				+ (size_t) word.imm, LType::s_bytesAligned[type] ) ;
-	if ( pBuf == nullptr )
+				+ (size_t) word.imm, LType::s_bytesAligned[type], 1 ) ;
+	if ( (pBuf == nullptr) || m_throwing )
 	{
 		return ;
 	}
@@ -1289,8 +1293,8 @@ void LContext::instruction_LoadByPtr( const LCodeBuffer::Word& word )
 	std::uint8_t *	pBuf =
 		micro_instruction_FetchAddr
 			( pStack->BackIndex( word.sop1 ),
-				(size_t) word.imm, LType::s_bytesAligned[type] ) ;
-	if ( pBuf == nullptr )
+				(size_t) word.imm, LType::s_bytesAligned[type], 1 ) ;
+	if ( (pBuf == nullptr) || m_throwing )
 	{
 		return ;
 	}
@@ -1514,8 +1518,8 @@ void LContext::instruction_StoreByPtr( const LCodeBuffer::Word& word )
 	std::uint8_t *	pBuf = 
 		micro_instruction_FetchAddr
 				( m_stack->BackIndex(word.sop1),
-					word.imm, LType::s_bytesAligned[type] ) ;
-	if ( pBuf == nullptr )
+					word.imm, LType::s_bytesAligned[type], 1 ) ;
+	if ( (pBuf == nullptr) || m_throwing )
 	{
 		return ;
 	}
@@ -1532,8 +1536,8 @@ void LContext::instruction_StoreByLPtr( const LCodeBuffer::Word& word )
 		micro_instruction_FetchAddr
 				( m_stack->m_fp
 					+ (size_t) word.imop.value.longValue,
-					word.imm, LType::s_bytesAligned[type] ) ;
-	if ( pBuf == nullptr )
+					word.imm, LType::s_bytesAligned[type], 1 ) ;
+	if ( (pBuf == nullptr) || m_throwing )
 	{
 		return ;
 	}
@@ -2020,6 +2024,7 @@ void LContext::micro_instruction_Throw( void )
 {
 	LStackBuffer *	pStack = m_stack.get() ;
 
+	m_throwing = true ;
 	m_thrown = pStack->Pop().pObject ;
 	if ( m_thrown == nullptr )
 	{
@@ -2221,7 +2226,7 @@ void LContext::micro_instruction_Call( LFunctionObj * pFunc )
 
 // ポインタアドレスを取得
 std::uint8_t * LContext::micro_instruction_FetchAddr
-					( size_t ptr, ssize_t off, size_t range )
+			( size_t ptr, ssize_t off, size_t range, std::uint8_t type )
 {
 	if ( ptr >= m_stack->m_sp )
 	{
@@ -2231,7 +2236,10 @@ std::uint8_t * LContext::micro_instruction_FetchAddr
 	LObject *	pObj = m_stack->At(ptr).pObject ;
 	if ( pObj == nullptr )
 	{
-		micro_instruction_ThrowNullException() ;
+		if ( type != 0 )
+		{
+			micro_instruction_ThrowNullException() ;
+		}
 		return	nullptr ;
 	}
 	LPtr<LPointerObj>	pPtr = pObj->GetBufferPoiner() ;
@@ -2256,7 +2264,7 @@ LValue::Primitive
 {
 	LValue::Primitive	val = LValue::MakeVoidPtr( ptr ) ;
 
-	if ( val.longValue & (align - 1) )
+	if ( (val.longValue & (align - 1)) && (align != 0) )
 	{
 		micro_instruction_ThrowAlignmentMismatch() ;
 	}

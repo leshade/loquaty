@@ -87,6 +87,7 @@ namespace	Loquaty
 		ExecutionStatus						m_status ;		// 実行状態
 		AwaitingFunc						m_awaiting ;	// 待機状態の脱出条件
 		volatile bool						m_interrupt ;	// コアループ離脱フラグ
+		volatile bool						m_throwing ;	// 例外送出中
 		size_t								m_jumped ;		// ジャンプ回数カウンタ（無限ループ離脱用）
 
 		volatile InterruptSignal			m_signal ;		// 割り込み信号
@@ -425,9 +426,13 @@ namespace	Loquaty
 		void micro_instruction_ThrowUnimplemented( LFunctionObj * pFunc ) ;
 		void micro_instruction_ThrowNoVirtualVector
 					( LClass * pThisClass, LClass * pVirtClass ) ;
+
 		void micro_instruction_Call( LFunctionObj * pFunc ) ;
-		std::uint8_t * micro_instruction_FetchAddr( size_t ptr, ssize_t off, size_t range ) ;
-		LValue::Primitive micro_instruction_CheckAlignment( std::uint8_t * ptr, std::uint8_t type ) ;
+
+		std::uint8_t * micro_instruction_FetchAddr
+					( size_t ptr, ssize_t off, size_t range, std::uint8_t type ) ;
+		LValue::Primitive micro_instruction_CheckAlignment
+					( std::uint8_t * ptr, std::uint8_t type ) ;
 
 		// データ丸め関数（ロード・ストア）
 		typedef LValue::Primitive (*PFN_MoveStackWord)( const LValue::Primitive& val ) ;
