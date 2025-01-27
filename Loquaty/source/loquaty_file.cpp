@@ -383,6 +383,101 @@ std::shared_ptr<LDirectory> LURLSchemer::Duplicate( void )
 	}
 }
 
+// ファイル情報取得
+bool LURLSchemer::QueryFileState( State& state, const wchar_t * pwszPath )
+{
+	size_t	posScheme = 0 ;
+	LString	strScheme = ParseSchemeName( pwszPath, posScheme ) ;
+
+	auto	iter = m_dirs.find( strScheme ) ;
+	if ( iter == m_dirs.end() )
+	{
+		return	false ;
+	}
+	return	iter->second->QueryFileState( state, pwszPath + posScheme ) ;
+}
+
+// ファイル（サブディレクトリ含む）列挙
+// ※ files へは以前のデータを削除せずに追加
+void LURLSchemer::ListFiles
+	( std::vector<LString>& files,
+			const wchar_t * pwszSubDirPath )
+{
+	size_t	posScheme = 0 ;
+	LString	strScheme = ParseSchemeName( pwszSubDirPath, posScheme ) ;
+
+	auto	iter = m_dirs.find( strScheme ) ;
+	if ( iter == m_dirs.end() )
+	{
+		return ;
+	}
+	iter->second->ListFiles( files, pwszSubDirPath + posScheme ) ;
+}
+
+// ファイル削除
+bool LURLSchemer::DeleteFile( const wchar_t * pwszPath )
+{
+	size_t	posScheme = 0 ;
+	LString	strScheme = ParseSchemeName( pwszPath, posScheme ) ;
+
+	auto	iter = m_dirs.find( strScheme ) ;
+	if ( iter == m_dirs.end() )
+	{
+		return	false ;
+	}
+	return	iter->second->DeleteFile( pwszPath + posScheme ) ;
+}
+
+// ファイル名変更
+bool LURLSchemer::RenameFile
+	( const wchar_t * pwszOldPath, const wchar_t * pwszNewPath )
+{
+	size_t	posScheme = 0 ;
+	LString	strScheme = ParseSchemeName( pwszOldPath, posScheme ) ;
+
+	auto	iter = m_dirs.find( strScheme ) ;
+	if ( iter == m_dirs.end() )
+	{
+		return	false ;
+	}
+	if ( (posScheme != 0)
+		&& (LString( pwszOldPath, posScheme )
+				!= LString( pwszNewPath, posScheme )) )
+	{
+		return	false ;
+	}
+	return	iter->second->RenameFile
+				( pwszOldPath + posScheme, pwszNewPath + posScheme ) ;
+}
+
+// サブディレクトリ作成
+bool LURLSchemer::CreateDirectory( const wchar_t * pwszPath )
+{
+	size_t	posScheme = 0 ;
+	LString	strScheme = ParseSchemeName( pwszPath, posScheme ) ;
+
+	auto	iter = m_dirs.find( strScheme ) ;
+	if ( iter == m_dirs.end() )
+	{
+		return	false ;
+	}
+	return	iter->second->CreateDirectory( pwszPath + posScheme ) ;
+}
+
+// サブディレクトリ削除
+bool LURLSchemer::DeleteDirectory( const wchar_t * pwszPath )
+{
+	size_t	posScheme = 0 ;
+	LString	strScheme = ParseSchemeName( pwszPath, posScheme ) ;
+
+	auto	iter = m_dirs.find( strScheme ) ;
+	if ( iter == m_dirs.end() )
+	{
+		return	false ;
+	}
+	return	iter->second->DeleteDirectory( pwszPath + posScheme ) ;
+}
+
 // ファイルを開く
 LFilePtr LURLSchemer::Open( const wchar_t * pwszPath, long nOpenFlags )
 {

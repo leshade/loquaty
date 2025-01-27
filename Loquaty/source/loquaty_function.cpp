@@ -688,7 +688,7 @@ LBoolean LRuntimeArgList::NextBoolean( void )
 
 LInt LRuntimeArgList::NextInt( void )
 {
-	return	m_context.GetArgAt( m_next ++ ).intValue ;
+	return	(LInt) m_context.GetArgAt( m_next ++ ).longValue ;
 }
 
 LLong LRuntimeArgList::NextLong( void )
@@ -698,7 +698,7 @@ LLong LRuntimeArgList::NextLong( void )
 
 LFloat LRuntimeArgList::NextFloat( void )
 {
-	return	m_context.GetArgAt( m_next ++ ).flValue ;
+	return	(LFloat) m_context.GetArgAt( m_next ++ ).dblValue ;
 }
 
 LDouble LRuntimeArgList::NextDouble( void )

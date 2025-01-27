@@ -100,16 +100,6 @@ struct	GenVector2<_T,_S>
 	}
 
 	// 比較
-	public boolean operator == ( const GenVector2<_T,_S>* pv ) const
-	{
-		return	equals( pv ) ;
-	}
-
-	public boolean operator != ( const GenVector2<_T,_S>* pv ) const
-	{
-		return	!equals( pv ) ;
-	}
-
 	public boolean equals( const GenVector2<_T,_S>* pv ) const
 	{
 		return	(x == pv.x) && (y == pv.y) ;
@@ -270,16 +260,6 @@ struct	ImageRect	extends GenVector2<int,long>
 	}
 
 	// 比較
-	public boolean operator == ( const ImageRect* irct ) const
-	{
-		return	equals( irct ) ;
-	}
-
-	public boolean operator != ( const ImageRect* irct ) const
-	{
-		return	!equals( irct ) ;
-	}
-
 	public boolean equals( const ImageRect* irct ) const
 	{
 		return	(x == irct.x) && (y == irct.y)
@@ -409,16 +389,6 @@ struct	GenVector3<_T,_S>	extends GenVector2<_T,_S>
 	}
 
 	// 比較
-	public boolean operator == ( const GenVector3<_T,_S>* pv ) const
-	{
-		return	equals( pv ) ;
-	}
-
-	public boolean operator != ( const GenVector3<_T,_S>* pv ) const
-	{
-		return	!equals( pv ) ;
-	}
-
 	public boolean equals( const GenVector3<_T,_S>* pv ) const
 	{
 		return	(x == pv.x) && (y == pv.y) && (z == pv.z) ;
@@ -580,16 +550,6 @@ struct	GenVector4<_T,_S>	extends GenVector3<_T,_S>
 	}
 
 	// 比較
-	public boolean operator == ( const GenVector4<_T,_S>* pv ) const
-	{
-		return	equals( pv ) ;
-	}
-
-	public boolean operator != ( const GenVector4<_T,_S>* pv ) const
-	{
-		return	!equals( pv ) ;
-	}
-
 	public boolean equals( const GenVector4<_T,_S>* pv ) const
 	{
 		return	(x == pv.x) && (y == pv.y) && (z == pv.z) && (w == pv.w) ;

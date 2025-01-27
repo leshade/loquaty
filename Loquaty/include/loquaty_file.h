@@ -297,6 +297,28 @@ namespace	Loquaty
 		// 可能なら同等のディレクトリを複製する
 		virtual std::shared_ptr<LDirectory> Duplicate( void ) ;
 
+		// ファイル情報取得
+		virtual bool QueryFileState( State& state, const wchar_t * pwszPath ) ;
+
+		// ファイル（サブディレクトリ含む）列挙
+		// ※ files へは以前のデータを削除せずに追加
+		virtual void ListFiles
+			( std::vector<LString>& files,
+					const wchar_t * pwszSubDirPath = nullptr ) ;
+
+		// ファイル削除
+		virtual bool DeleteFile( const wchar_t * pwszPath ) ;
+
+		// ファイル名変更
+		virtual bool RenameFile
+			( const wchar_t * pwszOldPath, const wchar_t * pwszNewPath ) ;
+
+		// サブディレクトリ作成
+		virtual bool CreateDirectory( const wchar_t * pwszPath ) ;
+
+		// サブディレクトリ削除
+		virtual bool DeleteDirectory( const wchar_t * pwszPath ) ;
+
 	public:
 		// ファイルを開く
 		static LFilePtr Open( const wchar_t * pwszPath, long nOpenFlags = modeRead ) ;
