@@ -6648,6 +6648,14 @@ LExprValuePtr LCompiler::EvalPointerOffsetInstance
 						LValue::MakeLong(iOffset), true ) ;
 		}
 	}
+	else if ( xvalOffset == nullptr )
+	{
+		xvalOffset =
+			std::make_shared<LExprValue>
+				( LType::typeInt64,
+					LValue::MakeLong(iOffset), true ) ;
+	}
+	assert( xvalOffset != nullptr ) ;
 	return	xvalOffset ;
 }
 
@@ -7590,6 +7598,7 @@ void LCompiler::ExprCodeStore
 				LExprValuePtr	xvalOffset ;
 				ssize_t			iOffset = EvalPointerOffset( xvalPtr, xvalOffset ) ;
 				xvalOffset = EvalPointerOffsetInstance( std::move(xvalOffset), iOffset ) ;
+				assert( xvalOffset != nullptr ) ;
 
 				LLocalVarPtr	pVarOffset = GetLocalVarAt( (size_t) iVarDst + 2 ) ;
 				assert( pVarOffset != nullptr ) ;
