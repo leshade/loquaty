@@ -1797,6 +1797,7 @@ LObject * LIntegerClass::DuplicateObject( void ) const
 void LIntegerClass::ImplementClass( void )
 {
 	OverrideVirtuals( s_Virtuals ) ;
+	SetSelfComment( L"符号あり64ビット整数を保持するクラスです" ) ;
 }
 
 const LClass::NativeFuncDesc	LIntegerClass::s_Virtuals[2] =
@@ -2356,6 +2357,7 @@ LObject * LDoubleClass::DuplicateObject( void ) const
 void LDoubleClass::ImplementClass( void )
 {
 	OverrideVirtuals( s_Virtuals ) ;
+	SetSelfComment( L"倍精度浮動小数点を保持するクラスです" ) ;
 }
 
 const LClass::NativeFuncDesc	LDoubleClass::s_Virtuals[2] =
@@ -2582,6 +2584,7 @@ LObject * LStringClass::DuplicateObject( void ) const
 void LStringClass::ImplementClass( void )
 {
 	AddClassMemberDefinitions( s_MemberDesc ) ;
+	SetSelfComment( L"静的な文字列を保持するクラスです" ) ;
 }
 
 const LClass::NativeFuncDesc	LStringClass::s_Virtuals[22] =
@@ -2884,6 +2887,7 @@ LObject * LStringBufClass::DuplicateObject( void ) const
 void LStringBufClass::ImplementClass( void )
 {
 	AddClassMemberDefinitions( s_MemberDesc ) ;
+	SetSelfComment( L"文字列を保持するクラスです" ) ;
 }
 
 const LStringBufClass::NativeFuncDesc		LStringBufClass::s_Virtuals[7] =
@@ -3018,6 +3022,7 @@ void LArrayClass::ImplementClass( void )
 		DefineTypeAs( L"@ArrayType", LType( m_vm.GetArrayClassAs( m_pElementType ) ), false ) ;
 	}
 	AddClassMemberDefinitions( s_MemberDesc ) ;
+	SetSelfComment( L"配列を保持するクラスです" ) ;
 }
 
 const LClass::NativeFuncDesc		LArrayClass::s_Virtuals[10] =
@@ -3192,6 +3197,7 @@ void LMapClass::ImplementClass( void )
 		DefineTypeAs( L"@MapType", LType( m_vm.GetMapClassAs( m_pElementType ) ), false ) ;
 	}
 	AddClassMemberDefinitions( s_MemberDesc ) ;
+	SetSelfComment( L"辞書配列を保持するクラスです" ) ;
 }
 
 const LClass::NativeFuncDesc		LMapClass::s_Virtuals[7] =
