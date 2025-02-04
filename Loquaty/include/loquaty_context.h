@@ -96,23 +96,19 @@ namespace	Loquaty
 		std::recursive_mutex				m_mutexRun ;	// 実行中
 		std::mutex							m_mutexStatus ;	// m_awaiting や m_signal の変更同期
 
-		static thread_local LContext *		t_pCurrent ;
-
 	public:
 		LContext( LVirtualMachine& vm, size_t nInitSize = 0x100 ) ;
 		virtual ~LContext( void ) ;
 
 		// 現在のスレッドに設定された LContext 取得
-		static LContext * GetCurrent( void )
-		{
-			return	t_pCurrent ;
-		}
+		LOQUATY_DLL_EXPORT
+		static LContext * GetCurrent( void ) ;
 
 		// スレッドへ設定
-		void SetCurrent( void )
-		{
-			t_pCurrent = this ;
-		}
+		LOQUATY_DLL_EXPORT
+		void SetCurrent( void ) ;
+		LOQUATY_DLL_EXPORT
+		static void SetCurrent( LContext * pCurrent ) ;
 
 		class	Current
 		{
@@ -121,12 +117,12 @@ namespace	Loquaty
 		public:
 			Current( LContext& context )
 			{
-				m_prev = t_pCurrent ;
-				t_pCurrent = &context ;
+				m_prev = GetCurrent() ;
+				context.SetCurrent() ;
 			}
 			~Current( void )
 			{
-				t_pCurrent = m_prev ;
+				SetCurrent( m_prev ) ;
 			}
 		} ;
 

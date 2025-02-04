@@ -8,8 +8,6 @@ using namespace	Loquaty ;
 // 実行コンテキスト
 //////////////////////////////////////////////////////////////////////////////
 
-thread_local LContext *	LContext::t_pCurrent = nullptr ;
-
 #define	VERIFY_INSTRUCTION(name)	\
 	assert( s_instruction[LCodeBuffer::code##name] == &LContext::instruction_##name )
 
@@ -106,11 +104,35 @@ LContext::LContext( LVirtualMachine& vm, size_t nInitSize )
 
 LContext::~LContext( void )
 {
-	if ( t_pCurrent == this )
+	if ( GetCurrent() == this )
 	{
-		t_pCurrent = nullptr ;
+		SetCurrent( nullptr ) ;
 	}
 }
+
+
+#if !defined(_DLL_IMPORT_LOQUATY)
+
+static thread_local LContext *	t_pCurrent = nullptr ;
+
+// 現在のスレッドに設定された LContext 取得
+LOQUATY_DLL_DECL(LContext *) LContext::GetCurrent( void )
+{
+	return	t_pCurrent ;
+}
+
+// スレッドへ設定
+LOQUATY_DLL_DECL(void) LContext::SetCurrent( void )
+{
+	t_pCurrent = this ;
+}
+
+LOQUATY_DLL_DECL(void) LContext::SetCurrent( LContext * pCurrent )
+{
+	t_pCurrent = pCurrent ;
+}
+
+#endif
 
 // 関数実行
 //////////////////////////////////////////////////////////////////////////////
@@ -469,7 +491,7 @@ void LContext::ThrowException( LObjPtr pObj )
 	}
 	else
 	{
-		if ( t_pCurrent == this )
+		if ( GetCurrent() == this )
 		{
 			if ( m_status == statusAwaiting )
 			{
@@ -502,9 +524,9 @@ void LContext::ThrowException( ErrorMessageIndex error )
 void LContext::ThrowExceptionError
 	( const wchar_t * pwszErrMsg, const wchar_t * pwszClassName )
 {
-	if ( t_pCurrent != nullptr )
+	if ( GetCurrent() != nullptr )
 	{
-		t_pCurrent->ThrowException( pwszErrMsg, pwszClassName ) ;
+		GetCurrent()->ThrowException( pwszErrMsg, pwszClassName ) ;
 	}
 	else
 	{
@@ -662,7 +684,7 @@ bool LContext::ProcessSignal( void )
 	}
 	if ( m_signal == interruptThrow )
 	{
-		assert ( t_pCurrent == this ) ;
+		assert ( GetCurrent() == this ) ;
 		LObjPtr	pThrow = m_pSignalObj ;
 		m_signal = interruptNo ;
 		m_pSignalObj = nullptr ;

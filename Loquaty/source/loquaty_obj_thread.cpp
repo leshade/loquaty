@@ -8,8 +8,6 @@ using namespace	Loquaty ;
 // Task オブジェクト
 //////////////////////////////////////////////////////////////////////////////
 
-thread_local LTaskObj *	LTaskObj::t_pCurrent = nullptr ;
-
 LTaskObj::LTaskObj( LClass * pClass )
 	: LGenericObj( pClass ),
 		m_context( pClass->VM() ),
@@ -42,13 +40,13 @@ std::tuple<LValue,LObjPtr>
 		( LFunctionObj * pFunc,
 			const LValue * pArgValues, size_t nArgCount )
 {
-	LTaskObj *	pPrevTask = t_pCurrent ;
-	t_pCurrent = this ;
+	LTaskObj *	pPrevTask = GetCurrent() ;
+	SetCurrent( this ) ;
 
 	std::tuple<LValue,LObjPtr>	res =
 		m_context.SyncCallFunction( pFunc, pArgValues, nArgCount ) ;
 
-	t_pCurrent = pPrevTask ;
+	SetCurrent( pPrevTask ) ;
 	return	res ;
 }
 
@@ -126,8 +124,8 @@ bool LTaskObj::BeginAsync
 	m_flagFinished = false ;
 	m_pFunc = pFunc ;
 
-	LTaskObj *	pPrevTask = t_pCurrent ;
-	t_pCurrent = this ;
+	LTaskObj *	pPrevTask = GetCurrent() ;
+	SetCurrent( this ) ;
 
 	if ( m_context.AsyncCallFunction
 			( m_state, pFunc.Ptr(), pArgValues, nArgCount ) )
@@ -135,7 +133,7 @@ bool LTaskObj::BeginAsync
 		OnFinished() ;
 	}
 
-	t_pCurrent = pPrevTask ;
+	SetCurrent( pPrevTask ) ;
 	return	m_flagFinished ;
 }
 
@@ -161,14 +159,14 @@ bool LTaskObj::AsyncProceed( std::int64_t msecTimeout )
 {
 	if ( !m_flagFinished )
 	{
-		LTaskObj *	pPrevTask = t_pCurrent ;
-		t_pCurrent = this ;
+		LTaskObj *	pPrevTask = GetCurrent() ;
+		SetCurrent( this ) ;
 
 		if ( m_context.AsyncProceed( m_state, msecTimeout ) )
 		{
 			OnFinished() ;
 		}
-		t_pCurrent = pPrevTask ;
+		SetCurrent( pPrevTask ) ;
 	}
 	return	m_flagFinished ;
 }
@@ -248,11 +246,23 @@ std::unique_lock<std::recursive_mutex> LTaskObj::LockRunning( void )
 	return	m_context.LockRunning() ;
 }
 
+#if !defined(_DLL_IMPORT_LOQUATY)
+
+static thread_local LTaskObj *	t_pCurrent = nullptr ;
+
 // 現在のスレッドを取得する
-LTaskObj * LTaskObj::GetCurrent( void )
+LOQUATY_DLL_DECL(LTaskObj *) LTaskObj::GetCurrent( void )
 {
 	return	t_pCurrent ;
 }
+
+// 現在のスレッドを設定する
+LOQUATY_DLL_DECL(void) LTaskObj::SetCurrent( LTaskObj * pCurrent )
+{
+	t_pCurrent = pCurrent ;
+}
+
+#endif
 
 // boolean begin( Function<Object()> func )
 void LTaskObj::method_begin( LContext& _context )

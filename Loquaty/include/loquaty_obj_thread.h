@@ -21,8 +21,6 @@ namespace	Loquaty
 		std::mutex						m_mutex ;
 		std::condition_variable			m_cvFinished ;
 
-		static thread_local LTaskObj *	t_pCurrent ;
-
 	public:
 		LTaskObj( LClass * pClass ) ;
 		LTaskObj( const LTaskObj& obj ) ;
@@ -94,7 +92,12 @@ namespace	Loquaty
 		// 一時的に実行を停止する
 		std::unique_lock<std::recursive_mutex> LockRunning( void ) ;
 		// 現在のスレッドを取得する
+		LOQUATY_DLL_EXPORT
 		static LTaskObj * GetCurrent( void ) ;
+	protected:
+		// 現在のスレッドを設定する
+		LOQUATY_DLL_EXPORT
+		static void SetCurrent( LTaskObj * pCurrent ) ;
 
 	public:
 		// boolean begin( Function<Object()> func )

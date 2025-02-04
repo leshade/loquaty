@@ -199,33 +199,22 @@ void onDestroy()&r;
 </div>
 
 　ただし finish 関数は実行中のスレッドが所有しているすべてのオブジェクトの参照を解放しますが、スレッド内で記述された finally 句は実行されません。<br/>
-　finally 句を実行してくれなきゃ困る！という場合は（ゲームでのオブジェクトの動きを付けるだけの場合にそのようなシーンはほぼないと思いますが）
+　finally 句を実行してくれなきゃ困る！という場合は
 
 <div class="code_quote">
 void onDestroy()&r;
 {&r;
 &tab;tsk.throw( null ) ;&r;
-&tab;tsk.proceed() ;&r;
+&tab;while ( !tsk.isFinished() )&r;
+&tab;{&r;
+&tab;&tab;tsk.proceed() ;&r;
+&tab;}&r;
 &tab;tsk.finish() ;&r;
 }
 </div>
 
 のように補足されない例外を送出すると finally 句は実行されます。<br/>
-　しかしすべての例外を補足する catch を記述している場合や finally 句内で待機関数などを呼び出している場合などには（そもそも finally 句内でそのような関数を呼び出すのは間違っていますが）これは正しく動作しません。<br/>
-　そこですべての finally 句を実行した上で即座に終了させるには
-
-<div class="code_quote">
-void onDestroy()&r;
-{&r;
-&tab;while ( !tsk.isFinished() )&r;
-&tab;{&r;
-&tab;&tab;tsk.throw( null ) ;&r;
-&tab;&tab;tsk.proceed() ;&r;
-&tab;}&r;
-}
-</div>
-
-のようにします。<br/>
+　しかしすべての例外を補足する catch を記述している場合、これは正しく動作しないことに注意が必要です。<br/>
 
 <br/>
 　なお Loquaty では軽量スレッドだけではなく通常のスレッドも、スレッドオブジェクトがどこからの参照もなくなりデストラクタが呼び出されると強制終了させられます（誰かが参照を持っていれば継続します）。<br/>
