@@ -116,7 +116,7 @@
 <div class="notes_parameter">
 <div class="param_name">msecTimeout</div>
 <div class="param_desc">
-ミリ秒単位でのタイムアウト時間。<br/>最悪の場合この時間内は処理を中断できないため長い時間を指定できません（システムによって大きくない値にクリップされます）。</div>
+ミリ秒単位でのタイムアウト時間。<br/>最悪の場合この時間内は処理を中断できないため長い時間を指定できません（システムによって大きくない値にクリップされます）。<br/>但し -1 を指定した場合にはタスクが待機状態になるまで実行を継続します。</div>
 <div class="param_name">Return Value</div>
 <div class="param_desc">
 タスクの実行が完了すると true が返されます。</div>

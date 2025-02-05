@@ -26,6 +26,7 @@
 <div class="headline">Methods</div>
 <div class="indent2">
 	<a href="#virtual_Exception">Exception</a><br/>
+	<a href="#virtual_getThrownSource">getThrownSource</a><br/>
 </div><br/>
 
 <div class="chapter">Methods</div>
@@ -39,6 +40,21 @@
 <div class="param_name">msg</div>
 <div class="param_desc">
 例外エラーメッセージ</div>
+</div>
+<br/>
+
+<a name="virtual_getThrownSource"/>
+<div class="headline">getThrownSource</div>
+<div class="usage">public String getThrownSource( long* lineNum )</div>
+<div class="normal">
+例外が送出されたソースファイル名と行番号を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">lineNum</div>
+<div class="param_desc">
+行番号を受け取る long</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+例外が送出されたソースファイル名。<br/>情報がない場合には null</div>
 </div>
 <br/>
 
