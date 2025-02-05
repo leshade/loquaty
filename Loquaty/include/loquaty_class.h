@@ -1107,7 +1107,7 @@ namespace	Loquaty
 		virtual void ImplementClass( void ) ;
 
 	private:
-		static const NativeFuncDesc		s_Virtuals[2] ;
+		static const NativeFuncDesc		s_Virtuals[3] ;
 		static const ClassMemberDesc	s_MemberDesc ;
 
 	} ;

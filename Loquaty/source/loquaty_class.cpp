@@ -3743,7 +3743,7 @@ void LExceptionClass::ImplementClass( void )
 	AddClassMemberDefinitions( s_MemberDesc ) ;
 }
 
-const LClass::NativeFuncDesc		LExceptionClass::s_Virtuals[2] =
+const LClass::NativeFuncDesc		LExceptionClass::s_Virtuals[3] =
 {
 	{	// public void Exception( String msg )
 		LClass::s_Constructor,
@@ -3751,6 +3751,15 @@ const LClass::NativeFuncDesc		LExceptionClass::s_Virtuals[2] =
 		L"public", L"void", L"String msg",
 		L"例外オブジェクトを構築します。\n"
 		L"<param name=\"msg\">例外エラーメッセージ</param>", nullptr,
+	},
+	{	// public String getThrownSource( long* lineNum )
+		L"getThrownSource",
+		&LExceptionObj::method_getThrownSource, false,
+		L"public", L"String", L"long* lineNum",
+		L"例外が送出されたソースファイル名と行番号を取得します。\n"
+		L"<param name=\"lineNum\">行番号を受け取る long</param>"
+		L"<return>例外が送出されたソースファイル名。<br/>"
+		L"情報がない場合には null</return>", nullptr,
 	},
 	{
 		nullptr, nullptr, false,
@@ -3808,7 +3817,8 @@ const LClass::NativeFuncDesc	LTaskClass::s_Virtuals[11] =
 		L"タスクを実行する。\n"
 		L"<param name=\"msecTimeout\">ミリ秒単位でのタイムアウト時間。<br/>"
 		L"最悪の場合この時間内は処理を中断できないため長い時間を指定できません"
-		L"（システムによって大きくない値にクリップされます）。</param>"
+		L"（システムによって大きくない値にクリップされます）。<br/>"
+		L"但し -1 を指定した場合にはタスクが待機状態になるまで実行を継続します。</param>"
 		L"<return>タスクの実行が完了すると true が返されます。</return>", nullptr,
 	},
 	{	// public boolean isFinished() const

@@ -44,6 +44,8 @@ namespace	Loquaty
 	public:
 		// Exception( String msg )
 		static void method_init( LContext& context ) ;
+		// String getThrownSource( long* lineNum )
+		static void method_getThrownSource( LContext& context ) ;
 
 	} ;
 

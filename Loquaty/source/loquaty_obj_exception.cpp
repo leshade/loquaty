@@ -72,3 +72,23 @@ void LExceptionObj::method_init( LContext& _context )
 	LQT_RETURN_VOID() ;
 }
 
+// String getThrownSource( long* lineNum )
+void LExceptionObj::method_getThrownSource( LContext& _context )
+{
+	LRuntimeArgList	_arglist( _context ) ;
+	LQT_FUNC_THIS_OBJ( LExceptionObj, pExcept ) ;
+	LQT_FUNC_ARG_POINTER( LLong, lineNum ) ;
+
+	LString					strSource ;
+	LStringParser::LineInfo	linf ;
+	if ( !pExcept->GetThrownSourceInfo( strSource, linf ) )
+	{
+		LQT_RETURN_OBJECT( nullptr ) ;
+	}
+	if ( lineNum != nullptr )
+	{
+		*lineNum = linf.iLine ;
+	}
+	LQT_RETURN_STRING( strSource ) ;
+}
+
