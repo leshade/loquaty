@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ImageComposition</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ImageComposition</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class ImageComposition ;</div>
+<div class="normal">
+画像コンポジション（主にPSDデータ用）<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.ImageComposition.xhtml">EntisGLS4.ImageComposition</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.ImageComposition.Layer.xhtml">EntisGLS4.ImageComposition.Layer</a></div>
+<br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_ImageComposition">ImageComposition</a><br/>
+	<a href="#virtual_appendLayer">appendLayer</a><br/>
+	<a href="#virtual_getCanvasSize">getCanvasSize</a><br/>
+	<a href="#virtual_getChannelCount">getChannelCount</a><br/>
+	<a href="#virtual_getImageMode">getImageMode</a><br/>
+	<a href="#virtual_getLayerAt">getLayerAt</a><br/>
+	<a href="#virtual_getLayerCount">getLayerCount</a><br/>
+	<a href="#virtual_getTreeLayerAt">getTreeLayerAt</a><br/>
+	<a href="#virtual_getTreeLayerCount">getTreeLayerCount</a><br/>
+	<a href="#virtual_insertLayerAt">insertLayerAt</a><br/>
+	<a href="#virtual_loadPSDFile">loadPSDFile</a><br/>
+	<a href="#virtual_localIndexToGlobal">localIndexToGlobal</a><br/>
+	<a href="#virtual_readPSDFile">readPSDFile</a><br/>
+	<a href="#virtual_removeLayer">removeLayer</a><br/>
+	<a href="#virtual_savePSDFile">savePSDFile</a><br/>
+	<a href="#virtual_setCanvasInfo">setCanvasInfo</a><br/>
+	<a href="#virtual_writePSDFile">writePSDFile</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_ImageComposition"/>
+<div class="headline">ImageComposition</div>
+<div class="usage">public native ImageComposition( )</div>
+<div class="normal">
+ImageComposition オブジェクト構築<br/></div>
+<br/>
+
+<a name="virtual_appendLayer"/>
+<div class="headline">appendLayer</div>
+<div class="usage">public native void appendLayer( EntisGLS4.ImageComposition.Layer layer, EntisGLS4.ImageComposition.Layer parent = null )</div>
+<div class="normal">
+レイヤー追加<br/></div>
+<br/>
+
+<a name="virtual_getCanvasSize"/>
+<div class="headline">getCanvasSize</div>
+<div class="usage">public native Size* getCanvasSize( ) const</div>
+<div class="normal">
+キャンバスサイズ取得<br/></div>
+<br/>
+
+<a name="virtual_getChannelCount"/>
+<div class="headline">getChannelCount</div>
+<div class="usage">public native uint getChannelCount( ) const</div>
+<div class="normal">
+チャネル数取得<br/></div>
+<br/>
+
+<a name="virtual_getImageMode"/>
+<div class="headline">getImageMode</div>
+<div class="usage">public native PSD.ImageMode getImageMode( ) const</div>
+<div class="normal">
+画像モード取得<br/></div>
+<br/>
+
+<a name="virtual_getLayerAt"/>
+<div class="headline">getLayerAt</div>
+<div class="usage">public native EntisGLS4.ImageComposition.Layer getLayerAt( ulong index ) const</div>
+<div class="normal">
+（階層処理しないフラットな）レイヤー取得<br/></div>
+<br/>
+
+<a name="virtual_getLayerCount"/>
+<div class="headline">getLayerCount</div>
+<div class="usage">public native ulong getLayerCount( ) const</div>
+<div class="normal">
+（階層処理しないフラットな）レイヤー数取得<br/></div>
+<br/>
+
+<a name="virtual_getTreeLayerAt"/>
+<div class="headline">getTreeLayerAt</div>
+<div class="usage">public native EntisGLS4.ImageComposition.Layer getTreeLayerAt( ulong index ) const</div>
+<div class="normal">
+階層状のレイヤー取得<br/></div>
+<br/>
+
+<a name="virtual_getTreeLayerCount"/>
+<div class="headline">getTreeLayerCount</div>
+<div class="usage">public native ulong getTreeLayerCount( ) const</div>
+<div class="normal">
+階層状のレイヤー数取得<br/></div>
+<br/>
+
+<a name="virtual_insertLayerAt"/>
+<div class="headline">insertLayerAt</div>
+<div class="usage">public native void insertLayerAt( ulong index, EntisGLS4.ImageComposition.Layer layer, EntisGLS4.ImageComposition.Layer parent = null )</div>
+<div class="normal">
+レイヤー挿入<br/></div>
+<br/>
+
+<a name="virtual_loadPSDFile"/>
+<div class="headline">loadPSDFile</div>
+<div class="usage">public native boolean loadPSDFile( String path )</div>
+<div class="normal">
+PSD ファイルを読み込む<br/></div>
+<br/>
+
+<a name="virtual_localIndexToGlobal"/>
+<div class="headline">localIndexToGlobal</div>
+<div class="usage">public native long localIndexToGlobal( EntisGLS4.ImageComposition.Layer parent, ulong index ) const</div>
+<div class="normal">
+レイヤー階層内のレイヤー番号をフラットなレイヤー番号へ変換<br/></div>
+<br/>
+
+<a name="virtual_readPSDFile"/>
+<div class="headline">readPSDFile</div>
+<div class="usage">public native boolean readPSDFile( File file )</div>
+<div class="normal">
+PSD ファイルを読み込む<br/></div>
+<br/>
+
+<a name="virtual_removeLayer"/>
+<div class="headline">removeLayer</div>
+<div class="usage">public native boolean removeLayer( EntisGLS4.ImageComposition.Layer layer )</div>
+<div class="normal">
+レイヤー削除<br/></div>
+<br/>
+
+<a name="virtual_savePSDFile"/>
+<div class="headline">savePSDFile</div>
+<div class="usage">public native boolean savePSDFile( String path )</div>
+<div class="normal">
+PSD ファイルを書き出す<br/></div>
+<br/>
+
+<a name="virtual_setCanvasInfo"/>
+<div class="headline">setCanvasInfo</div>
+<div class="usage">public native void setCanvasInfo( const Size* size, uint channels, PSD.ImageMode mode = 3 )</div>
+<div class="normal">
+キャンバス情報設定<br/></div>
+<br/>
+
+<a name="virtual_writePSDFile"/>
+<div class="headline">writePSDFile</div>
+<div class="usage">public native boolean writePSDFile( File file )</div>
+<div class="normal">
+PSD ファイルを書き出す<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

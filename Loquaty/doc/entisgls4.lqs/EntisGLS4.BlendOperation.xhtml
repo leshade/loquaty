@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.BlendOperation</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.BlendOperation</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum BlendOperation&lt;int&gt; ;</div>
+<div class="normal">
+ブレンド操作<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.BlendOperation.xhtml">EntisGLS4.BlendOperation</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_Default">Default</a><br/>
+	<a href="#static_ProductedSrc">ProductedSrc</a><br/>
+	<a href="#static_Add">Add</a><br/>
+	<a href="#static_UnproductedSrc">UnproductedSrc</a><br/>
+	<a href="#static_Copy">Copy</a><br/>
+	<a href="#static_DstMasked">DstMasked</a><br/>
+	<a href="#static_MulColor">MulColor</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_Default"/>
+<div class="headline">Default</div>
+<div class="usage">public static const EntisGLS4.BlendOperation&#9; Default = 0</div>
+<div class="normal">
+デフォルト（マテリアルの設定を優先）<br/></div>
+<br/>
+<a name="static_ProductedSrc"/>
+<div class="headline">ProductedSrc</div>
+<div class="usage">public static const EntisGLS4.BlendOperation&#9; ProductedSrc = 1</div>
+<div class="normal">
+dstRGB = dstRGB*(1-srcAlpha) + srcRGB<br/></div>
+<br/>
+<a name="static_Add"/>
+<div class="headline">Add</div>
+<div class="usage">public static const EntisGLS4.BlendOperation&#9; Add = 2</div>
+<div class="normal">
+dstRGB = dstRGB + srcRGB<br/></div>
+<br/>
+<a name="static_UnproductedSrc"/>
+<div class="headline">UnproductedSrc</div>
+<div class="usage">public static const EntisGLS4.BlendOperation&#9; UnproductedSrc = 3</div>
+<div class="normal">
+dstRGB = dstRGB*(1-srcAlpha) + srcRGB*srcAlpha<br/></div>
+<br/>
+<a name="static_Copy"/>
+<div class="headline">Copy</div>
+<div class="usage">public static const EntisGLS4.BlendOperation&#9; Copy = 4</div>
+<div class="normal">
+dstRGB = srcRGB<br/></div>
+<br/>
+<a name="static_DstMasked"/>
+<div class="headline">DstMasked</div>
+<div class="usage">public static const EntisGLS4.BlendOperation&#9; DstMasked = 5</div>
+<div class="normal">
+dstRGB = dsRGB*dstAlpha + srcRGB*srcAlpha<br/></div>
+<br/>
+<a name="static_MulColor"/>
+<div class="headline">MulColor</div>
+<div class="usage">public static const EntisGLS4.BlendOperation&#9; MulColor = 6</div>
+<div class="normal">
+dstRGB = dstRGB * srcRGB<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

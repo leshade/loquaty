@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ModelBone</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ModelBone</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class ModelBone ;</div>
+<div class="normal">
+モデルのボーン<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.ModelBone.xhtml">EntisGLS4.ModelBone</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.ModelBone.BoneFlag.xhtml">EntisGLS4.ModelBone.BoneFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_flagBonePhysics">flagBonePhysics</a><br/>
+	<a href="#static_flagNoCollision">flagNoCollision</a><br/>
+	<a href="#static_flagTrackingPos">flagTrackingPos</a><br/>
+	<a href="#static_flagHaveOrgMatrix">flagHaveOrgMatrix</a><br/>
+	<a href="#static_flagFreezePhysics">flagFreezePhysics</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_ModelBone">ModelBone</a><br/>
+	<a href="#virtual_applyTransformation">applyTransformation</a><br/>
+	<a href="#virtual_calcBoneBasePosition">calcBoneBasePosition</a><br/>
+	<a href="#virtual_calcBoneNormalizedPosition">calcBoneNormalizedPosition</a><br/>
+	<a href="#virtual_calcBoneTransformation">calcBoneTransformation</a><br/>
+	<a href="#virtual_calcGlobalPosition">calcGlobalPosition</a><br/>
+	<a href="#virtual_calcGlobalTransformation">calcGlobalTransformation</a><br/>
+	<a href="#virtual_getBoneFlags">getBoneFlags</a><br/>
+	<a href="#virtual_getBoneHandle">getBoneHandle</a><br/>
+	<a href="#virtual_getBoneOffset">getBoneOffset</a><br/>
+	<a href="#virtual_getParentBone">getParentBone</a><br/>
+	<a href="#virtual_operateInverseKinematics">operateInverseKinematics</a><br/>
+	<a href="#virtual_setBoneOffset">setBoneOffset</a><br/>
+	<a href="#virtual_setTransformation">setTransformation</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_flagBonePhysics"/>
+<div class="headline">flagBonePhysics</div>
+<div class="usage">public static const EntisGLS4.ModelBone.BoneFlag&#9; flagBonePhysics = 1</div>
+<div class="normal">
+物理演算<br/></div>
+<br/>
+<a name="static_flagNoCollision"/>
+<div class="headline">flagNoCollision</div>
+<div class="usage">public static const EntisGLS4.ModelBone.BoneFlag&#9; flagNoCollision = 16</div>
+<div class="normal">
+当たり判定無し（物理演算時）<br/></div>
+<br/>
+<a name="static_flagTrackingPos"/>
+<div class="headline">flagTrackingPos</div>
+<div class="usage">public static const EntisGLS4.ModelBone.BoneFlag&#9; flagTrackingPos = 0x100</div>
+<div class="normal">
+IK 操作時のトラッキング位置マーク<br/></div>
+<br/>
+<a name="static_flagHaveOrgMatrix"/>
+<div class="headline">flagHaveOrgMatrix</div>
+<div class="usage">public static const EntisGLS4.ModelBone.BoneFlag&#9; flagHaveOrgMatrix = 0x200</div>
+<div class="normal">
+元モデルの行列を保持<br/></div>
+<br/>
+<a name="static_flagFreezePhysics"/>
+<div class="headline">flagFreezePhysics</div>
+<div class="usage">public static const EntisGLS4.ModelBone.BoneFlag&#9; flagFreezePhysics = 0x10000</div>
+<div class="normal">
+物理演算一時停止<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_ModelBone"/>
+<div class="headline">ModelBone</div>
+<div class="usage">public abstract ModelBone( )</div>
+<br/>
+
+<a name="virtual_applyTransformation"/>
+<div class="headline">applyTransformation</div>
+<div class="usage">public native void applyTransformation( const Matrix3d* matModel, const Vector3d* vModelPos )</div>
+<div class="normal">
+（モデル内空間）変換行列をボーン・ローカルに変換して設定する<br/></div>
+<br/>
+
+<a name="virtual_calcBoneBasePosition"/>
+<div class="headline">calcBoneBasePosition</div>
+<div class="usage">public native const Vector3d* calcBoneBasePosition( ) const</div>
+<div class="normal">
+ボーンの座標計算（モデル内座標）<br/></div>
+<br/>
+
+<a name="virtual_calcBoneNormalizedPosition"/>
+<div class="headline">calcBoneNormalizedPosition</div>
+<div class="usage">public native const Vector3d* calcBoneNormalizedPosition( ) const</div>
+<div class="normal">
+ボーンの基準座標（回転とオフセットを含まない初期状態のモデル内座標）<br/></div>
+<br/>
+
+<a name="virtual_calcBoneTransformation"/>
+<div class="headline">calcBoneTransformation</div>
+<div class="usage">public native void calcBoneTransformation( Matrix3d* matrix, Vector3d* translate ) const</div>
+<div class="normal">
+ボーンの変換行列計算（モデル内空間）<br/></div>
+<br/>
+
+<a name="virtual_calcGlobalPosition"/>
+<div class="headline">calcGlobalPosition</div>
+<div class="usage">public native const Vector3d* calcGlobalPosition( ) const</div>
+<div class="normal">
+グローバル空間座標を計算<br/></div>
+<br/>
+
+<a name="virtual_calcGlobalTransformation"/>
+<div class="headline">calcGlobalTransformation</div>
+<div class="usage">public native void calcGlobalTransformation( Matrix3d* matrix, Vector3d* pos ) const</div>
+<div class="normal">
+グローバル空間変換行列を計算<br/></div>
+<br/>
+
+<a name="virtual_getBoneFlags"/>
+<div class="headline">getBoneFlags</div>
+<div class="usage">public native EntisGLS4.ModelBone.BoneFlag getBoneFlags( ) const</div>
+<div class="normal">
+ボーンフラグ取得<br/></div>
+<br/>
+
+<a name="virtual_getBoneHandle"/>
+<div class="headline">getBoneHandle</div>
+<div class="usage">public native const Vector3d* getBoneHandle( ) const</div>
+<div class="normal">
+ボーンハンドル（ボーン内ローカル座標）取得<br/></div>
+<br/>
+
+<a name="virtual_getBoneOffset"/>
+<div class="headline">getBoneOffset</div>
+<div class="usage">public native const Vector3d* getBoneOffset( ) const</div>
+<div class="normal">
+平行移動（ボーン内空間）取得<br/></div>
+<br/>
+
+<a name="virtual_getParentBone"/>
+<div class="headline">getParentBone</div>
+<div class="usage">public native EntisGLS4.ModelBone getParentBone( ) const</div>
+<div class="normal">
+親ボーン取得<br/></div>
+<br/>
+
+<a name="virtual_operateInverseKinematics"/>
+<div class="headline">operateInverseKinematics</div>
+<div class="usage">public native void operateInverseKinematics( const Vector3d* vPos, const Matrix3d* matRotate, const Vector3d* vLocalTip, double fpBendingWeight, double zGimbalWeight, double fpTipBoneWeight, ulong nEffectParents = 0xFFFFFFFF )</div>
+<div class="normal">
+IK 操作<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vPos</div>
+<div class="param_desc">
+IK ターゲット座標（モデル空間）</div>
+<div class="param_name">matRotate</div>
+<div class="param_desc">
+IK ターゲット回転行列（モデル空間）</div>
+<div class="param_name">vLocalTip</div>
+<div class="param_desc">
+リグ座標（ボーン・ローカル座標）</div>
+<div class="param_name">fpBendingWeight</div>
+<div class="param_desc">
+曲げ比重 [0,1]</div>
+<div class="param_name">zGimbalWeight</div>
+<div class="param_desc">
+軸周り回転比重 [0,1]</div>
+<div class="param_name">fpTipBoneWeight</div>
+<div class="param_desc">
+先端（この）ボーンに適用する回転 matRotate の適用度 [0,1]</div>
+<div class="param_name">nEffectParents</div>
+<div class="param_desc">
+遡って IK 処理する親ボーン最大数</div>
+</div>
+<br/>
+
+<a name="virtual_setBoneOffset"/>
+<div class="headline">setBoneOffset</div>
+<div class="usage">public native void setBoneOffset( const Vector3d* vOffset )</div>
+<div class="normal">
+平行移動（ボーン内空間）設定<br/></div>
+<br/>
+
+<a name="virtual_setTransformation"/>
+<div class="headline">setTransformation</div>
+<div class="usage">public native void setTransformation( const Matrix3d* matBone )</div>
+<div class="normal">
+ボーンのローカル変換行列を設定する<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

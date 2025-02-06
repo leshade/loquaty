@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Image.BufferTypeFlag</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Image.BufferTypeFlag</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum using BufferTypeFlag&lt;ulong&gt; ;</div>
+<div class="normal">
+バッファフラグ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.Image.BufferTypeFlag.xhtml">EntisGLS4.Image.BufferTypeFlag</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_bufferNoWritable">bufferNoWritable</a><br/>
+	<a href="#static_bufferNoReadable">bufferNoReadable</a><br/>
+	<a href="#static_bufferNonPowerOf2">bufferNonPowerOf2</a><br/>
+	<a href="#static_bufferForTexture">bufferForTexture</a><br/>
+	<a href="#static_bufferForMipmapTexture">bufferForMipmapTexture</a><br/>
+	<a href="#static_bufferForRenderTarget">bufferForRenderTarget</a><br/>
+	<a href="#static_bufferCubeMapTexture">bufferCubeMapTexture</a><br/>
+	<a href="#static_bufferDeviceRenderBuffer">bufferDeviceRenderBuffer</a><br/>
+	<a href="#static_bufferMultisample">bufferMultisample</a><br/>
+	<a href="#static_bufferCompressedTexture">bufferCompressedTexture</a><br/>
+	<a href="#static_bufferCompressionFormatMask">bufferCompressionFormatMask</a><br/>
+	<a href="#static_bufferCompressionFormatShifter">bufferCompressionFormatShifter</a><br/>
+	<a href="#static_bufferTexture3D">bufferTexture3D</a><br/>
+	<a href="#static_bufferTextureArray">bufferTextureArray</a><br/>
+	<a href="#static_bufferSampleNoSmooth">bufferSampleNoSmooth</a><br/>
+	<a href="#static_bufferSampleTiling">bufferSampleTiling</a><br/>
+	<a href="#static_bufferOnMemory">bufferOnMemory</a><br/>
+	<a href="#static_bufferOnDeviceOnly">bufferOnDeviceOnly</a><br/>
+	<a href="#static_bufferRenderNonTextureFlags">bufferRenderNonTextureFlags</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_bufferNoWritable"/>
+<div class="headline">bufferNoWritable</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferNoWritable = 1</div>
+<div class="normal">
+バッファフラグ：書き出し不可ヒント（未使用）<br/></div>
+<br/>
+<a name="static_bufferNoReadable"/>
+<div class="headline">bufferNoReadable</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferNoReadable = 2</div>
+<div class="normal">
+バッファフラグ：読み出し不可ヒント（未使用）<br/></div>
+<br/>
+<a name="static_bufferNonPowerOf2"/>
+<div class="headline">bufferNonPowerOf2</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferNonPowerOf2 = 8</div>
+<div class="normal">
+バッファフラグ：VRAM 上のサイズは２の累乗に限らない<br/></div>
+<br/>
+<a name="static_bufferForTexture"/>
+<div class="headline">bufferForTexture</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferForTexture = 16</div>
+<div class="normal">
+バッファフラグ：テクスチャソース使用ヒント（未使用）<br/></div>
+<br/>
+<a name="static_bufferForMipmapTexture"/>
+<div class="headline">bufferForMipmapTexture</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferForMipmapTexture = 32</div>
+<div class="normal">
+バッファフラグ：VRAM 上ではミップマップ化<br/></div>
+<br/>
+<a name="static_bufferForRenderTarget"/>
+<div class="headline">bufferForRenderTarget</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferForRenderTarget = 64</div>
+<div class="normal">
+バッファフラグ：レンダリング対象ヒント（未使用）<br/></div>
+<br/>
+<a name="static_bufferCubeMapTexture"/>
+<div class="headline">bufferCubeMapTexture</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferCubeMapTexture = 0x80</div>
+<div class="normal">
+バッファフラグ：キューブマッピング用<br/></div>
+<br/>
+<a name="static_bufferDeviceRenderBuffer"/>
+<div class="headline">bufferDeviceRenderBuffer</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferDeviceRenderBuffer = 0x200</div>
+<div class="normal">
+バッファフラグ：レンダリング専用バッファ<br/></div>
+<br/>
+<a name="static_bufferMultisample"/>
+<div class="headline">bufferMultisample</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferMultisample = 0x400</div>
+<div class="normal">
+バッファフラグ：マルチサンプリング（レンダリング対象）<br/></div>
+<br/>
+<a name="static_bufferCompressedTexture"/>
+<div class="headline">bufferCompressedTexture</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferCompressedTexture = 0x800</div>
+<div class="normal">
+バッファフラグ：可能なら VRAM 上は圧縮形式<br/></div>
+<br/>
+<a name="static_bufferCompressionFormatMask"/>
+<div class="headline">bufferCompressionFormatMask</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferCompressionFormatMask = 0x7F000000</div>
+<div class="normal">
+バッファフラグ：圧縮フォーマット・ビットマスク<br/></div>
+<br/>
+<a name="static_bufferCompressionFormatShifter"/>
+<div class="headline">bufferCompressionFormatShifter</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferCompressionFormatShifter = 24</div>
+<div class="normal">
+バッファフラグ：圧縮フォーマット・ビットシフタ<br/></div>
+<br/>
+<a name="static_bufferTexture3D"/>
+<div class="headline">bufferTexture3D</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferTexture3D = 0x1000</div>
+<div class="normal">
+バッファフラグ：VRAM 上では 3D テクスチャ<br/></div>
+<br/>
+<a name="static_bufferTextureArray"/>
+<div class="headline">bufferTextureArray</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferTextureArray = 0x2000</div>
+<div class="normal">
+バッファフラグ：VRAM 上では テクスチャ配列 ※bufferTexture3D との組み合わせは未対応<br/></div>
+<br/>
+<a name="static_bufferSampleNoSmooth"/>
+<div class="headline">bufferSampleNoSmooth</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferSampleNoSmooth = 0x10000</div>
+<div class="normal">
+バッファフラグ：デフォルトで補完無効<br/></div>
+<br/>
+<a name="static_bufferSampleTiling"/>
+<div class="headline">bufferSampleTiling</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferSampleTiling = 0x20000</div>
+<div class="normal">
+バッファフラグ：デフォルトでタイリング (WRAP)<br/></div>
+<br/>
+<a name="static_bufferOnMemory"/>
+<div class="headline">bufferOnMemory</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferOnMemory = 0</div>
+<div class="normal">
+バッファフラグ：RAM 上にバッファ保持<br/></div>
+<br/>
+<a name="static_bufferOnDeviceOnly"/>
+<div class="headline">bufferOnDeviceOnly</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferOnDeviceOnly = 0x100</div>
+<div class="normal">
+バッファフラグ：VRAM 上のみ<br/></div>
+<br/>
+<a name="static_bufferRenderNonTextureFlags"/>
+<div class="headline">bufferRenderNonTextureFlags</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferRenderNonTextureFlags = 0x600</div>
+<div class="normal">
+バッファフラグ：描画先にのみ使えるフラグ集合<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

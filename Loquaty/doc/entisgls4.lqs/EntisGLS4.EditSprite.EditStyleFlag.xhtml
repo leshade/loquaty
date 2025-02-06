@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.EditSprite.EditStyleFlag</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.EditSprite.EditStyleFlag</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum using EditStyleFlag&lt;uint&gt; ;</div>
+<div class="normal">
+エディット・スタイル・フラグ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.EditSprite.EditStyleFlag.xhtml">EntisGLS4.EditSprite.EditStyleFlag</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_editSingleLine">editSingleLine</a><br/>
+	<a href="#static_editMultiLine">editMultiLine</a><br/>
+	<a href="#static_editMultiLineMask">editMultiLineMask</a><br/>
+	<a href="#static_editLineWrap">editLineWrap</a><br/>
+	<a href="#static_editAcceptReturn">editAcceptReturn</a><br/>
+	<a href="#static_editAcceptTab">editAcceptTab</a><br/>
+	<a href="#static_editAutoIndent">editAutoIndent</a><br/>
+	<a href="#static_editMultiLineTab">editMultiLineTab</a><br/>
+	<a href="#static_editReadOnly">editReadOnly</a><br/>
+	<a href="#static_editDenyAlphabet">editDenyAlphabet</a><br/>
+	<a href="#static_editDenyNumber">editDenyNumber</a><br/>
+	<a href="#static_editDeny8bitChar">editDeny8bitChar</a><br/>
+	<a href="#static_editDenyMBChar">editDenyMBChar</a><br/>
+	<a href="#static_editNumber">editNumber</a><br/>
+	<a href="#static_editPassword">editPassword</a><br/>
+	<a href="#static_editColumnCaret">editColumnCaret</a><br/>
+	<a href="#static_editUnderbarCaret">editUnderbarCaret</a><br/>
+	<a href="#static_editCaretMask">editCaretMask</a><br/>
+	<a href="#static_editFontForIME">editFontForIME</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_editSingleLine"/>
+<div class="headline">editSingleLine</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editSingleLine = 0</div>
+<div class="normal">
+エディット・スタイル・フラグ：１行<br/></div>
+<br/>
+<a name="static_editMultiLine"/>
+<div class="headline">editMultiLine</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editMultiLine = 1</div>
+<div class="normal">
+エディット・スタイル・フラグ：複数行<br/></div>
+<br/>
+<a name="static_editMultiLineMask"/>
+<div class="headline">editMultiLineMask</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editMultiLineMask = 1</div>
+<div class="normal">
+エディット・スタイル・フラグ：複数行／１行・フラグマスク<br/></div>
+<br/>
+<a name="static_editLineWrap"/>
+<div class="headline">editLineWrap</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editLineWrap = 2</div>
+<div class="normal">
+エディット・スタイル・フラグ：行を右端で折り返す<br/></div>
+<br/>
+<a name="static_editAcceptReturn"/>
+<div class="headline">editAcceptReturn</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editAcceptReturn = 16</div>
+<div class="normal">
+エディット・スタイル・フラグ：改行コードの入力許可<br/></div>
+<br/>
+<a name="static_editAcceptTab"/>
+<div class="headline">editAcceptTab</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editAcceptTab = 32</div>
+<div class="normal">
+エディット・スタイル・フラグ：タブコードの入力許可<br/></div>
+<br/>
+<a name="static_editAutoIndent"/>
+<div class="headline">editAutoIndent</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editAutoIndent = 64</div>
+<div class="normal">
+エディット・スタイル・フラグ：自動インデント<br/></div>
+<br/>
+<a name="static_editMultiLineTab"/>
+<div class="headline">editMultiLineTab</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editMultiLineTab = 0x80</div>
+<div class="normal">
+エディット・スタイル・フラグ：複数行選択時のタブは行頭に挿入<br/></div>
+<br/>
+<a name="static_editReadOnly"/>
+<div class="headline">editReadOnly</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editReadOnly = 0x100</div>
+<div class="normal">
+エディット・スタイル・フラグ：読み取り専用<br/></div>
+<br/>
+<a name="static_editDenyAlphabet"/>
+<div class="headline">editDenyAlphabet</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editDenyAlphabet = 0x1000</div>
+<div class="normal">
+エディット・スタイル・フラグ：アルファベット入力禁止<br/></div>
+<br/>
+<a name="static_editDenyNumber"/>
+<div class="headline">editDenyNumber</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editDenyNumber = 0x2000</div>
+<div class="normal">
+エディット・スタイル・フラグ：数字入力禁止<br/></div>
+<br/>
+<a name="static_editDeny8bitChar"/>
+<div class="headline">editDeny8bitChar</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editDeny8bitChar = 0x4000</div>
+<div class="normal">
+エディット・スタイル・フラグ：半角文字入力禁止<br/></div>
+<br/>
+<a name="static_editDenyMBChar"/>
+<div class="headline">editDenyMBChar</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editDenyMBChar = 0x8000</div>
+<div class="normal">
+エディット・スタイル・フラグ：全角文字入力禁止<br/></div>
+<br/>
+<a name="static_editNumber"/>
+<div class="headline">editNumber</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editNumber = 0x10000</div>
+<div class="normal">
+エディット・スタイル・フラグ：数値入力<br/></div>
+<br/>
+<a name="static_editPassword"/>
+<div class="headline">editPassword</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editPassword = 0x20000</div>
+<div class="normal">
+エディット・スタイル・フラグ：パスワード入力<br/></div>
+<br/>
+<a name="static_editColumnCaret"/>
+<div class="headline">editColumnCaret</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editColumnCaret = 0</div>
+<div class="normal">
+エディット・スタイル・フラグ：垂直カレット<br/></div>
+<br/>
+<a name="static_editUnderbarCaret"/>
+<div class="headline">editUnderbarCaret</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editUnderbarCaret = 0x100000</div>
+<div class="normal">
+エディット・スタイル・フラグ：水平カレット<br/></div>
+<br/>
+<a name="static_editCaretMask"/>
+<div class="headline">editCaretMask</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editCaretMask = 0x100000</div>
+<div class="normal">
+エディット・スタイル・フラグ：垂直／水平カレット・フラグマスク<br/></div>
+<br/>
+<a name="static_editFontForIME"/>
+<div class="headline">editFontForIME</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editFontForIME = 0x10000000</div>
+<div class="normal">
+エディット・スタイル・フラグ：IME 入力表示用フォント指定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

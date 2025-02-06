@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ModelPose</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ModelPose</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class ModelPose ;</div>
+<div class="normal">
+モデルのポーズ／モーション<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.ModelPose.xhtml">EntisGLS4.ModelPose</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.ModelPose.MetaInfo.xhtml">EntisGLS4.ModelPose.MetaInfo</a></div>
+<br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_ModelPose">ModelPose</a><br/>
+	<a href="#virtual_applyPoseTo">applyPoseTo</a><br/>
+	<a href="#virtual_getMetaInfo">getMetaInfo</a><br/>
+	<a href="#virtual_productPoseTo">productPoseTo</a><br/>
+	<a href="#virtual_resetPoseTarget">resetPoseTarget</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_ModelPose"/>
+<div class="headline">ModelPose</div>
+<div class="usage">public native ModelPose( )</div>
+<div class="normal">
+ModelPose 構築<br/></div>
+<br/>
+
+<a name="virtual_applyPoseTo"/>
+<div class="headline">applyPoseTo</div>
+<div class="usage">public native void applyPoseTo( EntisGLS4.ModelBuffer model, double w = 1., double t = 0. )</div>
+<div class="normal">
+モデルへポーズ設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">w</div>
+<div class="param_desc">
+適用度 [0.0, 1.0]</div>
+<div class="param_name">t</div>
+<div class="param_desc">
+適用するモーション内の時間 [sec]</div>
+</div>
+<br/>
+
+<a name="virtual_getMetaInfo"/>
+<div class="headline">getMetaInfo</div>
+<div class="usage">public native const EntisGLS4.ModelPose.MetaInfo* getMetaInfo( ) const</div>
+<div class="normal">
+メタ情報取得<br/></div>
+<br/>
+
+<a name="virtual_productPoseTo"/>
+<div class="headline">productPoseTo</div>
+<div class="usage">public native void productPoseTo( EntisGLS4.ModelBuffer model, double w = 1., double t = 0. )</div>
+<div class="normal">
+モデルへポーズ設定（回転行列は積算）<br/></div>
+<div class="notes_parameter">
+<div class="param_name">w</div>
+<div class="param_desc">
+適用度 [0.0, 1.0]</div>
+<div class="param_name">t</div>
+<div class="param_desc">
+適用するモーション内の時間 [sec]</div>
+</div>
+<br/>
+
+<a name="virtual_resetPoseTarget"/>
+<div class="headline">resetPoseTarget</div>
+<div class="usage">public native void resetPoseTarget( )</div>
+<div class="normal">
+ポーズターゲットリセット<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

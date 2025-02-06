@@ -1,0 +1,1179 @@
+﻿
+@include	"game_status.lqs"
+
+using namespace EntisGLS4 ;
+
+
+class	PlayerController	extends SceneCustomController
+{
+	// タイプ ID
+	public static const String	s_TypeID = "avfl_player" ;
+
+	// PlayerController 構築
+	public PlayerController()
+		: SceneCustomController( s_TypeID )
+	{
+		// onTimer, onRenderEvent イベントを有効化
+		modifyBehaviorFlags( behaviorOnTimer | behaviorRenderEvent ) ;
+
+		// Scene.classPreRender イベント発生を有効化
+		modifyRenderEventClasses( (1 << Scene.classPreRender) ) ;
+
+		// 初期設定
+		m_status = GameStatus() ;
+
+		m_meshCourse = Mesh() ;
+		m_meshLine = Mesh() ;
+	}
+
+
+	// 編集モードフラグ
+	boolean					m_editMode = true ;
+
+	// 生存フラグ
+	boolean					m_alive = true ;
+
+	// ステータス
+	GameStatus				m_status ;
+
+	// 移動フィールド基準位置
+	Vector3d				m_vBasePos ;
+	// 進行方向と上下左右方向（カメラや座標の計算に使用する現在の値）
+	Matrix3d				m_matBaseDir ;
+	// 以前のフレームの進行方向
+	Quaterniond				m_qLastDir ;
+	// コースの進行方向
+	Quaterniond				m_qCourseDir ;
+
+	// 平面上の座標
+	Vector2d				m_vFieldPos ;
+	// 平面上の速度
+	Vector2d				m_vFieldSpeed ;
+	// 以前の３次元座標
+	Vector3d				m_vLastPos ;
+
+	// ｘ軸周り回転 [-1,1]
+	double					m_pitchPlane = 0.0 ;
+	// ｙ軸周り回転 [-1,1]
+	double					m_yawPlane = 0.0 ;
+	// ｚ軸周り回転 [-1,1]
+	double					m_rollPlane = 0.0 ;
+
+	// <name>カメラ</name>
+	public SceneCamera		m_camera ;
+
+	// <name>コース表示用メッシュ</name>
+	public SceneMeshBuffer	m_itemMeshCourse ;
+
+	// <name>コース障害物</name>
+	public SceneMultiModel	m_itemBox ;
+
+	// <name>チェックポイント</name>
+	public SceneMultiModel	m_itemCheckPoint ;
+
+	// <name>チェックポイントSE</name>
+	public SceneSoundItem	m_itemCheckSE ;
+
+	// <name>衝突時SE</name>
+	public SceneSoundItem	m_itemBombSE ;
+
+	// <name>チェックポイント通貨効果サブコンポジション</name>
+	public SceneSubComposition	m_itemPassing ;
+
+	// <name>破壊効果サブコンポジション</name>
+	public SceneSubComposition	m_itemBomb ;
+
+	// 仮想入力
+	VirtualInput			m_input ;
+
+
+	// デフォルトのカメラ距離
+	static const Vector3d	s_vCameraView = { 0.0, -10.0, -130.0 } ;
+	// デフォルト進行速度
+	static const double		s_speedBase = 110.0 ;
+	// 上下左右加速度
+	static const double		s_speedTurn = 120.0 ;
+	// 降下加速度
+	static const double		s_accelFall = 10.0 ;
+	// 旋回ヨー回転角 [rad]
+	static const double		s_radYaw = 45.0 * Math.PI / 180.0 ;
+	// 旋回バンク角 [rad]
+	static const double		s_radRoll = 30.0 * Math.PI / 180.0 ;
+	// 上下ピッチ回転角 [rad]
+	static const double		s_radPitch = 30.0 * Math.PI / 180.0 ;
+	// プレイヤーの当たり判定半径
+	static const float		s_radiusPlayer = 2.0f ;
+
+
+	// コース・セグメント情報
+	class	Segment
+	{
+		// 基準位置
+		public Vector3d		m_vPos ;
+		// 方向
+		public Matrix3d		m_matDir ;
+		// 長さ
+		public double		m_length ;
+		// 障害物
+		public SceneItemInstanceRef[]	m_refItems ;
+	}
+
+	// コース情報
+	Segment[]		m_course ;
+
+	// メッシュ情報
+	class	Mesh
+	{
+		public Vector4*	m_pVertex ;
+		public uint		m_nVertex = 0 ;
+		public uint		m_nVertexBuf ;
+		public uint*	m_pIndex ;
+		public uint		m_nIndex = 0 ;
+		public uint		m_nIndexBuf = 0 ;
+
+		public void clear()
+		{
+			m_nVertex = 0 ;
+			m_nIndex = 0 ;
+		}
+		public Vector4* allocVertex( uint count )
+		{
+			const uint	nLast = m_nVertex ;
+			m_nVertex += count ;
+			if ( m_nVertex > m_nVertexBuf )
+			{
+				Vector4*	pBuf = new Vector4[m_nVertex] ;
+				if ( nLast > 0 )
+				{
+					pBuf.copy( m_pVertex, nLast * sizeof(Vector4) ) ;
+				}
+				m_pVertex = pBuf ;
+				m_nVertexBuf = m_nVertex ;
+			}
+			return	m_pVertex + nLast ;
+		}
+		public uint* allocIndex( uint count )
+		{
+			const uint	nLast = m_nIndex ;
+			m_nIndex += count ;
+			if ( m_nIndex > m_nIndexBuf )
+			{
+				uint*	pBuf = new uint[m_nIndex] ;
+				if ( nLast > 0 )
+				{
+					pBuf.copy( m_pIndex, nLast * sizeof(uint) ) ;
+				}
+				m_pIndex = pBuf ;
+				m_nIndexBuf = m_nIndex ;
+			}
+			return	m_pIndex + nLast ;
+		}
+	}
+
+	Mesh	m_meshCourse ;
+	Mesh	m_meshLine ;
+
+
+	// コース生成文脈
+	struct	CourseContext
+	{
+		double	degAccCurve = 0.0 ;	// 最近の累積カーブ角度 [deg]
+		double	degSegCurve = 0.0 ;	// 区間毎のカーブ角度 [deg]
+		double	degPitch = 0.0 ;	// 上下角度 [deg]
+		uint	nNoObstacle = 0 ;	// 以前に障害物を配置してから経過した区間数
+		int		nSegments = 0 ;		// ブロックの残り区間数
+	}
+	CourseContext	m_cctx ;
+
+	public static const uint	s_maxCourseSegments = 30 ;
+	public static const uint	s_CourseBlockSegments = 5 ;
+
+
+	// コース位置情報
+	static const uint	s_iPlayerSegment = 2 ;
+	double				m_zCurrentCourse = 0.0 ;
+
+	// コース基本形状
+	public static const uint	s_CourseCorners = 4 ;
+	public static const uint	s_CourseWith = 6 ;
+	public static const uint	s_CourseHeight = 5 ;
+	public static const float	s_CubeSize = 20.0f ;
+	public static const float	s_xCourse = (float) s_CourseWith * s_CubeSize * 0.5f ;
+	public static const float	s_yCourse = (float) s_CourseHeight * s_CubeSize * 0.5f ;
+	public static const float	s_zCourse = 60.0f ;
+	public static const float	s_zLineThickness = 1.0f ;
+
+	static const Vector4[s_CourseCorners]
+								s_vCourseVertex =
+	[
+		{ -s_xCourse, -s_yCourse, 0.0f, 0.0f },
+		{  s_xCourse, -s_yCourse, 0.0f, 0.0f },
+		{  s_xCourse,  s_yCourse, 0.0f, 0.0f },
+		{ -s_xCourse,  s_yCourse, 0.0f, 0.0f },
+	] ;
+
+	// 同地点でのチェックポイント最大数
+	public static const uint	s_MaxCheckPoints = 4 ;
+
+	// 障害物情報
+	struct	ObstacleInfo
+	{
+		// 障害物配置
+		uint8[s_CourseHeight]		mask ;
+		// チェックポイント数
+		uint						count ;
+		// 確率
+		double						probability ;
+		// チェックポイント座標
+		Vector2d[s_MaxCheckPoints]	points ;
+	}
+
+	// 場外物配置情報
+	static const ObstacleInfo[17]	s_Obstacles =
+	[
+		{	// 0
+			[
+				0b000000,
+				0b000000,
+				0b000000,
+				0b000000,
+				0b000000,
+			],
+			0,
+		},
+		{	// 1
+			[
+				0b000000,
+				0b000000,
+				0b000000,
+				0b000000,
+				0b000000,
+			],
+			4, 0.5,
+			[ { 1, 1 }, { 4, 1 }, { 1, 3 }, { 4, 3 } ]
+		},
+		{	// 2
+			[
+				0b000000,
+				0b000000,
+				0b000000,
+				0b000000,
+				0b000000,
+			],
+			4, 0.5,
+			[ { 0, 2 }, { 2.5, 0 }, { 5, 2 }, { 2.5, 4 } ]
+		},
+		{	// 3
+			[
+				0b111111,
+				0b000000,
+				0b000000,
+				0b000000,
+				0b111111,
+			],
+			0,
+		},
+		{	// 4
+			[
+				0b100001,
+				0b100001,
+				0b100001,
+				0b100001,
+				0b100001,
+			],
+			0,
+		},
+		{	// 5
+			[
+				0b111111,
+				0b111111,
+				0b000000,
+				0b000000,
+				0b000000,
+			],
+			0,
+		},
+		{	// 6
+			[
+				0b000000,
+				0b000000,
+				0b000000,
+				0b111111,
+				0b111111,
+			],
+			0,
+		},
+		{	// 7
+			[
+				0b110011,
+				0b110011,
+				0b110011,
+				0b110011,
+				0b110011,
+			],
+			0,
+		},
+		{	// 8
+			[
+				0b000111,
+				0b000111,
+				0b000111,
+				0b000111,
+				0b000111,
+			],
+			0,
+		},
+		{	// 9
+			[
+				0b111000,
+				0b111000,
+				0b111000,
+				0b111000,
+				0b111000,
+			],
+			0,
+		},
+		{	// 10
+			[
+				0b000000,
+				0b000000,
+				0b111111,
+				0b000000,
+				0b000000,
+			],
+			0,
+		},
+		{	// 11
+			[
+				0b001100,
+				0b001100,
+				0b001100,
+				0b001100,
+				0b001100,
+			],
+			0,
+		},
+		{	// 12
+			[
+				0b111000,
+				0b111000,
+				0b000000,
+				0b000111,
+				0b000111,
+			],
+			0,
+		},
+		{	// 13
+			[
+				0b000111,
+				0b000111,
+				0b000000,
+				0b111000,
+				0b111000,
+			],
+			0,
+		},
+		{	// 14
+			[
+				0b111000,
+				0b111000,
+				0b111111,
+				0b000111,
+				0b000111,
+			],
+			0,
+		},
+		{	// 15
+			[
+				0b000111,
+				0b000111,
+				0b111111,
+				0b111000,
+				0b111000,
+			],
+			0,
+		},
+		{	// 16
+			[
+				0b111111,
+				0b110011,
+				0b110011,
+				0b110011,
+				0b111111,
+			],
+			0,
+		},
+	] ;
+
+	// 最大レベル（表示上は 1～10、内部の数値は 0～9）
+	public static const uint	s_MaxLevel = 10 ;
+
+	// レベル毎のコース生成情報
+	struct	WayInfo
+	{
+		double		degCurve ;			// 区間毎のカーブ単位角度 [deg]
+		uint		nCurve ;			// カーブ角度の乱数幅 degCurve*[0,nCurve]
+		double		degPitch ;			// 上下単位角度 [deg]
+		uint		nPitch ;			// 上下角度の乱数幅 degPitch*[0,nPitch]
+		uint		nObstacles ;		// 障害物情報の数 iObstacles[0...(n-1)]
+		uint[20]	iObstacles ;		// 障害物情報インデックス配列
+		uint		nObstacleStride ;	// 障害物を設置する区間距離
+		uint		nNextLevelUp ;		// レベルアップする区間数
+	}
+	static const WayInfo[s_MaxLevel]	s_WayInfos =
+	[
+		{	// Level 1
+			0.0, 0, 0.0, 0,
+			7, [ 0, 0, 0, 1, 2, 3, 4 ],
+			7, 10
+		},
+		{	// Level 2
+			2.5, 1, 0.0, 0,
+			7, [ 0, 2, 3, 4, 5, 6, 7 ],
+			6, 20
+		},
+		{	// Level 3
+			2.5, 1, 0.0, 0,
+			7, [ 1, 2, 3, 4, 5, 6, 7 ],
+			5, 30
+		},
+		{	// Level 4
+			2.5, 1, 2.5, 1,
+			9, [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+			5, 40
+		},
+		{	// Level 5
+			2.5, 1, 2.5, 1,
+			9, [ 1, 2, 5, 6, 7, 8, 9, 10, 11 ],
+			5, 50
+		},
+		{	// Level 6
+			2.5, 2, 2.5, 1,
+			9, [ 1, 2, 5, 6, 7, 8, 9, 10, 11 ],
+			6, 60
+		},
+		{	// Level 7
+			2.5, 2, 2.5, 1,
+			13, [ 1, 1, 2, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13 ],
+			6, 70
+		},
+		{	// Level 8
+			2.5, 2, 2.5, 2,
+			13, [ 1, 1, 2, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13 ],
+			6, 80
+		},
+		{	// Level 9
+			2.5, 2, 2.5, 2,
+			15, [ 1, 1, 2, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
+			6, 90
+		},
+		{	// Level 10
+			2.0, 3, 2.5, 2,
+			16, [ 1, 1, 2, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ],
+			6, 10000
+		},
+	] ;
+
+
+	// 拡張的な処理の通知
+	@override
+	public void onExtendNotify
+		( String cmd, String param, const void* pExParam, ulong nExParamBytes )
+	{
+		if ( cmd == SceneNotifyCommand.InitializeItem )
+		{
+			onInitializeItem() ;
+		}
+		else if ( cmd == SceneNotifyCommand.StartItem )
+		{
+			onStartItem() ;
+		}
+	}
+
+	// 初期化処理
+	void onInitializeItem()
+	{
+		m_editMode = isEditMode() ;
+		if ( !m_editMode )
+		{
+			m_vBasePos := Vector3d( 0, 0, 0 ) ;
+			m_matBaseDir := Matrix3d( 1, 1, 1 ) ;
+			m_qLastDir := Quaterniond( 1, 0, 0, 0 ) ;
+			m_qCourseDir := Quaterniond( 1, 0, 0, 0 ) ;
+			m_vFieldPos := Vector2d( 0, 0 ) ;
+			m_vFieldSpeed := Vector2d( 0, 0 ) ;
+			m_vLastPos := calcPlayerPos() ;
+
+			// 仮想入力取得
+			SceneItem	item = getOwnerItem() ;
+			SceneManager.Context
+					ctx = item.getManager().getSceneInfo() ;
+			m_input = ctx.input ;
+		}
+
+		// 開始直後のコース生成
+		m_course = new Segment[] ;
+		while ( sizeof(m_course) < s_maxCourseSegments )
+		{
+			addCourseSegment() ;
+		}
+		buildMeshCourse() ;
+	}
+
+	// 開始時処理
+	void onStartItem()
+	{
+		SceneComposition	comp = getOwnerItem().getComposition() ;
+		if ( comp != null )
+		{
+			Object	objInstance = comp.getUserObject() ;
+			if ( objInstance instanceof GameStatus )
+			{
+				m_status = (GameStatus) objInstance ;
+			}
+		}
+	}
+
+	// タイマー処理
+	@override
+	public void onTimer
+		( Scene scene, SceneItem item, uint32 msecDelta )
+	{
+		if ( !m_editMode && (msecDelta > 0) )
+		{
+			double	secDelta = msecDelta / 1000.0 ;
+			onMoveCourse( secDelta ) ;
+			doUserInput( secDelta ) ;
+			doMove( scene, secDelta ) ;
+			setCameraPos() ;
+			setPlayerPos() ;
+			scene.postSceneUpdate() ;
+		}
+	}
+
+	// コース移動
+	void onMoveCourse( double secDelta )
+	{
+		const double	speed = getFlyingSpeed() ;
+		boolean	flagUpdateCourse = false ;
+		forever
+		{
+			if ( s_iPlayerSegment >= sizeof(m_course) )
+			{
+				break ;
+			}
+			Segment	seg = m_course[s_iPlayerSegment] ;
+
+			// 位置を進める
+			m_zCurrentCourse += secDelta * speed ;
+
+			m_qCourseDir := Quaterniond( seg.m_matDir ) ;
+			m_vBasePos := seg.m_vPos
+							+ seg.m_matDir
+								* Vector3d( 0, 0, m_zCurrentCourse ) ;
+			if ( m_zCurrentCourse < seg.m_length )
+			{
+				break ;
+			}
+
+			// コース区間を１つ進める
+			m_zCurrentCourse -= seg.m_length ;
+
+			if ( m_alive )
+			{
+				addScore( 100 ) ;
+
+				const WayInfo*	pwi = getWayInfo() ;
+				if ( (++ m_status.m_past >= pwi.nNextLevelUp)
+					&& (m_status.m_level + 1 < s_MaxLevel) )
+				{
+					// レベル（難易度）アップ
+					m_status.m_past = 0 ;
+					m_status.m_level ++ ;
+					notifyStatus() ;
+					outputLog( "level = " + (m_status.m_level + 1) + "\n" ) ;
+				}
+			}
+
+			// 古い区間を削除する
+			clearSegmentItems( m_course[0] ) ;
+			m_course.remove( 0 ) ;
+			flagUpdateCourse = true ;
+		}
+
+		while ( sizeof(m_course) < s_maxCourseSegments )
+		{
+			// 新しい区間を追加する
+			addCourseSegment() ;
+			flagUpdateCourse = true ;
+		}
+
+		if ( flagUpdateCourse )
+		{
+			// コースメッシュを再構築する
+			buildMeshCourse() ;
+		}
+
+		// コースの進行方向にカメラ方向をゆっくり追従する（手抜き）
+		Matrix3d*	matLastDir = Matrix3d( m_matBaseDir ) ;
+		m_qLastDir := m_qLastDir.slerp( m_qCourseDir, 0.02 ) ;
+		m_matBaseDir := m_qLastDir.toMatrix3() ;
+
+		// 曲がりを上下左右の速度に反映する
+		Vector3d*	vDelta = Vector3d( m_matBaseDir.inverse()
+										* matLastDir
+										* Vector3d( 0, 0, speed ) ) ;
+		m_vFieldSpeed.x += vDelta.x / s_speedTurn ;
+		m_vFieldSpeed.y += vDelta.y / s_speedTurn ;
+	}
+
+	// 進行速度
+	double getFlyingSpeed() const
+	{
+		return	s_speedBase * (1.0 + (double) m_status.m_level / s_MaxLevel) ;
+	}
+
+	// 現在のレベルの WayInfo を取得する
+	const WayInfo* getWayInfo() const
+	{
+		return	s_WayInfos[Math.min( m_status.m_level, s_MaxLevel-1 )] ;
+	}
+
+	// コースを１区間追加する
+	void addCourseSegment()
+	{
+		const WayInfo*	pwi = getWayInfo() ;
+
+		if ( -- m_cctx.nSegments <= 0 )
+		{
+			// 新しいブロック
+			m_cctx.nSegments = s_CourseBlockSegments ;
+
+			// カーブ角決定
+			m_cctx.degSegCurve =
+				pwi.degCurve
+					* Math.floor( Math.random( pwi.nCurve + 1 ) ) ;
+			if ( Math.random( 1.0 ) < 0.5 )
+			{
+				m_cctx.degSegCurve = - m_cctx.degSegCurve ;
+			}
+			if ( m_cctx.degAccCurve
+					+ m_cctx.degSegCurve * m_cctx.nSegments > 120.0 )
+			{
+				m_cctx.degSegCurve = 0.0 ;
+			}
+			m_cctx.degAccCurve =
+				(m_cctx.degAccCurve
+					+ m_cctx.degSegCurve * m_cctx.nSegments) * 0.75 ;
+
+			// 上下角決定
+			m_cctx.degPitch =
+				pwi.degPitch
+					* Math.floor( Math.random( pwi.nPitch + 1 ) ) ;
+			if ( Math.random( 1.0 ) < 0.5 )
+			{
+				m_cctx.degPitch = - m_cctx.degPitch ;
+			}
+		}
+
+		// 区間追加
+		Segment	seg = makeCourseSegment
+						( m_cctx.degSegCurve, m_cctx.degPitch ) ;
+		m_course.add( seg ) ;
+
+		// 障害物設置
+		if ( ++ m_cctx.nNoObstacle > pwi.nObstacleStride )
+		{
+			uint	iObstacle =
+				pwi.iObstacles[(uint) Math.floor( Math.random( pwi.nObstacles ) )] ;
+			makeObstacleItems( seg, s_Obstacles[iObstacle] ) ;
+			m_cctx.nNoObstacle = 0 ;
+		}
+	}
+
+	Segment makeCourseSegment( double degCurve, double degPitch )
+	{
+		double	radCurve = 0.0 ;
+		Segment	seg = Segment() ;
+		if ( sizeof(m_course) > 0 )
+		{
+			Segment	segLast = m_course[sizeof(m_course) - 1] ;
+			seg.m_vPos := segLast.m_vPos
+							+ segLast.m_matDir
+								* Vector3d( 0, 0, segLast.m_length ) ;
+
+			Vector3d*	vDir = Vector3d( segLast.m_matDir * Vector3d( 0, 0, 1 ) ) ;
+			radCurve = Math.atan2( vDir.x, vDir.z ) ;
+		}
+		else
+		{
+			seg.m_vPos := m_vBasePos ;
+		}
+		seg.m_length = s_zCourse ;
+
+		radCurve += degCurve * (Math.PI / 180.0) ;
+		seg.m_matDir.rotateOnY( Math.sin(radCurve), Math.cos(radCurve) ) ;
+
+		double	rad = degPitch * (Math.PI / -180.0) ;
+		seg.m_matDir.rotateOnX( Math.sin(rad), Math.cos(rad) ) ;
+		return	seg ;
+	}
+
+	// コースに接地された障害物をクリアする
+	void clearSegmentItems( Segment seg )
+	{
+		for ( ref : seg.m_refItems )
+		{
+			ref.correctInstance() ;
+			ref.deleteInstance() ;
+		}
+	}
+
+	// ユーザー入力
+	void doUserInput( double secDelta )
+	{
+		if ( !m_alive )
+		{
+			return ;
+		}
+		double	dx = 0.0 ;
+		double	dy = 0.0 ;
+
+		// X Input 入力状態取得
+		VirtualInput.JoyStickState*	state = new VirtualInput.JoyStickState ;
+		if ( m_input.getJoyStickState( state, VirtualInput.joyStickXInput1 ) )
+		{
+			dx += state.stickPos.x ;
+			dy -= state.stickPos.y ;	// ※アナログスティックは上下逆の操作にする
+
+			if ( state.stateButtons & (1 << VirtualInput.xinputDPadLeft) )
+			{
+				dx -= 1.0 ;
+			}
+			if ( state.stateButtons & (1 << VirtualInput.xinputDPadRight) )
+			{
+				dx += 1.0 ;
+			}
+			if ( state.stateButtons & (1 << VirtualInput.xinputDPadUp) )
+			{
+				dy -= 1.0 ;
+			}
+			if ( state.stateButtons & (1 << VirtualInput.xinputDPadDown) )
+			{
+				dy += 1.0 ;
+			}
+		}
+
+		// 仮想ゲームパッド（キーボード割り当て）状態取得
+		if ( m_input.isJoyButtonPushing
+				( VirtualInput.joyLeft, VirtualInput.joyStickUser1 ) )
+		{
+			dx -= 1.0 ;
+		}
+		if ( m_input.isJoyButtonPushing
+				( VirtualInput.joyRight, VirtualInput.joyStickUser1 ) )
+		{
+			dx += 1.0 ;
+		}
+		if ( m_input.isJoyButtonPushing
+				( VirtualInput.joyUp, VirtualInput.joyStickUser1 ) )
+		{
+			dy -= 1.0 ;
+		}
+		if ( m_input.isJoyButtonPushing
+				( VirtualInput.joyDown, VirtualInput.joyStickUser1 ) )
+		{
+			dy += 1.0 ;
+		}
+
+		// 範囲クリップ
+		dx = Math.clamp( dx, -1.0, 1.0 ) ;
+		dy = Math.clamp( dy, -1.0, 1.0 ) ;
+
+		// 機体状態計算
+		double	pitch = m_vFieldSpeed.y + dy ;
+		double	yaw = Math.atan2
+						( m_vFieldSpeed.x * s_speedTurn,
+									s_speedBase ) / s_radYaw + dx ;
+		double	roll = dx ;
+		m_pitchPlane = m_pitchPlane * 0.9 + pitch * 0.1 ;
+		m_yawPlane = m_yawPlane * 0.9 + yaw * 0.1 ;
+		m_rollPlane = m_rollPlane * 0.9 + roll * 0.1 ;
+
+		dy += s_accelFall / s_speedTurn ;
+
+		// 速度加算
+		m_vFieldSpeed.x += dx * secDelta ;
+		m_vFieldSpeed.y += dy * secDelta ;
+
+		if ( m_vFieldSpeed.absolute() > 1.0 )
+		{
+			m_vFieldSpeed /= m_vFieldSpeed.absolute() ;
+		}
+	}
+
+	// 移動
+	void doMove( Scene scene, double secDelta )
+	{
+		if ( !m_alive )
+		{
+			return ;
+		}
+		m_vFieldPos += m_vFieldSpeed * (s_speedTurn * secDelta) ;
+		const Vector3d*	pPlayerPos = calcPlayerPos() ;
+
+		// 当たり判定
+		ulong	maskHitColliders = (1 << Collision.indexHit)
+									| (1 << Collision.indexUser0) ;
+		Collider.Result[]	hitReses = new Collider.Result[] ;
+		if ( scene.isHitAgainstSphere
+				( pPlayerPos, s_radiusPlayer,
+					hitReses, 9, maskHitColliders ) )
+		{
+			for ( hr : hitReses )
+			{
+				onHit( hr ) ;
+				if ( !m_alive )
+				{
+					break ;
+				}
+			}
+		}
+
+		m_vLastPos := pPlayerPos ;
+	}
+
+	// 当たり処理
+	void onHit( Collider.Result hitRes )
+	{
+		if ( !m_alive )
+		{
+			return ;
+		}
+		if ( hitRes.htinf.maskColliders & (1 << Collision.indexHit) )
+		{
+			// 障害物
+			m_alive = false ;
+			getOwnerItem().setVisibleParameter( false ) ;
+
+			SceneComposition 	comp = m_itemBomb.createInstance() ;
+			const Vector3d*		pos = calcPlayerPos() ;
+			comp.setItemPositioin( pos ) ;
+
+			if ( m_itemBombSE != null )
+			{
+				SceneSoundItem.Instance	sound =
+					m_itemBombSE.createInstance
+						( SceneSoundItem.instanceAutoDeleteOnEnd,
+							1.0, null, null, pos ) ;
+				m_itemBombSE.playInstance( sound ) ;
+			}
+			m_input.addCommand( CmdGameOver ) ;
+			return ;
+		}
+		if ( hitRes.htinf.maskColliders & (1 << Collision.indexUser0) )
+		{
+			// チェックポイント
+			SceneItemInstanceRef	ref =
+				SceneItemInstanceRef( hitRes.item, hitRes.htinf.iInstance ) ;
+			ref.correctInstance() ;
+
+			Matrix4*		mat4 = Matrix4() ;
+			ColorMulAdd*	color = ColorMulAdd() ;
+			if ( ref.getInstanceMatrix( mat4, color ) )
+			{
+				SceneComposition 	comp = m_itemPassing.createInstance() ;
+				comp.setItemPositioin( Vector3d( mat4.getVector3() ) ) ;
+				comp.setItemRotation( Matrix3d( mat4.getMatrix3() )) ;
+
+				if ( m_itemCheckSE != null )
+				{
+					const Vector3d*		pos = Vector3d( mat4.getVector3() ) ;
+					SceneSoundItem.Instance	sound =
+						m_itemCheckSE.createInstance
+							( SceneSoundItem.instanceAutoDeleteOnEnd,
+								1.0, null, null, pos ) ;
+					m_itemCheckSE.playInstance( sound ) ;
+				}
+			}
+			ref.deleteInstance() ;
+
+			addScore( 2000 ) ;
+			return ;
+		}
+	}
+
+	// カメラ座標を設定
+	void setCameraPos()
+	{
+		Vector3d*	vTargetPos =
+			Vector3d( m_vBasePos + m_matBaseDir
+						* Vector3d( m_vFieldPos.x * 0.5, m_vFieldPos.y * 0.5, 0 ) ) ;
+		m_camera.setCameraTarget( vTargetPos ) ;
+		m_camera.setCameraPosition
+				( Vector3d( vTargetPos + m_matBaseDir * s_vCameraView ) ) ;
+	}
+
+	// 自機の位置・姿勢を設定
+	void setPlayerPos()
+	{
+		SceneItem	item = getOwnerItem() ;
+
+		// 座標
+		item.setItemPositioin( calcPlayerPos() ) ;
+
+		// 姿勢
+		double	radX = m_pitchPlane * s_radPitch ;
+		double	radY = m_yawPlane * s_radYaw ;
+		double	radZ = m_rollPlane * s_radRoll ;
+
+		Matrix3d*	matRoll = Matrix3d( 1, 1, 1 ) ;
+		matRoll.rotateOnX( Math.sin(radX), Math.cos(radX) ) ;
+		matRoll.rotateOnY( Math.sin(radY), Math.cos(radY) ) ;
+		matRoll.rotateOnZ( Math.sin(radZ), Math.cos(radZ) ) ;
+
+		item.setItemRotation( Matrix3d( m_matBaseDir * matRoll ) ) ;
+	}
+
+	// 自機の座標（グローバル）を計算
+	const Vector3d* calcPlayerPos() const
+	{
+		return	Vector3d( m_vBasePos + m_matBaseDir
+							* Vector3d( m_vFieldPos.x, m_vFieldPos.y, 0 ) ) ;
+	}
+
+	// スコア加算
+	void addScore( ulong score )
+	{
+		m_status.m_score += score ;
+		m_status.m_hiscore = Math.max( m_status.m_hiscore, m_status.m_score ) ;
+		outputLog( "score = " + m_status.m_score + "\n" ) ;
+		notifyStatus() ;
+	}
+
+	// ステータス更新通知
+	void notifyStatus()
+	{
+		m_input.addCommand( CmdNotifyStatus ) ;
+	}
+
+	// ログ出力
+	void outputLog( String log )
+	{
+		SceneItem	item = getOwnerItem() ;
+		if ( item != null )
+		{
+			SceneComposer	composer = item.getComposer() ;
+			if ( composer != null )
+			{
+				composer.outputLog( log ) ;
+			}
+		}
+	}
+
+	// レンダリングイベント
+	@override
+	public void onRenderEvent
+		( Scene scene, Scene.ItemClass clsItem, SceneItem item )
+	{
+		if ( clsItem == Scene.classPreRender )
+		{
+			// コース表示用メッシュを設定
+			if ( m_itemMeshCourse != null )
+			{
+				VertexBuffer[]	vbs = m_itemMeshCourse.lockMeshBuffer() ;
+				try
+				{
+					if ( (m_meshCourse != null)
+						&& (m_meshCourse.m_nVertex > 0)
+						&& (sizeof(vbs) >= 1) && (vbs[0] != null) )
+					{
+						vbs[0].addIndexedPrimitive
+							( null, 0, PrimitiveType.Triangle,
+								m_meshCourse.m_nIndex, m_meshCourse.m_nVertex,
+								m_meshCourse.m_pVertex, null,
+								null, null, m_meshCourse.m_pIndex ) ;
+					}
+					if ( (m_meshLine != null)
+						&& (m_meshLine.m_nVertex > 0)
+						&& (sizeof(vbs) >= 2) && (vbs[1] != null) )
+					{
+						vbs[1].addIndexedPrimitive
+							( null, 0, PrimitiveType.Triangle,
+								m_meshLine.m_nIndex, m_meshLine.m_nVertex,
+								m_meshLine.m_pVertex, null,
+								null, null, m_meshLine.m_pIndex ) ;
+					}
+				}
+				finally
+				{
+					m_itemMeshCourse.unlockMeshBuffer() ;
+				}
+			}
+		}
+	}
+
+	// コース・メッシュ生成
+	void buildMeshCourse()
+	{
+		m_meshCourse.clear() ;
+		m_meshLine.clear() ;
+
+		for ( uint i = 1; i < sizeof(m_course); i ++ )
+		{
+			addMeshCourse( m_course[i], m_course[i - 1] ) ;
+		}
+	}
+
+	void addMeshCourse( const Segment segAdd, const Segment segLast )
+	{
+		addMeshCourseTube
+			( m_meshCourse,
+				segLast, segLast.m_length,
+				segAdd, segAdd.m_length - s_zLineThickness ) ;
+		addMeshCourseTube
+			( m_meshLine,
+				segAdd, segAdd.m_length - s_zLineThickness,
+				segAdd, segAdd.m_length ) ;
+	}
+
+	void addMeshCourseTube
+		( Mesh mesh, const Segment seg0, double z0,
+							const Segment seg1, double z1 )
+	{
+		const uint	iVertex = mesh.m_nVertex ;
+		addMeshCourseLineVertex( mesh, seg0, z0 ) ;
+		addMeshCourseLineVertex( mesh, seg1, z1 ) ;
+		addMeshCourseTubeIndex( mesh, iVertex ) ;
+	}
+
+	void addMeshCourseLineVertex( Mesh mesh, const Segment seg, double zPos )
+	{
+		Vector4*	pVertex = mesh.allocVertex( s_CourseCorners ) ;
+		Vector3d*	vOffset = Vector3d( seg.m_vPos
+										+ seg.m_matDir
+											* Vector3d( 0, 0, zPos ) ) ;
+		seg.m_matDir.transformVectors
+			( pVertex, s_vCourseVertex, s_CourseCorners, vOffset ) ;
+	}
+
+	void addMeshCourseTubeIndex( Mesh mesh, uint index0 )
+	{
+		uint*	pIndex = mesh.allocIndex( s_CourseCorners * 6 ) ;
+		uint	index1 = index0 + s_CourseCorners ;
+		for ( uint i = 0; i < s_CourseCorners; i ++ )
+		{
+			uint	index_1 = (i + 1) % s_CourseCorners ;
+			uint	index00 = index0 + i ;
+			uint	index01 = index0 + index_1 ;
+			uint	index10 = index1 + i ;
+			uint	index11 = index1 + index_1 ;
+			pIndex[0] = index00 ;
+			pIndex[1] = index01 ;
+			pIndex[2] = index11 ;
+			pIndex[3] = index00 ;
+			pIndex[4] = index11 ;
+			pIndex[5] = index10 ;
+			pIndex += 6 ;
+		}
+	}
+
+	// 障害物生成
+	void makeObstacleItems( Segment seg, const ObstacleInfo* obinf )
+	{
+		if ( m_itemBox != null )
+		{
+			m_itemBox.lockInstancing() ;
+			try
+			{
+				seg.m_refItems = new SceneItemInstanceRef[] ;
+				for ( uint y = 0; y < s_CourseHeight; y ++ )
+				{
+					uint8	bitTest = (uint8) (1 << s_CourseWith) ;
+					for ( uint x = 0; x < s_CourseWith; x ++ )
+					{
+						bitTest >>= 1 ;
+						if ( obinf.mask[y] & bitTest )
+						{
+							Matrix3*		mat3 = Matrix3( seg.m_matDir ) ;
+							Vector3*		pos = calcObstaclePos( seg, x, y ) ;
+							Matrix4*		mat4Instance = Matrix4( mat3, pos ) ;
+							ColorMulAdd*	clrInstance = ColorMulAdd() ;
+
+							ulong	iInstance = m_itemBox.getStaticInstanceCount() ;
+							m_itemBox.insertStaticInstanceAt
+										( iInstance, mat4Instance, clrInstance ) ;
+
+							seg.m_refItems.add
+								( SceneItemInstanceRef( m_itemBox, iInstance ) ) ;
+						}
+					}
+				}
+			}
+			finally
+			{
+				m_itemBox.unlockInstancing() ;
+			}
+		}
+
+		if ( m_itemCheckPoint != null )
+		{
+			m_itemCheckPoint.lockInstancing() ;
+			try
+			{
+				for ( uint i = 0; i < obinf.count; i ++ )
+				{
+					if ( Math.random( 1.0 ) > obinf.probability )
+					{
+						continue ;
+					}
+					Matrix3*		mat3 = Matrix3( seg.m_matDir ) ;
+					Vector3*		pos = calcObstaclePos
+											( seg, obinf.points[i].x,
+													obinf.points[i].y ) ;
+					Matrix4*		mat4Instance = Matrix4( mat3, pos ) ;
+					ColorMulAdd*	clrInstance = ColorMulAdd() ;
+
+					ulong	iInstance = m_itemCheckPoint.getStaticInstanceCount() ;
+					m_itemCheckPoint.insertStaticInstanceAt
+								( iInstance, mat4Instance, clrInstance ) ;
+
+					SceneItemInstanceRef	ref =
+						SceneItemInstanceRef( m_itemCheckPoint, iInstance ) ;
+					seg.m_refItems.add( ref ) ;
+				}
+			}
+			finally
+			{
+				m_itemCheckPoint.unlockInstancing() ;
+			}
+		}
+	}
+
+	Vector3* calcObstaclePos( Segment seg, double x, double y )
+	{
+		const double	xBox = (x - s_CourseWith * 0.5 + 0.5) * s_CubeSize ;
+		const double	yBox = (y - s_CourseHeight * 0.5 + 0.5) * s_CubeSize ;
+		const double	zBox = seg.m_length * 0.5 ;
+		return	Vector3( seg.m_vPos
+							+ seg.m_matDir * Vector3d( xBox, yBox, zBox ) ) ;
+	}
+}
+
+
+// コントローラー登録
+SceneManager.getCurrent().setControllerClass
+	( PlayerController.s_TypeID, PlayerController ) ;
+
+// エディタメニューに追加
+SceneManager.getCurrent().addPluginMenu
+	( SceneManager.pluginTypeController,
+		"AvoidFlight\\Player", PlayerController.s_TypeID,
+		function( const SceneManager.EditorEnvironment* env ) : SceneProperty
+		{
+			return	PlayerController() ;
+		}, null ) ;
+
+
+
+

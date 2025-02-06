@@ -1,0 +1,81 @@
+﻿
+using namespace EntisGLS4 ;
+
+class	FlyThroughController	extends SceneCustomController
+{
+	// タイプ ID
+	public static const String	s_TypeID = "avfl_fly_through" ;
+
+	// 編集モードフラグ
+	boolean			m_editMode = true ;
+
+	// <name>移動方向</name>
+	// <sub_type>direction</sub_type>
+	public Vector3d	m_vDirection = { 0, 0, 1 } ;
+
+	// <name>移動速度</name>
+	public double	m_mpsSpeed ;
+
+
+	// FlyThroughController 構築
+	public FlyThroughController()
+		: SceneCustomController( s_TypeID )
+	{
+		// onTimer イベントを有効化
+		modifyBehaviorFlags( behaviorOnTimer ) ;
+	}
+
+	// 拡張的な処理の通知
+	@override
+	public void onExtendNotify
+		( String cmd, String param, const void* pExParam, ulong nExParamBytes )
+	{
+		if ( cmd == SceneNotifyCommand.InitializeItem )
+		{
+			m_editMode = isEditMode() ;
+		}
+	}
+
+	// タイマー処理
+	@override
+	public void onTimer
+		( Scene scene, SceneItem item, uint32 msecDelta )
+	{
+		if ( !m_editMode && (msecDelta > 0) )
+		{
+			double	secDelta = msecDelta / 1000.0 ;
+
+			if ( item instanceof SceneCamera )
+			{
+				Vector3d*	vMoveDelta =
+					Vector3d( m_vDirection * (m_mpsSpeed * secDelta) ) ;
+
+				SceneCamera	camera = (SceneCamera) item ;
+				camera.setCameraPosition
+					( Vector3d( camera.getCameraPosition() + vMoveDelta ) ) ;
+				camera.setCameraTarget
+					( Vector3d( camera.getCameraTarget() + vMoveDelta ) ) ;
+
+				scene.postSceneUpdate() ;
+			}
+		}
+	}
+
+}
+
+
+// コントローラー登録
+SceneManager.getCurrent().setControllerClass
+	( FlyThroughController.s_TypeID, FlyThroughController ) ;
+
+// エディタメニューに追加
+SceneManager.getCurrent().addPluginMenu
+	( SceneManager.pluginTypeController,
+		"AvoidFlight\\Fly Through", FlyThroughController.s_TypeID,
+		function( const SceneManager.EditorEnvironment* env ) : SceneProperty
+		{
+			return	FlyThroughController() ;
+		}, null ) ;
+
+
+

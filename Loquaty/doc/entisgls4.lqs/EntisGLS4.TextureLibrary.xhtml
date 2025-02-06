@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.TextureLibrary</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.TextureLibrary</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class TextureLibrary ;</div>
+<div class="normal">
+テクスチャ画像ライブラリ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.TextureLibrary.xhtml">EntisGLS4.TextureLibrary</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_TextureLibrary">TextureLibrary</a><br/>
+	<a href="#virtual_addReferenceLibrary">addReferenceLibrary</a><br/>
+	<a href="#virtual_addTextureAs">addTextureAs</a><br/>
+	<a href="#virtual_commitToDevice">commitToDevice</a><br/>
+	<a href="#virtual_detachAllReferenceLibraries">detachAllReferenceLibraries</a><br/>
+	<a href="#virtual_detachReferenceLibraryAt">detachReferenceLibraryAt</a><br/>
+	<a href="#virtual_detachReferenceLibraryOf">detachReferenceLibraryOf</a><br/>
+	<a href="#virtual_findTexture">findTexture</a><br/>
+	<a href="#virtual_getParentLibrary">getParentLibrary</a><br/>
+	<a href="#virtual_getReferenceLibraryAt">getReferenceLibraryAt</a><br/>
+	<a href="#virtual_getReferenceLibraryCount">getReferenceLibraryCount</a><br/>
+	<a href="#virtual_getTextureAs">getTextureAs</a><br/>
+	<a href="#virtual_getTextureAt">getTextureAt</a><br/>
+	<a href="#virtual_getTextureCount">getTextureCount</a><br/>
+	<a href="#virtual_getTextureIdentityAt">getTextureIdentityAt</a><br/>
+	<a href="#virtual_getTextureIdentityOf">getTextureIdentityOf</a><br/>
+	<a href="#virtual_releaseAllDeviceResources">releaseAllDeviceResources</a><br/>
+	<a href="#virtual_removeAllTextures">removeAllTextures</a><br/>
+	<a href="#virtual_removeTextureAs">removeTextureAs</a><br/>
+	<a href="#virtual_setParentLibrary">setParentLibrary</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_TextureLibrary"/>
+<div class="headline">TextureLibrary</div>
+<div class="usage">public native TextureLibrary( )</div>
+<div class="normal">
+TextureLibrary 構築<br/></div>
+<br/>
+
+<a name="virtual_addReferenceLibrary"/>
+<div class="headline">addReferenceLibrary</div>
+<div class="usage">public native ulong addReferenceLibrary( EntisGLS4.TextureLibrary lib )</div>
+<div class="normal">
+参照ライブラリを追加する<br/></div>
+<br/>
+
+<a name="virtual_addTextureAs"/>
+<div class="headline">addTextureAs</div>
+<div class="usage">public native boolean addTextureAs( String id, EntisGLS4.Image texture )</div>
+<div class="normal">
+画像登録</div>
+<br/>
+<div class="indent1">
+texture は TextureLibrary で参照を保持しないので呼び出し元で保持しておく必要があります。</div><br/>
+<br/>
+
+<a name="virtual_commitToDevice"/>
+<div class="headline">commitToDevice</div>
+<div class="usage">public native boolean commitToDevice( EntisGLS4.RenderDevice device, long msecTimeout = 0 )</div>
+<div class="normal">
+デバイスメモリ上に準備する<br/></div>
+<br/>
+
+<a name="virtual_detachAllReferenceLibraries"/>
+<div class="headline">detachAllReferenceLibraries</div>
+<div class="usage">public native void detachAllReferenceLibraries( )</div>
+<div class="normal">
+全ての参照ライブラリを解除する<br/></div>
+<br/>
+
+<a name="virtual_detachReferenceLibraryAt"/>
+<div class="headline">detachReferenceLibraryAt</div>
+<div class="usage">public native void detachReferenceLibraryAt( ulong index )</div>
+<div class="normal">
+参照ライブラリを解除する<br/></div>
+<br/>
+
+<a name="virtual_detachReferenceLibraryOf"/>
+<div class="headline">detachReferenceLibraryOf</div>
+<div class="usage">public native void detachReferenceLibraryOf( EntisGLS4.TextureLibrary lib )</div>
+<div class="normal">
+参照ライブラリを解除する<br/></div>
+<br/>
+
+<a name="virtual_findTexture"/>
+<div class="headline">findTexture</div>
+<div class="usage">public native long findTexture( EntisGLS4.Image image ) const</div>
+<div class="normal">
+画像検索<br/></div>
+<br/>
+
+<a name="virtual_getParentLibrary"/>
+<div class="headline">getParentLibrary</div>
+<div class="usage">public native EntisGLS4.TextureLibrary getParentLibrary( ) const</div>
+<div class="normal">
+親ライブラリを取得する<br/></div>
+<br/>
+
+<a name="virtual_getReferenceLibraryAt"/>
+<div class="headline">getReferenceLibraryAt</div>
+<div class="usage">public native EntisGLS4.TextureLibrary getReferenceLibraryAt( ulong index ) const</div>
+<div class="normal">
+参照ライブラリを取得する<br/></div>
+<br/>
+
+<a name="virtual_getReferenceLibraryCount"/>
+<div class="headline">getReferenceLibraryCount</div>
+<div class="usage">public native ulong getReferenceLibraryCount( ) const</div>
+<div class="normal">
+参照ライブラリ数を取得する<br/></div>
+<br/>
+
+<a name="virtual_getTextureAs"/>
+<div class="headline">getTextureAs</div>
+<div class="usage">public native EntisGLS4.Image getTextureAs( String id, boolean noRefOther = false ) const</div>
+<div class="normal">
+画像取得<br/></div>
+<br/>
+
+<a name="virtual_getTextureAt"/>
+<div class="headline">getTextureAt</div>
+<div class="usage">public native EntisGLS4.Image getTextureAt( ulong index ) const</div>
+<div class="normal">
+画像取得<br/></div>
+<br/>
+
+<a name="virtual_getTextureCount"/>
+<div class="headline">getTextureCount</div>
+<div class="usage">public native ulong getTextureCount( ) const</div>
+<div class="normal">
+登録数取得<br/></div>
+<br/>
+
+<a name="virtual_getTextureIdentityAt"/>
+<div class="headline">getTextureIdentityAt</div>
+<div class="usage">public native String getTextureIdentityAt( ulong index ) const</div>
+<div class="normal">
+登録名取得<br/></div>
+<br/>
+
+<a name="virtual_getTextureIdentityOf"/>
+<div class="headline">getTextureIdentityOf</div>
+<div class="usage">public native String getTextureIdentityOf( EntisGLS4.Image image ) const</div>
+<div class="normal">
+登録名取得<br/></div>
+<br/>
+
+<a name="virtual_releaseAllDeviceResources"/>
+<div class="headline">releaseAllDeviceResources</div>
+<div class="usage">public native boolean releaseAllDeviceResources( )</div>
+<div class="normal">
+デバイス上リソースを開放する<br/></div>
+<br/>
+
+<a name="virtual_removeAllTextures"/>
+<div class="headline">removeAllTextures</div>
+<div class="usage">public native void removeAllTextures( )</div>
+<div class="normal">
+全登録削除<br/></div>
+<br/>
+
+<a name="virtual_removeTextureAs"/>
+<div class="headline">removeTextureAs</div>
+<div class="usage">public native boolean removeTextureAs( String id )</div>
+<div class="normal">
+登録削除<br/></div>
+<br/>
+
+<a name="virtual_setParentLibrary"/>
+<div class="headline">setParentLibrary</div>
+<div class="usage">public native void setParentLibrary( EntisGLS4.TextureLibrary lib )</div>
+<div class="normal">
+親ライブラリを設定する<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

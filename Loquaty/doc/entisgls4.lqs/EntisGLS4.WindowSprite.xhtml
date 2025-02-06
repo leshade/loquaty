@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.WindowSprite</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.WindowSprite</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class WindowSprite ;</div>
+<div class="normal">
+Sprite ウィンドウ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Sprite.xhtml">EntisGLS4.Sprite</a>
+<div class="indent1"><a href="EntisGLS4.WindowSprite.xhtml">EntisGLS4.WindowSprite</a>
+</div></div></div></div><br/>
+
+<div class="headline">Implement Classes</div>
+<div class="indent1"><a href="EntisGLS4.Window.xhtml">EntisGLS4.Window</a></div>
+<br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_WindowSprite">WindowSprite</a><br/>
+	<a href="#virtual_enableSpriteTimer">enableSpriteTimer</a><br/>
+	<a href="#virtual_getDirectRoot">getDirectRoot</a><br/>
+	<a href="#virtual_postUpdate">postUpdate</a><br/>
+	<a href="#virtual_setAutoHideCursor">setAutoHideCursor</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_WindowSprite"/>
+<div class="headline">WindowSprite</div>
+<div class="usage">public native WindowSprite( )</div>
+<div class="normal">
+WindowSprite 構築<br/></div>
+<br/>
+
+<a name="virtual_enableSpriteTimer"/>
+<div class="headline">enableSpriteTimer</div>
+<div class="usage">public native void enableSpriteTimer( boolean flagTimer )</div>
+<div class="normal">
+Sprite タイマ処理の有効／無効化<br/></div>
+<br/>
+
+<a name="virtual_getDirectRoot"/>
+<div class="headline">getDirectRoot</div>
+<div class="usage">public native EntisGLS4.Sprite getDirectRoot( ) const</div>
+<div class="normal">
+直接描画系ルート Sprite 取得</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+直接描画系のルート Sprite</div>
+</div>
+<div class="indent1">
+直接描画系 Sprite は疑似ディスプレイの座標空間ではなく、実ディスプレイの座標空間・ピクセル密度で表示されます。<br/>※疑似ディスプレイはフルスクリーンや、ウィンドウモードでウィンドウサイズが変更された場合、自動的に伸縮描画されることに注意してください。</div><br/>
+<br/>
+
+<a name="virtual_postUpdate"/>
+<div class="headline">postUpdate</div>
+<div class="usage">public native boolean postUpdate( const ImageRect* pUpdate = null )</div>
+<div class="normal">
+画面の更新通知<br/></div>
+<br/>
+
+<a name="virtual_setAutoHideCursor"/>
+<div class="headline">setAutoHideCursor</div>
+<div class="usage">public native void setAutoHideCursor( long msecTimeout )</div>
+<div class="normal">
+自動カーソル消去時間設定（-1 で自動消去無し）<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

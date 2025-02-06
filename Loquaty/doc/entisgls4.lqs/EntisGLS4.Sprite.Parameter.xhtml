@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Sprite.Parameter</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Sprite.Parameter</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct Parameter<br/>
+{<br/>
+&nbsp; &nbsp; EntisGLS4.PaintParam.PaintFlag&nbsp; &nbsp; nFlags ;<br/>
+&nbsp; &nbsp; EntisGLS4.Sprite.SpriteFlag&nbsp; &nbsp; nSpriteFlags ;<br/>
+&nbsp; &nbsp; Vector3d&nbsp; &nbsp; vDst ;<br/>
+&nbsp; &nbsp; Vector2d&nbsp; &nbsp; vCenter ;<br/>
+&nbsp; &nbsp; Vector2d&nbsp; &nbsp; vZoom ;<br/>
+&nbsp; &nbsp; double&nbsp; &nbsp; zAngle ;<br/>
+&nbsp; &nbsp; double&nbsp; &nbsp; xyCross ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; nTransparency ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; paramFilter ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; paramFilter2 ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbColorParam ;<br/>
+}</div>
+<div class="normal">
+表示パラメータ構造体<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.Sprite.Parameter.xhtml">EntisGLS4.Sprite.Parameter</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_nFlags">nFlags</a><br/>
+	<a href="#member_nSpriteFlags">nSpriteFlags</a><br/>
+	<a href="#member_vDst">vDst</a><br/>
+	<a href="#member_vCenter">vCenter</a><br/>
+	<a href="#member_vZoom">vZoom</a><br/>
+	<a href="#member_zAngle">zAngle</a><br/>
+	<a href="#member_xyCross">xyCross</a><br/>
+	<a href="#member_nTransparency">nTransparency</a><br/>
+	<a href="#member_paramFilter">paramFilter</a><br/>
+	<a href="#member_paramFilter2">paramFilter2</a><br/>
+	<a href="#member_rgbColorParam">rgbColorParam</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_nFlags"/>
+<div class="headline">nFlags</div>
+<div class="usage">public EntisGLS4.PaintParam.PaintFlag&#9; nFlags = 16</div>
+<div class="normal">
+描画フラグの組み合わせ<br/></div>
+<br/>
+<a name="member_nSpriteFlags"/>
+<div class="headline">nSpriteFlags</div>
+<div class="usage">public EntisGLS4.Sprite.SpriteFlag&#9; nSpriteFlags = 0</div>
+<div class="normal">
+スプライトフラグ<br/></div>
+<br/>
+<a name="member_vDst"/>
+<div class="headline">vDst</div>
+<div class="usage">public Vector3d&#9; vDst = {x: 0.,y: 0.,z: 0.}</div>
+<div class="normal">
+表示座標<br/></div>
+<br/>
+<a name="member_vCenter"/>
+<div class="headline">vCenter</div>
+<div class="usage">public Vector2d&#9; vCenter = {x: 0.,y: 0.}</div>
+<div class="normal">
+ソース画像の中心座標<br/></div>
+<br/>
+<a name="member_vZoom"/>
+<div class="headline">vZoom</div>
+<div class="usage">public Vector2d&#9; vZoom = {x: 1.,y: 1.}</div>
+<div class="normal">
+拡大率<br/></div>
+<br/>
+<a name="member_zAngle"/>
+<div class="headline">zAngle</div>
+<div class="usage">public double&#9; zAngle = 0.</div>
+<div class="normal">
+回転角 [deg]<br/></div>
+<br/>
+<a name="member_xyCross"/>
+<div class="headline">xyCross</div>
+<div class="usage">public double&#9; xyCross = 90.</div>
+<div class="normal">
+ｘｙ軸交差角度 [deg]<br/></div>
+<br/>
+<a name="member_nTransparency"/>
+<div class="headline">nTransparency</div>
+<div class="usage">public uint&#9; nTransparency = 0</div>
+<div class="normal">
+透明度 [0,256]<br/></div>
+<br/>
+<a name="member_paramFilter"/>
+<div class="headline">paramFilter</div>
+<div class="usage">public int&#9; paramFilter = 0</div>
+<div class="normal">
+フィルター進行度パラメータ<br/></div>
+<br/>
+<a name="member_paramFilter2"/>
+<div class="headline">paramFilter2</div>
+<div class="usage">public int&#9; paramFilter2 = 0</div>
+<div class="normal">
+フィルター進行度パラメータ２<br/></div>
+<br/>
+<a name="member_rgbColorParam"/>
+<div class="headline">rgbColorParam</div>
+<div class="usage">public ARGB8&#9; rgbColorParam = {b: 0,g: 0,r: 0,a: 0}</div>
+<div class="normal">
+色パラメータ<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

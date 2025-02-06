@@ -1,0 +1,1064 @@
+﻿
+namespace	EntisGLS4
+{
+	class	SpriteFilter ;
+	class	SpriteTimer ;
+	class	SpriteMouseListener ;
+	class	SpriteKeyListener ;
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// スプライト
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Sprite	extends NativeObject
+	{
+		// スプライトフラグ
+		enum using SpriteFlag<uint>
+		{
+			// スプライトフラグ：ｚ座標によって透視変換と拡大縮小を行い、疑似的な３Ｄ表示を行う
+			flagZScale	= 0x0001,
+		}
+
+		// 表示パラメータ構造体
+		struct	Parameter
+		{
+			// 描画フラグの組み合わせ
+			PaintParam.PaintFlag	nFlags = PaintParam.flagSmoothStretch ;
+
+			// スプライトフラグ
+			SpriteFlag		nSpriteFlags ;
+
+			// 表示座標
+			Vector3d		vDst ;
+
+			// ソース画像の中心座標
+			Vector2d		vCenter ;
+
+			// 拡大率
+			Vector2d		vZoom = { 1, 1 } ;
+
+			// 回転角 [deg]
+			double			zAngle ;
+
+			// ｘｙ軸交差角度 [deg]
+			double			xyCross = 90.0 ;
+
+			// 透明度 [0,256]
+			uint32			nTransparency ;
+
+			// フィルター進行度パラメータ
+			int32			paramFilter ;
+			// フィルター進行度パラメータ２
+			int32			paramFilter2 ;
+
+			// 色パラメータ
+			ARGB8			rgbColorParam ;
+		}
+
+		struct	Virtual3DParam
+		{
+			Vector3		vProjectScreen ;
+			float		zProjectScale ;
+			float		fpPixelAspect ;
+			float		xParallax ;
+			float		zParallaxFocus ;
+			float		xParallaxScreen ;
+			Vector3d	vCameraView ;
+			Vector3d	vCameraTarget ;
+		}
+
+		// UI 動作フラグ
+		enum using UIFlag<ulong>
+		{
+			// UI 動作フラグ：すべての入力を禁止
+			uiDisabled				= 0x00000001,
+			// UI 動作フラグ：キー入力禁止
+			uiDisabledKeyInput		= 0x00000002,
+			// UI 動作フラグ：マウスホイール入力禁止
+			uiDisabledMouseWheel	= 0x00000004,
+			// UI 動作フラグ：キー入力フォーカスを持っている
+			uiHaveFocus				= 0x00000010,
+			// UI 動作フラグ：キー入力フォーカスを持つことが可能
+			uiFocusable				= 0x00000020,
+			// UI 動作フラグ：クリックできない
+			uiUnclickable			= 0x00000040,
+			// UI 動作フラグ：キー入力によるフォーカス移動禁止
+			uiNoMoveFocusByKey		= 0x00000080,
+			// UI 動作フラグ：グループ・メンバー・フラグ
+			uiGroupMember			= 0x00000100,
+			// UI 動作フラグ：モーダル入力を受け付けるはじめの Sprite
+			uiModalFirst			= 0x00000200,
+			// UI 動作フラグ：モーダル入力を受け付ける最後の Sprite
+			uiModalEnd				= 0x00000400,
+		}
+
+		// Sprite 構築
+		public native Sprite() ;
+		// 複製
+		public native Sprite duplicate() ;
+
+		// 表示パラメータ取得
+		public native const Parameter* getParameter() const ;
+		// 描画フラグ取得
+		public native PaintParam.PaintFlag getDrawParamFlags() const ;
+		// スプライト処理フラグ取得（EntisGLS4.Sprite.flag～）
+		public native SpriteFlag getSpriteFlags() const ;
+		// 座標取得
+		public native const Vector3d* getPosition() const ;
+		public native const Vector2d* getPosition2D() const ;
+		// 中心座標取得
+		public native const Vector2d* getCenterPosition() const ;
+		public native const Vector2d* getImageCenter() const ;
+		// 拡大率取得
+		public native const Vector2d* getZoom() const ;
+		// 回転角取得
+		public native double getRotation() const ;
+		// 透明度取得
+		public native uint32 getTransparency() const ;
+		// フィルタパラメータ取得
+		public native int32 getFilterParameter() const ;
+		public native int32 getFilter2Parameter() const ;
+
+		// 表示パラメータ設定
+		public native void setParameter( const Parameter* param ) ;
+		// 描画フラグ変更
+		public native void modifyDrawFlags
+			( PaintParam.PaintFlag nAddFlags, PaintParam.PaintFlag nRemoveFlags = 0 ) ;
+		// スプライト処理フラグ変更（EntisGLS4.Sprite.flag～）
+		public native void modifySpriteFlags
+			( SpriteFlag nAddFlags, SpriteFlag nRemoveFlags = 0 ) ;
+		// 座標設定
+		public native void setPosition( double x, double y ) ;
+		// 座標設定
+		public native void setPosition3D( double x, double y, double z ) ;
+		// 座標設定
+		public native void setPosition3D( const Vector3d* vPos ) ;
+		// 中心座標設定
+		public native void setCenterPosition( double x, double y ) ;
+		// 拡大率設定
+		public native void setZoom( double x, double y ) ;
+		// 回転角設定
+		public native void setRotation( double zAngle ) ;
+		// 透明度設定
+		public native void setTransparency
+			( uint32 transparency /* 透明度 [0, 0x100] */ ) ;
+		// フィルタパラメータ設定
+		public native void setFilterParameter( int32 paramFilter ) ;
+		public native void setFilter2Parameter( int32 paramFilter ) ;
+
+		// UI フラグ取得（EntisGLS4.Sprite.ui～）
+		public native UIFlag getUIFlag( void ) const ;
+		// UI フラグ変更（EntisGLS4.Sprite.ui～）
+		public native ulong modifyUIFlag
+			( UIFlag nAddFlags, UIFlag nRemoveFlags = 0 ) ;
+		// ヒット領域取得
+		public native const ImageRect* getClickableRect() const ;
+		// ヒット領域設定
+		public native void setClickableRect( const ImageRect* rect ) ;
+		// 表示フラグ取得
+		public native boolean isVisible() const ;
+		// 表示フラグ設定
+		public native void setVisible( boolean visible ) ;
+		// 表示優先度取得（数値が大きいほうが奥）
+		public native int32 getPriority() const ;
+		// 表示優先度変更
+		public native void changePriority
+			( int32 priority /* 表示優先度（数値が大きいほうが奥） */ ) ;
+		// 識別子取得
+		public native String getID() const ;
+		// 識別子設定
+		public native void setID( String id ) ;
+
+		// 外接矩形取得
+		public native boolean getRectangle
+			( ImageRect* rectExt /* 外接矩形を受け取る ImageRect 構造体 */ ) const ;
+
+		// ローカル座標からグローバル座標へ変換
+		public native boolean localToGlobal
+			( Vector2d* vPos /* 呼び出し時にローカル座標を保持し、グローバル座標を受け取る Vector2 構造体 */ ) const ;
+		// グローバル座標からローカル座標へ変換
+		public native boolean globalToLocal
+			( Vector2d* vPos /* 呼び出し時にグローバル座標を保持し、ローカル座標を受け取る Vector2 構造体 */ ) const ;
+
+		// 更新領域通知
+		public native void postUpdate( ImageRect* pUpdate = null ) ;
+		// 更新領域状態取得
+		public native boolean hasUpdate() const ;
+
+		// フレームバッファ更新一時停止
+		public native void freezeFrameUpdate() ;
+
+		// フレームバッファ更新一時停止解除
+		// <return>true の場合、一時停止が解除された</return>
+		// <desc>freezeFrameUpdate と同じ回数だけ呼び出す必要があります。</desc>
+		public native boolean defrostFrameUpdate() ;
+
+		// 子スプライト追加
+		// <desc>※追加された Sprite は親スプライトで所有権を持たないので
+		//  removeChild するか親 Sprite が破棄されるまで、呼び出し元で
+		// 保持しておく必要があります。</desc>
+		public native void addChild( Sprite sprite ) ;
+		// 子スプライト削除
+		public native boolean removeChild( Sprite sprite ) ;
+		// 全子スプライト削除
+		public native void removeAllChildren() ;
+
+		// 子スプライト数取得
+		public native ulong getChildCount() const ;
+		// 子スプライト取得
+		public native Sprite getChildAt( ulong index ) const ;
+
+		// 親スプライト取得
+		public native Sprite getParent() const ;
+		// 指定アイテム取得
+		public native Sprite getItemAs
+			( String id /* 子アイテム ID (孫アイテム以下は \ で区切って指定) */ ) const ;
+		// ヒットアイテム検索
+		public native Sprite getHitSpriteAt
+			( Vector2d* vPos /* ヒットする Sprite を探すローカル座標を渡し、Sprite がヒットしたときにはヒットした Sprite のローカル座標を受け取る Vector2d */ ) const ;
+		// ヒット判定
+		public native boolean isHitSprite( double x, double y ) const ;
+
+		// 画像ファイル読み込み
+		public native boolean loadImage( String path ) ;
+		// アニメーション関連付け
+		public native void attachAnimation
+				( Image image, const ImageRect* pClip = null ) ;
+		// アニメーション開始
+		public native void beginAnimation
+			( long countLoop = -1,
+				ulong iLoopStart = 0, ulong iLoopEnd = 0,
+				ulong iStartFrame = 0, ulong msecDuration = 0 ) ;
+		// ループ設定変更
+		public native void setLoopAnimation
+			( long countLoop = -1,
+				ulong iLoopStart = 0, ulong iLoopEnd = 0 ) ;
+
+		// 画像関連付け
+		public native void attachImage
+			( Image image, Image leftImage = null ) ;
+
+		// 関連付けられた画像取得
+		public native Image getAttachedImage() const ;
+		// 関連付けられた画像（ステレオ立体視の左目用）取得
+		public native Image getAttachedLeftImage() const ;
+		// 関連付けられた画像サイズ取得
+		public native Size* getImageSize() const ;
+		// 関連付けられた画像情報取得
+		public native boolean getImageInfo( ImageInfo* imginf ) const ;
+
+		// バッファ生成
+		public native boolean createBuffer
+			( uint32 width, uint32 height,
+				uint32 format = formatImageDefaultRGBA,
+				uint32 depth = 32,
+				ulong nBufFlags = Image.bufferOnMemory,
+				boolean flagZBuffer = false, boolean flagStereo3D = false ) ;
+		// バッファ解放
+		public native void releaseBuffer() ;
+		// バッファを保持しているか？
+		public native boolean isBuffered() const ;
+		// レンダリングデバイスの設定
+		public native boolean setRenderDevice( RenderDevice device ) ;
+		// レンダリングデバイスの取得
+		public native RenderDevice getBufferRenderDevice() const ;
+		// 背景色取得
+		public native boolean getFillBackColor( uint32* argbFill ) const ;
+		// 背景色設定
+		public native boolean setFillBackColor
+			( uint32 argbFill, boolean flagFillBack = true ) ;
+
+		// フィルタ追加
+		public native void addFilter( SpriteFilter filter ) ;
+		// フィルタ削除
+		public native void removeFilter( SpriteFilter filter ) ;
+		public native void removeAllFilters() ;
+
+		// 文字列属性取得
+		public native String getText() const ;
+		// 文字列属性設定
+		public native void setText( String text ) ;
+		// 文字フォント属性設定
+		public native void setTextFont( String font, int size = 0 ) ;
+		// 入力禁止状態取得
+		// <return>false の時禁止状態</return>
+		public native boolean isEnabled() const ;
+		// 入力禁止状態設定
+		public native void setEnable
+			( boolean flagEnable /* true で入力有効、false で入力禁止 */ ) ;
+
+		// スクロール方向
+		enum using ScrollDirection
+		{
+			// スクロール方向：デフォルト
+			scrollDefault	= 0,
+			// スクロール方向：水平
+			scrollHorz,
+			// スクロール方向：垂直
+			scrollVert,
+		}
+
+		// スクロール・トラック位置属性取得
+		public native int getScrollPos
+			( ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// スクロール・トラック位置属性設定
+		public native void setScrollPos
+			( int nPos /* スクロール位置 */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// スクロール・トラック範囲属性取得
+		public native int getScrollRange
+			( ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// スクロール・トラック範囲属性設定
+		public native void setScrollRange
+			( int nRange /* スクロール範囲（最大値） */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// スクロール・ページサイズ属性取得
+		public native int getScrollPageSize
+			( ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// スクロール・ページサイズ属性設定
+		public native void setScrollPageSize
+			( int nPageSize /* ページサイズ */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// ボタンチェック属性取得
+		public native boolean isButtonChecked() ;
+		// ボタンチェック属性設定
+		public native void checkButton( boolean flagCheck ) ;
+		// コマンド処理
+		public native boolean invokeCommands
+			( String strXMLCommands /* xml 形式のコマンド */,
+				XMLDocument xmlResults = null /* 結果を受け取る XMLDocument */ ) ;
+		// スクロールバー関連付け
+		public native void attachScrollBar
+			( Sprite scrollBar /* スクロールバー */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// スクロールバー関連付け解除
+		public native void detachScrollBar
+			( Sprite scrollBar /* スクロールバー */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+
+		// 可視状態取得
+		public native boolean isSpriteVisible
+			( String id /* アイテム ID （getItemAs 参照） */ ) const ;
+		// 可視状態設定
+		public native void setSpriteVisible
+			( String id /* アイテム ID （getItemAs 参照） */,
+				boolean visible /* 可視状態 */ ) ;
+		// 表示優先度取得（数値が大きいほうが奥）
+		public native int getSpritePriority
+			( String id /* アイテム ID （getItemAs 参照） */ ) const ;
+		// 表示優先度変更
+		public native void changeSpritePriority
+			( String id /* アイテム ID （getItemAs 参照） */,
+				int32 priority /* 表示優先度（数値が大きいほうが奥） */ ) ;
+		// 透明度取得
+		public native uint32 getSpriteTransparency
+			( String id /* アイテム ID （getItemAs 参照） */ ) const ;
+		// 透明度設定
+		public native void setSpriteTransparency
+			( String id /* アイテム ID （getItemAs 参照） */,
+				uint32 transparency /* 透明度 [0, 0x100] */ ) ;
+		// 表示領域取得
+		public native boolean getSpriteRectangle
+			( String id /* アイテム ID （getItemAs 参照） */,
+				ImageRect* rectExt /* 表示領域外接矩形を受け取る ImageRect */ ) const ;
+		// テキスト表示領域取得
+		// <desc>テキストを表示する Sprite で、実際にテキストが表示される領域を取得します。</desc>
+		public native boolean getSpriteTextRectangle
+			( String id /* アイテム ID （getItemAs 参照） */,
+				ImageRect* rectExt /* 表示領域外接矩形を受け取る ImageRect */ ) const ;
+		// 文字列属性取得
+		public native String getSpriteText
+			( String id /* アイテム ID （getItemAs 参照） */ ) const ;
+		// 文字列属性設定
+		public native void setSpriteText
+			( String id /* アイテム ID （getItemAs 参照） */,
+				String text /* 設定する文字列 */ ) ;
+		// 文字フォント属性設定
+		public native void setSpriteTextFont
+			( String id /* アイテム ID （getItemAs 参照） */,
+				String font /* フォントフェース名 */,
+				int size = 0 /* フォントサイズ（ピクセル単位） */ ) ;
+		// 画像属性設定
+		public native void setSpriteImage
+			( String id /* アイテム ID （getItemAs 参照） */,
+				String imageID /* 設定する画像 ID */ ) ;
+		// 入力禁止状態取得
+		public native boolean isSpriteEnabled
+			( String id /* アイテム ID （getItemAs 参照） */ ) const ;
+		// 入力禁止状態設定
+		public native void setSpriteEnable
+			( String id /* アイテム ID （getItemAs 参照） */,
+				boolean flagEnable /* 入力有効フラグ（false で入力禁止） */ ) ;
+		// スクロール・トラック位置属性取得
+		public native int getSpriteScrollPos
+			( String id /* アイテム ID （getItemAs 参照） */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) const ;
+		// スクロール・トラック位置属性設定
+		public native void setSpriteScrollPos
+			( String id /* アイテム ID （getItemAs 参照） */,
+				int nPos /* スクロール位置 */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// スクロール・トラック位置範囲属性取得
+		public native int getSpriteScrollRange
+			( String id /* アイテム ID （getItemAs 参照） */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) const ;
+		// スクロール・トラック位置範囲属性設定
+		public native void setSpriteScrollRange
+			( String id /* アイテム ID （getItemAs 参照） */,
+				int nRange /* スクロール範囲（最大値） */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// スクロール・ページサイズ属性取得
+		public native int getSpriteScrollPageSize
+			( String id /* アイテム ID （getItemAs 参照） */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) const ;
+		// スクロール・ページサイズ属性
+		public native void setSpriteScrollPageSize
+			( String id /* アイテム ID （getItemAs 参照） */,
+				int nPageSize /* ページサイズ */,
+				ScrollDirection scrlDir = scrollDefault /* スクロール方向 */ ) ;
+		// ボタンチェック属性取得
+		public native boolean isSpriteButtonChecked
+			( String id /* アイテム ID （getItemAs 参照） */ ) const ;
+		// ボタンチェック属性
+		public native void checkSpriteButton
+			( String id /* アイテム ID （getItemAs 参照） */,
+				boolean flagCheck /* ボタンチェック状態 */ ) ;
+
+		// 擬似 3D 投影スクリーン座標設定
+		public native void setProjectionScreen
+			( const Vector3* vScreen,
+				double zScale = 1.0, double fpPixelAspect = 1.0 ) ;
+		// 擬似 3D 投影スクリーン座標取得
+		public native boolean getProjectionScreen
+			( Vector3* vScreen,
+				double* zScale, double* fpPixelAspect ) const ;
+		// 視差設定
+		public native void setParallax
+			( double xParallax,
+				double zFocusRate = 1.0, double xScreenDelta = 0.0 ) ;
+		public native double getParallax() const ;
+		public native double getParallaxFocusRatio() const ;
+		public native double getParallaxScreenX() const ;
+		// カメラ設定
+		public native void setVirtualCamera
+			( const Vector3d* vCamera, const Vector3d* vTarget ) ;
+		// 仮想３Ｄ設定取得
+		public native const Virtual3DParam* getVirtual3DParam() const ;
+
+		// 簡易アニメーション設定
+		// <desc>(a0,a1)=(1,1) で等速運動、(0,2) で等加速度運動、
+		// (2,0) では等加速（減速）度運動と等しくなります。<br/>
+		// (a0,a1)=(0,0) では静止状態から加速→減速して停止のような動きになります。</desc>
+		public native void setActionLinearTo
+			( uint32 msecDuration /* アニメーション時間（ミリ秒） */,
+				uint32 transparency /* 変化後の透明度 [0, 0x100] */,
+				const Vector2d* pos = null /* 移動後の座標 */,
+				const Vector2d* zoom = null /* 移動後の拡大率 */,
+				double a0 = 0.0 /* 開始時速度比 */,
+				double a1 = 0.0 /* 終了時速度比 */ ) ;
+		// アニメーション即時完了
+		// <desc>実行中のアニメーションを即時に終了し、
+		// アニメーションの完了状態に設定します。</desc>
+		public native void flushAction() ;
+		// アニメーションキャンセル
+		// <desc>実行中のアニメーションを即時に終了します。
+		// 座標などは現在の値のままにします。</desc>
+		public native void cancelAction() ;
+		// アニメーション中か？
+		public native boolean isAction() const ;
+		// 全アニメーション一時停止
+		public native void pauseAllAction() ;
+		// 全アニメーション再開
+		public native void restartAllAction() ;
+
+		enum using CommandPriority
+		{
+			// コマンド優先度：低い
+			commandLow		= -5,
+			// コマンド優先度：少し低い
+			commandBelow	= -1,
+			// コマンド優先度：通常
+			commandNormal	= 0,
+			// コマンド優先度：少し高い
+			commandAbove	= 1,
+			// コマンド優先度：高い
+			commandHigh		= 5,
+		}
+
+		// コマンド送出
+		public native boolean postCommand
+			( String cmd /* コマンド */,
+				long param = 0 /* パラメータ */,
+				long code = 0 /* コード */,
+				int priority = commandNormal /* 優先度 */,
+				boolean overwritable = false /* true の時、未処理の同じコマンドがキューに存在する場合に上書きする */ ) ;
+
+		// マウス入力キャプチャー要求
+		public native boolean setMouseCapture() ;
+		// マウス入力キャプチャー解放
+		public native boolean releaseMouseCapture() ;
+		// キャプチャー中の子スプライトを取得
+		public native Sprite getMouseCapture() const ;
+		// キーフォーカスを要求
+		public native boolean setKeyFocus() ;
+		// キーフォーカスを解除
+		public native boolean killKeyFocus() ;
+		// キーフォーカスを有しているか？
+		public native boolean hasKeyFocus() const ;
+		// 次のフォーカスを受け取り可能なスプライトへフォーカスを移動する
+		public native boolean moveNextKeyFocus() ;
+		// 前のフォーカスを受け取り可能なスプライトへフォーカスを移動する
+		public native boolean movePrevKeyFocus() ;
+		// 指定の方向へフォーカスを移動する
+		public native boolean moveKeyFocusDirectionOf( const Vector2d* vDir ) ;
+
+		// マウス入力リスナ設定
+		public native void attachMouseListener( SpriteMouseListener listener ) ;
+		// マウス入力リスナ解除
+		public native void detachMouseListener( SpriteMouseListener listener ) ;
+		// マウス入力リスナ設定
+		public native void attachKeyListener( SpriteKeyListener listener ) ;
+		// マウス入力リスナ解除
+		public native void detachKeyListener( SpriteKeyListener listener ) ;
+
+		// タイマ処理追加
+		public native void addTimer( SpriteTimer timer ) ;
+		// タイマ処理削除
+		public native void removeTimer( SpriteTimer timer ) ;
+		public native void removeAllTimers( void ) ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// タイマー処理
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SpriteTimer		extends NativeObject
+	{
+		// SpriteTimer 構築
+		public native SpriteTimer() ;
+
+		// タイマー処理
+		// <return>true の時、タイマーを終了する</desc>
+		public abstract boolean onTimer( Sprite sprite, uint32 msecDelta ) ;
+	} ;
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// マウス入力インターフェース
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SpriteMouseListener	extends NativeObject
+	{
+		// SpriteMouseListener 構築
+		public native SpriteMouseListener() ;
+
+		// マウス移動
+		// <return>true の時、このリスナでハンドラを終了し、
+		// より後方のハンドラに処理をまわさない。</return>
+		public boolean onMouseMove
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+
+		// マウス移動（ウィンドウ外へ移動）
+		public void onMouseLeave( Sprite sprite, ulong nFlags )
+		{
+		}
+
+		// ホイール回転
+		// <return>true の時、このリスナでハンドラを終了し、
+		// より後方のハンドラに処理をまわさない。</return>
+		public boolean onMouseWheel
+			( Sprite sprite, int32 zDelta,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+
+		// マウスボタン押下時
+		// <return>true の時、このリスナでハンドラを終了し、
+		// より後方のハンドラに処理をまわさない。</return>
+		public boolean onButtonDown
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			switch ( getButtonID( nFlags ) )
+			{
+			case	LeftButtonID:
+				return	onLButtonDown( sprite, xPos, yPos, nFlags ) ;
+			case	RightButtonID:
+				return	onRButtonDown( sprite, xPos, yPos, nFlags ) ;
+			case	MiddleButtonID:
+				return	onMButtonDown( sprite, xPos, yPos, nFlags ) ;
+			}
+			return	false ;
+		}
+
+		// マウスボタン解放時
+		// <return>true の時、このリスナでハンドラを終了し、
+		// より後方のハンドラに処理をまわさない。</return>
+		public boolean onButtonUp
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			switch ( getButtonID( nFlags ) )
+			{
+			case	LeftButtonID:
+				return	onLButtonUp( sprite, xPos, yPos, nFlags ) ;
+			case	RightButtonID:
+				return	onRButtonUp( sprite, xPos, yPos, nFlags ) ;
+			case	MiddleButtonID:
+				return	onMButtonUp( sprite, xPos, yPos, nFlags ) ;
+			}
+			return	false ;
+		}
+
+		// マウスボタン・ダブルクリック時
+		// <return>true の時、このリスナでハンドラを終了し、
+		// より後方のハンドラに処理をまわさない。</return>
+		public boolean onButtonDblClk
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			switch ( getButtonID( nFlags ) )
+			{
+			case	LeftButtonID:
+				return	onLButtonDblClk( sprite, xPos, yPos, nFlags ) ;
+			case	RightButtonID:
+				return	onRButtonDblClk( sprite, xPos, yPos, nFlags ) ;
+			case	MiddleButtonID:
+				return	onMButtonDblClk( sprite, xPos, yPos, nFlags ) ;
+			}
+			return	false ;
+		}
+
+		// 左ボタン押下時
+		public boolean onLButtonDown
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 左ボタン解放時
+		public boolean onLButtonUp
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 左ボタン・ダブルクリック時
+		public boolean onLButtonDblClk
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 右ボタン押下時
+		public boolean onRButtonDown
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 右ボタン解放時
+		public boolean onRButtonUp
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 右ボタン・ダブルクリック時
+		public boolean onRButtonDblClk
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 中央ボタン押下時
+		public boolean onMButtonDown
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 中央ボタン解放時
+		public boolean onMButtonUp
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 中央ボタン・ダブルクリック時
+		public boolean onMButtonDblClk
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+
+		// マウスボタン押下時（後処理）
+		// <desc>どの Sprite もマウスイベントを処理しなかった時に呼び出されます。</desc>
+		public boolean afterButtonDown
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			switch ( getButtonID( nFlags ) )
+			{
+			case	LeftButtonID:
+				return	afterLButtonDown( sprite, xPos, yPos, nFlags ) ;
+			case	RightButtonID:
+				return	afterRButtonDown( sprite, xPos, yPos, nFlags ) ;
+			case	MiddleButtonID:
+				return	afterMButtonDown( sprite, xPos, yPos, nFlags ) ;
+			}
+			return	false ;
+		}
+		// マウスボタン押下時（後処理）
+		// <desc>どの Sprite もマウスイベントを処理しなかった時に呼び出されます。</desc>
+		public boolean afterButtonUp
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			switch ( getButtonID( nFlags ) )
+			{
+			case	LeftButtonID:
+				return	afterLButtonUp( sprite, xPos, yPos, nFlags ) ;
+			case	RightButtonID:
+				return	afterRButtonUp( sprite, xPos, yPos, nFlags ) ;
+			case	MiddleButtonID:
+				return	afterMButtonUp( sprite, xPos, yPos, nFlags ) ;
+			}
+			return	false ;
+		}
+		// マウスボタン・ダブルクリック時（後処理）
+		// <desc>どの Sprite もマウスイベントを処理しなかった時に呼び出されます。</desc>
+		public boolean afterButtonDblClk
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			switch ( getButtonID( nFlags ) )
+			{
+			case	LeftButtonID:
+				return	afterLButtonDblClk( sprite, xPos, yPos, nFlags ) ;
+			case	RightButtonID:
+				return	afterRButtonDblClk( sprite, xPos, yPos, nFlags ) ;
+			case	MiddleButtonID:
+				return	afterMButtonDblClk( sprite, xPos, yPos, nFlags ) ;
+			}
+			return	false ;
+		}
+
+		// 左ボタン押下時
+		public boolean afterLButtonDown
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 左ボタン解放時
+		public boolean afterLButtonUp
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 左ボタン・ダブルクリック時
+		public boolean afterLButtonDblClk
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+
+		// 右ボタン押下時
+		public boolean afterRButtonDown
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 右ボタン解放時
+		public boolean afterRButtonUp
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 右ボタン・ダブルクリック時
+		public boolean afterRButtonDblClk
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+
+		// 中央ボタン押下時
+		public boolean afterMButtonDown
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 中央ボタン解放時
+		public boolean afterMButtonUp
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+		// 中央ボタン・ダブルクリック時
+		public boolean afterMButtonDblClk
+			( Sprite sprite,
+				double xPos, double yPos, ulong nFlags )
+		{
+			return	false ;
+		}
+
+		// フラグ
+		enum using MouseFlag<ulong>
+		{
+			// マウス識別子マスク
+			MouseIDMask			= 0x0000FFFF,
+			// ボタン識別子マスク
+			ButtonIDMask		= 0x00FF0000,
+			// タッチパネル操作時フラグ
+			TouchFlag			= 0x01000000,
+			// 仮想マウス操作時フラグ
+			VirtualMouseFlag	= 0x02000000,
+			// 仮想タッチ操作時フラグ
+			VirtualTouchFlag	= 0x04000000,
+			// マウス左ボタン
+			LeftButtonID		= 0,
+			// マウス右ボタン
+			RightButtonID		= 1,
+			// マウス中央ボタン
+			MiddleButtonID		= 2,
+			// マウスホイール・デルタ単位
+			WheelDeltaUnit		= 0x100,
+		}
+
+		// マウス識別子を取得（マルチタッチ用）
+		// <return>nFlags &amp; MouseIDMask</return>
+		public static native uint32 getMouseID( ulong nFlags ) ;
+
+		// マウスボタン識別子を取得
+		// <return>(nFlags &amp; ButtonIDMask) &gt;&gt; 16</return>
+		public static native uint32 getButtonID( ulong nFlags ) ;
+
+		// タッチパネル入力判定
+		// <return>(nFlags &amp; TouchFlag) != 0</return>
+		public static native boolean isFromTouch( ulong nFlags ) ;
+
+		// 有効ポインタ数取得（マルチタッチ）
+		public native uint getPointerCount() const ;
+
+		// 指標検索（マルチタッチ）
+		public native int findMouseIndexById( uint32 idMouse ) const ;
+
+		// ポインタ座標取得（マルチタッチ）
+		public native boolean getMousePointAt
+			( ulong index /* ポインタ・インデックス (getPointerCount() 未満) */,
+				Vector2d* vPos /* マウス座標（タッチ座標）を受け取る Vector2d */ ) const ;
+
+		// ポインタ座標取得（マルチタッチ）
+		// <return>マウス識別子に対応するマウス／タッチポイントが存在する場合 true</return>
+		public native boolean getMousePointAs
+			( uint32 idMouse /* マウス識別子 */,
+				Vector2d* vPos /* マウス座標（タッチ座標）を受け取る Vector2d */ ) const ;
+
+		// マウス左ボタンの押下状態取得
+		public native boolean isLButtonDownAt( ulong index = 0 ) const ;
+
+		// マウス右ボタンの押下状態取得
+		public native boolean isRButtonDownAt( ulong index = 0 ) const ;
+
+		// 左ドラッグ中／タップ中ポインタ数取得
+		public native uint getLDownPointsCount() const ;
+
+		// 左ドラッグ中／タップ中ポインタ座標取得
+		public native const Vector2d* enumerateLDownPoints() const ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// キー入力／コマンド処理インターフェース
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SpriteKeyListener	extends NativeObject
+	{
+		// SpriteKeyListener 構築
+		public native SpriteKeyListener() ;
+
+		// キー押下時
+		public boolean onKeyDown
+			( Sprite sprite,
+				long nVirtKey /* 仮想キーコード (VirtualKeyCode) */,
+				ulong nFlags /* 仮想キー・コンテキストフラグ (VirtualKeyFlag) */ )
+		{
+			return	false ;
+		}
+
+		// キー解放時
+		public boolean onKeyUp
+			( Sprite sprite,
+				long nVirtKey /* 仮想キーコード (VirtualKeyCode) */,
+				ulong nFlags /* 仮想キー・コンテキストフラグ (VirtualKeyFlag) */ )
+		{
+			return	false ;
+		}
+
+		// 文字入力
+		// <desc>入力された文字コードを受け取ります。<br/>
+		// onKeyDown や onCompositionString で処理された文字は受け取りません。</desc>
+		public boolean onChar
+			( Sprite sprite, uint32 codeChar /* Unicode での入力文字 */ )
+		{
+			return	false ;
+		}
+
+		// コンポジション開始
+		public boolean onStartComposition
+			( Sprite sprite,
+				InputStartComposition iscForm /* IME で入力中の文字列を表示する位置やフォントをこの関数がここに設定します */ )
+		{
+			return	false ;
+		}
+
+		// コンポジション終了
+		public boolean onEndComposition( Sprite sprite )
+		{
+			return	false ;
+		}
+
+		// コンポジション文字列
+		public boolean onCompositionString
+			( Sprite sprite,
+				const InputCompositionString icsComp /* 入力中、又は入力完了した文字列情報を受け取ります */ )
+		{
+			return	false ;
+		}
+
+		// コマンド
+		public boolean onCommand
+			( Sprite sprite, String cmd,
+				long param, long code, int priority, boolean overwritable )
+		{
+			return	false ;
+		}
+
+	} ;
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sprite 描画フィルター基底クラス
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SpriteFilter	extends	NativeObject
+	{
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sprite 透明度描画フィルター
+	// ※フィルターパラメータに応じて半透明描画するフィルター
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SpriteFilterTransparencyDrawer	extends	SpriteFilter
+	{
+		// SpriteFilterTransparencyDrawer 構築
+		public native SpriteFilterTransparencyDrawer() ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sprite αチャネル窓マスク描画フィルター
+	// ※フィルターパラメータに応じてαチャネル窓をスライドして描画するフィルター
+	// ※CPU処理専用
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SpriteFilterBlendAlpha	extends	SpriteFilter
+	{
+		// SpriteFilterBlendAlpha 構築
+		public native SpriteFilterBlendAlpha() ;
+
+		// 画像ファイル読み込み
+		public native boolean loadAlphaImage( String path ) ;
+
+		// 画像を関連付ける
+		public native void attachAlphaImage( Image image ) ;
+
+		// パラメータ設定
+		public native void setAlphaParameter
+			( int fxAlphaCoefficient = 0x100 /* x256 された固定小数点でα係数 */ ) ;
+
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sprite トーンカーブ描画フィルター
+	// ※フィルターパラメータに応じてトーンカーブを適用して描画するフィルター
+	// ※CPU処理専用
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SpriteFilterTone	extends	SpriteFilter
+	{
+		// フィルターフラグ
+		enum using FilterFlag<uint>
+		{
+			// フィルターフラグ：トーンカーブ適用後にαチャネルで RGB チャネルを乗算する
+			flagMaskWithAlpha	= 0x0002,
+
+			// フィルターフラグ：入力画像をグレイスケールに変換した後にトーンカーブを適用する
+			flagGrayFilter		= 0x0008,
+		}
+
+
+		// SpriteFilterTone 構築
+		public native SpriteFilterTone() ;
+
+		// トーンカーブを設定
+		public native void setToneFilter
+			( const uint8* pRed /* uint8[0x100] : 赤チャネル・トーンカーブ */,
+				const uint8* pGreen /* uint8[0x100] : 緑チャネル・トーンカーブ */,
+				const uint8* pBlue /* uint8[0x100] : 青チャネル・トーンカーブ */,
+				const uint8* pAlpha /* uint8[0x100] : αチャネル・トーンカーブ */,
+				uint32 nFlags = 0 /* フィルターフラグ（EntisGLS4.SpriteFilterTone.flag～）の組み合わせ */ ) ;
+
+		// モーフィング有効／無効化
+		public native void enableMorphing
+			( boolean flagMorph /* false の場合、フィルターパラメータは無視して常に100％でトーンカーブを適用します。 */ ) ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Sprite 簡易ぼかしフィルター
+	// ※フィルターパラメータに応じてぼかし処理して描画するフィルター
+	// ※CPU/GPU 処理両対応
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SpriteFilterShadingOff	extends	SpriteFilter
+	{
+		// SpriteFilterShadingOff 構築
+		public native SpriteFilterShadingOff() ;
+
+		// トランジッション設定（第二パラメータでの透明度と色効果）
+		public native void setTransitionOption
+			( boolean flagTransition /* トランジッションモード */,
+				uint32 argbOverColor /* ぼかし処理の後に被せる描画色 (ARGB8 パック形式) */ ) ;
+
+	}
+
+}
+
+

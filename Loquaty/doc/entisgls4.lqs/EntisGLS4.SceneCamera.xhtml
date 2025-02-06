@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneCamera</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneCamera</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneCamera ;</div>
+<div class="normal">
+Scene カメラ・アイテム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneCommon.xhtml">EntisGLS4.SceneCommon</a>
+<div class="indent1"><a href="EntisGLS4.SceneCamera.xhtml">EntisGLS4.SceneCamera</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneCamera">SceneCamera</a><br/>
+	<a href="#virtual_getCameraPosition">getCameraPosition</a><br/>
+	<a href="#virtual_getCameraTarget">getCameraTarget</a><br/>
+	<a href="#virtual_getCameraTop">getCameraTop</a><br/>
+	<a href="#virtual_setCameraPosition">setCameraPosition</a><br/>
+	<a href="#virtual_setCameraTarget">setCameraTarget</a><br/>
+	<a href="#virtual_setCameraTop">setCameraTop</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneCamera"/>
+<div class="headline">SceneCamera</div>
+<div class="usage">public native SceneCamera( )</div>
+<div class="normal">
+SceneCamera 構築<br/></div>
+<br/>
+
+<a name="virtual_getCameraPosition"/>
+<div class="headline">getCameraPosition</div>
+<div class="usage">public native const Vector3d* getCameraPosition( ) const</div>
+<div class="normal">
+カメラ視点（ローカル）座標取得<br/></div>
+<br/>
+
+<a name="virtual_getCameraTarget"/>
+<div class="headline">getCameraTarget</div>
+<div class="usage">public native const Vector3d* getCameraTarget( ) const</div>
+<div class="normal">
+カメラ注視点（ローカル）座標取得<br/></div>
+<br/>
+
+<a name="virtual_getCameraTop"/>
+<div class="headline">getCameraTop</div>
+<div class="usage">public native const Vector3d* getCameraTop( ) const</div>
+<div class="normal">
+カメラ天頂方向（ローカル）ベクトル取得<br/></div>
+<br/>
+
+<a name="virtual_setCameraPosition"/>
+<div class="headline">setCameraPosition</div>
+<div class="usage">public native void setCameraPosition( const Vector3d* vPos )</div>
+<div class="normal">
+カメラ視点（ローカル）座標設定<br/></div>
+<br/>
+
+<a name="virtual_setCameraTarget"/>
+<div class="headline">setCameraTarget</div>
+<div class="usage">public native void setCameraTarget( const Vector3d* vTarget )</div>
+<div class="normal">
+カメラ注視点（ローカル）座標設定<br/></div>
+<br/>
+
+<a name="virtual_setCameraTop"/>
+<div class="headline">setCameraTop</div>
+<div class="usage">public native void setCameraTop( const Vector3d* vTop )</div>
+<div class="normal">
+カメラ天頂方向（ローカル）ベクトル設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

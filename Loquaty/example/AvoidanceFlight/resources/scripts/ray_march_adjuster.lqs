@@ -1,0 +1,110 @@
+
+using namespace EntisGLS4 ;
+
+
+class	RayMarchAdjuster	extends SceneCustomController
+{
+	// タイプ ID
+	public static const String	s_TypeID = "avfl_ray_adjuster" ;
+
+	// RayMarchAdjuster 構築
+	public RayMarchAdjuster()
+		: SceneCustomController( s_TypeID )
+	{
+		// onTimer, onRenderEvent イベントを有効化
+		modifyBehaviorFlags( behaviorOnTimer | behaviorRenderEvent ) ;
+
+		// Scene.classPreRender イベント発生を有効化
+		modifyRenderEventClasses( (1 << Scene.classPreRender) ) ;
+	}
+
+	// 編集モードフラグ
+	boolean					m_editMode = true ;
+
+	// 背景シェーダー・コントローラー
+	SceneController			m_ctrlShader ;
+	long					m_propRayCloud ;
+	long					m_propRayTerrain ;
+
+	double					m_msecFrameInterval = 0.0 ;
+	double					m_msecFrameIntervalLPS = 0.0 ;
+	int						m_nLastRayCloud = 200 ;
+	int						m_nLastRayTerrain = 100 ;
+
+	// 拡張的な処理の通知
+	@override
+	public void onExtendNotify
+		( String cmd, String param, const void* pExParam, ulong nExParamBytes )
+	{
+		if ( cmd == SceneNotifyCommand.InitializeItem )
+		{
+			m_editMode = isEditMode() ;
+
+			SceneItem	item = getOwnerItem() ;
+			if ( item != null )
+			{
+				m_ctrlShader = item.getControllerAs( "user_shader1" ) ;
+				if ( m_ctrlShader != null )
+				{
+					m_propRayCloud =
+						m_ctrlShader.findParameterID( "ufid_u_nRayCloud" ) ;
+					m_propRayTerrain =
+						m_ctrlShader.findParameterID( "ufid_u_nRayTerrain" ) ;
+				}
+			}
+		}
+	}
+
+	// タイマー処理
+	@override
+	public void onTimer
+		( Scene scene, SceneItem item, uint32 msecDelta )
+	{
+		m_msecFrameInterval += msecDelta ;
+	}
+
+	// レンダリングイベント
+	@override
+	public void onRenderEvent
+		( Scene scene, Scene.ItemClass clsItem, SceneItem item )
+	{
+		if ( (clsItem == Scene.classPreRender) && !m_editMode )
+		{
+			// フレームの描画間隔から背景シェーダーの重さを調整する
+			m_msecFrameIntervalLPS =
+				m_msecFrameIntervalLPS * 0.9 + m_msecFrameInterval * 0.1 ;
+			m_msecFrameInterval = 0.0 ;
+
+			double	r = 20.0 / m_msecFrameIntervalLPS ;
+			m_nLastRayCloud = (int) (m_nLastRayCloud * r) ;
+			m_nLastRayTerrain = (int) (m_nLastRayTerrain * r) ;
+			m_nLastRayCloud = (int) Math.clamp( m_nLastRayCloud, 20, 200 ) ;
+			m_nLastRayTerrain = (int) Math.clamp( m_nLastRayTerrain, 10, 100 ) ;
+
+			if ( m_ctrlShader != null )
+			{
+				m_ctrlShader.setIntegerParameter
+						( m_propRayCloud, m_nLastRayCloud ) ;
+				m_ctrlShader.setIntegerParameter
+						( m_propRayTerrain, m_nLastRayTerrain ) ;
+			}
+		}
+	}
+
+}
+
+
+// コントローラー登録
+SceneManager.getCurrent().setControllerClass
+	( RayMarchAdjuster.s_TypeID, RayMarchAdjuster ) ;
+
+// エディタメニューに追加
+SceneManager.getCurrent().addPluginMenu
+	( SceneManager.pluginTypeController,
+		"AvoidFlight\\RayAdjuster", RayMarchAdjuster.s_TypeID,
+		function( const SceneManager.EditorEnvironment* env ) : SceneProperty
+		{
+			return	RayMarchAdjuster() ;
+		}, null ) ;
+
+

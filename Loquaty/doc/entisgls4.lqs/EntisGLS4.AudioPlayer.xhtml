@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.AudioPlayer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.AudioPlayer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class AudioPlayer ;</div>
+<div class="normal">
+オーディオ・プレーヤー<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.AudioPlayer.xhtml">EntisGLS4.AudioPlayer</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.AudioPlayer.OpenMode.xhtml">EntisGLS4.AudioPlayer.OpenMode</a></div>
+<div class="indent2"><a href="EntisGLS4.AudioPlayer.VolumeLine.xhtml">EntisGLS4.AudioPlayer.VolumeLine</a></div>
+<br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_getLineVolume">getLineVolume</a><br/>
+	<a href="#func_setLineVolume">setLineVolume</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_AudioPlayer">AudioPlayer</a><br/>
+	<a href="#virtual_beginFadeVolume">beginFadeVolume</a><br/>
+	<a href="#virtual_cancelFadeVolume">cancelFadeVolume</a><br/>
+	<a href="#virtual_clearAllVolumeLines">clearAllVolumeLines</a><br/>
+	<a href="#virtual_clonePlayer">clonePlayer</a><br/>
+	<a href="#virtual_close">close</a><br/>
+	<a href="#virtual_create">create</a><br/>
+	<a href="#virtual_flushFadeVolume">flushFadeVolume</a><br/>
+	<a href="#virtual_getAudioStream">getAudioStream</a><br/>
+	<a href="#virtual_getPosition">getPosition</a><br/>
+	<a href="#virtual_getSampleFrequency">getSampleFrequency</a><br/>
+	<a href="#virtual_getTotalLength">getTotalLength</a><br/>
+	<a href="#virtual_getVolume">getVolume</a><br/>
+	<a href="#virtual_getVolumeLineMask">getVolumeLineMask</a><br/>
+	<a href="#virtual_isPaused">isPaused</a><br/>
+	<a href="#virtual_isPlaying">isPlaying</a><br/>
+	<a href="#virtual_isVolumeFading">isVolumeFading</a><br/>
+	<a href="#virtual_open">open</a><br/>
+	<a href="#virtual_pause">pause</a><br/>
+	<a href="#virtual_play">play</a><br/>
+	<a href="#virtual_releaseAudioStream">releaseAudioStream</a><br/>
+	<a href="#virtual_resetVolumeLine">resetVolumeLine</a><br/>
+	<a href="#virtual_restart">restart</a><br/>
+	<a href="#virtual_seekPosition">seekPosition</a><br/>
+	<a href="#virtual_setLoop">setLoop</a><br/>
+	<a href="#virtual_setVolume">setVolume</a><br/>
+	<a href="#virtual_setVolumeLine">setVolumeLine</a><br/>
+	<a href="#virtual_setVolumeLineMask">setVolumeLineMask</a><br/>
+	<a href="#virtual_stop">stop</a><br/>
+</div><br/>
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_getLineVolume"/>
+<div class="headline">getLineVolume</div>
+<div class="usage">public static native double getLineVolume( uint line )</div>
+<div class="normal">
+ライン音量取得<br/></div>
+<br/>
+
+<a name="func_setLineVolume"/>
+<div class="headline">setLineVolume</div>
+<div class="usage">public static native void setLineVolume( uint line, double volume )</div>
+<div class="normal">
+ライン音量設定<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_AudioPlayer"/>
+<div class="headline">AudioPlayer</div>
+<div class="usage">public native AudioPlayer( )</div>
+<div class="normal">
+AudioPlayer 構築<br/></div>
+<br/>
+
+<a name="virtual_beginFadeVolume"/>
+<div class="headline">beginFadeVolume</div>
+<div class="usage">public native void beginFadeVolume( const float* pVolumes, ulong channels, ulong msecDuration )</div>
+<div class="normal">
+音量フェーディング開始<br/></div>
+<br/>
+
+<a name="virtual_cancelFadeVolume"/>
+<div class="headline">cancelFadeVolume</div>
+<div class="usage">public native void cancelFadeVolume( )</div>
+<div class="normal">
+音量フェーディングキャンセル<br/></div>
+<br/>
+
+<a name="virtual_clearAllVolumeLines"/>
+<div class="headline">clearAllVolumeLines</div>
+<div class="usage">public native void clearAllVolumeLines( )</div>
+<div class="normal">
+音量を反映させるラインをクリアする（lineTotal,lineTotal2nd 以外）<br/></div>
+<br/>
+
+<a name="virtual_clonePlayer"/>
+<div class="headline">clonePlayer</div>
+<div class="usage">public native EntisGLS4.AudioPlayer clonePlayer( )</div>
+<div class="normal">
+データを参照する複製プレイヤー生成<br/></div>
+<br/>
+
+<a name="virtual_close"/>
+<div class="headline">close</div>
+<div class="usage">public native boolean close( )</div>
+<div class="normal">
+ファイルを閉じる<br/></div>
+<br/>
+
+<a name="virtual_create"/>
+<div class="headline">create</div>
+<div class="usage">public native boolean create( File file, EntisGLS4.AudioPlayer.OpenMode flags = 0 )</div>
+<div class="normal">
+指定ファイルを開く<br/></div>
+<div class="notes_parameter">
+<div class="param_name">file</div>
+<div class="param_desc">
+オーディオファイル</div>
+</div>
+<br/>
+
+<a name="virtual_flushFadeVolume"/>
+<div class="headline">flushFadeVolume</div>
+<div class="usage">public native void flushFadeVolume( )</div>
+<div class="normal">
+音量フェーディング終了<br/></div>
+<br/>
+
+<a name="virtual_getAudioStream"/>
+<div class="headline">getAudioStream</div>
+<div class="usage">public native EntisGLS4.AudioInputStream getAudioStream( )</div>
+<div class="normal">
+オーディオストリーム取得<br/></div>
+<br/>
+
+<a name="virtual_getPosition"/>
+<div class="headline">getPosition</div>
+<div class="usage">public native ulong getPosition( )</div>
+<div class="normal">
+再生位置 [/sample] を取得する<br/></div>
+<br/>
+
+<a name="virtual_getSampleFrequency"/>
+<div class="headline">getSampleFrequency</div>
+<div class="usage">public native uint getSampleFrequency( ) const</div>
+<div class="normal">
+メディアのサンプル周波数を取得する<br/></div>
+<br/>
+
+<a name="virtual_getTotalLength"/>
+<div class="headline">getTotalLength</div>
+<div class="usage">public native ulong getTotalLength( ) const</div>
+<div class="normal">
+メディアの全長 [/sample] を取得する<br/></div>
+<br/>
+
+<a name="virtual_getVolume"/>
+<div class="headline">getVolume</div>
+<div class="usage">public native boolean getVolume( float* pVolumes, ulong channels )</div>
+<div class="normal">
+音量取得 [L/R]<br/></div>
+<br/>
+
+<a name="virtual_getVolumeLineMask"/>
+<div class="headline">getVolumeLineMask</div>
+<div class="usage">public native uint getVolumeLineMask( ) const</div>
+<div class="normal">
+音量を反映させるライン（ビットマスク）を取得する<br/></div>
+<br/>
+
+<a name="virtual_isPaused"/>
+<div class="headline">isPaused</div>
+<div class="usage">public native boolean isPaused( ) const</div>
+<div class="normal">
+一時停止中か？<br/></div>
+<br/>
+
+<a name="virtual_isPlaying"/>
+<div class="headline">isPlaying</div>
+<div class="usage">public native boolean isPlaying( ) const</div>
+<div class="normal">
+再生中か？<br/></div>
+<br/>
+
+<a name="virtual_isVolumeFading"/>
+<div class="headline">isVolumeFading</div>
+<div class="usage">public native boolean isVolumeFading( ) const</div>
+<div class="normal">
+音量フェード中か？<br/></div>
+<br/>
+
+<a name="virtual_open"/>
+<div class="headline">open</div>
+<div class="usage">public native boolean open( String file, EntisGLS4.AudioPlayer.OpenMode flags = 0 )</div>
+<div class="normal">
+指定ファイルを開く<br/></div>
+<div class="notes_parameter">
+<div class="param_name">file</div>
+<div class="param_desc">
+ファイルパス</div>
+</div>
+<br/>
+
+<a name="virtual_pause"/>
+<div class="headline">pause</div>
+<div class="usage">public native boolean pause( )</div>
+<div class="normal">
+再生を一時停止する<br/></div>
+<br/>
+
+<a name="virtual_play"/>
+<div class="headline">play</div>
+<div class="usage">public native boolean play( ulong flags = 0 )</div>
+<div class="normal">
+再生を開始する<br/></div>
+<br/>
+
+<a name="virtual_releaseAudioStream"/>
+<div class="headline">releaseAudioStream</div>
+<div class="usage">public native void releaseAudioStream( EntisGLS4.AudioInputStream stream )</div>
+<div class="normal">
+オーディオストリーム解放<br/></div>
+<br/>
+
+<a name="virtual_resetVolumeLine"/>
+<div class="headline">resetVolumeLine</div>
+<div class="usage">public native void resetVolumeLine( uint line )</div>
+<div class="normal">
+音量を反映させるラインを解除する<br/></div>
+<br/>
+
+<a name="virtual_restart"/>
+<div class="headline">restart</div>
+<div class="usage">public native boolean restart( )</div>
+<div class="normal">
+再生を再開する<br/></div>
+<br/>
+
+<a name="virtual_seekPosition"/>
+<div class="headline">seekPosition</div>
+<div class="usage">public native void seekPosition( ulong pos )</div>
+<div class="normal">
+再生位置 [/sample] を変更する<br/></div>
+<br/>
+
+<a name="virtual_setLoop"/>
+<div class="headline">setLoop</div>
+<div class="usage">public native boolean setLoop( boolean loop = true, long nStart = -1, long nEnd = -1 )</div>
+<div class="normal">
+ループポイント[/sample] を設定する<br/></div>
+<br/>
+
+<a name="virtual_setVolume"/>
+<div class="headline">setVolume</div>
+<div class="usage">public native boolean setVolume( const float* pVolumes, ulong channels )</div>
+<div class="normal">
+音量設定 [L/R]<br/></div>
+<br/>
+
+<a name="virtual_setVolumeLine"/>
+<div class="headline">setVolumeLine</div>
+<div class="usage">public native void setVolumeLine( uint line )</div>
+<div class="normal">
+音量を反映させるラインを設定する<br/></div>
+<br/>
+
+<a name="virtual_setVolumeLineMask"/>
+<div class="headline">setVolumeLineMask</div>
+<div class="usage">public native void setVolumeLineMask( uint maskLines )</div>
+<div class="normal">
+音量を反映させるライン（ビットマスク）を設定する<br/></div>
+<br/>
+
+<a name="virtual_stop"/>
+<div class="headline">stop</div>
+<div class="usage">public native boolean stop( )</div>
+<div class="normal">
+再生を停止する<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

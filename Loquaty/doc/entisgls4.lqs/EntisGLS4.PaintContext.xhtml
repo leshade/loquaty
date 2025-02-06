@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.PaintContext</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.PaintContext</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class PaintContext ;</div>
+<div class="normal">
+描画コンテキスト<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.PaintContext.xhtml">EntisGLS4.PaintContext</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.PaintContext.ClearTargetFlag.xhtml">EntisGLS4.PaintContext.ClearTargetFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_clearTargetColor">clearTargetColor</a><br/>
+	<a href="#static_clearTargetZBuffer">clearTargetZBuffer</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_PaintContext">PaintContext</a><br/>
+	<a href="#virtual_appendTransformation">appendTransformation</a><br/>
+	<a href="#virtual_attachTargetImage">attachTargetImage</a><br/>
+	<a href="#virtual_currentAffine">currentAffine</a><br/>
+	<a href="#virtual_currentTransparency">currentTransparency</a><br/>
+	<a href="#virtual_detachTargetImage">detachTargetImage</a><br/>
+	<a href="#virtual_drawArc">drawArc</a><br/>
+	<a href="#virtual_drawBezier">drawBezier</a><br/>
+	<a href="#virtual_drawEllipse">drawEllipse</a><br/>
+	<a href="#virtual_drawImage">drawImage</a><br/>
+	<a href="#virtual_drawMesh">drawMesh</a><br/>
+	<a href="#virtual_drawPoints">drawPoints</a><br/>
+	<a href="#virtual_drawThinLine">drawThinLine</a><br/>
+	<a href="#virtual_drawThinLines">drawThinLines</a><br/>
+	<a href="#virtual_fillArc">fillArc</a><br/>
+	<a href="#virtual_fillClearTarget">fillClearTarget</a><br/>
+	<a href="#virtual_fillEllipse">fillEllipse</a><br/>
+	<a href="#virtual_fillPolygon">fillPolygon</a><br/>
+	<a href="#virtual_fillRectangle">fillRectangle</a><br/>
+	<a href="#virtual_finish">finish</a><br/>
+	<a href="#virtual_flush">flush</a><br/>
+	<a href="#virtual_freeGradation">freeGradation</a><br/>
+	<a href="#virtual_getPaintFlags">getPaintFlags</a><br/>
+	<a href="#virtual_getTargetImage">getTargetImage</a><br/>
+	<a href="#virtual_getTargetZBuffer">getTargetZBuffer</a><br/>
+	<a href="#virtual_getViewPort">getViewPort</a><br/>
+	<a href="#virtual_popTransformation">popTransformation</a><br/>
+	<a href="#virtual_pushTransformation">pushTransformation</a><br/>
+	<a href="#virtual_resetTransformation">resetTransformation</a><br/>
+	<a href="#virtual_setLinearGradation">setLinearGradation</a><br/>
+	<a href="#virtual_setPaintFlags">setPaintFlags</a><br/>
+	<a href="#virtual_setRingedGradation">setRingedGradation</a><br/>
+	<a href="#virtual_setTransformation">setTransformation</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_clearTargetColor"/>
+<div class="headline">clearTargetColor</div>
+<div class="usage">public static const EntisGLS4.PaintContext.ClearTargetFlag&#9; clearTargetColor = 1</div>
+<div class="normal">
+クリア・ターゲット・フラグ：画像<br/></div>
+<br/>
+<a name="static_clearTargetZBuffer"/>
+<div class="headline">clearTargetZBuffer</div>
+<div class="usage">public static const EntisGLS4.PaintContext.ClearTargetFlag&#9; clearTargetZBuffer = 2</div>
+<div class="normal">
+クリア・ターゲット・フラグ：ｚバッファ<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_PaintContext"/>
+<div class="headline">PaintContext</div>
+<div class="usage">public native PaintContext( )</div>
+<div class="normal">
+PaintContext 構築<br/></div>
+<br/>
+
+<a name="virtual_appendTransformation"/>
+<div class="headline">appendTransformation</div>
+<div class="usage">public native boolean appendTransformation( const Affine* affine, uint transparency )</div>
+<div class="normal">
+描画座標変換・透明度追加<br/></div>
+<br/>
+
+<a name="virtual_attachTargetImage"/>
+<div class="headline">attachTargetImage</div>
+<div class="usage">public native boolean attachTargetImage( EntisGLS4.Image image, EntisGLS4.Image zbuf = null, const ImageRect* pView = null )</div>
+<div class="normal">
+描画先設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">image</div>
+<div class="param_desc">
+描画先画像</div>
+<div class="param_name">zbuf</div>
+<div class="param_desc">
+描画先ｚバッファ</div>
+<div class="param_name">pView</div>
+<div class="param_desc">
+描画先有効域</div>
+</div>
+<br/>
+
+<a name="virtual_currentAffine"/>
+<div class="headline">currentAffine</div>
+<div class="usage">public native boolean currentAffine( Affine* affine ) const</div>
+<div class="normal">
+現在のアフィン変換取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">affine</div>
+<div class="param_desc">
+アフィン行列を受け取る Affine 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_currentTransparency"/>
+<div class="headline">currentTransparency</div>
+<div class="usage">public native uint currentTransparency( ) const</div>
+<div class="normal">
+現在の透明度取得<br/></div>
+<br/>
+
+<a name="virtual_detachTargetImage"/>
+<div class="headline">detachTargetImage</div>
+<div class="usage">public native boolean detachTargetImage( )</div>
+<div class="normal">
+描画先解除<br/></div>
+<br/>
+
+<a name="virtual_drawArc"/>
+<div class="headline">drawArc</div>
+<div class="usage">public native boolean drawArc( float xCenter, float yCenter, float width, float height, float radFirst, float radEnd, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+円弧輪郭描画</div>
+<br/>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_drawBezier"/>
+<div class="headline">drawBezier</div>
+<div class="usage">public native boolean drawBezier( const Vector2* pPoints, ulong nPoints, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+ベジェ曲線描画</div>
+<div class="notes_parameter">
+<div class="param_name">pPoints</div>
+<div class="param_desc">
+制御点配列 [nPoints]</div>
+<div class="param_name">nPoints</div>
+<div class="param_desc">
+制御点数（3n+4）</div>
+</div>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_drawEllipse"/>
+<div class="headline">drawEllipse</div>
+<div class="usage">public native boolean drawEllipse( float xCenter, float yCenter, float width, float height, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+楕円輪郭描画</div>
+<br/>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_drawImage"/>
+<div class="headline">drawImage</div>
+<div class="usage">public native boolean drawImage( const EntisGLS4.PaintParam param, EntisGLS4.Image pSrcImage, const ImageRect* pSrcClip = null )</div>
+<div class="normal">
+画像描画<br/></div>
+<br/>
+
+<a name="virtual_drawMesh"/>
+<div class="headline">drawMesh</div>
+<div class="usage">public native boolean drawMesh( const Vector2* pDstMesh, const Vector2* pSrcMesh, ulong widthMesh, ulong heightMesh, const EntisGLS4.PaintParam param, EntisGLS4.Image pSrcImage, const ImageRect* pSrcClip = null )</div>
+<div class="normal">
+画像メッシュ描画</div>
+<div class="notes_parameter">
+<div class="param_name">pDstMesh</div>
+<div class="param_desc">
+描画先のメッシュ頂点配列</div>
+<div class="param_name">pSrcMesh</div>
+<div class="param_desc">
+入力画像上のメッシュ頂点配列</div>
+<div class="param_name">widthMesh</div>
+<div class="param_desc">
+格子メッシュの水平個数</div>
+<div class="param_name">heightMesh</div>
+<div class="param_desc">
+格子メッシュの水平個数</div>
+<div class="param_name">param</div>
+<div class="param_desc">
+描画パラメータ</div>
+<div class="param_name">pSrcImage</div>
+<div class="param_desc">
+描画画像</div>
+<div class="param_name">pSrcClip</div>
+<div class="param_desc">
+描画元矩形</div>
+</div>
+<div class="indent1">
+画像を格子状メッシュに沿って変形描画します。<br/>pDstMesh, pSrcMesh は (widthMesh+1)*(heightMesh+1) の配列です。</div><br/>
+<br/>
+
+<a name="virtual_drawPoints"/>
+<div class="headline">drawPoints</div>
+<div class="usage">public native boolean drawPoints( const Vector2* pPoints, ulong nPoints, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+点描画</div>
+<br/>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_drawThinLine"/>
+<div class="headline">drawThinLine</div>
+<div class="usage">public native boolean drawThinLine( int x0, int y0, int x1, int y1, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+直線描画</div>
+<br/>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_drawThinLines"/>
+<div class="headline">drawThinLines</div>
+<div class="usage">public native boolean drawThinLines( const Vector2* pLines, ulong nLines, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+連続直線描画</div>
+<div class="notes_parameter">
+<div class="param_name">pLines</div>
+<div class="param_desc">
+頂点座標配列 [nLines+1]</div>
+<div class="param_name">nLines</div>
+<div class="param_desc">
+線分数</div>
+</div>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_fillArc"/>
+<div class="headline">fillArc</div>
+<div class="usage">public native boolean fillArc( float xCenter, float yCenter, float width, float height, float radFirst, float radEnd, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+円弧塗りつぶし</div>
+<br/>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_fillClearTarget"/>
+<div class="headline">fillClearTarget</div>
+<div class="usage">public native boolean fillClearTarget( uint argb = 0xFF000000, EntisGLS4.PaintContext.ClearTargetFlag flags = 0 )</div>
+<div class="normal">
+描画先クリア<br/></div>
+<div class="notes_parameter">
+<div class="param_name">argb</div>
+<div class="param_desc">
+画像クリア色</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+クリア・ターゲット・フラグの組み合わせ。<br/>
+											0 の場合はすべての出力先</div>
+</div>
+<br/>
+
+<a name="virtual_fillEllipse"/>
+<div class="headline">fillEllipse</div>
+<div class="usage">public native boolean fillEllipse( float xCenter, float yCenter, float width, float height, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+楕円塗りつぶし</div>
+<br/>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_fillPolygon"/>
+<div class="headline">fillPolygon</div>
+<div class="usage">public native boolean fillPolygon( const Vector2* vertices, uint count, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+多角形塗りつぶし描画</div>
+<div class="notes_parameter">
+<div class="param_name">vertices</div>
+<div class="param_desc">
+頂点座標配列 [count]</div>
+<div class="param_name">count</div>
+<div class="param_desc">
+頂点数</div>
+</div>
+<div class="indent1">
+※ argb, z, flags については fillRectangle 参照</div><br/>
+<br/>
+
+<a name="virtual_fillRectangle"/>
+<div class="headline">fillRectangle</div>
+<div class="usage">public native boolean fillRectangle( int x, int y, int width, int height, uint argb, double z = 0., uint flags = 0 )</div>
+<div class="normal">
+矩形塗りつぶし描画<br/></div>
+<div class="notes_parameter">
+<div class="param_name">x</div>
+<div class="param_desc">
+左上ｘ座標</div>
+<div class="param_name">y</div>
+<div class="param_desc">
+左上ｙ座標</div>
+<div class="param_name">width</div>
+<div class="param_desc">
+矩形の幅</div>
+<div class="param_name">height</div>
+<div class="param_desc">
+矩形高さ</div>
+<div class="param_name">argb</div>
+<div class="param_desc">
+描画色 (ARGB8 のパックト形式)</div>
+<div class="param_name">z</div>
+<div class="param_desc">
+ｚ値</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+描画フラグ (PaintParam.flag～, PaintParam.function～, PaintParam.apply～)</div>
+</div>
+<br/>
+
+<a name="virtual_finish"/>
+<div class="headline">finish</div>
+<div class="usage">public native boolean finish( )</div>
+<div class="normal">
+描画の確定（描画ターゲットのメモリへの反映）<br/></div>
+<br/>
+
+<a name="virtual_flush"/>
+<div class="headline">flush</div>
+<div class="usage">public native boolean flush( )</div>
+<div class="normal">
+描画の確定<br/></div>
+<br/>
+
+<a name="virtual_freeGradation"/>
+<div class="headline">freeGradation</div>
+<div class="usage">public native void freeGradation( )</div>
+<div class="normal">
+グラデーション解除<br/></div>
+<br/>
+
+<a name="virtual_getPaintFlags"/>
+<div class="headline">getPaintFlags</div>
+<div class="usage">public native ulong getPaintFlags( ) const</div>
+<div class="normal">
+デフォルトの描画フラグ取得<br/></div>
+<br/>
+
+<a name="virtual_getTargetImage"/>
+<div class="headline">getTargetImage</div>
+<div class="usage">public native EntisGLS4.Image getTargetImage( ) const</div>
+<div class="normal">
+描画先取得<br/></div>
+<br/>
+
+<a name="virtual_getTargetZBuffer"/>
+<div class="headline">getTargetZBuffer</div>
+<div class="usage">public native EntisGLS4.Image getTargetZBuffer( ) const</div>
+<div class="normal">
+描画先ｚバッファ取得<br/></div>
+<br/>
+
+<a name="virtual_getViewPort"/>
+<div class="headline">getViewPort</div>
+<div class="usage">public native boolean getViewPort( ImageRect* rectView ) const</div>
+<div class="normal">
+描画有効域取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">rectView</div>
+<div class="param_desc">
+描画有効域を取得する ImageRect 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_popTransformation"/>
+<div class="headline">popTransformation</div>
+<div class="usage">public native boolean popTransformation( )</div>
+<div class="normal">
+現在の座標変換・透明度効果を復元<br/></div>
+<br/>
+
+<a name="virtual_pushTransformation"/>
+<div class="headline">pushTransformation</div>
+<div class="usage">public native boolean pushTransformation( )</div>
+<div class="normal">
+現在の座標変換・透明度効果を保存<br/></div>
+<br/>
+
+<a name="virtual_resetTransformation"/>
+<div class="headline">resetTransformation</div>
+<div class="usage">public native boolean resetTransformation( )</div>
+<div class="normal">
+座標変換・透明度効果をリセット<br/></div>
+<br/>
+
+<a name="virtual_setLinearGradation"/>
+<div class="headline">setLinearGradation</div>
+<div class="usage">public native boolean setLinearGradation( float x0, float y0, float x1, float y1, const ARGB8* pGradation, ulong nCount )</div>
+<div class="normal">
+線形グラデーション設定<br/></div>
+<br/>
+
+<a name="virtual_setPaintFlags"/>
+<div class="headline">setPaintFlags</div>
+<div class="usage">public native void setPaintFlags( ulong nFlags )</div>
+<div class="normal">
+デフォルトの描画フラグ設定<br/></div>
+<br/>
+
+<a name="virtual_setRingedGradation"/>
+<div class="headline">setRingedGradation</div>
+<div class="usage">public native boolean setRingedGradation( float xCenter, float yCenter, float radAngle, const ARGB8* pGradation, ulong nCount )</div>
+<div class="normal">
+環状グラデーション設定<br/></div>
+<br/>
+
+<a name="virtual_setTransformation"/>
+<div class="headline">setTransformation</div>
+<div class="usage">public native boolean setTransformation( const Affine* affine, uint transparency )</div>
+<div class="normal">
+描画座標変換・透明度設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

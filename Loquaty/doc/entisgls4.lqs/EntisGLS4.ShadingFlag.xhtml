@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ShadingFlag</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ShadingFlag</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum using ShadingFlag&lt;ulong&gt; ;</div>
+<div class="normal">
+シェーディング・フラグ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.ShadingFlag.xhtml">EntisGLS4.ShadingFlag</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_shadingMethodNothing">shadingMethodNothing</a><br/>
+	<a href="#static_shadingMethodFlat">shadingMethodFlat</a><br/>
+	<a href="#static_shadingMethodGouraud">shadingMethodGouraud</a><br/>
+	<a href="#static_shadingMethodPhong">shadingMethodPhong</a><br/>
+	<a href="#static_shadingMethodToon">shadingMethodToon</a><br/>
+	<a href="#static_shadingMethodMask">shadingMethodMask</a><br/>
+	<a href="#static_shadingTextureTiling">shadingTextureTiling</a><br/>
+	<a href="#static_shadingTextureTriming">shadingTextureTriming</a><br/>
+	<a href="#static_shadingTextureSmoothing">shadingTextureSmoothing</a><br/>
+	<a href="#static_shadingTextureDithering">shadingTextureDithering</a><br/>
+	<a href="#static_shadingTextureMapping">shadingTextureMapping</a><br/>
+	<a href="#static_shadingEnvironmentMapping">shadingEnvironmentMapping</a><br/>
+	<a href="#static_shadingGEnvironmentMapping">shadingGEnvironmentMapping</a><br/>
+	<a href="#static_shadingNormalTexture">shadingNormalTexture</a><br/>
+	<a href="#static_shadingEmissionTexture">shadingEmissionTexture</a><br/>
+	<a href="#static_shadingAlphaTexture">shadingAlphaTexture</a><br/>
+	<a href="#static_shadingHeightTexture">shadingHeightTexture</a><br/>
+	<a href="#static_shadingRefractEnvMapping">shadingRefractEnvMapping</a><br/>
+	<a href="#static_shadingSpecularMapping">shadingSpecularMapping</a><br/>
+	<a href="#static_shadingNormalizedUVScale">shadingNormalizedUVScale</a><br/>
+	<a href="#static_shadingGlobalAOLightMap">shadingGlobalAOLightMap</a><br/>
+	<a href="#static_shadingAllLocalTextureMask">shadingAllLocalTextureMask</a><br/>
+	<a href="#static_shadingSingleSidePlane">shadingSingleSidePlane</a><br/>
+	<a href="#static_shadingNoZBuffer">shadingNoZBuffer</a><br/>
+	<a href="#static_shadingZBufferNoWrite">shadingZBufferNoWrite</a><br/>
+	<a href="#static_shadingDrawOffsetBorder">shadingDrawOffsetBorder</a><br/>
+	<a href="#static_shadingMeshSurfaceOffset">shadingMeshSurfaceOffset</a><br/>
+	<a href="#static_shadingHintOfUnknown">shadingHintOfUnknown</a><br/>
+	<a href="#static_shadingHintOfFullAlpha">shadingHintOfFullAlpha</a><br/>
+	<a href="#static_shadingHintOfAlpha">shadingHintOfAlpha</a><br/>
+	<a href="#static_shadingHintOfHalfAlpha">shadingHintOfHalfAlpha</a><br/>
+	<a href="#static_shadingHintPriority0">shadingHintPriority0</a><br/>
+	<a href="#static_shadingHintPriority1">shadingHintPriority1</a><br/>
+	<a href="#static_shadingHintPriority2">shadingHintPriority2</a><br/>
+	<a href="#static_shadingHintPriority3">shadingHintPriority3</a><br/>
+	<a href="#static_shadingHintMask">shadingHintMask</a><br/>
+	<a href="#static_shadingHintNoZSort">shadingHintNoZSort</a><br/>
+	<a href="#static_shadingNoShadowObject">shadingNoShadowObject</a><br/>
+	<a href="#static_shadingNoDropShadow">shadingNoDropShadow</a><br/>
+	<a href="#static_shadingNoReflectObject">shadingNoReflectObject</a><br/>
+	<a href="#static_shadingGlobalReflectObject">shadingGlobalReflectObject</a><br/>
+	<a href="#static_shadingNoFogEffect">shadingNoFogEffect</a><br/>
+	<a href="#static_shadingVertexAlpha">shadingVertexAlpha</a><br/>
+	<a href="#static_shadingMakeBlendAdd">shadingMakeBlendAdd</a><br/>
+	<a href="#static_shadingEmisiveTarget">shadingEmisiveTarget</a><br/>
+	<a href="#static_shadingNoDrawOffsetBorder">shadingNoDrawOffsetBorder</a><br/>
+	<a href="#static_shadingDisableColorEffect">shadingDisableColorEffect</a><br/>
+	<a href="#static_shadingAppExtension1">shadingAppExtension1</a><br/>
+	<a href="#static_shadingAppExtension2">shadingAppExtension2</a><br/>
+	<a href="#static_shadingAppExtension3">shadingAppExtension3</a><br/>
+	<a href="#static_shadingAppExtension4">shadingAppExtension4</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_shadingMethodNothing"/>
+<div class="headline">shadingMethodNothing</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingMethodNothing = 0</div>
+<div class="normal">
+シェーディング・フラグ：シェーディング無し<br/></div>
+<br/>
+<a name="static_shadingMethodFlat"/>
+<div class="headline">shadingMethodFlat</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingMethodFlat = 1</div>
+<div class="normal">
+シェーディング・フラグ：フラットシェーディング（未使用）<br/></div>
+<br/>
+<a name="static_shadingMethodGouraud"/>
+<div class="headline">shadingMethodGouraud</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingMethodGouraud = 2</div>
+<div class="normal">
+シェーディング・フラグ：グーローシェーディング<br/></div>
+<br/>
+<a name="static_shadingMethodPhong"/>
+<div class="headline">shadingMethodPhong</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingMethodPhong = 4</div>
+<div class="normal">
+シェーディング・フラグ：フォンシェーディング<br/></div>
+<br/>
+<a name="static_shadingMethodToon"/>
+<div class="headline">shadingMethodToon</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingMethodToon = 8</div>
+<div class="normal">
+シェーディング・フラグ：トゥーン・シェーディング<br/></div>
+<br/>
+<a name="static_shadingMethodMask"/>
+<div class="headline">shadingMethodMask</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingMethodMask = 255</div>
+<div class="normal">
+シェーディング・フラグ：シェーディング方式マスク<br/></div>
+<br/>
+<a name="static_shadingTextureTiling"/>
+<div class="headline">shadingTextureTiling</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingTextureTiling = 0x100</div>
+<div class="normal">
+シェーディング・フラグ：テクスチャをタイリング<br/></div>
+<br/>
+<a name="static_shadingTextureTriming"/>
+<div class="headline">shadingTextureTriming</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingTextureTriming = 0x200</div>
+<div class="normal">
+シェーディング・フラグ：αトリミング<br/></div>
+<br/>
+<a name="static_shadingTextureSmoothing"/>
+<div class="headline">shadingTextureSmoothing</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingTextureSmoothing = 0x400</div>
+<div class="normal">
+シェーディング・フラグ：テクスチャ補完<br/></div>
+<br/>
+<a name="static_shadingTextureDithering"/>
+<div class="headline">shadingTextureDithering</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingTextureDithering = 0x800</div>
+<div class="normal">
+シェーディング・フラグ：αディザリング<br/></div>
+<br/>
+<a name="static_shadingTextureMapping"/>
+<div class="headline">shadingTextureMapping</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingTextureMapping = 0x1000</div>
+<div class="normal">
+シェーディング・フラグ：（拡散反射成分）テクスチャマッピング<br/></div>
+<br/>
+<a name="static_shadingEnvironmentMapping"/>
+<div class="headline">shadingEnvironmentMapping</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingEnvironmentMapping = 0x2000</div>
+<div class="normal">
+シェーディング・フラグ：環境マッピング<br/></div>
+<br/>
+<a name="static_shadingGEnvironmentMapping"/>
+<div class="headline">shadingGEnvironmentMapping</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingGEnvironmentMapping = 0x4000</div>
+<div class="normal">
+シェーディング・フラグ：グローバル環境マッピング<br/></div>
+<br/>
+<a name="static_shadingNormalTexture"/>
+<div class="headline">shadingNormalTexture</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingNormalTexture = 0x8000</div>
+<div class="normal">
+シェーディング・フラグ：法線テクスチャ<br/></div>
+<br/>
+<a name="static_shadingEmissionTexture"/>
+<div class="headline">shadingEmissionTexture</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingEmissionTexture = 0x400000</div>
+<div class="normal">
+シェーディング・フラグ：発光テクスチャ<br/></div>
+<br/>
+<a name="static_shadingAlphaTexture"/>
+<div class="headline">shadingAlphaTexture</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingAlphaTexture = 0x800000</div>
+<div class="normal">
+シェーディング・フラグ：αテクスチャ<br/></div>
+<br/>
+<a name="static_shadingHeightTexture"/>
+<div class="headline">shadingHeightTexture</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHeightTexture = 0x40000000</div>
+<div class="normal">
+シェーディング・フラグ：標高テクスチャ<br/></div>
+<br/>
+<a name="static_shadingRefractEnvMapping"/>
+<div class="headline">shadingRefractEnvMapping</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingRefractEnvMapping = 0x4000000000</div>
+<div class="normal">
+シェーディング・フラグ：屈折反映用大域環境マッピング有効<br/></div>
+<br/>
+<a name="static_shadingSpecularMapping"/>
+<div class="headline">shadingSpecularMapping</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingSpecularMapping = 0x8000000000</div>
+<div class="normal">
+シェーディング・フラグ：スペキュラー・粗さ・反射率テクスチャ<br/></div>
+<br/>
+<a name="static_shadingNormalizedUVScale"/>
+<div class="headline">shadingNormalizedUVScale</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingNormalizedUVScale = 0x10000000000</div>
+<div class="normal">
+シェーディング・フラグ：UV 座標は [0,1] （無指定はピクセル単位）<br/></div>
+<br/>
+<a name="static_shadingGlobalAOLightMap"/>
+<div class="headline">shadingGlobalAOLightMap</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingGlobalAOLightMap = 0x100000000000</div>
+<div class="normal">
+シェーディング・フラグ：大域AO（ライトマップ）テクスチャ<br/></div>
+<br/>
+<a name="static_shadingAllLocalTextureMask"/>
+<div class="headline">shadingAllLocalTextureMask</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingAllLocalTextureMask = 0x108040C0B000</div>
+<div class="normal">
+シェーディング・フラグ：すべてのテクスチャフラグ<br/></div>
+<br/>
+<a name="static_shadingSingleSidePlane"/>
+<div class="headline">shadingSingleSidePlane</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingSingleSidePlane = 0x10000</div>
+<div class="normal">
+シェーディング・フラグ：片面ポリゴン<br/></div>
+<br/>
+<a name="static_shadingNoZBuffer"/>
+<div class="headline">shadingNoZBuffer</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingNoZBuffer = 0x20000</div>
+<div class="normal">
+シェーディング・フラグ：ｚ比較を行わないで描画<br/></div>
+<br/>
+<a name="static_shadingZBufferNoWrite"/>
+<div class="headline">shadingZBufferNoWrite</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingZBufferNoWrite = 0x40000</div>
+<div class="normal">
+シェーディング・フラグ：ｚ比較のみ（ｚバッファへ書き込まない）<br/></div>
+<br/>
+<a name="static_shadingDrawOffsetBorder"/>
+<div class="headline">shadingDrawOffsetBorder</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingDrawOffsetBorder = 0x80000</div>
+<div class="normal">
+シェーディング・フラグ：輪郭描画<br/></div>
+<br/>
+<a name="static_shadingMeshSurfaceOffset"/>
+<div class="headline">shadingMeshSurfaceOffset</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingMeshSurfaceOffset = 0x400000000</div>
+<div class="normal">
+シェーディング・フラグ：法線に従って膨張処理を行う（膨張距離は輪郭パラメータに準拠）<br/></div>
+<br/>
+<a name="static_shadingHintOfUnknown"/>
+<div class="headline">shadingHintOfUnknown</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintOfUnknown = 0</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝描画域の透明・不透明は不明<br/></div>
+<br/>
+<a name="static_shadingHintOfFullAlpha"/>
+<div class="headline">shadingHintOfFullAlpha</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintOfFullAlpha = 0x100000</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝描画域のほとんどが不透明<br/></div>
+<br/>
+<a name="static_shadingHintOfAlpha"/>
+<div class="headline">shadingHintOfAlpha</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintOfAlpha = 0x200000</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝描画域の多くが 100% 透明と不透明<br/></div>
+<br/>
+<a name="static_shadingHintOfHalfAlpha"/>
+<div class="headline">shadingHintOfHalfAlpha</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintOfHalfAlpha = 0x300000</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝描画域に多くの半透明（※ｚソート用ヒント）<br/></div>
+<br/>
+<a name="static_shadingHintPriority0"/>
+<div class="headline">shadingHintPriority0</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintPriority0 = 0</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝優先度０<br/></div>
+<br/>
+<a name="static_shadingHintPriority1"/>
+<div class="headline">shadingHintPriority1</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintPriority1 = 0x100000</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝優先度１<br/></div>
+<br/>
+<a name="static_shadingHintPriority2"/>
+<div class="headline">shadingHintPriority2</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintPriority2 = 0x200000</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝優先度２<br/></div>
+<br/>
+<a name="static_shadingHintPriority3"/>
+<div class="headline">shadingHintPriority3</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintPriority3 = 0x300000</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝優先度３<br/></div>
+<br/>
+<a name="static_shadingHintMask"/>
+<div class="headline">shadingHintMask</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintMask = 0x300000</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント・マスク<br/></div>
+<br/>
+<a name="static_shadingHintNoZSort"/>
+<div class="headline">shadingHintNoZSort</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingHintNoZSort = 0x200000000</div>
+<div class="normal">
+シェーディング・フラグ：描画順序ヒント＝ｚソートは必要としない（※ソート用ヒント：同マテリアルをひとまとめにしてよい）<br/></div>
+<br/>
+<a name="static_shadingNoShadowObject"/>
+<div class="headline">shadingNoShadowObject</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingNoShadowObject = 0x1000000</div>
+<div class="normal">
+シェーディング・フラグ：他のオブジェクトに影を落とさない<br/></div>
+<br/>
+<a name="static_shadingNoDropShadow"/>
+<div class="headline">shadingNoDropShadow</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingNoDropShadow = 0x2000000</div>
+<div class="normal">
+シェーディング・フラグ：このオブジェクトに影を落とさない<br/></div>
+<br/>
+<a name="static_shadingNoReflectObject"/>
+<div class="headline">shadingNoReflectObject</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingNoReflectObject = 0x4000000</div>
+<div class="normal">
+シェーディング・フラグ：他のオブジェクトに映りこまない<br/></div>
+<br/>
+<a name="static_shadingGlobalReflectObject"/>
+<div class="headline">shadingGlobalReflectObject</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingGlobalReflectObject = 0x8000000</div>
+<div class="normal">
+シェーディング・フラグ：距離に関係なく他のオブジェクトに映りこむ<br/></div>
+<br/>
+<a name="static_shadingNoFogEffect"/>
+<div class="headline">shadingNoFogEffect</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingNoFogEffect = 0x10000000</div>
+<div class="normal">
+シェーディング・フラグ：フォグ光源の影響を受けない<br/></div>
+<br/>
+<a name="static_shadingVertexAlpha"/>
+<div class="headline">shadingVertexAlpha</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingVertexAlpha = 0x20000000</div>
+<div class="normal">
+シェーディング・フラグ：頂点色の乗算成分の Alpha を頂点αとして使用する<br/></div>
+<br/>
+<a name="static_shadingMakeBlendAdd"/>
+<div class="headline">shadingMakeBlendAdd</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingMakeBlendAdd = 0x800000000</div>
+<div class="normal">
+シェーディング・フラグ：強制加算描画<br/></div>
+<br/>
+<a name="static_shadingEmisiveTarget"/>
+<div class="headline">shadingEmisiveTarget</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingEmisiveTarget = 0x1000000000</div>
+<div class="normal">
+シェーディング・フラグ：発光効果用出力<br/></div>
+<br/>
+<a name="static_shadingNoDrawOffsetBorder"/>
+<div class="headline">shadingNoDrawOffsetBorder</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingNoDrawOffsetBorder = 0x2000000000</div>
+<div class="normal">
+シェーディング・フラグ：shadingDrawOffsetBorder の無効化<br/></div>
+<br/>
+<a name="static_shadingDisableColorEffect"/>
+<div class="headline">shadingDisableColorEffect</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingDisableColorEffect = 0x20000000000</div>
+<div class="normal">
+シェーディング・フラグ：色効果無効化 （appendMatrixTransformation の色要素）<br/></div>
+<br/>
+<a name="static_shadingAppExtension1"/>
+<div class="headline">shadingAppExtension1</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingAppExtension1 = 0x1000000000000</div>
+<div class="normal">
+シェーディング・フラグ：アプリケーション拡張１<br/></div>
+<br/>
+<a name="static_shadingAppExtension2"/>
+<div class="headline">shadingAppExtension2</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingAppExtension2 = 0x2000000000000</div>
+<div class="normal">
+シェーディング・フラグ：アプリケーション拡張２<br/></div>
+<br/>
+<a name="static_shadingAppExtension3"/>
+<div class="headline">shadingAppExtension3</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingAppExtension3 = 0x4000000000000</div>
+<div class="normal">
+シェーディング・フラグ：アプリケーション拡張３<br/></div>
+<br/>
+<a name="static_shadingAppExtension4"/>
+<div class="headline">shadingAppExtension4</div>
+<div class="usage">public static const EntisGLS4.ShadingFlag&#9; shadingAppExtension4 = 0x8000000000000</div>
+<div class="normal">
+シェーディング・フラグ：アプリケーション拡張４<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

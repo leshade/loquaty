@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shader>
+	<!--- Copyright (C) Leshade Entis. --->
+	<feature language="glsl"
+			limit_bone="0" limit_light="1" limit_shadowmap="0"
+			morphing="false" instanced_draw="false" multi_shaped_draw="false" />
+
+	<uniforms>
+		<uniform name="u_fpAttenuation" type="float">
+			<name>減衰率</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.02</default>
+		</uniform>
+		<uniform name="u_fpUnitDistance" type="float">
+			<name>減衰単位距離</name>
+			<range min="1.0" max="10000.0"/>
+			<default>1000</default>
+		</uniform>
+		<uniform name="u_rgbScattering" type="vec3" sub_type="color">
+			<name>散乱光</name>
+			<default>0.15625 0.25 1.0</default>
+		</uniform>
+		<uniform name="u_fpScattering" type="float">
+			<name>散乱光強度</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.04</default>
+		</uniform>
+		<uniform name="u_rgbBackgroundUp" type="vec3" sub_type="color">
+			<name>背景光（上半球）</name>
+			<default>0.0 0.1875 0.5</default>
+		</uniform>
+		<uniform name="u_rgbBackgroundUnder" type="vec3" sub_type="color">
+			<name>背景光（下半球）</name>
+			<default>0.0 0.1875 0.5</default>
+		</uniform>
+		<uniform name="u_fpAirThickness" type="float">
+			<name>大気の厚み</name>
+			<range min="1000.0" max="10000.0"/>
+			<default>5000</default>
+		</uniform>
+
+		<uniform name="u_texBackScape" type="sampler">
+			<name>背景テクスチャ</name>
+			<desc>背景用パノラマ画像テクスチャ</desc>
+		</uniform>
+		<uniform name="u_fpBackScape" type="float">
+			<name>背景テクスチャ適用度</name>
+			<range min="0.0" max="1.0"/>
+			<default>0</default>
+		</uniform>
+		<uniform name="u_fpBackScapeRot" type="float">
+			<name>背景テクスチャ回転</name>
+			<range min="-180.0" max="180.0"/>
+			<default>0</default>
+		</uniform>
+
+		<uniform name="u_texCloud" type="sampler">
+			<name>雲用テクスチャ</name>
+		</uniform>
+		<uniform name="u_vCloudTexOffset" type="vec3" sub_type="position">
+			<name>雲用テクスチャオフセット</name>
+			<default>0.0 0.0 0.0</default>
+		</uniform>
+		<uniform name="u_fpCloudScale" type="float">
+			<name>雲模様スケール</name>
+			<range min="3000.0" max="30000.0"/>
+			<default>10000</default>
+		</uniform>
+		<uniform name="u_fpCloudScale2" type="float">
+			<name>雲模様補助スケール</name>
+			<range min="0.3" max="5.0"/>
+			<default>1.0</default>
+		</uniform>
+		<uniform name="u_yCloudAltitude" type="float">
+			<name>雲高</name>
+			<range min="1000.0" max="5000.0"/>
+			<default>2000</default>
+		</uniform>
+		<uniform name="u_hCloudThickness" type="float">
+			<name>雲厚み</name>
+			<range min="1000.0" max="10000.0"/>
+			<default>8000</default>
+		</uniform>
+		<uniform name="u_fpCloudLowFade" type="float">
+			<name>雲底エンベロープ</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.2</default>
+		</uniform>
+		<uniform name="u_fpCloudTopFade" type="float">
+			<name>雲天エンベロープ</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.3</default>
+		</uniform>
+		<uniform name="u_fpDensityBais" type="float">
+			<name>雲密度バイアス</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.6</default>
+		</uniform>
+		<uniform name="u_rgbCloud" type="vec3" sub_type="color">
+			<name>雲色</name>
+			<default>1.0 1.0 1.0</default>
+		</uniform>
+		<uniform name="u_rgbCloudShade" type="vec3" sub_type="color">
+			<name>雲影色</name>
+			<default>0.5 0.58 0.75</default>
+		</uniform>
+		<uniform name="u_fpCloudFade" type="float">
+			<name>雲有効半径</name>
+			<range min="10000.0" max="100000.0"/>
+			<default>30000</default>
+		</uniform>
+
+		<uniform name="u_vTerrainScale" type="vec3" sub_type="zoom">
+			<name>地形スケール</name>
+			<default>20000.0 1500.0 20000.0</default>
+		</uniform>
+		<uniform name="u_vTerrainOffset" type="vec3" sub_type="position">
+			<name>地形オフセット</name>
+			<default>0.0 2000.0 0.0</default>
+		</uniform>
+		<uniform name="u_texTerrain" type="sampler">
+			<name>地形テクスチャ</name>
+		</uniform>
+		<uniform name="u_rgbTerrainBase" type="vec3" sub_type="color">
+			<name>地形色（ベース）</name>
+			<default>0.22 0.516 0.4</default>
+		</uniform>
+		<uniform name="u_rgbTerrainBase2" type="vec3" sub_type="color">
+			<name>地形色（水面付近）</name>
+			<default>0.7 0.7 0.54</default>
+		</uniform>
+		<uniform name="u_fpTerrainLowBand" type="float">
+			<name>地形色（水面付近）幅</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.05</default>
+		</uniform>
+		<uniform name="u_rgbTerrainBase3" type="vec3" sub_type="color">
+			<name>地形色（山頂付近）</name>
+			<default>0.258 0.363 0.5625</default>
+		</uniform>
+		<uniform name="u_fpTerrainHighBand" type="float">
+			<name>地形色（山頂付近）幅</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.4</default>
+		</uniform>
+		<uniform name="u_fpTerrainFogZ" type="float">
+			<name>地形疑似フォグ距離</name>
+			<range min="1000.0" max="100000.0"/>
+			<default>40000</default>
+		</uniform>
+		<uniform name="u_fpCloudShadow" type="float">
+			<name>雲陰適用度</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.6</default>
+		</uniform>
+		<uniform name="u_fpAmbient" type="float">
+			<name>地形環境光</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.3</default>
+		</uniform>
+
+		<uniform name="u_flagWaterSurface" type="int">
+			<name>水面描画</name>
+			<selector>
+				<enum name="false" num="0"/>
+				<enum name="true" num="1"/>
+			</selector>
+			<default>1</default>
+		</uniform>
+		<uniform name="u_fpTideLevel" type="float">
+			<name>水位</name>
+			<range min="-1000.0" max="2000.0"/>
+			<default>1000</default>
+		</uniform>
+		<uniform name="u_rgbWaterColor" type="vec3" sub_type="color">
+			<name>水面色</name>
+			<default>0.1 0.1 0.3</default>
+		</uniform>
+		<uniform name="u_fpWaterReflect" type="float">
+			<name>水面反射率</name>
+			<range min="0.0" max="1.0"/>
+			<default>0.4</default>
+		</uniform>
+
+		<uniform name="u_vLightDir" type="vec3" sub_type="direction">
+			<name>平行光方向</name>
+			<default>1.0 1.0 1.0</default>
+		</uniform>
+		<uniform name="u_fpBrightness" type="float">
+			<name>光源輝度</name>
+			<range min="0.0" max="1.0"/>
+			<default>1.0</default>
+		</uniform>
+
+		<uniform name="u_nRayCloud" type="int">
+			<name>雲レイマーチ追跡数</name>
+			<default>200</default>
+		</uniform>
+		<uniform name="u_nRayTerrain" type="int">
+			<name>地形レイマーチ追跡数</name>
+			<default>100</default>
+		</uniform>
+	</uniforms>
+
+	<fragment_shader><![CDATA[
+
+uniform float		u_fpAttenuation ;		// 減衰率
+uniform float		u_fpUnitDistance ;		// 減衰単位距離
+uniform vec3		u_rgbScattering ;		// 散乱光
+uniform float		u_fpScattering ;		// 散乱光強度
+uniform vec3		u_rgbBackgroundUp ;		// 背景光
+uniform vec3		u_rgbBackgroundUnder ;
+uniform float		u_fpAirThickness ;		// 大気の厚み
+
+uniform sampler2D	u_texBackScape ;		// 背景テクスチャ
+uniform float		u_fpBackScape ;			// 背景テクスチャブレンド
+uniform float		u_fpBackScapeRot ;		// 背景テクスチャ回転
+
+uniform sampler3D	u_texCloud ;			// 雲用パーリンノイズ
+uniform vec3		u_vCloudTexOffset ;		// 雲用テクスチャオフセット
+uniform float		u_fpCloudScale ;		// 雲用パーリンノイズ・スケール
+uniform float		u_fpCloudScale2 ;
+uniform float		u_yCloudAltitude ;		// 雲高（雲底辺）
+uniform float		u_hCloudThickness ;		// 雲厚み
+uniform float		u_fpCloudLowFade ;		// 雲底フェード幅
+uniform float		u_fpCloudTopFade ;		// 雲天フェード幅
+uniform float		u_fpDensityBais ;		// 雲密度バイアス
+uniform vec3		u_rgbCloud ;			// 雲色
+uniform vec3		u_rgbCloudShade ;		// 雲影色
+uniform float		u_fpCloudFade ;			// 雲フェードアウト距離
+
+uniform vec3		u_vTerrainScale ;		// 地形スケール
+uniform vec3		u_vTerrainOffset ;		// 地形オフセット
+uniform sampler2D	u_texTerrain ;			// 地形マップ
+uniform vec3		u_rgbTerrainBase ;		// 地形ベース色
+uniform vec3		u_rgbTerrainBase2 ;		// 地形色２（水面付近）
+uniform float		u_fpTerrainLowBand ;	// 地形色２幅
+uniform vec3		u_rgbTerrainBase3 ;		// 地形色３（山頂付近）
+uniform float		u_fpTerrainHighBand ;	// 地形色３幅
+uniform float		u_fpTerrainFogZ ;		// 地形フォグ距離
+uniform float		u_fpCloudShadow ;		// 雲陰の強さ
+uniform float		u_fpAmbient ;			// 環境光
+
+uniform int			u_flagWaterSurface ;	// 水面描画
+uniform float		u_fpTideLevel ;			// 水位
+uniform vec3		u_rgbWaterColor ;		// 水面色
+uniform float		u_fpWaterReflect ;		// 水面反射率
+
+uniform vec3		u_vLightDir ;			// 光源方向
+uniform float		u_fpBrightness ;		// 光源輝度
+
+uniform int			u_nRayCloud ;			// 雲レイマーチ反復回数
+uniform int			u_nRayTerrain ;			// 地形レイマーチ反復回数
+
+
+#define	DELTA			0.002
+#define	THRESHOLD		0.01
+#define	PI				3.141592653589793
+#define	CLOUD_RAYS		(u_nRayCloud)
+#define	TERRAIN_RAYS	(u_nRayTerrain)
+
+float atan2( in float y, in float x )
+{
+	return (x == 0.0) ? (sign(y) * (PI * 0.5)) : atan( y, x ) ;
+}
+
+
+// 疑似乱数
+float randomizer( in vec2 uv )
+{
+	float	a = fract( dot( uv, vec2( 2.067390879775102, 12.451168662908249 ) ) ) - 0.5 ;
+	float	s = a * ( 6.182785114200511 + a*a * (-38.026512460676566 + a*a * 53.392573080032137) ) ;
+	return	fract( s * 43758.5453 ) ;
+}
+
+float genRandom( inout float rnd )
+{
+	rnd = fract( rnd * 15.6875 + 9.23670482635498046875 ) ;
+	return	rnd ;
+}
+
+
+// 散乱光
+// a : 減衰率 (1.0 - u_fpAttenuation)
+// r : 距離 (x / u_fpUnitDistance)
+// c : 対象色
+// s : 局所散乱光 (u_rgbScattering * u_fpScattering)
+//
+// a^r * c + ∫^r_0 (a^x * s) dx
+// = a^r * c + (a^r - 1) / log(a) * s
+
+vec4 effectScattering( vec4 argbColor, float xDistance )
+{
+	// パラメータ
+	float	a = 1.0 - u_fpAttenuation ;
+	vec3	s = (u_rgbScattering * u_fpScattering
+						+ vec3( 0.01, 0.01, 0.01 )) * u_fpBrightness ;
+
+	// 距離
+	float	r = xDistance / u_fpUnitDistance ;
+
+	float	apr = pow( a, r ) ;
+	return	vec4( argbColor.rgb * apr
+					+ s * (((apr - 1.0) / log(a)) * argbColor.a), argbColor.a ) ;
+}
+
+
+// 色合成
+vec4 blendColor( in vec4 dst, in vec4 src )
+{
+	return	vec4( dst.rgb * (1.0 - src.a) + src.rgb,
+					1.0 - (1.0 - dst.a) * (1.0 - src.a) ) ;
+}
+
+
+// パノラマ画像サンプリング
+vec4 samplePanorama( in sampler2D texPanorama, in vec3 vRay )
+{
+	float	x = atan2( -vRay.z, vRay.x ) * (0.5 / PI) + 0.5 ;	// ※左から右回り
+	float	y = asin( vRay.y ) / PI + 0.5 ;
+	x -= u_fpBackScapeRot * (PI / 180.0) ;
+	return	texture2D( texPanorama, vec2( x, y ) ) ;
+}
+
+
+// 背景サンプリング
+vec4 sampleBackscape( in vec3 vRay )
+{
+	// 大気の終端までの距離
+	float	x = u_fpAirThickness / abs( vRay.y ) ;
+
+	// 見かけの背景色
+	vec4	rgbBackground ;
+	if ( vRay.y < 0.0 )
+	{
+		rgbBackground =
+			effectScattering( vec4( u_rgbBackgroundUp, 1.0 ), x ) ;
+	}
+	else
+	{
+		rgbBackground =
+			effectScattering( vec4( u_rgbBackgroundUnder, 1.0 ), x ) ;
+	}
+
+	// 背景画像
+	vec4	rgbBackScape = vec4( 0.0, 0.0, 0.0, 0.0 ) ;
+	if ( u_fpBackScape > 0.001 )
+	{
+		rgbBackScape = samplePanorama( u_texBackScape, vRay ) * u_fpBackScape ;
+	}
+	return	rgbBackground + rgbBackScape ;
+}
+
+
+// 雲距離関数
+float sampleCloud( vec3 v )
+{
+	float	y = v.y + u_yCloudAltitude ;
+	if ( y > 0.0 )
+	{
+		return	0.0 ;
+	}
+	else if ( y < - u_hCloudThickness )
+	{
+		return	0.0 ;
+	}
+	float	a = - y / u_hCloudThickness ;
+	if ( a < u_fpCloudLowFade )
+	{
+		a = a / u_fpCloudLowFade ;
+	}
+	else if ( a > (1.0 - u_fpCloudTopFade) )
+	{
+		a = (a - (1.0 - u_fpCloudTopFade)) / u_fpCloudTopFade ;
+	}
+	else
+	{
+		a = 1.0 ;
+	}
+	float	s = 1.0 / u_fpCloudScale ;
+	vec3	uv = (v.xzy - u_vCloudTexOffset.xzy) * s ;
+	float	p0 = texture3D( u_texCloud, uv ).x ;
+	float	p1 = texture3D( u_texCloud, uv * 0.1 * u_fpCloudScale2 ).x ;
+	float	p2 = texture3D( u_texCloud, uv * 0.01 ).x ;
+	return	pow( p0 * p1 * p2, 1.0 / 3.0 ) * a ;
+}
+
+float disttanceCloud( vec3 v )
+{
+	return	1.0 - sampleCloud( v ) ;
+}
+
+// 雲法線計算
+vec3 normalCloudDelta( in vec3 vPos, in float d )
+{
+	vec3	dx = vec3( d, 0.0, 0.0 ) ;
+	vec3	dy = vec3( 0.0, d, 0.0 ) ;
+	vec3	dz = vec3( 0.0, 0.0, d ) ;
+
+	return	normalize( vec3(
+				disttanceCloud(vPos + dx) - disttanceCloud(vPos - dx),
+				disttanceCloud(vPos + dy) - disttanceCloud(vPos - dy),
+				disttanceCloud(vPos + dz) - disttanceCloud(vPos - dz) ) ) ;
+}
+
+vec3 normalCloud( in vec3 vPos )
+{
+	vec3	n0 = normalCloudDelta( vPos, u_fpCloudScale * DELTA * 3.0 ) ;
+	vec3	n1 = normalCloudDelta( vPos, u_fpCloudScale * DELTA * 30.0 ) ;
+	return	normalize( n0 + n1 ) ;
+}
+
+// 雲
+vec4 rayCloud( in vec3 vRay, in vec3 vEye, in int nLoopCount )
+{
+	float	x = 0.0 ;
+	if ( vEye.y > - u_yCloudAltitude )
+	{
+		x = (vEye.y + u_yCloudAltitude) / abs( vRay.y ) ;
+	}
+	else if ( vEye.y < - (u_yCloudAltitude + u_hCloudThickness) )
+	{
+		x = (- (u_yCloudAltitude + u_hCloudThickness) - vEye.y) / abs( vRay.y ) ;
+	}
+	vec3	vPos = vEye + vRay * x ;
+	float	dRay = min( u_hCloudThickness
+							* (1.0 / float(nLoopCount)) / abs( vRay.y ),
+						u_fpCloudFade * (2.0 / float(nLoopCount)) ) ;
+	vec4	argbShade = vec4( 0.0, 0.0, 0.0, 0.0 ) ;
+
+	vec3	vLight = normalize( u_vLightDir ) ;
+
+	for ( int i = 0; i < nLoopCount; i ++ )
+	{
+		float	c = sampleCloud( vPos ) ;
+		if ( c > u_fpDensityBais )
+		{
+			float	r = length( vPos - vEye ) ;
+			float	a = (c - u_fpDensityBais) / (1.0 - u_fpDensityBais) ;
+			float	s = max( - dot( vLight, normalCloud( vPos ) ), 0.0 )
+													* u_fpBrightness ;
+			if ( r > u_fpCloudFade )
+			{
+				if ( r > u_fpCloudFade * 2.0 )
+				{
+					a = 0.0 ;
+				}
+				else
+				{
+					a *= 1.0 - (r - u_fpCloudFade) / u_fpCloudFade ;
+				}
+			}
+			vec4	rgbCloud =
+				vec4( (u_rgbCloudShade
+						+ (u_rgbCloud - u_rgbCloudShade) * s) * a, a ) ;
+			rgbCloud = effectScattering( rgbCloud, r ) ;
+			argbShade = blendColor( rgbCloud, argbShade ) ;
+
+			if ( argbShade.a >= 0.99 )
+			{
+				break ;
+			}
+		}
+
+		vPos += vRay * dRay ;
+	}
+	return	argbShade ;
+}
+
+
+// 正確ではないが簡易な符号有りの地形距離関数
+float distTerrain( vec3 v )
+{
+	vec3	vLocal = (v - u_vTerrainOffset) / u_vTerrainScale ;
+	float	h1 = - texture2D( u_texTerrain, vLocal.xz ).x ;
+	float	h2 = - texture2D( u_texTerrain, vLocal.xz * 10.0 ).x * 0.1 ;
+	float	dy = h1 + h2 - vLocal.y ;
+	return	abs( u_vTerrainScale.y * dy ) * sign(dy) ;
+}
+
+// 地形レイマーチング
+float rayMarchingTerrain
+	( out vec3 vPos, in vec3 vRay, in vec3 vEye, in int nLoopCount )
+{
+	float	d = 0.0 ;
+	vPos = vEye ;
+	for ( int i = 0; i < nLoopCount; i ++ )
+	{
+		d = distTerrain( vPos ) ;
+		if ( d < 0.0 )
+		{
+			d *= 0.95 ;
+		}
+		vPos += vRay * d ;
+		if ( (d >= 0.0) && (d < THRESHOLD) )
+		{
+			break ;
+		}
+		if ( (d > 0.0)
+			&& (u_flagWaterSurface == 1)
+			&& (vPos.y > u_fpTideLevel) )
+		{
+			float	t = clamp( (vPos.y - u_fpTideLevel) / vRay.y, 0.0, d ) ;
+			vPos -= vRay * t ;
+			d = 0.0 ;
+			if ( distTerrain( vPos ) >= 0.0 )
+			{
+				break ;
+			}
+		}
+	}
+	return	d ;
+}
+
+// 地形法線計算
+vec3 calcNormalTerrain( in vec3 vPos )
+{
+	float	d = DELTA * u_vTerrainScale.y ;
+	vec3	dx = vec3( d, 0.0, 0.0 ) ;
+	vec3	dy = vec3( 0.0, d, 0.0 ) ;
+	vec3	dz = vec3( 0.0, 0.0, d ) ;
+
+	return	normalize( vec3(
+				distTerrain(vPos + dx) - distTerrain(vPos - dx),
+				distTerrain(vPos + dy) - distTerrain(vPos - dy),
+				distTerrain(vPos + dz) - distTerrain(vPos - dz) ) ) ;
+}
+
+// 雲の影
+float shadowCloud( in vec3 vPos )
+{
+	vec3	vRay = normalize( -u_vLightDir ) ;
+	vec4	argbCloud = rayCloud( vRay, vPos, CLOUD_RAYS/10 ) ;
+	return	argbCloud.a ;
+}
+
+// 地表色
+vec3 colorTerrain( in vec3 vPos )
+{
+	vec3	vLocal = vPos / u_vTerrainScale ;
+	float	h = texture2D( u_texTerrain, vLocal.xz * 100.0 ).x
+								* u_fpTerrainLowBand * 0.5 ;
+	if ( u_flagWaterSurface == 1 )
+	{
+		h += (u_fpTideLevel - vPos.y) / u_vTerrainScale.y ;
+	}
+	else
+	{
+		h += (u_vTerrainOffset.y - vPos.y) / u_vTerrainScale.y ;
+	}
+	if ( h < u_fpTerrainLowBand )
+	{
+		h = min( h / u_fpTerrainLowBand, 1.0 ) ;
+		return	u_rgbTerrainBase * h + u_rgbTerrainBase2 * (1.0 - h) ;
+	}
+
+	h = texture2D( u_texTerrain, vLocal.xz * 100.0 ).x
+								* u_fpTerrainHighBand * 0.5 ;
+	h += (vPos.y - (u_vTerrainOffset.y - u_vTerrainScale.y)) / u_vTerrainScale.y ;
+
+	if ( h < u_fpTerrainHighBand )
+	{
+		h = min( h / u_fpTerrainHighBand, 1.0 ) ;
+		return	u_rgbTerrainBase * h + u_rgbTerrainBase3 * (1.0 - h) ;
+	}
+	return	u_rgbTerrainBase ;
+}
+
+// 地表シェーディング
+vec4 shadingTerrain( in vec3 vPos, in vec3 vEye, vec3 vNormal, vec3 rgbColor )
+{
+	float	s = max( - dot( normalize( u_vLightDir ), vNormal ), 0.0 ) ;
+	float	z = length( vPos - vEye ) ;
+	float	a = max( 1.0 - z / u_fpTerrainFogZ, 0.0 ) ;
+	s *= (1.0 - shadowCloud( vPos ) * u_fpCloudShadow) * u_fpBrightness ;
+	s = s * max( (1.0 - u_fpAmbient), 0.0 ) + u_fpAmbient ;
+
+	return	effectScattering( vec4( rgbColor * (s * a), a ), z ) ;
+}
+
+// 地形
+vec4 rayTerrain( in vec3 vRay, in vec3 vEye, in int nLoopCount )
+{
+	vec3	vPos ;
+	float	d = rayMarchingTerrain( vPos, vRay, vEye, nLoopCount ) ;
+	if ( d > u_vTerrainScale.y * 0.1 )
+	{
+		return	vec4( 0.0, 0.0, 0.0, 0.0 ) ;
+	}
+	vec3	rgbBaseColor ;
+	vec3	vNormal ;
+
+	if ( (u_flagWaterSurface == 1) && (d == 0.0)
+		&& (abs(vPos.y - u_fpTideLevel) < u_vTerrainScale.y * 0.0001) )
+	{
+		// 水面
+		vNormal = vec3( 0.0, -1.0, 0.0 ) ;
+		rgbBaseColor = u_rgbWaterColor ;
+
+		vec3	vRefRay = vec3( vRay.x, -vRay.y, vRay.z ) ;
+		vec4	argbRef = sampleBackscape( vRefRay ) ;
+
+		argbRef = blendColor( argbRef, rayCloud( vRefRay, vPos, CLOUD_RAYS/4 ) ) ;
+
+		vec3	vRefPos ;
+		d = rayMarchingTerrain( vRefPos, vRefRay, vPos, TERRAIN_RAYS/2 ) ;
+		if ( d < u_vTerrainScale.y * 0.1 )
+		{
+			argbRef =
+				blendColor( argbRef,
+					shadingTerrain( vRefPos, vEye,
+						calcNormalTerrain( vPos ),
+						colorTerrain( vRefPos ) ) ) ;
+		}
+
+		rgbBaseColor += argbRef.rgb * u_fpWaterReflect ;
+	}
+	else
+	{
+		// 地表
+		rgbBaseColor = colorTerrain( vPos ) ;
+		vNormal = calcNormalTerrain( vPos ) ;
+	}
+
+	// シェーディング
+	return	shadingTerrain( vPos, vEye, vNormal, rgbBaseColor ) ;
+}
+
+
+void main( void )
+{
+	vec3	vRay = normalize( utilCameraViewToGlobalDirection( v_vPosition.xyz ) ) ;
+	vec3	vEye = utilCameraViewToGlobalPosition( vec3( 0.0, 0.0, 0.0 ) ) ;
+
+	// 背景
+	vec4	rgbBackground = sampleBackscape( vRay ) ;
+
+	// 雲
+	vec4	argbCloud = rayCloud( vRay, vEye, CLOUD_RAYS ) ;
+
+	// 地形
+	vec4	argbTerrain = rayTerrain( vRay, vEye, TERRAIN_RAYS ) ;
+
+	// 合成
+	vec4	rgbColor =
+				blendColor( rgbBackground,
+							blendColor( argbTerrain, argbCloud ) ) ;
+
+	write_frag2( rgbColor, vec3( 0.0, 0.0, 0.0 ) ) ;
+}
+
+	]]></fragment_shader>
+</shader>

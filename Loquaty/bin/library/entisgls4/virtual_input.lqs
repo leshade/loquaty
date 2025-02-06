@@ -1,0 +1,385 @@
+﻿
+namespace	EntisGLS4
+{
+	//////////////////////////////////////////////////////////////////////////
+	// 入力を仮想化するマッパーと入力キュー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	VirtualInput	extends NativeObject
+	{
+		// デバイス種別
+		enum using DeviceType<int>
+		{
+			// デバイス種別：キーボード
+			deviceKeyboard,
+			// デバイス種別：マウス
+			deviceMouse,
+			// デバイス種別：ジョイスティック
+			deviceJoyStick,
+			// デバイス種別：コマンド
+			deviceCommand,
+			// デバイス種別：シグナル
+			deviceSignal,
+		}
+
+		// ジョイスティック番号
+		enum using JoyStickDevice<int>
+		{
+			// ジョイスティック番号：旧 Windows JoyStick #1 / Andrid GamePad
+			joyStickId1,
+			// ジョイスティック番号：旧 Windows JoyStick #2
+			joyStickId2,
+			// ジョイスティック番号：X Input #1
+			joyStickXInput1,
+			// ジョイスティック番号：X Input #2
+			joyStickXInput2,
+			// ジョイスティック番号：X Input #3
+			joyStickXInput3,
+			// ジョイスティック番号：X Input #4
+			joyStickXInput4,
+			// ジョイスティック番号：ユーザー定義 #1
+			joyStickUser1,
+			// ジョイスティック番号：ユーザー定義 #2
+			joyStickUser2,
+			// ジョイスティック番号：ユーザー定義 #3
+			joyStickUser3,
+			// ジョイスティック番号：ユーザー定義 #4
+			joyStickUser4,
+			// ジョイスティック番号：使用可能番号数
+			joyStickCount,
+			// ジョイスティック番号：使用可能実デバイス番号数
+			joyStickDevCount	= joyStickXInput4 + 1,
+		}
+
+		// ジョイスティック・ボタン番号
+		enum using JoyButton<int>
+		{
+			// 旧 Windows ジョイスティックボタン：DPad Up
+			joyUp		= 0,
+			// 旧 Windows ジョイスティックボタン：DPad Down
+			joyDown		= 1,
+			// 旧 Windows ジョイスティックボタン：DPad Left
+			joyLeft		= 2,
+			// 旧 Windows ジョイスティックボタン：DPad Right
+			joyRight	= 3,
+			// 旧 Windows ジョイスティックボタン：ボタン #1
+			joyButton1	= 4,
+			// 旧 Windows ジョイスティックボタン：ボタン #2
+			joyButton2	= 5,
+			// 旧 Windows ジョイスティックボタン：ボタン #3
+			joyButton3	= 6,
+			// 旧 Windows ジョイスティックボタン：ボタン #4
+			joyButton4	= 7,
+			// 旧 Windows ジョイスティックボタン：ボタン #5
+			joyButton5	= 8,
+			// 旧 Windows ジョイスティックボタン：ボタン #6
+			joyButton6	= 9,
+			// 旧 Windows ジョイスティックボタン：ボタン #7
+			joyButton7	= 10,
+			// 旧 Windows ジョイスティックボタン：ボタン #8
+			joyButton8	= 11,
+			// 旧 Windows ジョイスティックボタン：ボタン個数
+			joyButtonCount	= joyButton1 + 32,
+
+			// XInput ボタン：DPad Up
+			xinputDPadUp	= 0,
+			// XInput ボタン：DPad Down
+			xinputDPadDown	= 1,
+			// XInput ボタン：DPad Left
+			xinputDPadLeft	= 2,
+			// XInput ボタン：DPad Right
+			xinputDPadRight	= 3,
+			// XInput ボタン：Start
+			xinputStart		= 4,
+			// XInput ボタン：Back
+			xinputBack		= 5,
+			// XInput ボタン：左スティック押下
+			xinputLeftThumb	= 6,
+			// XInput ボタン：右スティック押下
+			xinputRightThumb	= 7,
+			// XInput ボタン：左肩ボタン
+			xinputLeftShoulder	= 8,
+			// XInput ボタン：右肩ボタン
+			xinputRightShoulder	= 9,
+			// XInput ボタン：Ａボタン
+			xinputButtonA	= 12,
+			// XInput ボタン：Ｂボタン
+			xinputButtonB	= 13,
+			// XInput ボタン：Ｘボタン
+			xinputButtonX	= 14,
+			// XInput ボタン：Ｙボタン
+			xinputButtonY	= 15,
+			// XInput ボタン：左トリガーボタン
+			xinputLeftTrigger	= 16,
+			// XInput ボタン：右トリガーボタン
+			xinputRightTrigger	= 17,
+
+			// Android GamePad ボタン：DPad Up
+			androidPadUp	= 0,
+			// Android GamePad ボタン：DPad Down
+			androidPadDown	= 1,
+			// Android GamePad ボタン：DPad Left
+			androidPadLeft	= 2,
+			// Android GamePad ボタン：DPad Right
+			androidPadRight	= 3,
+			// Android GamePad ボタン：Ａ
+			androidButtonA	= 4,
+			// Android GamePad ボタン：Ｂ
+			androidButtonB	= 5,
+			// Android GamePad ボタン：Ｃ
+			androidButtonC	= 6,
+			// Android GamePad ボタン：Ｘ
+			androidButtonX	= 7,
+			// Android GamePad ボタン：Ｙ
+			androidButtonY	= 8,
+			// Android GamePad ボタン：Ｚ
+			androidButtonZ	= 9,
+			// Android GamePad ボタン：Ｌ１
+			androidButtonL1	= 10,
+			// Android GamePad ボタン：Ｒ１
+			androidButtonR1	= 11,
+			// Android GamePad ボタン：Ｌ２
+			androidButtonL2	= 12,
+			// Android GamePad ボタン：Ｒ２
+			androidButtonR2	= 13,
+			// Android GamePad ボタン：Start
+			androidButtonStart	= 14,
+			// Android GamePad ボタン：Select
+			androidButtonSelect	= 15,
+
+			// VR コントローラー：左 DPad Up
+			vrLCtrlUp		= 0,
+			// VR コントローラー：左 DPad Down
+			vrLCtrlDown		= 1,
+			// VR コントローラー：左 DPad Left
+			vrLCtrlLeft		= 2,
+			// VR コントローラー：左 DPad Right
+			vrLCtrlRight	= 3,
+			// VR コントローラー：左ボタン１
+			vrLCtrlButton1	= 4,
+			// VR コントローラー：左ボタン２
+			vrLCtrlButton2	= 5,
+			// VR コントローラー：左ボタン３
+			vrLCtrlButton3	= 6,
+			// VR コントローラー：左ボタン４
+			vrLCtrlButton4	= 7,
+			// VR コントローラー：右 DPad Up
+			vrRCtrlUp		= 20,
+			// VR コントローラー：右 DPad Down
+			vrRCtrlDown		= 21,
+			// VR コントローラー：右 DPad Left
+			vrRCtrlLeft		= 22,
+			// VR コントローラー：右 DPad Right
+			vrRCtrlRight	= 23,
+			// VR コントローラー：右ボタン１
+			vrRCtrlButton1	= 24,
+			// VR コントローラー：右ボタン２
+			vrRCtrlButton2	= 25,
+			// VR コントローラー：右ボタン３
+			vrRCtrlButton3	= 26,
+			// VR コントローラー：右ボタン４
+			vrRCtrlButton4	= 27,
+			// VR コントローラー：System ボタン
+			vrCtrlSystem	= 40,
+			// VR コントローラー：AppMenu ボタン
+			vrCtrlAppMenu	= 41,
+			// VR コントローラー：グリップ
+			vrCtrlGrip		= 42,
+			// VR コントローラー：左指１
+			vrLAxis0		= 48,
+			// VR コントローラー：左指２
+			vrLAxis1		= 49,
+			// VR コントローラー：左指３
+			vrLAxis2		= 50,
+			// VR コントローラー：左指４
+			vrLAxis3		= 51,
+			// VR コントローラー：左指５
+			vrLAxis4		= 52,
+			// VR コントローラー：右指１
+			vrRAxis0		= 56,
+			// VR コントローラー：右指２
+			vrRAxis1		= 57,
+			// VR コントローラー：右指３
+			vrRAxis2		= 58,
+			// VR コントローラー：右指４
+			vrRAxis3		= 59,
+			// VR コントローラー：右指５
+			vrRAxis4		= 60,
+			// Oculus Rift コントローラー：Ａボタン
+			ovrButtonA	= vrRCtrlButton1,
+			// Oculus Rift コントローラー：Ｂボタン
+			ovrButtonB	= vrRCtrlButton2,
+			// Oculus Rift コントローラー：Ｘボタン
+			ovrButtonX	= vrLCtrlButton1 + 4,
+			// Oculus Rift コントローラー：Ｙボタン
+			ovrButtonY	= vrLCtrlButton1 + 5,
+		}
+
+		// トリガー・ボタン番号
+		enum using TriggerButton<int>
+		{
+			// アナログ・トリガー：左トリガー
+			triggerLeft		= 0,
+			// アナログ・トリガー：右トリガー
+			triggerRight	= 1,
+		}
+
+		// 動作フラグ
+		enum using BehaviorFlag<uint64>
+		{
+			// アナログスティックの入力を DPad 入力としても処理する
+			behaviorStickToDPad		= 0x0001,
+		}
+
+		// ジョイスティック状態
+		struct	JoyStickState
+		{
+			// アナログ・スティックの状態：左スティック=(x,y), 右スティック=(z,w)
+			Vector4		stickPos = { 0, 0, 0, 0 } ;
+			// ボタンの押下状態ビットマスク
+			uint64		stateButtons ;
+			// アナログ・トリガーの状態
+			float[8]	triggers ;
+		}
+
+		// 入力イベント
+		class	Event
+		{
+			// デバイス種別
+			public DeviceType		type ;
+			// デバイス（ジョイスティック）番号
+			public JoyStickDevice	device ;
+			// キーコード／ボタン番号
+			public int				key ;
+			// コマンド
+			public String			command ;
+		}
+
+		// コマンド
+		class	Command
+		{
+			// コマンドID（\ 記号で区切られた階層を含む）
+			public String	fullId ;
+			// コマンドID
+			public String	id ;
+			// パラメータ
+			public long		param ;
+			// サブコード
+			public long		code ;
+			// 待ち行列優先度
+			public int		priority ;
+			// 待ち行列上書き可能フラグ
+			public boolean	overwritable ;
+		}
+
+
+		// VirtualInput 構築
+		public native VirtualInput() ;
+
+		// 入力リスナを Window に関連付ける
+		public native void attachPostListenerToWindow
+				( WindowSprite window, uint32 maskJoyDevs = 0xffffffff ) ;
+
+		// 入力リスナの関連付けを解除する
+		public native void detachPostListenerToWindow( Window window ) ;
+
+		// 物理ジョイスティックの接続状態（ビットマスク）を取得
+		public native uint32 getJoyStickDeviceMask() const ;
+
+		// 動作フラグ取得
+		public native BehaviorFlag getBehaviorFlags() const ;
+
+		// 動作フラグ設定
+		public native void setBehaviorFlags( BehaviorFlag flags ) ;
+
+		// アナログスティックの状態を取得
+		public native boolean getAnalogJoyPosition
+			( Vector4* pos /* ２軸スティックの状態を受け取る Vector4 */,
+				uint iJoyStick = 0 /* 取得するジョイスティック番号 */ ) ;
+
+		// ジョイスティックの状態を取得（仮想化されたボタンの状態を含む）
+		public native boolean getJoyStickState
+			( JoyStickState* state /* ジョイスティックの状態を受け取る JoyStickState */,
+				uint iJoyStick = 0 /* 取得するジョイスティック番号 */ ) ;
+
+		// ボタン押下状態取得
+		public native boolean isJoyButtonPushing
+			( uint joyButton /* 取得するボタン番号 */,
+				uint joyStick = 0 /* 取得するジョイスティック番号 */ ) const ;
+		// ボタン押下回数取得
+		public native uint getJoyButtonPushed
+			( uint joyButton /* 取得するボタン番号 */,
+				uint joyStick = 0 /* 取得するジョイスティック番号 */ ) const ;
+		// ボタン押下回数リセット
+		public native void resetJoyButtonPushed
+			( uint joyButton /* リセットするボタン番号 */,
+				uint joyStick = 0 /* ジョイスティック番号 */ ) const ;
+		// 全ボタン押下回数リセット
+		public native void resetAllJoyButtonPushed() ;
+
+		// キー／ボタン押下イベントを発生する
+		// <desc>この処理は前置フィルターの影響は受けませんが、
+		// 後置マッパーで定義されたイベントはマップ先へ置き換えられます。</desc>
+		public native void pressInputEvent( const Event evIn ) ;
+		// キー／ボタン解放イベントを発生する
+		// <desc>この処理は前置フィルターの影響は受けませんが、
+		// 後置マッパーで定義されたイベントはマップ先へ置き換えられます。</desc>
+		public native void releaseInputEvent( const Event evIn ) ;
+		// ソフトウェア・アナログスティック入力を設定する
+		public native void setSoftwareAnalogPosition
+				( const Vector4* vPos, uint joyStick = 0 ) ;
+
+		// 入力イベントをキューから取得
+		// <return>イベントを取得した場合には true</return>
+		public native boolean getInputEvent
+			( Event ev /* イベントを受け取る Event */ ) ;
+		// 入力イベントキューの最大数を設定
+		//（溢れたものは古いものから削除される／デフォルト：16）
+		public native void setInputQueueLimit( uint limit ) ;
+		// 入力イベントキューを全削除
+		public native void flushInputQueue() ;
+		// コマンドキューへ追加
+		public native void addCommand
+			( String cmd,
+				long param = 0, long code = 0,
+				int priority = Sprite.commandNormal,
+				boolean overwritable = false ) ;
+		// コマンドをキューから取得
+		public native boolean getCommand
+			( Command cmd /* コマンドを受け取る Command */ ) ;
+		// 入力コマンドキューを全削除
+		public native void flushCommandQueue() ;
+
+		// 前置フィルタ読み込み
+		public native boolean loadFilter( String file ) ;
+
+		// 前置フィルタ追加
+		public native void addFilter
+			( const Event evIn, const Event evOut ) ;
+		// 前置フィルタ削除
+		public native void removeFilter( const Event evIn ) ;
+		// 前置フィルタ全削除
+		public native void removeAllFilter() ;
+
+		// 後置マッパー追加
+		public native void addInputMap
+			( const Event evIn, const Event evOut ) ;
+		// 後置マッパー削除
+		public native void removeInputMap( const Event evIn ) ;
+		// 後置マッパー全削除
+		public native void removeAllInputMap() ;
+
+		// スレッド排他処理権取得
+		// <return>排他処理券を取得できた場合には true。
+		// この場合、後で unlock を呼び出す必要があります。</return>
+		// <desc>lock 関数は再帰的に呼び出しても構いませんが、
+		// unlock 関数と対で呼び出す必要があります。</desc>
+		public native boolean lock( long msecTimeout = -1 ) const ;
+		// スレッド排他処理権解放
+		public native void unlock() const ;
+
+	}
+
+}
+
+

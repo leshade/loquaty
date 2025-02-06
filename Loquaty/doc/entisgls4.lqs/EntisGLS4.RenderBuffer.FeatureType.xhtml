@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.RenderBuffer.FeatureType</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.RenderBuffer.FeatureType</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum using FeatureType&lt;int&gt; ;</div>
+<div class="normal">
+機能番号<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.RenderBuffer.FeatureType.xhtml">EntisGLS4.RenderBuffer.FeatureType</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_featureSRGB">featureSRGB</a><br/>
+	<a href="#static_featureEnvMap">featureEnvMap</a><br/>
+	<a href="#static_featureOffsetBorder">featureOffsetBorder</a><br/>
+	<a href="#static_featureFaceCulling">featureFaceCulling</a><br/>
+	<a href="#static_featureDepthMask">featureDepthMask</a><br/>
+	<a href="#static_featureBlendOperation">featureBlendOperation</a><br/>
+	<a href="#static_featureOrderPriority">featureOrderPriority</a><br/>
+	<a href="#static_featurePointSize">featurePointSize</a><br/>
+	<a href="#static_featureLineWidth">featureLineWidth</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_featureSRGB"/>
+<div class="headline">featureSRGB</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureSRGB = 0</div>
+<div class="normal">
+機能番号 : sRGB 色空間 : param1 = {true|false}, param2 = null (&amp;int32_t to get)<br/></div>
+<br/>
+<a name="static_featureEnvMap"/>
+<div class="headline">featureEnvMap</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureEnvMap = 1</div>
+<div class="normal">
+機能番号 : 大域環境マッピング : param1 = {0|envMappingRefraction|envMappingViewportDepth}, param3 = EnvMappingParam<br/></div>
+<br/>
+<a name="static_featureOffsetBorder"/>
+<div class="headline">featureOffsetBorder</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureOffsetBorder = 2</div>
+<div class="normal">
+機能番号 : 輪郭線 : param1 = 0, param2 = OffsetBorderParam<br/></div>
+<br/>
+<a name="static_featureFaceCulling"/>
+<div class="headline">featureFaceCulling</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureFaceCulling = 3</div>
+<div class="normal">
+機能番号 : カリング・オーバーライド : param1 = FaceCullingOperation, param2 = null (int32 to get)<br/></div>
+<br/>
+<a name="static_featureDepthMask"/>
+<div class="headline">featureDepthMask</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureDepthMask = 4</div>
+<div class="normal">
+機能番号 : 深度マスク・オーバーライド : param1 = DepthMaskOperation, param2 = null (int32 to get)<br/></div>
+<br/>
+<a name="static_featureBlendOperation"/>
+<div class="headline">featureBlendOperation</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureBlendOperation = 5</div>
+<div class="normal">
+機能番号 : 描画関数・オーバーライド : param1 = BlendOperation, param2 = null (int32 to get)<br/></div>
+<br/>
+<a name="static_featureOrderPriority"/>
+<div class="headline">featureOrderPriority</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureOrderPriority = 7</div>
+<div class="normal">
+機能番号 : 描画優先度（小さいほど先に描画される）: param1 = priority(0～15), param2 = null (int32 to get)<br/></div>
+<br/>
+<a name="static_featurePointSize"/>
+<div class="headline">featurePointSize</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featurePointSize = 8</div>
+<div class="normal">
+機能番号 : 点描画サイズ（ピクセル単位） ; param1 = 0, param2 = float*<br/></div>
+<br/>
+<a name="static_featureLineWidth"/>
+<div class="headline">featureLineWidth</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureLineWidth = 9</div>
+<div class="normal">
+機能番号 : 線描画幅（ピクセル単位） : param1 = 0, param2 = float*<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

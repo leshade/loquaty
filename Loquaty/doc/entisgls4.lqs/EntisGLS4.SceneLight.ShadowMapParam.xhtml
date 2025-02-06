@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneLight.ShadowMapParam</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneLight.ShadowMapParam</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct ShadowMapParam<br/>
+{<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; nFlags ;<br/>
+&nbsp; &nbsp; Size&nbsp; &nbsp; sizeMapping ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpPixelDensity ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; tanAngleOfView ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zPersDistance ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zCameraStdDistance ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zPersNear ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zPersFar ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zErrorPrecision ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zErrorSubPrecision ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpFilterGauss ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; nCascadeMaxCount ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zCascadeDensityStep ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zCascadeTargetLengthStep ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zCascadeTargetLengthOffset ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zCascadeDepthStep ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zCascadeDistanceOffsetStep ;<br/>
+}</div>
+<div class="normal">
+シャドウマッピング用パラメータ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.SceneLight.ShadowMapParam.xhtml">EntisGLS4.SceneLight.ShadowMapParam</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_nFlags">nFlags</a><br/>
+	<a href="#member_sizeMapping">sizeMapping</a><br/>
+	<a href="#member_fpPixelDensity">fpPixelDensity</a><br/>
+	<a href="#member_tanAngleOfView">tanAngleOfView</a><br/>
+	<a href="#member_zPersDistance">zPersDistance</a><br/>
+	<a href="#member_zCameraStdDistance">zCameraStdDistance</a><br/>
+	<a href="#member_zPersNear">zPersNear</a><br/>
+	<a href="#member_zPersFar">zPersFar</a><br/>
+	<a href="#member_zErrorPrecision">zErrorPrecision</a><br/>
+	<a href="#member_zErrorSubPrecision">zErrorSubPrecision</a><br/>
+	<a href="#member_fpFilterGauss">fpFilterGauss</a><br/>
+	<a href="#member_nCascadeMaxCount">nCascadeMaxCount</a><br/>
+	<a href="#member_zCascadeDensityStep">zCascadeDensityStep</a><br/>
+	<a href="#member_zCascadeTargetLengthStep">zCascadeTargetLengthStep</a><br/>
+	<a href="#member_zCascadeTargetLengthOffset">zCascadeTargetLengthOffset</a><br/>
+	<a href="#member_zCascadeDepthStep">zCascadeDepthStep</a><br/>
+	<a href="#member_zCascadeDistanceOffsetStep">zCascadeDistanceOffsetStep</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_nFlags"/>
+<div class="headline">nFlags</div>
+<div class="usage">public uint&#9; nFlags = 0</div>
+<div class="normal">
+ShadowMapFlag<br/></div>
+<br/>
+<a name="member_sizeMapping"/>
+<div class="headline">sizeMapping</div>
+<div class="usage">public Size&#9; sizeMapping = {x: 0,y: 0}</div>
+<div class="normal">
+シャドウマッピング・バッファサイズ<br/></div>
+<br/>
+<a name="member_fpPixelDensity"/>
+<div class="headline">fpPixelDensity</div>
+<div class="usage">public float&#9; fpPixelDensity = 1.</div>
+<div class="normal">
+ピクセル密度<br/></div>
+<br/>
+<a name="member_tanAngleOfView"/>
+<div class="headline">tanAngleOfView</div>
+<div class="usage">public float&#9; tanAngleOfView = 1.</div>
+<div class="normal">
+視野角の接線（シャドウマッピング用カメラ位置計算用）<br/></div>
+<br/>
+<a name="member_zPersDistance"/>
+<div class="headline">zPersDistance</div>
+<div class="usage">public float&#9; zPersDistance = 0.</div>
+<div class="normal">
+カメラ距離 (nFlags &amp; shadowPersDistance の時)<br/></div>
+<br/>
+<a name="member_zCameraStdDistance"/>
+<div class="headline">zCameraStdDistance</div>
+<div class="usage">public float&#9; zCameraStdDistance = 0.</div>
+<div class="normal">
+カメラ基準距離 (nFlags &amp; shadowAdjustByCamera の時)<br/>※シーンのカメラの注視点－視点距離との比でシャドウマッピングのカメラ距離を補正する<br/></div>
+<br/>
+<a name="member_zPersNear"/>
+<div class="headline">zPersNear</div>
+<div class="usage">public float&#9; zPersNear = 0.</div>
+<div class="normal">
+視錐台の手前距離<br/></div>
+<br/>
+<a name="member_zPersFar"/>
+<div class="headline">zPersFar</div>
+<div class="usage">public float&#9; zPersFar = 0.</div>
+<div class="normal">
+視錐台の奥の距離<br/></div>
+<br/>
+<a name="member_zErrorPrecision"/>
+<div class="headline">zErrorPrecision</div>
+<div class="usage">public float&#9; zErrorPrecision = -12.</div>
+<div class="normal">
+ｚ比較の許容誤差率 2^x<br/></div>
+<br/>
+<a name="member_zErrorSubPrecision"/>
+<div class="headline">zErrorSubPrecision</div>
+<div class="usage">public float&#9; zErrorSubPrecision = -12.</div>
+<div class="normal">
+ｚ比較の許容誤差率（傾きに対して） 2^x<br/></div>
+<br/>
+<a name="member_fpFilterGauss"/>
+<div class="headline">fpFilterGauss</div>
+<div class="usage">public float&#9; fpFilterGauss = 2.</div>
+<div class="normal">
+ガウスフィルタ係数<br/></div>
+<br/>
+<a name="member_nCascadeMaxCount"/>
+<div class="headline">nCascadeMaxCount</div>
+<div class="usage">public uint&#9; nCascadeMaxCount = 0</div>
+<div class="normal">
+追加階層数<br/></div>
+<br/>
+<a name="member_zCascadeDensityStep"/>
+<div class="headline">zCascadeDensityStep</div>
+<div class="usage">public float&#9; zCascadeDensityStep = 3.</div>
+<div class="normal">
+追加階層のピクセル密度比率<br/></div>
+<br/>
+<a name="member_zCascadeTargetLengthStep"/>
+<div class="headline">zCascadeTargetLengthStep</div>
+<div class="usage">public float&#9; zCascadeTargetLengthStep = 2.</div>
+<div class="normal">
+追加階層のカメラ注視点距離比率<br/></div>
+<br/>
+<a name="member_zCascadeTargetLengthOffset"/>
+<div class="headline">zCascadeTargetLengthOffset</div>
+<div class="usage">public float&#9; zCascadeTargetLengthOffset = 20.</div>
+<div class="normal">
+追加階層のカメラ注視点加算距離<br/></div>
+<br/>
+<a name="member_zCascadeDepthStep"/>
+<div class="headline">zCascadeDepthStep</div>
+<div class="usage">public float&#9; zCascadeDepthStep = 1.</div>
+<div class="normal">
+追加階層のカメラ距離と視錐台ｚ範囲の係数<br/></div>
+<br/>
+<a name="member_zCascadeDistanceOffsetStep"/>
+<div class="headline">zCascadeDistanceOffsetStep</div>
+<div class="usage">public float&#9; zCascadeDistanceOffsetStep = 0.</div>
+<div class="normal">
+追加階層のカメラ距離の加算<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

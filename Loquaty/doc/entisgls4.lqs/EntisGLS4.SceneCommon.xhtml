@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneCommon</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneCommon</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneCommon ;</div>
+<div class="normal">
+Scene アイテム共通基底<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneCommon.xhtml">EntisGLS4.SceneCommon</a>
+</div></div></div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SceneCommon.ParameterID.xhtml">EntisGLS4.SceneCommon.ParameterID</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_paramItemClass">paramItemClass</a><br/>
+	<a href="#static_paramItemPriority">paramItemPriority</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_getItemClass">getItemClass</a><br/>
+	<a href="#virtual_getRenderPriority">getRenderPriority</a><br/>
+	<a href="#virtual_setItemClass">setItemClass</a><br/>
+	<a href="#virtual_setRenderPriority">setRenderPriority</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_paramItemClass"/>
+<div class="headline">paramItemClass</div>
+<div class="usage">public static const EntisGLS4.SceneCommon.ParameterID&#9; paramItemClass = "item_class"</div>
+<div class="normal">
+パラメータID：アイテム・クラス<br/></div>
+<br/>
+<a name="static_paramItemPriority"/>
+<div class="headline">paramItemPriority</div>
+<div class="usage">public static const EntisGLS4.SceneCommon.ParameterID&#9; paramItemPriority = "render_priority"</div>
+<div class="normal">
+パラメータID：アイテム優先度<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_getItemClass"/>
+<div class="headline">getItemClass</div>
+<div class="usage">public native EntisGLS4.Scene.ItemClass getItemClass( ) const</div>
+<div class="normal">
+アイテム・クラス取得<br/></div>
+<br/>
+
+<a name="virtual_getRenderPriority"/>
+<div class="headline">getRenderPriority</div>
+<div class="usage">public native uint getRenderPriority( ) const</div>
+<div class="normal">
+描画優先度 [0,15] 取得<br/></div>
+<br/>
+
+<a name="virtual_setItemClass"/>
+<div class="headline">setItemClass</div>
+<div class="usage">public native void setItemClass( EntisGLS4.Scene.ItemClass cls )</div>
+<div class="normal">
+アイテム・クラス設定<br/></div>
+<br/>
+
+<a name="virtual_setRenderPriority"/>
+<div class="headline">setRenderPriority</div>
+<div class="usage">public native void setRenderPriority( uint priority )</div>
+<div class="normal">
+描画優先度 [0,15] 設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

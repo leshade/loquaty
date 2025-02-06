@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneParameter</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneParameter</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneParameter ;</div>
+<div class="normal">
+Scene アイテム・パラメータ・インターフェース<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+</div></div></div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_colorFromVector">colorFromVector</a><br/>
+	<a href="#func_vectorFromColor">vectorFromColor</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneParameter">SceneParameter</a><br/>
+	<a href="#virtual_enumerateStringSet">enumerateStringSet</a><br/>
+	<a href="#virtual_getBinaryParameter">getBinaryParameter</a><br/>
+	<a href="#virtual_getBooleanParameter">getBooleanParameter</a><br/>
+	<a href="#virtual_getCommandParameter">getCommandParameter</a><br/>
+	<a href="#virtual_getIntegerParameter">getIntegerParameter</a><br/>
+	<a href="#virtual_getMatrix4dParameter">getMatrix4dParameter</a><br/>
+	<a href="#virtual_getMatrixParameter">getMatrixParameter</a><br/>
+	<a href="#virtual_getScalarParameter">getScalarParameter</a><br/>
+	<a href="#virtual_getVector2dParameter">getVector2dParameter</a><br/>
+	<a href="#virtual_getVector4dParameter">getVector4dParameter</a><br/>
+	<a href="#virtual_getVectorParameter">getVectorParameter</a><br/>
+	<a href="#virtual_setBinaryParameter">setBinaryParameter</a><br/>
+	<a href="#virtual_setBooleanParameter">setBooleanParameter</a><br/>
+	<a href="#virtual_setCommandParameter">setCommandParameter</a><br/>
+	<a href="#virtual_setIntegerParameter">setIntegerParameter</a><br/>
+	<a href="#virtual_setMatrix4dParameter">setMatrix4dParameter</a><br/>
+	<a href="#virtual_setMatrixParameter">setMatrixParameter</a><br/>
+	<a href="#virtual_setScalarParameter">setScalarParameter</a><br/>
+	<a href="#virtual_setVector2dParameter">setVector2dParameter</a><br/>
+	<a href="#virtual_setVector4dParameter">setVector4dParameter</a><br/>
+	<a href="#virtual_setVectorParameter">setVectorParameter</a><br/>
+</div><br/>
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_colorFromVector"/>
+<div class="headline">colorFromVector</div>
+<div class="usage">public static native uint colorFromVector( const Vector3d* vec )</div>
+<div class="normal">
+Vector3d -&gt; ARGB8 変換<br/></div>
+<br/>
+
+<a name="func_vectorFromColor"/>
+<div class="headline">vectorFromColor</div>
+<div class="usage">public static native const Vector3d* vectorFromColor( uint rgb )</div>
+<div class="normal">
+ARGB8 -&gt; Vector3d 変換<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneParameter"/>
+<div class="headline">SceneParameter</div>
+<div class="usage">public abstract SceneParameter( )</div>
+<br/>
+
+<a name="virtual_enumerateStringSet"/>
+<div class="headline">enumerateStringSet</div>
+<div class="usage">public native boolean enumerateStringSet( ulong iParam, String[] strSet )</div>
+<div class="normal">
+パラメータ値域列挙<br/></div>
+<br/>
+
+<a name="virtual_getBinaryParameter"/>
+<div class="headline">getBinaryParameter</div>
+<div class="usage">public native ulong getBinaryParameter( void* pDst, ulong nBufBytes, ulong iParam ) const</div>
+<div class="normal">
+バイナリ・パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getBooleanParameter"/>
+<div class="headline">getBooleanParameter</div>
+<div class="usage">public native boolean getBooleanParameter( ulong iParam ) const</div>
+<div class="normal">
+boolean パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getCommandParameter"/>
+<div class="headline">getCommandParameter</div>
+<div class="usage">public native String getCommandParameter( ulong iParam ) const</div>
+<div class="normal">
+String パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getIntegerParameter"/>
+<div class="headline">getIntegerParameter</div>
+<div class="usage">public native int getIntegerParameter( ulong iParam ) const</div>
+<div class="normal">
+int32 パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getMatrix4dParameter"/>
+<div class="headline">getMatrix4dParameter</div>
+<div class="usage">public native const Matrix4d* getMatrix4dParameter( ulong iParam ) const</div>
+<div class="normal">
+Matrix4d パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getMatrixParameter"/>
+<div class="headline">getMatrixParameter</div>
+<div class="usage">public native const Matrix3d* getMatrixParameter( ulong iParam ) const</div>
+<div class="normal">
+Matrix3d パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getScalarParameter"/>
+<div class="headline">getScalarParameter</div>
+<div class="usage">public native double getScalarParameter( ulong iParam ) const</div>
+<div class="normal">
+double パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getVector2dParameter"/>
+<div class="headline">getVector2dParameter</div>
+<div class="usage">public native const Vector2d* getVector2dParameter( ulong iParam ) const</div>
+<div class="normal">
+Vector2d パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getVector4dParameter"/>
+<div class="headline">getVector4dParameter</div>
+<div class="usage">public native const Vector4d* getVector4dParameter( ulong iParam ) const</div>
+<div class="normal">
+Vector4d パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_getVectorParameter"/>
+<div class="headline">getVectorParameter</div>
+<div class="usage">public native const Vector3d* getVectorParameter( ulong iParam ) const</div>
+<div class="normal">
+Vector3d パラメータ値取得<br/></div>
+<br/>
+
+<a name="virtual_setBinaryParameter"/>
+<div class="headline">setBinaryParameter</div>
+<div class="usage">public native ulong setBinaryParameter( ulong iParam, const void* pSrc, ulong nBufBytes )</div>
+<div class="normal">
+バイナリ・パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setBooleanParameter"/>
+<div class="headline">setBooleanParameter</div>
+<div class="usage">public native void setBooleanParameter( ulong iParam, boolean b )</div>
+<div class="normal">
+boolean パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setCommandParameter"/>
+<div class="headline">setCommandParameter</div>
+<div class="usage">public native void setCommandParameter( ulong iParam, String cmd )</div>
+<div class="normal">
+String パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setIntegerParameter"/>
+<div class="headline">setIntegerParameter</div>
+<div class="usage">public native void setIntegerParameter( ulong iParam, int n )</div>
+<div class="normal">
+int32 パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setMatrix4dParameter"/>
+<div class="headline">setMatrix4dParameter</div>
+<div class="usage">public native void setMatrix4dParameter( ulong iParam, const Matrix4d* mat )</div>
+<div class="normal">
+Matrix4d パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setMatrixParameter"/>
+<div class="headline">setMatrixParameter</div>
+<div class="usage">public native void setMatrixParameter( ulong iParam, const Matrix3d* mat )</div>
+<div class="normal">
+Matrix3d パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setScalarParameter"/>
+<div class="headline">setScalarParameter</div>
+<div class="usage">public native void setScalarParameter( ulong iParam, double s )</div>
+<div class="normal">
+double パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setVector2dParameter"/>
+<div class="headline">setVector2dParameter</div>
+<div class="usage">public native void setVector2dParameter( ulong iParam, const Vector2d* vec )</div>
+<div class="normal">
+Vector2d パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setVector4dParameter"/>
+<div class="headline">setVector4dParameter</div>
+<div class="usage">public native void setVector4dParameter( ulong iParam, const Vector4d* vec )</div>
+<div class="normal">
+Vector4d パラメータ値設定<br/></div>
+<br/>
+
+<a name="virtual_setVectorParameter"/>
+<div class="headline">setVectorParameter</div>
+<div class="usage">public native void setVectorParameter( ulong iParam, const Vector3d* vec )</div>
+<div class="normal">
+Vector3d パラメータ値設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

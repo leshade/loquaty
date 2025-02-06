@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Window</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Window</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class Window ;</div>
+<div class="normal">
+ウィンドウ基底<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Window.xhtml">EntisGLS4.Window</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.Window.CooperationMode.xhtml">EntisGLS4.Window.CooperationMode</a></div>
+<div class="indent2"><a href="EntisGLS4.Window.ExteriorFrameType.xhtml">EntisGLS4.Window.ExteriorFrameType</a></div>
+<div class="indent2"><a href="EntisGLS4.Window.OptionalFlag.xhtml">EntisGLS4.Window.OptionalFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.Window.Stereo3D.xhtml">EntisGLS4.Window.Stereo3D</a></div>
+<div class="indent2"><a href="EntisGLS4.Window.StereoViewFlag.xhtml">EntisGLS4.Window.StereoViewFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_modeWindow">modeWindow</a><br/>
+	<a href="#static_modeNormal">modeNormal</a><br/>
+	<a href="#static_modeFullScreen">modeFullScreen</a><br/>
+	<a href="#static_modeExclusive">modeExclusive</a><br/>
+	<a href="#static_flagUseDblClick">flagUseDblClick</a><br/>
+	<a href="#static_flagAllowClose">flagAllowClose</a><br/>
+	<a href="#static_flagBlackBack">flagBlackBack</a><br/>
+	<a href="#static_flagEnableIME">flagEnableIME</a><br/>
+	<a href="#static_flagAllowMinimize">flagAllowMinimize</a><br/>
+	<a href="#static_flagGrantScreenSave">flagGrantScreenSave</a><br/>
+	<a href="#static_flagGrantMonitorSave">flagGrantMonitorSave</a><br/>
+	<a href="#static_flagGrantPowerSuspend">flagGrantPowerSuspend</a><br/>
+	<a href="#static_flagVariableWindowSize">flagVariableWindowSize</a><br/>
+	<a href="#static_flagAllowMaximize">flagAllowMaximize</a><br/>
+	<a href="#static_flagChildWindow">flagChildWindow</a><br/>
+	<a href="#static_flagPopupWindow">flagPopupWindow</a><br/>
+	<a href="#static_flagInvisibleWindow">flagInvisibleWindow</a><br/>
+	<a href="#static_flagOpenIME">flagOpenIME</a><br/>
+	<a href="#static_flagDoMinimize">flagDoMinimize</a><br/>
+	<a href="#static_flagDoMaximize">flagDoMaximize</a><br/>
+	<a href="#static_flagDoNormalize">flagDoNormalize</a><br/>
+	<a href="#static_exteriorFillColor">exteriorFillColor</a><br/>
+	<a href="#static_exteriorStretch">exteriorStretch</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Window">Window</a><br/>
+	<a href="#virtual_changeCooperationLevel">changeCooperationLevel</a><br/>
+	<a href="#virtual_changeDisplaySize">changeDisplaySize</a><br/>
+	<a href="#virtual_closeDisplay">closeDisplay</a><br/>
+	<a href="#virtual_createDisplay">createDisplay</a><br/>
+	<a href="#virtual_enableChangePhysicalMode">enableChangePhysicalMode</a><br/>
+	<a href="#virtual_enableZBuffer">enableZBuffer</a><br/>
+	<a href="#virtual_getCooperationLevel">getCooperationLevel</a><br/>
+	<a href="#virtual_getCursorPosition">getCursorPosition</a><br/>
+	<a href="#virtual_getDisplaySize">getDisplaySize</a><br/>
+	<a href="#virtual_getInternalDisplayPosition">getInternalDisplayPosition</a><br/>
+	<a href="#virtual_getMonitorFrequency">getMonitorFrequency</a><br/>
+	<a href="#virtual_getNormalWindowPosition">getNormalWindowPosition</a><br/>
+	<a href="#virtual_getOptionalFlags">getOptionalFlags</a><br/>
+	<a href="#virtual_getRenderDevice">getRenderDevice</a><br/>
+	<a href="#virtual_initWindowPosition">initWindowPosition</a><br/>
+	<a href="#virtual_isShowCursor">isShowCursor</a><br/>
+	<a href="#virtual_isSupportedStereoDisplayMode">isSupportedStereoDisplayMode</a><br/>
+	<a href="#virtual_isWindowActive">isWindowActive</a><br/>
+	<a href="#virtual_lock">lock</a><br/>
+	<a href="#virtual_moveCursorPosition">moveCursorPosition</a><br/>
+	<a href="#virtual_postUIThread">postUIThread</a><br/>
+	<a href="#virtual_postUpdate">postUpdate</a><br/>
+	<a href="#virtual_setCursor">setCursor</a><br/>
+	<a href="#virtual_setExteriorBackgroundFrame">setExteriorBackgroundFrame</a><br/>
+	<a href="#virtual_setOptionalFlags">setOptionalFlags</a><br/>
+	<a href="#virtual_setStereoDisplayMode">setStereoDisplayMode</a><br/>
+	<a href="#virtual_setWindowCaption">setWindowCaption</a><br/>
+	<a href="#virtual_showCursor">showCursor</a><br/>
+	<a href="#virtual_unlock">unlock</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_modeWindow"/>
+<div class="headline">modeWindow</div>
+<div class="usage">public static const EntisGLS4.Window.CooperationMode&#9; modeWindow = 0</div>
+<div class="normal">
+ウィンドウモード：ウィンドウ表示<br/></div>
+<br/>
+<a name="static_modeNormal"/>
+<div class="headline">modeNormal</div>
+<div class="usage">public static const EntisGLS4.Window.CooperationMode&#9; modeNormal = 1</div>
+<div class="normal">
+ウィンドウモード：通常モード（modeWindow と同じ）<br/></div>
+<br/>
+<a name="static_modeFullScreen"/>
+<div class="headline">modeFullScreen</div>
+<div class="usage">public static const EntisGLS4.Window.CooperationMode&#9; modeFullScreen = 3</div>
+<div class="normal">
+ウィンドウモード：フルスクリーン<br/></div>
+<br/>
+<a name="static_modeExclusive"/>
+<div class="headline">modeExclusive</div>
+<div class="usage">public static const EntisGLS4.Window.CooperationMode&#9; modeExclusive = 7</div>
+<div class="normal">
+ウィンドウモード：フルスクリーン（排他モード）<br/></div>
+<br/>
+<a name="static_flagUseDblClick"/>
+<div class="headline">flagUseDblClick</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagUseDblClick = 1</div>
+<div class="normal">
+オプション機能フラグ：ダブルクリックを受け付ける<br/></div>
+<br/>
+<a name="static_flagAllowClose"/>
+<div class="headline">flagAllowClose</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagAllowClose = 2</div>
+<div class="normal">
+オプション機能フラグ：閉じるボタンを追加する<br/></div>
+<br/>
+<a name="static_flagBlackBack"/>
+<div class="headline">flagBlackBack</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagBlackBack = 4</div>
+<div class="normal">
+オプション機能フラグ：背景を黒で塗りつぶす<br/></div>
+<br/>
+<a name="static_flagEnableIME"/>
+<div class="headline">flagEnableIME</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagEnableIME = 8</div>
+<div class="normal">
+オプション機能フラグ：IME を有効にする<br/></div>
+<br/>
+<a name="static_flagAllowMinimize"/>
+<div class="headline">flagAllowMinimize</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagAllowMinimize = 16</div>
+<div class="normal">
+オプション機能フラグ：最小化ボタンを追加する<br/></div>
+<br/>
+<a name="static_flagGrantScreenSave"/>
+<div class="headline">flagGrantScreenSave</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagGrantScreenSave = 32</div>
+<div class="normal">
+オプション機能フラグ：スクリーンセーバーを許可する<br/></div>
+<br/>
+<a name="static_flagGrantMonitorSave"/>
+<div class="headline">flagGrantMonitorSave</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagGrantMonitorSave = 64</div>
+<div class="normal">
+オプション機能フラグ：モニターの省電力によるオフを許可する<br/></div>
+<br/>
+<a name="static_flagGrantPowerSuspend"/>
+<div class="headline">flagGrantPowerSuspend</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagGrantPowerSuspend = 0x80</div>
+<div class="normal">
+オプション機能フラグ：電源サスペンドを許可する<br/></div>
+<br/>
+<a name="static_flagVariableWindowSize"/>
+<div class="headline">flagVariableWindowSize</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagVariableWindowSize = 0x100</div>
+<div class="normal">
+オプション機能フラグ：ウィンドウを可変サイズにする（疑似ディスプレイの場合、伸縮描画される）<br/></div>
+<br/>
+<a name="static_flagAllowMaximize"/>
+<div class="headline">flagAllowMaximize</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagAllowMaximize = 0x200</div>
+<div class="normal">
+オプション機能フラグ：最大化ボタンを追加する<br/></div>
+<br/>
+<a name="static_flagChildWindow"/>
+<div class="headline">flagChildWindow</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagChildWindow = 0x1000</div>
+<div class="normal">
+オプション機能フラグ：子ウィンドウ（疑似ディスプレイでは使用しない）<br/></div>
+<br/>
+<a name="static_flagPopupWindow"/>
+<div class="headline">flagPopupWindow</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagPopupWindow = 0x2000</div>
+<div class="normal">
+オプション機能フラグ：ポップアップウィンドウ（疑似ディスプレイでは使用しない）<br/></div>
+<br/>
+<a name="static_flagInvisibleWindow"/>
+<div class="headline">flagInvisibleWindow</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagInvisibleWindow = 0x4000</div>
+<div class="normal">
+オプション機能フラグ：不可視ウィンドウ<br/></div>
+<br/>
+<a name="static_flagOpenIME"/>
+<div class="headline">flagOpenIME</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagOpenIME = 0x10000</div>
+<div class="normal">
+オプション機能フラグ：IME を開く（フラグ設定時に日本語入力モードにする。フラグは取得されない）<br/></div>
+<br/>
+<a name="static_flagDoMinimize"/>
+<div class="headline">flagDoMinimize</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagDoMinimize = 0x20000</div>
+<div class="normal">
+オプション機能フラグ：最小化する（フラグ設定時に最小化する。フラグは取得されない）<br/></div>
+<br/>
+<a name="static_flagDoMaximize"/>
+<div class="headline">flagDoMaximize</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagDoMaximize = 0x40000</div>
+<div class="normal">
+オプション機能フラグ：最大化する（フラグ設定時に最大化する。フラグは取得されない）<br/></div>
+<br/>
+<a name="static_flagDoNormalize"/>
+<div class="headline">flagDoNormalize</div>
+<div class="usage">public static const EntisGLS4.Window.OptionalFlag&#9; flagDoNormalize = 0x80000</div>
+<div class="normal">
+オプション機能フラグ：ウィンドウサイズとピクセル等倍にする（フラグは取得されない）<br/></div>
+<br/>
+<a name="static_exteriorFillColor"/>
+<div class="headline">exteriorFillColor</div>
+<div class="usage">public static const EntisGLS4.Window.ExteriorFrameType&#9; exteriorFillColor = 1</div>
+<div class="normal">
+有効画面外枠フラグ：指定色で塗りつぶす<br/></div>
+<br/>
+<a name="static_exteriorStretch"/>
+<div class="headline">exteriorStretch</div>
+<div class="usage">public static const EntisGLS4.Window.ExteriorFrameType&#9; exteriorStretch = 2</div>
+<div class="normal">
+有効画面外枠フラグ：画像を伸縮して描画する<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Window"/>
+<div class="headline">Window</div>
+<div class="usage">public abstract Window( )</div>
+<br/>
+
+<a name="virtual_changeCooperationLevel"/>
+<div class="headline">changeCooperationLevel</div>
+<div class="usage">public native boolean changeCooperationLevel( EntisGLS4.Window.CooperationMode mode )</div>
+<div class="normal">
+ウィンドウモード変更<br/></div>
+<div class="notes_parameter">
+<div class="param_name">mode</div>
+<div class="param_desc">
+ウィンドウモード</div>
+</div>
+<br/>
+
+<a name="virtual_changeDisplaySize"/>
+<div class="headline">changeDisplaySize</div>
+<div class="usage">public native boolean changeDisplaySize( uint width, uint height, uint bitsPerPixel = 0, uint frequency = 0 )</div>
+<div class="normal">
+疑似ディスプレイサイズ変更</div>
+<br/>
+<div class="indent1">
+この関数では疑似的なディスプレイのサイズを変更します。ウィンドウの実際のサイズではありません。</div><br/>
+<br/>
+
+<a name="virtual_closeDisplay"/>
+<div class="headline">closeDisplay</div>
+<div class="usage">public native boolean closeDisplay( )</div>
+<div class="normal">
+疑似ディスプレイ終了<br/></div>
+<br/>
+
+<a name="virtual_createDisplay"/>
+<div class="headline">createDisplay</div>
+<div class="usage">public native boolean createDisplay( String caption, EntisGLS4.Window.CooperationMode mode, uint width, uint height, uint bitsPerPixel = 0, uint frequency = 0 )</div>
+<div class="normal">
+疑似ディスプレイ開始</div>
+<div class="notes_parameter">
+<div class="param_name">caption</div>
+<div class="param_desc">
+ウィンドウキャプション</div>
+<div class="param_name">mode</div>
+<div class="param_desc">
+ウィンドウモード</div>
+<div class="param_name">width</div>
+<div class="param_desc">
+疑似ディスプレイ幅（ピクセル）</div>
+<div class="param_name">height</div>
+<div class="param_desc">
+疑似ディスプレイ高さ（ピクセル）</div>
+<div class="param_name">bitsPerPixel</div>
+<div class="param_desc">
+ピクセル辺りのビット深度（0 の場合にはデフォルト）</div>
+<div class="param_name">frequency</div>
+<div class="param_desc">
+モニタの垂直同期周波数（0 の場合にはデフォルト）</div>
+</div>
+<div class="indent1">
+※ウィンドウのメッセージ処理ループは別スレッドで実行されるため呼び出し元から明示的にメッセージ処理を行う必要はありません。</div><br/>
+<br/>
+
+<a name="virtual_enableChangePhysicalMode"/>
+<div class="headline">enableChangePhysicalMode</div>
+<div class="usage">public native boolean enableChangePhysicalMode( boolean flagEnable )</div>
+<div class="normal">
+物理モニタの解像度を変更するか？<br/></div>
+<br/>
+
+<a name="virtual_enableZBuffer"/>
+<div class="headline">enableZBuffer</div>
+<div class="usage">public native boolean enableZBuffer( boolean flagZBuffer )</div>
+<div class="normal">
+ｚバッファ有効設定<br/></div>
+<br/>
+
+<a name="virtual_getCooperationLevel"/>
+<div class="headline">getCooperationLevel</div>
+<div class="usage">public native EntisGLS4.Window.CooperationMode getCooperationLevel( ) const</div>
+<div class="normal">
+ウィンドウモード取得<br/></div>
+<br/>
+
+<a name="virtual_getCursorPosition"/>
+<div class="headline">getCursorPosition</div>
+<div class="usage">public native boolean getCursorPosition( Point* ptCursor, int idMouse = 0 )</div>
+<div class="normal">
+マウスカーソル座標取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">ptCursor</div>
+<div class="param_desc">
+疑似ディスプレイ上のカーソル座標を受け取る Point 構造体</div>
+<div class="param_name">idMouse</div>
+<div class="param_desc">
+マウスID。マルチタップに対応している場合には 1 以上の値を指定できます。</div>
+</div>
+<br/>
+
+<a name="virtual_getDisplaySize"/>
+<div class="headline">getDisplaySize</div>
+<div class="usage">public native boolean getDisplaySize( Size* sizeDisplay )</div>
+<div class="normal">
+仮想ディスプレイサイズ取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">sizeDisplay</div>
+<div class="param_desc">
+疑似的なディスプレイサイズを受け取る Size 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_getInternalDisplayPosition"/>
+<div class="headline">getInternalDisplayPosition</div>
+<div class="usage">public native boolean getInternalDisplayPosition( ImageRect* rctRender, ImageRect* rctDisplay )</div>
+<div class="normal">
+疑似ディスプレイ・ウィンドウ内表示座標取得</div>
+<div class="notes_parameter">
+<div class="param_name">rctRender</div>
+<div class="param_desc">
+論理ビューポート（疑似ディスプレイ表示範囲）を受け取る ImageRect 構造体</div>
+<div class="param_name">rctDisplay</div>
+<div class="param_desc">
+ビューポート全体を受け取る ImageRect 構造体</div>
+</div>
+<div class="indent1">
+フルスクリーンモード時にアスペクト比が一致しない場合、rctRender は rctDisplay の左右、又は上下を含まない領域になります。</div><br/>
+<br/>
+
+<a name="virtual_getMonitorFrequency"/>
+<div class="headline">getMonitorFrequency</div>
+<div class="usage">public native int getMonitorFrequency( ) const</div>
+<div class="normal">
+（ウィンドウが表示されている）物理モニタの垂直同期周波数取得<br/></div>
+<br/>
+
+<a name="virtual_getNormalWindowPosition"/>
+<div class="headline">getNormalWindowPosition</div>
+<div class="usage">public native boolean getNormalWindowPosition( Point* ptWindow, Size* pWindowSize = null )</div>
+<div class="normal">
+疑似ディスプレイ・ウィンドウの通常座標取得</div>
+<div class="notes_parameter">
+<div class="param_name">ptWindow</div>
+<div class="param_desc">
+ウィンドウ通常表示時の左上座標を受け取る Point 構造体</div>
+<div class="param_name">pWindowSize</div>
+<div class="param_desc">
+ウィンドウ通常表示時のサイズを受け取る Size 構造体</div>
+</div>
+<div class="indent1">
+取得される位置とサイズは（フルスクリーン表示時であっても）ウィンドウモード表示時の位置とサイズです。</div><br/>
+<br/>
+
+<a name="virtual_getOptionalFlags"/>
+<div class="headline">getOptionalFlags</div>
+<div class="usage">public native EntisGLS4.Window.OptionalFlag getOptionalFlags( ) const</div>
+<div class="normal">
+オプション機能フラグ取得（EntisGLS4.Window.flag～ の組み合わせ）<br/></div>
+<br/>
+
+<a name="virtual_getRenderDevice"/>
+<div class="headline">getRenderDevice</div>
+<div class="usage">public native EntisGLS4.RenderDevice getRenderDevice( ) const</div>
+<div class="normal">
+レンダリングデバイス取得<br/></div>
+<br/>
+
+<a name="virtual_initWindowPosition"/>
+<div class="headline">initWindowPosition</div>
+<div class="usage">public native boolean initWindowPosition( int xPos, int yPos, const Size* pInitExSize = null )</div>
+<div class="normal">
+疑似ディスプレイ・ウィンドウ初期座標設定<br/></div>
+<br/>
+
+<a name="virtual_isShowCursor"/>
+<div class="headline">isShowCursor</div>
+<div class="usage">public native boolean isShowCursor( ) const</div>
+<div class="normal">
+マウスカーソル表示状態取得<br/></div>
+<br/>
+
+<a name="virtual_isSupportedStereoDisplayMode"/>
+<div class="headline">isSupportedStereoDisplayMode</div>
+<div class="usage">public native boolean isSupportedStereoDisplayMode( String methodID )</div>
+<div class="normal">
+ステレオ立体視モードテスト<br/></div>
+<div class="notes_parameter">
+<div class="param_name">methodID</div>
+<div class="param_desc">
+立体視方式（EntisGLS4.Windiow.Stereo3D.～）</div>
+</div>
+<br/>
+
+<a name="virtual_isWindowActive"/>
+<div class="headline">isWindowActive</div>
+<div class="usage">public native boolean isWindowActive( ) const</div>
+<div class="normal">
+ウィンドウがアクティブ（最前面）か？<br/></div>
+<br/>
+
+<a name="virtual_lock"/>
+<div class="headline">lock</div>
+<div class="usage">public native boolean lock( long msecTimeout = -1 )</div>
+<div class="normal">
+ウィンドウスレッド排他処理用</div>
+<div class="notes_parameter">
+<div class="param_name">msecTimeout</div>
+<div class="param_desc">
+ミリ秒単位のタイムアウト時間。-1 の場合は成功するまで待ち続けます。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+排他処理権を獲得できた場合には true</div>
+</div>
+<div class="indent1">
+lock() が true を返してから unlock() を呼び出すまでの間、ウィンドウのイベント処理はすべて停止します。<br/>lock()～unlock() は対になっていなければなりませんが、再帰的（入れ子状）に呼び出すことができます。</div><br/>
+<br/>
+
+<a name="virtual_moveCursorPosition"/>
+<div class="headline">moveCursorPosition</div>
+<div class="usage">public native boolean moveCursorPosition( int xPos, int yPos, int idMouse = 0 )</div>
+<div class="normal">
+マウスカーソル座標移動<br/></div>
+<div class="notes_parameter">
+<div class="param_name">xPos</div>
+<div class="param_desc">
+カーソルを移動する疑似ディスプレイ上のｘ座標</div>
+<div class="param_name">yPos</div>
+<div class="param_desc">
+カーソルを移動する疑似ディスプレイ上のｙ座標</div>
+</div>
+<br/>
+
+<a name="virtual_postUIThread"/>
+<div class="headline">postUIThread</div>
+<div class="usage">public native boolean postUIThread( Function&lt;void()&gt; func )</div>
+<div class="normal">
+UI スレッドで実行<br/></div>
+<br/>
+
+<a name="virtual_postUpdate"/>
+<div class="headline">postUpdate</div>
+<div class="usage">public native boolean postUpdate( const ImageRect* pUpdate = null )</div>
+<div class="normal">
+画面の更新通知<br/></div>
+<br/>
+
+<a name="virtual_setCursor"/>
+<div class="headline">setCursor</div>
+<div class="usage">public native boolean setCursor( String cursorID )</div>
+<div class="normal">
+マウスカーソル変更<br/></div>
+<br/>
+
+<a name="virtual_setExteriorBackgroundFrame"/>
+<div class="headline">setExteriorBackgroundFrame</div>
+<div class="usage">public native boolean setExteriorBackgroundFrame( EntisGLS4.Window.ExteriorFrameType flags, uint rgbColor, EntisGLS4.Image pTile, EntisGLS4.Image pLeft = null, EntisGLS4.Image pRight = null, EntisGLS4.Image pUpper = null, EntisGLS4.Image pUnder = null )</div>
+<div class="normal">
+疑似ディスプレイ・有効画面外枠表示設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">flags</div>
+<div class="param_desc">
+フラグ（ExteriorFrameType の組み合わせ）</div>
+<div class="param_name">rgbColor</div>
+<div class="param_desc">
+塗りつぶし色（ARGB8 のパック形式 RGB）</div>
+<div class="param_name">pTile</div>
+<div class="param_desc">
+タイリング表示する画像</div>
+<div class="param_name">pLeft</div>
+<div class="param_desc">
+左側空き領域に表示する画像</div>
+<div class="param_name">pRight</div>
+<div class="param_desc">
+右側空き領域に表示する画像</div>
+<div class="param_name">pUpper</div>
+<div class="param_desc">
+上辺空き領域に表示する画像</div>
+<div class="param_name">pUnder</div>
+<div class="param_desc">
+下辺空き領域に表示する画像</div>
+</div>
+<br/>
+
+<a name="virtual_setOptionalFlags"/>
+<div class="headline">setOptionalFlags</div>
+<div class="usage">public native void setOptionalFlags( EntisGLS4.Window.OptionalFlag flags )</div>
+<div class="normal">
+オプション機能フラグ設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">flags</div>
+<div class="param_desc">
+オプション機能フラグ（OptionalFlag の組み合わせ）</div>
+</div>
+<br/>
+
+<a name="virtual_setStereoDisplayMode"/>
+<div class="headline">setStereoDisplayMode</div>
+<div class="usage">public native boolean setStereoDisplayMode( String methodID, ulong param = 0 )</div>
+<div class="normal">
+ステレオ立体視モード設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">methodID</div>
+<div class="param_desc">
+立体視方式（EntisGLS4.Windiow.Stereo3D.～）</div>
+<div class="param_name">param</div>
+<div class="param_desc">
+立体視パラメータ（EntisGLS4.Windiow.StereoViewFlag.～）</div>
+</div>
+<br/>
+
+<a name="virtual_setWindowCaption"/>
+<div class="headline">setWindowCaption</div>
+<div class="usage">public native boolean setWindowCaption( String caption )</div>
+<div class="normal">
+ウィンドウキャプション設定<br/></div>
+<br/>
+
+<a name="virtual_showCursor"/>
+<div class="headline">showCursor</div>
+<div class="usage">public native boolean showCursor( boolean flagShow )</div>
+<div class="normal">
+マウスカーソル表示<br/></div>
+<br/>
+
+<a name="virtual_unlock"/>
+<div class="headline">unlock</div>
+<div class="usage">public native boolean unlock( )</div>
+<div class="normal">
+ウィンドウスレッド排他処理権解放<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

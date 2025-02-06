@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.PaintParam</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.PaintParam</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class PaintParam ;</div>
+<div class="normal">
+描画パラメータ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="EntisGLS4.PaintParam.xhtml">EntisGLS4.PaintParam</a>
+</div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.PaintParam.PaintFlag.xhtml">EntisGLS4.PaintParam.PaintFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_applyColorAdd">applyColorAdd</a><br/>
+	<a href="#static_applyColorMul">applyColorMul</a><br/>
+	<a href="#static_applyAlphaMul">applyAlphaMul</a><br/>
+	<a href="#static_applyColorMask">applyColorMask</a><br/>
+	<a href="#static_applyMask">applyMask</a><br/>
+	<a href="#static_functionAdd">functionAdd</a><br/>
+	<a href="#static_functionSub">functionSub</a><br/>
+	<a href="#static_functionMul">functionMul</a><br/>
+	<a href="#static_functionDiv">functionDiv</a><br/>
+	<a href="#static_functionMax">functionMax</a><br/>
+	<a href="#static_functionMin">functionMin</a><br/>
+	<a href="#static_functionScreen">functionScreen</a><br/>
+	<a href="#static_functionMove">functionMove</a><br/>
+	<a href="#static_functionMask">functionMask</a><br/>
+	<a href="#static_flagNoBlendAlpha">flagNoBlendAlpha</a><br/>
+	<a href="#static_flagNoProductOfAlpha">flagNoProductOfAlpha</a><br/>
+	<a href="#static_flagWithZOrder">flagWithZOrder</a><br/>
+	<a href="#static_flagWithZOrderNoWrite">flagWithZOrderNoWrite</a><br/>
+	<a href="#static_flagSmoothStretch">flagSmoothStretch</a><br/>
+	<a href="#static_flagUnsmoothStretch">flagUnsmoothStretch</a><br/>
+	<a href="#static_flagFixedPosition">flagFixedPosition</a><br/>
+	<a href="#static_flagPolygonShaped">flagPolygonShaped</a><br/>
+	<a href="#static_flagDelayable">flagDelayable</a><br/>
+	<a href="#static_flagOrderNoCare">flagOrderNoCare</a><br/>
+</div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_pAffine">pAffine</a><br/>
+	<a href="#member_pVertices">pVertices</a><br/>
+	<a href="#member_nFlags">nFlags</a><br/>
+	<a href="#member_xPaint">xPaint</a><br/>
+	<a href="#member_yPaint">yPaint</a><br/>
+	<a href="#member_nTransparency">nTransparency</a><br/>
+	<a href="#member_zOrder">zOrder</a><br/>
+	<a href="#member_rgbColorParam">rgbColorParam</a><br/>
+	<a href="#member_countVertex">countVertex</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_applyColorAdd"/>
+<div class="headline">applyColorAdd</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; applyColorAdd = 0x800000</div>
+<div class="normal">
+描画フラグ：色加算<br/></div>
+<br/>
+<a name="static_applyColorMul"/>
+<div class="headline">applyColorMul</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; applyColorMul = 0x820000</div>
+<div class="normal">
+描画フラグ：色乗算<br/></div>
+<br/>
+<a name="static_applyAlphaMul"/>
+<div class="headline">applyAlphaMul</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; applyAlphaMul = 0x880000</div>
+<div class="normal">
+描画フラグ：入力画像のαチャネルで RGB チャネルを乗算<br/></div>
+<br/>
+<a name="static_applyColorMask"/>
+<div class="headline">applyColorMask</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; applyColorMask = 0x890000</div>
+<div class="normal">
+描画フラグ：入力画像と色パラメータの RGB が一致するピクセルを透明にする<br/></div>
+<br/>
+<a name="static_applyMask"/>
+<div class="headline">applyMask</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; applyMask = 0xFF0000</div>
+<div class="normal">
+描画フラグ：色パラメータ処理フラグマスク<br/></div>
+<br/>
+<a name="static_functionAdd"/>
+<div class="headline">functionAdd</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionAdd = 0x80000000</div>
+<div class="normal">
+描画フラグ：加算描画<br/></div>
+<br/>
+<a name="static_functionSub"/>
+<div class="headline">functionSub</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionSub = 0x81000000</div>
+<div class="normal">
+描画フラグ：減算描画<br/></div>
+<br/>
+<a name="static_functionMul"/>
+<div class="headline">functionMul</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionMul = 0x82000000</div>
+<div class="normal">
+描画フラグ：乗算描画<br/></div>
+<br/>
+<a name="static_functionDiv"/>
+<div class="headline">functionDiv</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionDiv = 0x83000000</div>
+<div class="normal">
+描画フラグ：除算描画<br/></div>
+<br/>
+<a name="static_functionMax"/>
+<div class="headline">functionMax</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionMax = 0x84000000</div>
+<div class="normal">
+描画フラグ：最大値描画<br/></div>
+<br/>
+<a name="static_functionMin"/>
+<div class="headline">functionMin</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionMin = 0x85000000</div>
+<div class="normal">
+描画フラグ：最小値描画<br/></div>
+<br/>
+<a name="static_functionScreen"/>
+<div class="headline">functionScreen</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionScreen = 0x86000000</div>
+<div class="normal">
+描画フラグ：スクリーン描画<br/></div>
+<br/>
+<a name="static_functionMove"/>
+<div class="headline">functionMove</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionMove = 0x88000000</div>
+<div class="normal">
+描画フラグ：入力複製描画<br/></div>
+<br/>
+<a name="static_functionMask"/>
+<div class="headline">functionMask</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; functionMask = 0xFF000000</div>
+<div class="normal">
+描画フラグ：描画関数マスク<br/></div>
+<br/>
+<a name="static_flagNoBlendAlpha"/>
+<div class="headline">flagNoBlendAlpha</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagNoBlendAlpha = 0x88000000</div>
+<div class="normal">
+描画フラグ：入力画像のαを無視して出力先に上書きする<br/></div>
+<br/>
+<a name="static_flagNoProductOfAlpha"/>
+<div class="headline">flagNoProductOfAlpha</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagNoProductOfAlpha = 0x880000</div>
+<div class="normal">
+描画フラグ：入力画像のαチャネルで RGB チャネルを乗算してから描画する<br/></div>
+<br/>
+<a name="static_flagWithZOrder"/>
+<div class="headline">flagWithZOrder</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagWithZOrder = 2</div>
+<div class="normal">
+描画フラグ：ｚ値比較と書き込み<br/></div>
+<br/>
+<a name="static_flagWithZOrderNoWrite"/>
+<div class="headline">flagWithZOrderNoWrite</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagWithZOrderNoWrite = 4</div>
+<div class="normal">
+描画フラグ：ｚ値比較<br/></div>
+<br/>
+<a name="static_flagSmoothStretch"/>
+<div class="headline">flagSmoothStretch</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagSmoothStretch = 16</div>
+<div class="normal">
+描画フラグ：入力画像補完処理<br/></div>
+<br/>
+<a name="static_flagUnsmoothStretch"/>
+<div class="headline">flagUnsmoothStretch</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagUnsmoothStretch = 32</div>
+<div class="normal">
+描画フラグ：入力画像補完処理無効化<br/></div>
+<br/>
+<a name="static_flagFixedPosition"/>
+<div class="headline">flagFixedPosition</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagFixedPosition = 64</div>
+<div class="normal">
+描画フラグ：入力座標を固定小数点値（/0x10000）として処理<br/></div>
+<br/>
+<a name="static_flagPolygonShaped"/>
+<div class="headline">flagPolygonShaped</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagPolygonShaped = 0x80</div>
+<div class="normal">
+描画フラグ：描画先形状（多角形）指定<br/></div>
+<br/>
+<a name="static_flagDelayable"/>
+<div class="headline">flagDelayable</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagDelayable = 0x100</div>
+<div class="normal">
+描画フラグ：遅延描画<br/></div>
+<br/>
+<a name="static_flagOrderNoCare"/>
+<div class="headline">flagOrderNoCare</div>
+<div class="usage">public static const EntisGLS4.PaintParam.PaintFlag&#9; flagOrderNoCare = 0x200</div>
+<div class="normal">
+描画フラグ：遅延描画および描画順不問<br/></div>
+<br/>
+
+
+<div class="chapter">Members</div>
+<a name="member_pAffine"/>
+<div class="headline">pAffine</div>
+<div class="usage">public const Affine*&#9; pAffine</div>
+<div class="normal">
+アフィン<br/></div>
+<br/>
+<a name="member_pVertices"/>
+<div class="headline">pVertices</div>
+<div class="usage">public const Vector2*&#9; pVertices</div>
+<div class="normal">
+多角形頂点<br/></div>
+<br/>
+<a name="member_nFlags"/>
+<div class="headline">nFlags</div>
+<div class="usage">public EntisGLS4.PaintParam.PaintFlag&#9; nFlags = 0</div>
+<div class="normal">
+描画フラグ<br/></div>
+<br/>
+<a name="member_xPaint"/>
+<div class="headline">xPaint</div>
+<div class="usage">public int&#9; xPaint = 0</div>
+<div class="normal">
+描画ｘ座標<br/></div>
+<br/>
+<a name="member_yPaint"/>
+<div class="headline">yPaint</div>
+<div class="usage">public int&#9; yPaint = 0</div>
+<div class="normal">
+描画ｙ座標<br/></div>
+<br/>
+<a name="member_nTransparency"/>
+<div class="headline">nTransparency</div>
+<div class="usage">public uint&#9; nTransparency = 0</div>
+<div class="normal">
+透明度 [0,0x100]<br/></div>
+<br/>
+<a name="member_zOrder"/>
+<div class="headline">zOrder</div>
+<div class="usage">public float&#9; zOrder = 0.</div>
+<div class="normal">
+ｚ値<br/></div>
+<br/>
+<a name="member_rgbColorParam"/>
+<div class="headline">rgbColorParam</div>
+<div class="usage">public uint&#9; rgbColorParam = 0</div>
+<div class="normal">
+色パラメータ<br/></div>
+<br/>
+<a name="member_countVertex"/>
+<div class="headline">countVertex</div>
+<div class="usage">public uint&#9; countVertex = 0</div>
+<div class="normal">
+頂点数<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

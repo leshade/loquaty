@@ -1,0 +1,437 @@
+﻿
+namespace	EntisGLS4
+{
+	//////////////////////////////////////////////////////////////////////////
+	// ウィンドウ基底
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Window	extends NativeObject
+	{
+		// ウィンドウモード
+		enum using CooperationMode
+		{
+			// ウィンドウモード：ウィンドウ表示
+			modeWindow		= 0x0000,
+			// ウィンドウモード：通常モード（modeWindow と同じ）
+			modeNormal		= 0x0001,
+			// ウィンドウモード：フルスクリーン
+			modeFullScreen	= 0x0003,
+			// ウィンドウモード：フルスクリーン（排他モード）
+			modeExclusive	= 0x0007,
+		}
+
+		// オプション機能フラグ
+		enum using OptionalFlag<ulong>
+		{
+			// オプション機能フラグ：ダブルクリックを受け付ける
+			flagUseDblClick			= 0x00000001,
+			// オプション機能フラグ：閉じるボタンを追加する
+			flagAllowClose			= 0x00000002,
+			// オプション機能フラグ：背景を黒で塗りつぶす
+			flagBlackBack			= 0x00000004,
+			// オプション機能フラグ：IME を有効にする
+			flagEnableIME			= 0x00000008,
+			// オプション機能フラグ：最小化ボタンを追加する
+			flagAllowMinimize		= 0x00000010,
+			// オプション機能フラグ：スクリーンセーバーを許可する
+			flagGrantScreenSave		= 0x00000020,
+			// オプション機能フラグ：モニターの省電力によるオフを許可する
+			flagGrantMonitorSave	= 0x00000040,
+			// オプション機能フラグ：電源サスペンドを許可する
+			flagGrantPowerSuspend	= 0x00000080,
+			// オプション機能フラグ：ウィンドウを可変サイズにする（疑似ディスプレイの場合、伸縮描画される）
+			flagVariableWindowSize	= 0x00000100,
+			// オプション機能フラグ：最大化ボタンを追加する
+			flagAllowMaximize		= 0x00000200,
+			// オプション機能フラグ：子ウィンドウ（疑似ディスプレイでは使用しない）
+			flagChildWindow			= 0x00001000,
+			// オプション機能フラグ：ポップアップウィンドウ（疑似ディスプレイでは使用しない）
+			flagPopupWindow			= 0x00002000,
+			// オプション機能フラグ：不可視ウィンドウ
+			flagInvisibleWindow		= 0x00004000,
+			// オプション機能フラグ：IME を開く（フラグ設定時に日本語入力モードにする。フラグは取得されない）
+			flagOpenIME				= 0x00010000,
+			// オプション機能フラグ：最小化する（フラグ設定時に最小化する。フラグは取得されない）
+			flagDoMinimize			= 0x00020000,
+			// オプション機能フラグ：最大化する（フラグ設定時に最大化する。フラグは取得されない）
+			flagDoMaximize			= 0x00040000,
+			// オプション機能フラグ：ウィンドウサイズとピクセル等倍にする（フラグは取得されない）
+			flagDoNormalize			= 0x00080000,
+		}
+
+		// ステレオ立体視メソッド
+		enum	Stereo3D<String>
+		{
+			// ステレオ立体視メソッド：アナグリフ（赤青フィルム眼鏡用）
+			AnaglyphView = "AnaglyphView",
+			// ステレオ立体視メソッド：古い DirectDraw 立体視（廃止）
+			DDStereoscopic = "DDStereoscopic",
+			// ステレオ立体視メソッド：OpenGL QuadBuffer
+			OpenGLQuadBuffer = "OpenGLQuadBuffer",
+			// ステレオ立体視メソッド：NVIDIA 3D Vision StereoBLT（廃止）
+			NVStereoBLT = "NVStereoBLT",
+			// ステレオ立体視メソッド：サイド・バイ・サイド表示
+			SideBySide = "SideBySide",
+			// ステレオ立体視メソッド：インターリーブ表示
+			InterleavedView = "InterleavedView",
+			// ステレオ立体視メソッド：単視点表示（非立体視）
+			MonoView = "",
+		}
+
+		// ステレオ立体視パラメータ
+		enum	StereoViewFlag<ulong>
+		{
+			// ステレオ立体視パラメータ：垂直インターリーブ
+			Vertical		= 0x01,
+			// ステレオ立体視パラメータ：左右入れ替え
+			SwapEyes		= 0x02,
+			// ステレオ立体視パラメータ：ピクセルアスペクト比 1:1
+			PixelAspect1_1	= 0x04,
+			// ステレオ立体視パラメータ：ピクセルアスペクト比 1:2
+			PixelAspect1_2	= 0x08,
+			// ステレオ立体視パラメータ：VR 用拡大率適用
+			LensScale		= 0x10,
+			// ステレオ立体視パラメータ：VR レンズ歪み適用
+			LensDistortion	= 0x20,
+		} ;
+
+		// 有効画面外枠フラグ
+		enum using ExteriorFrameType<uint>
+		{
+			// 有効画面外枠フラグ：指定色で塗りつぶす
+			exteriorFillColor	= 0x01,
+			// 有効画面外枠フラグ：画像を伸縮して描画する
+			exteriorStretch		= 0x02,
+		}
+
+		public abstract Window() ;
+
+		// 疑似ディスプレイ開始
+		// <desc>※ウィンドウのメッセージ処理ループは別スレッドで実行されるため
+		// 呼び出し元から明示的にメッセージ処理を行う必要はありません。</desc>
+		public native boolean createDisplay
+			( String caption /* ウィンドウキャプション */,
+				CooperationMode mode /* ウィンドウモード */,
+				uint width /* 疑似ディスプレイ幅（ピクセル） */,
+				uint height /* 疑似ディスプレイ高さ（ピクセル） */,
+				uint bitsPerPixel = 0 /* ピクセル辺りのビット深度（0 の場合にはデフォルト） */,
+				uint frequency = 0 /* モニタの垂直同期周波数（0 の場合にはデフォルト） */ ) ;
+
+		// 疑似ディスプレイ終了
+		public native boolean closeDisplay() ;
+
+		// オプション機能フラグ取得（EntisGLS4.Window.flag～ の組み合わせ）
+		public native OptionalFlag getOptionalFlags() const ;
+
+		// オプション機能フラグ設定
+		public native void setOptionalFlags
+			( OptionalFlag flags /* オプション機能フラグ（OptionalFlag の組み合わせ） */ ) ;
+
+		// ウィンドウモード変更
+		public native boolean changeCooperationLevel
+			( CooperationMode mode /* ウィンドウモード */ ) ;
+
+		// ウィンドウモード取得
+		public native CooperationMode getCooperationLevel() const ;
+
+		// 疑似ディスプレイサイズ変更
+		// <desc>この関数では疑似的なディスプレイのサイズを変更します。
+		// ウィンドウの実際のサイズではありません。</desc>
+		public native boolean changeDisplaySize
+			( uint width, uint height,
+				uint bitsPerPixel = 0, uint frequency = 0 ) ;
+
+		// 仮想ディスプレイサイズ取得
+		public native boolean getDisplaySize
+			( Size* sizeDisplay /* 疑似的なディスプレイサイズを受け取る Size 構造体 */ ) ;
+
+		// 物理モニタの解像度を変更するか？
+		public native boolean enableChangePhysicalMode( boolean flagEnable ) ;
+
+		// ｚバッファ有効設定
+		public native boolean enableZBuffer( boolean flagZBuffer ) ;
+
+		// ステレオ立体視モード設定
+		public native boolean setStereoDisplayMode
+			( String methodID /* 立体視方式（EntisGLS4.Windiow.Stereo3D.～） */,
+				ulong param = 0 /* 立体視パラメータ（EntisGLS4.Windiow.StereoViewFlag.～） */ ) ;
+
+		// ステレオ立体視モードテスト
+		public native boolean isSupportedStereoDisplayMode
+			( String methodID /* 立体視方式（EntisGLS4.Windiow.Stereo3D.～） */ ) ;
+
+		// 疑似ディスプレイ・ウィンドウ初期座標設定
+		public native boolean initWindowPosition
+			( int xPos, int yPos, const Size* pInitExSize = null ) ;
+
+		// 疑似ディスプレイ・ウィンドウの通常座標取得
+		// <desc>取得される位置とサイズは（フルスクリーン表示時であっても）
+		// ウィンドウモード表示時の位置とサイズです。</desc>
+		public native boolean getNormalWindowPosition
+			( Point* ptWindow /* ウィンドウ通常表示時の左上座標を受け取る Point 構造体 */,
+				Size* pWindowSize = null /* ウィンドウ通常表示時のサイズを受け取る Size 構造体 */ ) ;
+
+		// 疑似ディスプレイ・ウィンドウ内表示座標取得
+		// <desc>フルスクリーンモード時にアスペクト比が一致しない場合、
+		// rctRender は rctDisplay の左右、又は上下を含まない領域になります。</desc>
+		public native boolean getInternalDisplayPosition
+				( ImageRect* rctRender /* 論理ビューポート（疑似ディスプレイ表示範囲）を受け取る ImageRect 構造体 */,
+					ImageRect* rctDisplay /* ビューポート全体を受け取る ImageRect 構造体 */ ) ;
+
+		// 疑似ディスプレイ・有効画面外枠表示設定
+		public native boolean setExteriorBackgroundFrame
+			( ExteriorFrameType flags /* フラグ（ExteriorFrameType の組み合わせ） */,
+				uint rgbColor /* 塗りつぶし色（ARGB8 のパック形式 RGB） */,
+				Image pTile /* タイリング表示する画像 */,
+				Image pLeft = null /* 左側空き領域に表示する画像 */,
+				Image pRight = null /* 右側空き領域に表示する画像 */,
+				Image pUpper = null /* 上辺空き領域に表示する画像 */,
+				Image pUnder = null /* 下辺空き領域に表示する画像 */ ) ;
+
+		// 画面の更新通知
+		public native boolean postUpdate( const ImageRect* pUpdate = null ) ;
+
+		// UI スレッドで実行
+		public native boolean postUIThread( Function<void()> func ) ;
+
+		// ウィンドウがアクティブ（最前面）か？
+		public native boolean isWindowActive() const ;
+
+		// ウィンドウキャプション設定
+		public native boolean setWindowCaption( String caption ) ;
+
+		// マウスカーソル表示
+		public native boolean showCursor( boolean flagShow ) ;
+
+		// マウスカーソル表示状態取得
+		public native boolean isShowCursor() const ;
+
+		// マウスカーソル変更
+		public native boolean setCursor( String cursorID ) ;
+
+		// マウスカーソル座標移動
+		public native boolean moveCursorPosition
+			( int xPos /* カーソルを移動する疑似ディスプレイ上のｘ座標 */,
+				int yPos /* カーソルを移動する疑似ディスプレイ上のｙ座標 */,
+				int idMouse = 0 ) ;
+
+		// マウスカーソル座標取得
+		public native boolean getCursorPosition
+			( Point* ptCursor /* 疑似ディスプレイ上のカーソル座標を受け取る Point 構造体 */,
+				int idMouse = 0 /* マウスID。マルチタップに対応している場合には 1 以上の値を指定できます。 */ ) ;
+
+		// （ウィンドウが表示されている）物理モニタの垂直同期周波数取得
+		public native int getMonitorFrequency() const ;
+
+		// レンダリングデバイス取得
+		public native RenderDevice getRenderDevice() const ;
+
+		// ウィンドウスレッド排他処理用
+		// <return>排他処理権を獲得できた場合には true</return>
+		// <desc>lock() が true を返してから unlock() を呼び出すまでの間、
+		// ウィンドウのイベント処理はすべて停止します。<br/>
+		// lock()～unlock() は対になっていなければなりませんが、
+		// 再帰的（入れ子状）に呼び出すことができます。</desc>
+		public native boolean lock
+			( long msecTimeout = -1 /* ミリ秒単位のタイムアウト時間。-1 の場合は成功するまで待ち続けます。 */ ) ;
+
+		// ウィンドウスレッド排他処理権解放
+		public native boolean unlock() ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 仮想キーコード
+	//////////////////////////////////////////////////////////////////////////
+
+	enum	VirtualKeyCode<uint>
+	{
+		vkeyMouseLeft	= 0x01,
+		vkeyMouseRight	= 0x02,
+		vkeyMouseMiddle	= 0x04,
+		vkeyBack		= 0x08,
+		vkeyTab			= 0x09,
+		vkeyReturn		= 0x0D,
+		vkeyShift		= 0x10,
+		vkeyControl		= 0x11,
+		vkeyMenu		= 0x12,
+		vkeyPause		= 0x13,
+		vkeyCapital		= 0x14,
+		vkeyEscape		= 0x1B,
+		vkeySpace		= 0x20,
+		vkeyPageUp		= 0x21,
+		vkeyPageDown	= 0x22,
+		vkeyEnd			= 0x23,
+		vkeyHome		= 0x24,
+		vkeyLeft		= 0x25,
+		vkeyUp			= 0x26,
+		vkeyRight		= 0x27,
+		vkeyDown		= 0x28,
+		vkeyInsert		= 0x2D,
+		vkeyDelete		= 0x2E,
+		vkeyHelp		= 0x2F,
+		vkeyNumPad0		= 0x60,
+		vkeyNumPad1		= 0x61,
+		vkeyNumPad2		= 0x62,
+		vkeyNumPad3		= 0x63,
+		vkeyNumPad4		= 0x64,
+		vkeyNumPad5		= 0x65,
+		vkeyNumPad6		= 0x66,
+		vkeyNumPad7		= 0x67,
+		vkeyNumPad8		= 0x68,
+		vkeyNumPad9		= 0x69,
+		vkeyNumPadMultiply	= 0x6A,
+		vkeyNumPadAdd	= 0x6B,
+		vkeyNumPadSeparator	= 0x6C,
+		vkeyNumPadSubtract	= 0x6D,
+		vkeyNumPadDecimal	= 0x6E,
+		vkeyNumPadDivide	= 0x6F,
+		vkeyFunction1	= 0x70,
+		vkeyFunction2	= 0x71,
+		vkeyFunction3	= 0x72,
+		vkeyFunction4	= 0x73,
+		vkeyFunction5	= 0x74,
+		vkeyFunction6	= 0x75,
+		vkeyFunction7	= 0x76,
+		vkeyFunction8	= 0x77,
+		vkeyFunction9	= 0x78,
+		vkeyFunction10	= 0x79,
+		vkeyFunction11	= 0x7A,
+		vkeyFunction12	= 0x7B,
+		vkeyNumLock		= 0x90,
+		vkeyScroll		= 0x91,
+		vkeyPlay		= 0xFA,
+		vkeyCodeMask	= 0xFFFF,
+	}
+
+	enum	VirtualKeyFlag<uint>
+	{
+		vkeyContextCapital	= 0x010000,
+		vkeyContextShift	= 0x100000,
+		vkeyContextControl	= 0x200000,
+		vkeyContextMenu		= 0x400000,
+		vkeyContextMask		= 0xFF0000,
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// システム・コマンド ID
+	//////////////////////////////////////////////////////////////////////////
+
+	enum	SysCommandId<String>
+	{
+		// Windows の閉じるボタン
+		AppExit				= "ID_APP_EXIT",
+
+		// Android の戻るボタン
+		AppBack				= "ID_APP_BACK",
+
+		// Android でアプリが背面に移動した
+		AppSuspend			= "ID_APP_SUSPEND",
+
+		// Android でアプリが前面に移動した
+		AppResume			= "ID_APP_RESUME",
+
+		// Android でアプリを終了させた
+		AppDestroy			= "ID_APP_DESTROY",
+
+		// Window がアクティブになった
+		WindowActive		= "ID_WINDOW_ACTIVE",
+
+		// Window が非アクティブになった
+		WindowInactive		= "ID_WINDOW_INACTIVE",
+
+		// Window のサイズが変更された
+		WindowSizeChanged	= "ID_WINDOW_SIZE_CHANGED",
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// フォント・スタイル情報
+	//////////////////////////////////////////////////////////////////////////
+
+	class	FontStyle
+	{
+		// スタイルフラグ
+		enum using StyleFlag<uint32>
+		{
+			// スタイルフラグ：斜体
+			flagItalic			= 0x00000001,
+			// スタイルフラグ：太字
+			flagBold			= 0x00000002,
+			// スタイルフラグ：アンチエイリアス無効化
+			flagNoSmooth		= 0x00010000,
+			// スタイルフラグ：高品位なアンチエイリアス
+			flagHighDefinition	= 0x00020000,
+		}
+
+		// デフォルト・フォント名
+		enum using DefaultFontFace<String>
+		{
+			// デフォルト・フォント名
+			StandardFont	= "Default",
+
+			// デフォルト・フォント名（固定ピッチ）
+			FixedPitchFont	= "FixedDefault",
+		}
+
+		// スタイルフラグの組み合わせ
+		public uint32	styles ;
+		// フォントサイズ（ピクセル単位）
+		public uint32	size = 16 ;
+		// フォントフェース名
+		public String	face = StandardFont ;
+
+		public FontStyle( const FontStyle fs )
+		{
+			this := fs ;
+		}
+
+		public FontStyle operator := ( const FontStyle fs )
+		{
+			styles = fs.styles ;
+			size = fs.size ;
+			face = fs.face ;
+			return	this ;
+		}
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// IME 入力情報
+	//////////////////////////////////////////////////////////////////////////
+
+	class	InputStartComposition
+	{
+		// 入力文字表示位置
+		public Point*		ptStart = null ;
+
+		// 入力文字表示領域
+		public ImageRect*	rctArea = null ;
+
+		// 入力文字表示フォント
+		public FontStyle	fsFontStyle = null ;
+	} ;
+
+	class	InputCompositionString
+	{
+		// フラグ
+		enum using Flag
+		{
+			// フラグ：IME 変換結果を受け取った
+			flagResult		= 0x01,
+		}
+
+		// フラグ (Flag の組み合わせ) 
+		public ulong	nFlags ;
+
+		// 変換中／変換結果文字列
+		public String	strComposition ;
+	} ;
+
+}
+
+

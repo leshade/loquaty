@@ -1,0 +1,185 @@
+﻿
+@include "image.lqs"
+
+
+namespace	PSD
+{
+	// 画像モード
+	enum using ImageMode<uint>
+	{
+		modeBitmap,
+		modeGrayscale,
+		modeIndexed,
+		modeRGB,
+		modeCMYK,
+		modeMultichannel,
+		modeDuotone,
+		modeLab
+	}
+
+	// レイヤー・ブレンド・モード
+	enum using LayerBlendMode<uint>
+	{
+		blendPass			= ('p'<<24)|('a'<<16)|('s'<<8)|'s',
+		blendNormal			= ('n'<<24)|('o'<<16)|('r'<<8)|'m',
+		blendDarken			= ('d'<<24)|('a'<<16)|('r'<<8)|'k',
+		blendLighten		= ('l'<<24)|('i'<<16)|('t'<<8)|'e',
+		blendHue			= ('h'<<24)|('u'<<16)|('u'<<8)|' ',
+		blendSat			= ('s'<<24)|('a'<<16)|('t'<<8)|' ',
+		blendColor			= ('c'<<24)|('o'<<16)|('l'<<8)|'r',
+		blendLuminosity		= ('l'<<24)|('u'<<16)|('m'<<8)|' ',
+		blendMultiply		= ('m'<<24)|('u'<<16)|('l'<<8)|' ',
+		blendDivision		= ('d'<<24)|('i'<<16)|('v'<<8)|' ',
+		blendAddition		= ('l'<<24)|('d'<<16)|('d'<<8)|'g',
+		blendSubtraction	= ('f'<<24)|('s'<<16)|('u'<<8)|'b',
+		blendScreen			= ('s'<<24)|('c'<<16)|('r'<<8)|'n',
+		blendDissolve		= ('d'<<24)|('i'<<16)|('s'<<8)|'s',
+		blendOverlay		= ('o'<<24)|('v'<<16)|('e'<<8)|'r',
+		blendHardLight		= ('h'<<24)|('L'<<16)|('i'<<8)|'t',
+		blendSoftLight		= ('s'<<24)|('L'<<16)|('i'<<8)|'t',
+		blendDifference		= ('d'<<24)|('i'<<16)|('f'<<8)|'f',
+	}
+
+	// レイヤー・フラグ
+	enum using LayerFlag<uint>
+	{
+		flagTransparencyProtected	= 0x01,
+		flagInvisible				= 0x02,
+	}
+
+	// レイヤー・タイプ
+	enum using LayerType<uint>
+	{
+		layerNormal,
+		layerBackground,
+		layerGroup,
+		layerEndOfGroup,
+	}
+
+}
+
+
+namespace	EntisGLS4
+{
+	//////////////////////////////////////////////////////////////////////////
+	// 画像コンポジション（主にPSDデータ用）
+	//////////////////////////////////////////////////////////////////////////
+
+	class	ImageComposition	extends NativeObject
+	{
+		class	Layer	extends Image
+		{
+			// Layer 構築
+			public native Layer() ;
+
+			// Layer 複製
+			public native Layer( const Layer layer ) ;
+
+			// 子レイヤーの総数（孫レイヤー以下を含む）
+			public native ulong getTotalLayerCount() const ;
+
+			// レイヤー名取得
+			public native String getLayerName() const ;
+
+			// レイヤー名設定
+			public native void setLayerName( String name ) ;
+
+			// レイヤー・タイプ取得
+			public native PSD.LayerType getLayerType() const ;
+
+			// レイヤー・タイプ設定
+			public native void setLayerType( PSD.LayerType type ) ;
+
+			// レイヤー位置取得
+			public native Point* getLayerPosition() const ;
+
+			// レイヤー位置設定
+			public native void setLayerPosition( const Point* pos ) ;
+
+			// レイヤー・ブレンド・モード取得
+			public native uint getLayerBlendMode() const ;
+
+			// レイヤー・ブレンド・モード設定
+			public native void setLayerBlendMode( uint blend ) ;
+
+			// レイヤー表示状態取得
+			public native boolean isLayerVisible() const ;
+
+			// レイヤー表示状態設定
+			public native void setLayerVisible( boolean visible ) ;
+
+			// レイヤー透明度取得 [0,0x100]
+			public native uint getLayerTransparency() const ;
+
+			// レイヤー透明度設定 [0,0x100]
+			public native void setLayerTransparency( uint transparency ) ;
+
+			// 子レイヤー数取得
+			public native ulong getSubLayerCount() const ;
+
+			// 子レイヤー取得
+			public native Layer getSubLayerAt( ulong index ) const ;
+
+			// レイヤーサイズ計算
+			public native boolean layerSizeOf
+						( ImageRect* rect, int threshold = 0 ) const ;
+		}
+
+		// ImageComposition オブジェクト構築
+		public native ImageComposition() ;
+
+		// キャンバスサイズ取得
+		public native Size* getCanvasSize() const ;
+
+		// 画像モード取得
+		public native PSD.ImageMode getImageMode() const ;
+
+		// チャネル数取得
+		public native uint getChannelCount() const ;
+
+		// キャンバス情報設定
+		public native void setCanvasInfo
+			( const Size* size, uint channels, PSD.ImageMode mode = PSD.modeRGB ) ;
+
+		// PSD ファイルを読み込む
+		public native boolean loadPSDFile( String path ) ;
+
+		// PSD ファイルを読み込む
+		public native boolean readPSDFile( File file ) ;
+
+		// PSD ファイルを書き出す
+		public native boolean savePSDFile( String path ) ;
+
+		// PSD ファイルを書き出す
+		public native boolean writePSDFile( File file ) ;
+
+		// （階層処理しないフラットな）レイヤー数取得
+		public native ulong getLayerCount() const ;
+
+		// （階層処理しないフラットな）レイヤー取得
+		public native Layer getLayerAt( ulong index ) const ;
+
+		// 階層状のレイヤー数取得
+		public native ulong getTreeLayerCount() const ;
+
+		// 階層状のレイヤー取得
+		public native Layer getTreeLayerAt( ulong index ) const ;
+
+		// レイヤー挿入
+		public native void insertLayerAt
+				( ulong index, Layer layer, Layer parent = null ) ;
+
+		// レイヤー追加
+		public native void appendLayer( Layer layer, Layer parent = null ) ;
+
+		// レイヤー階層内のレイヤー番号をフラットなレイヤー番号へ変換
+		public native long localIndexToGlobal( Layer parent, ulong index ) const ;
+
+		// レイヤー削除
+		public native boolean removeLayer( Layer layer ) ;
+
+	}
+
+}
+
+

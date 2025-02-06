@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.DepthMaskOperation</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.DepthMaskOperation</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum DepthMaskOperation&lt;int&gt; ;</div>
+<div class="normal">
+ｚバッファ操作<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.DepthMaskOperation.xhtml">EntisGLS4.DepthMaskOperation</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_Default">Default</a><br/>
+	<a href="#static_Enable">Enable</a><br/>
+	<a href="#static_NoWrite">NoWrite</a><br/>
+	<a href="#static_NoWriteGT">NoWriteGT</a><br/>
+	<a href="#static_NoTest">NoTest</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_Default"/>
+<div class="headline">Default</div>
+<div class="usage">public static const EntisGLS4.DepthMaskOperation&#9; Default = 0</div>
+<div class="normal">
+デフォルト（マテリアルの設定を優先）<br/></div>
+<br/>
+<a name="static_Enable"/>
+<div class="headline">Enable</div>
+<div class="usage">public static const EntisGLS4.DepthMaskOperation&#9; Enable = 1</div>
+<div class="normal">
+ｚテストと（バッファの値以下の場合の）書き込み実行<br/></div>
+<br/>
+<a name="static_NoWrite"/>
+<div class="headline">NoWrite</div>
+<div class="usage">public static const EntisGLS4.DepthMaskOperation&#9; NoWrite = 2</div>
+<div class="normal">
+ｚテストのみ（バッファの値以下の場合に描画）<br/></div>
+<br/>
+<a name="static_NoWriteGT"/>
+<div class="headline">NoWriteGT</div>
+<div class="usage">public static const EntisGLS4.DepthMaskOperation&#9; NoWriteGT = 3</div>
+<div class="normal">
+ｚテストのみ（バッファの値より大きい場合に描画）<br/></div>
+<br/>
+<a name="static_NoTest"/>
+<div class="headline">NoTest</div>
+<div class="usage">public static const EntisGLS4.DepthMaskOperation&#9; NoTest = 4</div>
+<div class="normal">
+ｚテストは行わない<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

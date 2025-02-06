@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneItem</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneItem</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneItem ;</div>
+<div class="normal">
+Scene アイテム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+</div></div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SceneItem.ParameterID.xhtml">EntisGLS4.SceneItem.ParameterID</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_paramPosition">paramPosition</a><br/>
+	<a href="#static_paramRotation">paramRotation</a><br/>
+	<a href="#static_paramZoom">paramZoom</a><br/>
+	<a href="#static_paramTransparency">paramTransparency</a><br/>
+	<a href="#static_paramColorMul">paramColorMul</a><br/>
+	<a href="#static_paramColorAdd">paramColorAdd</a><br/>
+	<a href="#static_paramVisible">paramVisible</a><br/>
+	<a href="#static_paramForceToon">paramForceToon</a><br/>
+	<a href="#static_paramForceBorder">paramForceBorder</a><br/>
+	<a href="#static_paramFreeToon">paramFreeToon</a><br/>
+	<a href="#static_paramFreeBorder">paramFreeBorder</a><br/>
+	<a href="#static_paramUseCollision">paramUseCollision</a><br/>
+	<a href="#static_paramGlobalSpace">paramGlobalSpace</a><br/>
+	<a href="#static_paramCameraShift">paramCameraShift</a><br/>
+	<a href="#static_paramCameraSpace">paramCameraSpace</a><br/>
+	<a href="#static_paramHideNear">paramHideNear</a><br/>
+	<a href="#static_paramHideFar">paramHideFar</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_findChildItem">findChildItem</a><br/>
+	<a href="#virtual_findController">findController</a><br/>
+	<a href="#virtual_findControllerID">findControllerID</a><br/>
+	<a href="#virtual_getChildItemAt">getChildItemAt</a><br/>
+	<a href="#virtual_getChildItemCount">getChildItemCount</a><br/>
+	<a href="#virtual_getComposer">getComposer</a><br/>
+	<a href="#virtual_getComposition">getComposition</a><br/>
+	<a href="#virtual_getControllerAs">getControllerAs</a><br/>
+	<a href="#virtual_getControllerAt">getControllerAt</a><br/>
+	<a href="#virtual_getControllerCount">getControllerCount</a><br/>
+	<a href="#virtual_getGlobalColorEffect">getGlobalColorEffect</a><br/>
+	<a href="#virtual_getGlobalTransformation">getGlobalTransformation</a><br/>
+	<a href="#virtual_getItemColorEffect">getItemColorEffect</a><br/>
+	<a href="#virtual_getItemLinkTransformation">getItemLinkTransformation</a><br/>
+	<a href="#virtual_getItemPosition">getItemPosition</a><br/>
+	<a href="#virtual_getItemRotation">getItemRotation</a><br/>
+	<a href="#virtual_getItemTransparency">getItemTransparency</a><br/>
+	<a href="#virtual_getItemZoom">getItemZoom</a><br/>
+	<a href="#virtual_getManager">getManager</a><br/>
+	<a href="#virtual_getParentSpaceItem">getParentSpaceItem</a><br/>
+	<a href="#virtual_getScene">getScene</a><br/>
+	<a href="#virtual_getSceneItemAs">getSceneItemAs</a><br/>
+	<a href="#virtual_getVisibleParameter">getVisibleParameter</a><br/>
+	<a href="#virtual_isEditMode">isEditMode</a><br/>
+	<a href="#virtual_removeControllerAs">removeControllerAs</a><br/>
+	<a href="#virtual_removeControllerAt">removeControllerAt</a><br/>
+	<a href="#virtual_setItemMatrix">setItemMatrix</a><br/>
+	<a href="#virtual_setItemPositioin">setItemPositioin</a><br/>
+	<a href="#virtual_setItemRotation">setItemRotation</a><br/>
+	<a href="#virtual_setItemZoom">setItemZoom</a><br/>
+	<a href="#virtual_setVisibleParameter">setVisibleParameter</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_paramPosition"/>
+<div class="headline">paramPosition</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramPosition = "position"</div>
+<div class="normal">
+パラメータID：位置<br/></div>
+<br/>
+<a name="static_paramRotation"/>
+<div class="headline">paramRotation</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramRotation = "rotation"</div>
+<div class="normal">
+パラメータID：回転<br/></div>
+<br/>
+<a name="static_paramZoom"/>
+<div class="headline">paramZoom</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramZoom = "zoom"</div>
+<div class="normal">
+パラメータID：拡大<br/></div>
+<br/>
+<a name="static_paramTransparency"/>
+<div class="headline">paramTransparency</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramTransparency = "transparency"</div>
+<div class="normal">
+パラメータID：透明度 [0,1]<br/></div>
+<br/>
+<a name="static_paramColorMul"/>
+<div class="headline">paramColorMul</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramColorMul = "color_mul"</div>
+<div class="normal">
+パラメータID：色乗算効果<br/></div>
+<br/>
+<a name="static_paramColorAdd"/>
+<div class="headline">paramColorAdd</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramColorAdd = "color_add"</div>
+<div class="normal">
+パラメータID：色加算効果<br/></div>
+<br/>
+<a name="static_paramVisible"/>
+<div class="headline">paramVisible</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramVisible = "visible"</div>
+<div class="normal">
+パラメータID：表示状態<br/></div>
+<br/>
+<a name="static_paramForceToon"/>
+<div class="headline">paramForceToon</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramForceToon = "force_toon"</div>
+<div class="normal">
+パラメータID：トゥーン・シェーディング<br/></div>
+<br/>
+<a name="static_paramForceBorder"/>
+<div class="headline">paramForceBorder</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramForceBorder = "force_border"</div>
+<div class="normal">
+パラメータID：輪郭線描画<br/></div>
+<br/>
+<a name="static_paramFreeToon"/>
+<div class="headline">paramFreeToon</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramFreeToon = "free_toon"</div>
+<div class="normal">
+パラメータID：トゥーン・シェーディング無効化<br/></div>
+<br/>
+<a name="static_paramFreeBorder"/>
+<div class="headline">paramFreeBorder</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramFreeBorder = "free_border"</div>
+<div class="normal">
+パラメータID：輪郭線描画無効化<br/></div>
+<br/>
+<a name="static_paramUseCollision"/>
+<div class="headline">paramUseCollision</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramUseCollision = "use_collision"</div>
+<div class="normal">
+パラメータID：当たり判定有効化<br/></div>
+<br/>
+<a name="static_paramGlobalSpace"/>
+<div class="headline">paramGlobalSpace</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramGlobalSpace = "global_space"</div>
+<div class="normal">
+パラメータID：親空間を無視して常に大域空間<br/></div>
+<br/>
+<a name="static_paramCameraShift"/>
+<div class="headline">paramCameraShift</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramCameraShift = "camera_shift"</div>
+<div class="normal">
+パラメータID：親空間を無視して常にカメラ位置に対して平行移動<br/></div>
+<br/>
+<a name="static_paramCameraSpace"/>
+<div class="headline">paramCameraSpace</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramCameraSpace = "camera_space"</div>
+<div class="normal">
+パラメータID：親空間を無視して常にカメラの姿勢に対して追従<br/></div>
+<br/>
+<a name="static_paramHideNear"/>
+<div class="headline">paramHideNear</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramHideNear = "hide_near"</div>
+<div class="normal">
+パラメータID：カメラから近い場合に非表示<br/></div>
+<br/>
+<a name="static_paramHideFar"/>
+<div class="headline">paramHideFar</div>
+<div class="usage">public static const EntisGLS4.SceneItem.ParameterID&#9; paramHideFar = "hide_far"</div>
+<div class="normal">
+パラメータID：カメラから遠い場合に非表示<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_findChildItem"/>
+<div class="headline">findChildItem</div>
+<div class="usage">public native long findChildItem( EntisGLS4.SceneItem item ) const</div>
+<div class="normal">
+子アイテム検索<br/></div>
+<br/>
+
+<a name="virtual_findController"/>
+<div class="headline">findController</div>
+<div class="usage">public native long findController( EntisGLS4.SceneController ctrl ) const</div>
+<div class="normal">
+コントローラー指標検索<br/></div>
+<br/>
+
+<a name="virtual_findControllerID"/>
+<div class="headline">findControllerID</div>
+<div class="usage">public native long findControllerID( String id ) const</div>
+<div class="normal">
+コントローラー指標検索<br/></div>
+<br/>
+
+<a name="virtual_getChildItemAt"/>
+<div class="headline">getChildItemAt</div>
+<div class="usage">public native EntisGLS4.SceneItem getChildItemAt( ulong index ) const</div>
+<div class="normal">
+子アイテム取得<br/></div>
+<br/>
+
+<a name="virtual_getChildItemCount"/>
+<div class="headline">getChildItemCount</div>
+<div class="usage">public native ulong getChildItemCount( ) const</div>
+<div class="normal">
+子アイテム数取得<br/></div>
+<br/>
+
+<a name="virtual_getComposer"/>
+<div class="headline">getComposer</div>
+<div class="usage">public native EntisGLS4.SceneComposer getComposer( ) const</div>
+<div class="normal">
+コンポーザー取得<br/></div>
+<br/>
+
+<a name="virtual_getComposition"/>
+<div class="headline">getComposition</div>
+<div class="usage">public native EntisGLS4.SceneComposition getComposition( ) const</div>
+<div class="normal">
+コンポジション取得<br/></div>
+<br/>
+
+<a name="virtual_getControllerAs"/>
+<div class="headline">getControllerAs</div>
+<div class="usage">public native EntisGLS4.SceneController getControllerAs( String id ) const</div>
+<div class="normal">
+コントローラー取得<br/></div>
+<br/>
+
+<a name="virtual_getControllerAt"/>
+<div class="headline">getControllerAt</div>
+<div class="usage">public native EntisGLS4.SceneController getControllerAt( ulong index ) const</div>
+<div class="normal">
+コントローラー取得<br/></div>
+<br/>
+
+<a name="virtual_getControllerCount"/>
+<div class="headline">getControllerCount</div>
+<div class="usage">public native ulong getControllerCount( ) const</div>
+<div class="normal">
+コントローラー数取得<br/></div>
+<br/>
+
+<a name="virtual_getGlobalColorEffect"/>
+<div class="headline">getGlobalColorEffect</div>
+<div class="usage">public native void getGlobalColorEffect( EntisGLS4.ColorMulAdd* clrEffect ) const</div>
+<div class="normal">
+空間色効果取得（乗算色α要素に不透明度取得）<br/></div>
+<br/>
+
+<a name="virtual_getGlobalTransformation"/>
+<div class="headline">getGlobalTransformation</div>
+<div class="usage">public native void getGlobalTransformation( Matrix3d* matGlobal, Vector3d* vGlobalPos ) const</div>
+<div class="normal">
+空間行列取得<br/></div>
+<br/>
+
+<a name="virtual_getItemColorEffect"/>
+<div class="headline">getItemColorEffect</div>
+<div class="usage">public native const EntisGLS4.ColorMulAdd* getItemColorEffect( ) const</div>
+<div class="normal">
+アイテムの色効果取得<br/></div>
+<br/>
+
+<a name="virtual_getItemLinkTransformation"/>
+<div class="headline">getItemLinkTransformation</div>
+<div class="usage">public native void getItemLinkTransformation( Matrix3d* matLink, Vector3d* vLinkPos ) const</div>
+<div class="normal">
+アイテム空間変換行列（アイテム自身を含まないグローバル変換）を計算<br/></div>
+<br/>
+
+<a name="virtual_getItemPosition"/>
+<div class="headline">getItemPosition</div>
+<div class="usage">public native const Vector3d* getItemPosition( ) const</div>
+<div class="normal">
+アイテムの位置（ローカル座標）取得<br/></div>
+<br/>
+
+<a name="virtual_getItemRotation"/>
+<div class="headline">getItemRotation</div>
+<div class="usage">public native const Matrix3d* getItemRotation( ) const</div>
+<div class="normal">
+アイテムの回転取得<br/></div>
+<br/>
+
+<a name="virtual_getItemTransparency"/>
+<div class="headline">getItemTransparency</div>
+<div class="usage">public native uint getItemTransparency( ) const</div>
+<div class="normal">
+アイテムの透明度 [0,256] 取得<br/></div>
+<br/>
+
+<a name="virtual_getItemZoom"/>
+<div class="headline">getItemZoom</div>
+<div class="usage">public native const Vector3d* getItemZoom( ) const</div>
+<div class="normal">
+アイテムの拡大率取得<br/></div>
+<br/>
+
+<a name="virtual_getManager"/>
+<div class="headline">getManager</div>
+<div class="usage">public native EntisGLS4.SceneManager getManager( ) const</div>
+<div class="normal">
+コンポーザー・マネージャー取得<br/></div>
+<br/>
+
+<a name="virtual_getParentSpaceItem"/>
+<div class="headline">getParentSpaceItem</div>
+<div class="usage">public native EntisGLS4.SceneItem getParentSpaceItem( ) const</div>
+<div class="normal">
+親アイテム取得<br/></div>
+<br/>
+
+<a name="virtual_getScene"/>
+<div class="headline">getScene</div>
+<div class="usage">public native EntisGLS4.Scene getScene( ) const</div>
+<div class="normal">
+シーン取得<br/></div>
+<br/>
+
+<a name="virtual_getSceneItemAs"/>
+<div class="headline">getSceneItemAs</div>
+<div class="usage">public native EntisGLS4.SceneItem getSceneItemAs( String id ) const</div>
+<div class="normal">
+アイテム取得<br/></div>
+<br/>
+
+<a name="virtual_getVisibleParameter"/>
+<div class="headline">getVisibleParameter</div>
+<div class="usage">public native boolean getVisibleParameter( ) const</div>
+<div class="normal">
+アイテムの表示フラグ取得<br/></div>
+<br/>
+
+<a name="virtual_isEditMode"/>
+<div class="headline">isEditMode</div>
+<div class="usage">public native boolean isEditMode( ) const</div>
+<div class="normal">
+エディット・モードか？<br/></div>
+<br/>
+
+<a name="virtual_removeControllerAs"/>
+<div class="headline">removeControllerAs</div>
+<div class="usage">public native boolean removeControllerAs( String id )</div>
+<div class="normal">
+コントローラー削除<br/></div>
+<br/>
+
+<a name="virtual_removeControllerAt"/>
+<div class="headline">removeControllerAt</div>
+<div class="usage">public native boolean removeControllerAt( ulong index )</div>
+<div class="normal">
+コントローラー削除<br/></div>
+<br/>
+
+<a name="virtual_setItemMatrix"/>
+<div class="headline">setItemMatrix</div>
+<div class="usage">public native void setItemMatrix( const Matrix3d* matrix )</div>
+<div class="normal">
+アイテムの行列（ローカル変換）設定<br/></div>
+<br/>
+
+<a name="virtual_setItemPositioin"/>
+<div class="headline">setItemPositioin</div>
+<div class="usage">public native void setItemPositioin( const Vector3d* vPos )</div>
+<div class="normal">
+アイテムの位置（ローカル座標）設定<br/></div>
+<br/>
+
+<a name="virtual_setItemRotation"/>
+<div class="headline">setItemRotation</div>
+<div class="usage">public native void setItemRotation( const Matrix3d* matRot )</div>
+<div class="normal">
+アイテムの回転設定<br/></div>
+<br/>
+
+<a name="virtual_setItemZoom"/>
+<div class="headline">setItemZoom</div>
+<div class="usage">public native void setItemZoom( const Vector3d* vZoom )</div>
+<div class="normal">
+アイテムの拡大率設定<br/></div>
+<br/>
+
+<a name="virtual_setVisibleParameter"/>
+<div class="headline">setVisibleParameter</div>
+<div class="usage">public native void setVisibleParameter( boolean visible )</div>
+<div class="normal">
+アイテムの表示フラグ設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

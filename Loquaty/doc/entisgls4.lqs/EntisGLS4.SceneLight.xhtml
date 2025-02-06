@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneLight</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneLight</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneLight ;</div>
+<div class="normal">
+Scene 光源アイテム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneCommon.xhtml">EntisGLS4.SceneCommon</a>
+<div class="indent1"><a href="EntisGLS4.SceneLight.xhtml">EntisGLS4.SceneLight</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SceneLight.LightTypeIndex.xhtml">EntisGLS4.SceneLight.LightTypeIndex</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneLight.ShadowMapFlag.xhtml">EntisGLS4.SceneLight.ShadowMapFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneLight.ShadowMapParam.xhtml">EntisGLS4.SceneLight.ShadowMapParam</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_typeLightAmbient">typeLightAmbient</a><br/>
+	<a href="#static_typeLightAmbientMul">typeLightAmbientMul</a><br/>
+	<a href="#static_typeLightVector">typeLightVector</a><br/>
+	<a href="#static_typeLightPoint">typeLightPoint</a><br/>
+	<a href="#static_typeLightSpot">typeLightSpot</a><br/>
+	<a href="#static_typeLightFog">typeLightFog</a><br/>
+	<a href="#static_typeLightCount">typeLightCount</a><br/>
+	<a href="#static_shadowPersDistance">shadowPersDistance</a><br/>
+	<a href="#static_shadowAdjustByCamera">shadowAdjustByCamera</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneLight">SceneLight</a><br/>
+	<a href="#virtual_IsEnabledShadowMapping">IsEnabledShadowMapping</a><br/>
+	<a href="#virtual_enableShadowMapping">enableShadowMapping</a><br/>
+	<a href="#virtual_getAttenuationPower">getAttenuationPower</a><br/>
+	<a href="#virtual_getLightAngle">getLightAngle</a><br/>
+	<a href="#virtual_getLightBrightness">getLightBrightness</a><br/>
+	<a href="#virtual_getLightColor">getLightColor</a><br/>
+	<a href="#virtual_getLightDirection">getLightDirection</a><br/>
+	<a href="#virtual_getLightGradation">getLightGradation</a><br/>
+	<a href="#virtual_getLightPosition">getLightPosition</a><br/>
+	<a href="#virtual_getLightType">getLightType</a><br/>
+	<a href="#virtual_getShadowMappingParam">getShadowMappingParam</a><br/>
+	<a href="#virtual_setAttenuationPower">setAttenuationPower</a><br/>
+	<a href="#virtual_setLightAngle">setLightAngle</a><br/>
+	<a href="#virtual_setLightBrightness">setLightBrightness</a><br/>
+	<a href="#virtual_setLightColor">setLightColor</a><br/>
+	<a href="#virtual_setLightDirection">setLightDirection</a><br/>
+	<a href="#virtual_setLightGradation">setLightGradation</a><br/>
+	<a href="#virtual_setLightPosition">setLightPosition</a><br/>
+	<a href="#virtual_setLightType">setLightType</a><br/>
+	<a href="#virtual_setShadowMappingParam">setShadowMappingParam</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_typeLightAmbient"/>
+<div class="headline">typeLightAmbient</div>
+<div class="usage">public static const EntisGLS4.SceneLight.LightTypeIndex&#9; typeLightAmbient = 0</div>
+<br/>
+<a name="static_typeLightAmbientMul"/>
+<div class="headline">typeLightAmbientMul</div>
+<div class="usage">public static const EntisGLS4.SceneLight.LightTypeIndex&#9; typeLightAmbientMul = 1</div>
+<br/>
+<a name="static_typeLightVector"/>
+<div class="headline">typeLightVector</div>
+<div class="usage">public static const EntisGLS4.SceneLight.LightTypeIndex&#9; typeLightVector = 2</div>
+<br/>
+<a name="static_typeLightPoint"/>
+<div class="headline">typeLightPoint</div>
+<div class="usage">public static const EntisGLS4.SceneLight.LightTypeIndex&#9; typeLightPoint = 3</div>
+<br/>
+<a name="static_typeLightSpot"/>
+<div class="headline">typeLightSpot</div>
+<div class="usage">public static const EntisGLS4.SceneLight.LightTypeIndex&#9; typeLightSpot = 4</div>
+<br/>
+<a name="static_typeLightFog"/>
+<div class="headline">typeLightFog</div>
+<div class="usage">public static const EntisGLS4.SceneLight.LightTypeIndex&#9; typeLightFog = 5</div>
+<br/>
+<a name="static_typeLightCount"/>
+<div class="headline">typeLightCount</div>
+<div class="usage">public static const EntisGLS4.SceneLight.LightTypeIndex&#9; typeLightCount = 6</div>
+<br/>
+<a name="static_shadowPersDistance"/>
+<div class="headline">shadowPersDistance</div>
+<div class="usage">public static const EntisGLS4.SceneLight.ShadowMapFlag&#9; shadowPersDistance = 1</div>
+<div class="normal">
+シャドウマッピングのカメラ距離を指定する<br/></div>
+<br/>
+<a name="static_shadowAdjustByCamera"/>
+<div class="headline">shadowAdjustByCamera</div>
+<div class="usage">public static const EntisGLS4.SceneLight.ShadowMapFlag&#9; shadowAdjustByCamera = 2</div>
+<div class="normal">
+シャドウマッピングのカメラ距離をシーンのカメラ距離に比率で連動する<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneLight"/>
+<div class="headline">SceneLight</div>
+<div class="usage">public native SceneLight( )</div>
+<div class="normal">
+SceneLight 構築<br/></div>
+<br/>
+
+<a name="virtual_IsEnabledShadowMapping"/>
+<div class="headline">IsEnabledShadowMapping</div>
+<div class="usage">public native boolean IsEnabledShadowMapping( ) const</div>
+<div class="normal">
+シャドウマッピング有効取得<br/></div>
+<br/>
+
+<a name="virtual_enableShadowMapping"/>
+<div class="headline">enableShadowMapping</div>
+<div class="usage">public native void enableShadowMapping( boolean shadowmap )</div>
+<div class="normal">
+シャドウマッピング有効設定<br/></div>
+<br/>
+
+<a name="virtual_getAttenuationPower"/>
+<div class="headline">getAttenuationPower</div>
+<div class="usage">public native double getAttenuationPower( ) const</div>
+<div class="normal">
+点光源減衰取得</div>
+<br/>
+<div class="indent1">
+a : 減衰力, r : 距離, 減衰率（倍率）: 1/pow(r,a)</div><br/>
+<br/>
+
+<a name="virtual_getLightAngle"/>
+<div class="headline">getLightAngle</div>
+<div class="usage">public native double getLightAngle( ) const</div>
+<div class="normal">
+スポットライト範囲角 [deg] 取得<br/></div>
+<br/>
+
+<a name="virtual_getLightBrightness"/>
+<div class="headline">getLightBrightness</div>
+<div class="usage">public native double getLightBrightness( ) const</div>
+<div class="normal">
+輝度取得<br/></div>
+<br/>
+
+<a name="virtual_getLightColor"/>
+<div class="headline">getLightColor</div>
+<div class="usage">public native const ARGB8* getLightColor( ) const</div>
+<div class="normal">
+光源色取得<br/></div>
+<br/>
+
+<a name="virtual_getLightDirection"/>
+<div class="headline">getLightDirection</div>
+<div class="usage">public native const Vector3d* getLightDirection( ) const</div>
+<div class="normal">
+光源向き取得<br/></div>
+<br/>
+
+<a name="virtual_getLightGradation"/>
+<div class="headline">getLightGradation</div>
+<div class="usage">public native double getLightGradation( ) const</div>
+<div class="normal">
+スポットライトぼかし角 [deg] 取得<br/></div>
+<br/>
+
+<a name="virtual_getLightPosition"/>
+<div class="headline">getLightPosition</div>
+<div class="usage">public native const Vector3d* getLightPosition( ) const</div>
+<div class="normal">
+光源位置取得<br/></div>
+<br/>
+
+<a name="virtual_getLightType"/>
+<div class="headline">getLightType</div>
+<div class="usage">public native EntisGLS4.SceneLight.LightTypeIndex getLightType( ) const</div>
+<div class="normal">
+光源タイプ取得<br/></div>
+<br/>
+
+<a name="virtual_getShadowMappingParam"/>
+<div class="headline">getShadowMappingParam</div>
+<div class="usage">public native void getShadowMappingParam( EntisGLS4.SceneLight.ShadowMapParam* param ) const</div>
+<div class="normal">
+シャドウマッピングパラメータ取得<br/></div>
+<br/>
+
+<a name="virtual_setAttenuationPower"/>
+<div class="headline">setAttenuationPower</div>
+<div class="usage">public native void setAttenuationPower( double attenuation )</div>
+<div class="normal">
+点光源減衰設定<br/></div>
+<br/>
+
+<a name="virtual_setLightAngle"/>
+<div class="headline">setLightAngle</div>
+<div class="usage">public native void setLightAngle( double degAngle )</div>
+<div class="normal">
+スポットライト範囲角 [deg] 設定<br/></div>
+<br/>
+
+<a name="virtual_setLightBrightness"/>
+<div class="headline">setLightBrightness</div>
+<div class="usage">public native void setLightBrightness( double brightness )</div>
+<div class="normal">
+輝度設定<br/></div>
+<br/>
+
+<a name="virtual_setLightColor"/>
+<div class="headline">setLightColor</div>
+<div class="usage">public native void setLightColor( const ARGB8* rgbColor )</div>
+<div class="normal">
+光源色設定<br/></div>
+<br/>
+
+<a name="virtual_setLightDirection"/>
+<div class="headline">setLightDirection</div>
+<div class="usage">public native void setLightDirection( const Vector3d* vDir )</div>
+<div class="normal">
+光源向き設定<br/></div>
+<br/>
+
+<a name="virtual_setLightGradation"/>
+<div class="headline">setLightGradation</div>
+<div class="usage">public native void setLightGradation( double degGradation )</div>
+<div class="normal">
+スポットライトぼかし角 [deg] 設定<br/></div>
+<br/>
+
+<a name="virtual_setLightPosition"/>
+<div class="headline">setLightPosition</div>
+<div class="usage">public native void setLightPosition( const Vector3d* vPos )</div>
+<div class="normal">
+光源位置設定<br/></div>
+<br/>
+
+<a name="virtual_setLightType"/>
+<div class="headline">setLightType</div>
+<div class="usage">public native void setLightType( EntisGLS4.SceneLight.LightTypeIndex type )</div>
+<div class="normal">
+光源タイプ設定<br/></div>
+<br/>
+
+<a name="virtual_setShadowMappingParam"/>
+<div class="headline">setShadowMappingParam</div>
+<div class="usage">public native void setShadowMappingParam( const EntisGLS4.SceneLight.ShadowMapParam* param )</div>
+<div class="normal">
+シャドウマッピングパラメータ設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneComposition</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneComposition</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneComposition ;</div>
+<div class="normal">
+Scene コンポジション・アイテム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneSpace.xhtml">EntisGLS4.SceneSpace</a>
+<div class="indent1"><a href="EntisGLS4.SceneComposition.xhtml">EntisGLS4.SceneComposition</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_applySceneParameters">applySceneParameters</a><br/>
+	<a href="#virtual_finishComposition">finishComposition</a><br/>
+	<a href="#virtual_getCurrentPlayingFrame">getCurrentPlayingFrame</a><br/>
+	<a href="#virtual_getUserObject">getUserObject</a><br/>
+	<a href="#virtual_initializeItems">initializeItems</a><br/>
+	<a href="#virtual_isCompositionFinished">isCompositionFinished</a><br/>
+	<a href="#virtual_isEditMode">isEditMode</a><br/>
+	<a href="#virtual_isPausedComposition">isPausedComposition</a><br/>
+	<a href="#virtual_isPlayingComposition">isPlayingComposition</a><br/>
+	<a href="#virtual_pauseCompositoin">pauseCompositoin</a><br/>
+	<a href="#virtual_playComposition">playComposition</a><br/>
+	<a href="#virtual_postDelayRemoveItem">postDelayRemoveItem</a><br/>
+	<a href="#virtual_postTimelineFrame">postTimelineFrame</a><br/>
+	<a href="#virtual_prepareToRender">prepareToRender</a><br/>
+	<a href="#virtual_removeSpaceChild">removeSpaceChild</a><br/>
+	<a href="#virtual_restartComposition">restartComposition</a><br/>
+	<a href="#virtual_setUserObject">setUserObject</a><br/>
+	<a href="#virtual_stopCompositoin">stopCompositoin</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_applySceneParameters"/>
+<div class="headline">applySceneParameters</div>
+<div class="usage">public native void applySceneParameters( EntisGLS4.Scene scene, const Size* sizeView ) const</div>
+<div class="normal">
+表示設定を適用<br/></div>
+<br/>
+
+<a name="virtual_finishComposition"/>
+<div class="headline">finishComposition</div>
+<div class="usage">public native void finishComposition( )</div>
+<div class="normal">
+コンポジションの終了（CmdFinishItem 通知あり）<br/></div>
+<br/>
+
+<a name="virtual_getCurrentPlayingFrame"/>
+<div class="headline">getCurrentPlayingFrame</div>
+<div class="usage">public native double getCurrentPlayingFrame( ) const</div>
+<div class="normal">
+再生中フレーム番号取得<br/></div>
+<br/>
+
+<a name="virtual_getUserObject"/>
+<div class="headline">getUserObject</div>
+<div class="usage">public native Object getUserObject( ) const</div>
+<div class="normal">
+ユーザー・コンテナ・オブジェクトを取得する<br/></div>
+<br/>
+
+<a name="virtual_initializeItems"/>
+<div class="headline">initializeItems</div>
+<div class="usage">public native void initializeItems( EntisGLS4.Scene scene = null )</div>
+<div class="normal">
+初期化処理通知（CmdInitializeItem 通知）<br/></div>
+<br/>
+
+<a name="virtual_isCompositionFinished"/>
+<div class="headline">isCompositionFinished</div>
+<div class="usage">public native boolean isCompositionFinished( ) const</div>
+<div class="normal">
+コンポジション終了か？<br/></div>
+<br/>
+
+<a name="virtual_isEditMode"/>
+<div class="headline">isEditMode</div>
+<div class="usage">public native boolean isEditMode( ) const</div>
+<div class="normal">
+エディット・モードか？<br/></div>
+<br/>
+
+<a name="virtual_isPausedComposition"/>
+<div class="headline">isPausedComposition</div>
+<div class="usage">public native boolean isPausedComposition( ) const</div>
+<div class="normal">
+コンポジションの一時停止中か？<br/></div>
+<br/>
+
+<a name="virtual_isPlayingComposition"/>
+<div class="headline">isPlayingComposition</div>
+<div class="usage">public native boolean isPlayingComposition( ) const</div>
+<div class="normal">
+コンポジションの再生中か？<br/></div>
+<br/>
+
+<a name="virtual_pauseCompositoin"/>
+<div class="headline">pauseCompositoin</div>
+<div class="usage">public native void pauseCompositoin( )</div>
+<div class="normal">
+コンポジションの停止（CmdStopItem 通知なし）<br/></div>
+<br/>
+
+<a name="virtual_playComposition"/>
+<div class="headline">playComposition</div>
+<div class="usage">public native void playComposition( )</div>
+<div class="normal">
+コンポジションの再生開始（Timer駆動）（CmdStartItem 通知あり）<br/></div>
+<br/>
+
+<a name="virtual_postDelayRemoveItem"/>
+<div class="headline">postDelayRemoveItem</div>
+<div class="usage">public native void postDelayRemoveItem( EntisGLS4.SceneItem space, EntisGLS4.SceneItem item )</div>
+<div class="normal">
+遅延削除リストに追加<br/></div>
+<br/>
+
+<a name="virtual_postTimelineFrame"/>
+<div class="headline">postTimelineFrame</div>
+<div class="usage">public native void postTimelineFrame( double frame )</div>
+<div class="normal">
+ジャンプ先フレーム設定<br/></div>
+<br/>
+
+<a name="virtual_prepareToRender"/>
+<div class="headline">prepareToRender</div>
+<div class="usage">public native void prepareToRender( EntisGLS4.RenderDevice device, EntisGLS4.Scene scene, uint flags = 0 )</div>
+<div class="normal">
+レンダリングの為のデバイスリソース準備（Scene に追加する前用）<br/></div>
+<br/>
+
+<a name="virtual_removeSpaceChild"/>
+<div class="headline">removeSpaceChild</div>
+<div class="usage">public native boolean removeSpaceChild( EntisGLS4.SceneItem space, EntisGLS4.SceneItem item )</div>
+<div class="normal">
+アイテムの子アイテムを削除する<br/></div>
+<br/>
+
+<a name="virtual_restartComposition"/>
+<div class="headline">restartComposition</div>
+<div class="usage">public native void restartComposition( )</div>
+<div class="normal">
+コンポジションの再生開始（Timer駆動）（CmdStartItem 通知なし）<br/></div>
+<br/>
+
+<a name="virtual_setUserObject"/>
+<div class="headline">setUserObject</div>
+<div class="usage">public native void setUserObject( Object obj )</div>
+<div class="normal">
+ユーザー・コンテナ・オブジェクトを設定する<br/></div>
+<br/>
+
+<a name="virtual_stopCompositoin"/>
+<div class="headline">stopCompositoin</div>
+<div class="usage">public native void stopCompositoin( )</div>
+<div class="normal">
+コンポジションの停止（CmdStopItem 通知あり）<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

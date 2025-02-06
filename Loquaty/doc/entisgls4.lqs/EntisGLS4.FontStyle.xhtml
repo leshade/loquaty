@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.FontStyle</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.FontStyle</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class FontStyle ;</div>
+<div class="normal">
+フォント・スタイル情報<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="EntisGLS4.FontStyle.xhtml">EntisGLS4.FontStyle</a>
+</div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.FontStyle.DefaultFontFace.xhtml">EntisGLS4.FontStyle.DefaultFontFace</a></div>
+<div class="indent2"><a href="EntisGLS4.FontStyle.StyleFlag.xhtml">EntisGLS4.FontStyle.StyleFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_StandardFont">StandardFont</a><br/>
+	<a href="#static_FixedPitchFont">FixedPitchFont</a><br/>
+	<a href="#static_flagItalic">flagItalic</a><br/>
+	<a href="#static_flagBold">flagBold</a><br/>
+	<a href="#static_flagNoSmooth">flagNoSmooth</a><br/>
+	<a href="#static_flagHighDefinition">flagHighDefinition</a><br/>
+</div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_face">face</a><br/>
+	<a href="#member_styles">styles</a><br/>
+	<a href="#member_size">size</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_FontStyle">FontStyle</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_StandardFont"/>
+<div class="headline">StandardFont</div>
+<div class="usage">public static const EntisGLS4.FontStyle.DefaultFontFace&#9; StandardFont = "Default"</div>
+<div class="normal">
+デフォルト・フォント名<br/></div>
+<br/>
+<a name="static_FixedPitchFont"/>
+<div class="headline">FixedPitchFont</div>
+<div class="usage">public static const EntisGLS4.FontStyle.DefaultFontFace&#9; FixedPitchFont = "FixedDefault"</div>
+<div class="normal">
+デフォルト・フォント名（固定ピッチ）<br/></div>
+<br/>
+<a name="static_flagItalic"/>
+<div class="headline">flagItalic</div>
+<div class="usage">public static const EntisGLS4.FontStyle.StyleFlag&#9; flagItalic = 1</div>
+<div class="normal">
+スタイルフラグ：斜体<br/></div>
+<br/>
+<a name="static_flagBold"/>
+<div class="headline">flagBold</div>
+<div class="usage">public static const EntisGLS4.FontStyle.StyleFlag&#9; flagBold = 2</div>
+<div class="normal">
+スタイルフラグ：太字<br/></div>
+<br/>
+<a name="static_flagNoSmooth"/>
+<div class="headline">flagNoSmooth</div>
+<div class="usage">public static const EntisGLS4.FontStyle.StyleFlag&#9; flagNoSmooth = 0x10000</div>
+<div class="normal">
+スタイルフラグ：アンチエイリアス無効化<br/></div>
+<br/>
+<a name="static_flagHighDefinition"/>
+<div class="headline">flagHighDefinition</div>
+<div class="usage">public static const EntisGLS4.FontStyle.StyleFlag&#9; flagHighDefinition = 0x20000</div>
+<div class="normal">
+スタイルフラグ：高品位なアンチエイリアス<br/></div>
+<br/>
+
+
+<div class="chapter">Members</div>
+<a name="member_face"/>
+<div class="headline">face</div>
+<div class="usage">public String&#9; face = "Default"</div>
+<div class="normal">
+フォントフェース名<br/></div>
+<br/>
+<a name="member_styles"/>
+<div class="headline">styles</div>
+<div class="usage">public uint&#9; styles = 0</div>
+<div class="normal">
+スタイルフラグの組み合わせ<br/></div>
+<br/>
+<a name="member_size"/>
+<div class="headline">size</div>
+<div class="usage">public uint&#9; size = 16</div>
+<div class="normal">
+フォントサイズ（ピクセル単位）<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_FontStyle"/>
+<div class="headline">FontStyle</div>
+<div class="usage">public FontStyle( const EntisGLS4.FontStyle fs )</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public EntisGLS4.FontStyle operator :=( const EntisGLS4.FontStyle fs )</div>
+<br/>
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.VertexBuffer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.VertexBuffer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class VertexBuffer ;</div>
+<div class="normal">
+頂点バッファ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.RenderBuffer.xhtml">EntisGLS4.RenderBuffer</a>
+<div class="indent1"><a href="EntisGLS4.VertexBuffer.xhtml">EntisGLS4.VertexBuffer</a>
+</div></div></div></div><br/>
+
+<div class="headline">Implement Classes</div>
+<div class="indent1"><a href="EntisGLS4.VertexVariantBuffer.xhtml">EntisGLS4.VertexVariantBuffer</a></div>
+<br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.VertexBuffer.BufferControlFlag.xhtml">EntisGLS4.VertexBuffer.BufferControlFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.VertexBuffer.MeshInfo.xhtml">EntisGLS4.VertexBuffer.MeshInfo</a></div>
+<div class="indent2"><a href="EntisGLS4.VertexBuffer.MeshInfoFlag.xhtml">EntisGLS4.VertexBuffer.MeshInfoFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.VertexBuffer.PrimitiveBuffer.xhtml">EntisGLS4.VertexBuffer.PrimitiveBuffer</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_flagMeshMorphedVertex">flagMeshMorphedVertex</a><br/>
+	<a href="#static_flagMeshBoneTransformed">flagMeshBoneTransformed</a><br/>
+	<a href="#static_flagMeshTransformed">flagMeshTransformed</a><br/>
+	<a href="#static_bufferAutoMerge">bufferAutoMerge</a><br/>
+	<a href="#static_bufferKeepDeviceBuffer">bufferKeepDeviceBuffer</a><br/>
+	<a href="#static_bufferDynamicVertex">bufferDynamicVertex</a><br/>
+	<a href="#static_bufferDynamicIndex">bufferDynamicIndex</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_VertexBuffer">VertexBuffer</a><br/>
+	<a href="#virtual_addInstanceVariant">addInstanceVariant</a><br/>
+	<a href="#virtual_addPrimitiveBuffer">addPrimitiveBuffer</a><br/>
+	<a href="#virtual_allocateMorphing">allocateMorphing</a><br/>
+	<a href="#virtual_allocatePrimitiveBuffer">allocatePrimitiveBuffer</a><br/>
+	<a href="#virtual_attachDefaultMaterial">attachDefaultMaterial</a><br/>
+	<a href="#virtual_clearAllInstance">clearAllInstance</a><br/>
+	<a href="#virtual_clearBuffer">clearBuffer</a><br/>
+	<a href="#virtual_countOfTotalPolygons">countOfTotalPolygons</a><br/>
+	<a href="#virtual_countOfTotalVertices">countOfTotalVertices</a><br/>
+	<a href="#virtual_createVariantBuffer">createVariantBuffer</a><br/>
+	<a href="#virtual_enableMultiInstancingMode">enableMultiInstancingMode</a><br/>
+	<a href="#virtual_freePrimitiveBuffer">freePrimitiveBuffer</a><br/>
+	<a href="#virtual_getBufferControlFlags">getBufferControlFlags</a><br/>
+	<a href="#virtual_getCircumscribedParallelepiped">getCircumscribedParallelepiped</a><br/>
+	<a href="#virtual_getCircumscribedSphere">getCircumscribedSphere</a><br/>
+	<a href="#virtual_getDefaultMaterial">getDefaultMaterial</a><br/>
+	<a href="#virtual_getInstancingCount">getInstancingCount</a><br/>
+	<a href="#virtual_getInstancingEntries">getInstancingEntries</a><br/>
+	<a href="#virtual_getMeshCount">getMeshCount</a><br/>
+	<a href="#virtual_getMeshInfoAt">getMeshInfoAt</a><br/>
+	<a href="#virtual_isModelIntoView">isModelIntoView</a><br/>
+	<a href="#virtual_isMultiInstancingMode">isMultiInstancingMode</a><br/>
+	<a href="#virtual_newReferenceVariantBuffer">newReferenceVariantBuffer</a><br/>
+	<a href="#virtual_releaseAllDeviceResources">releaseAllDeviceResources</a><br/>
+	<a href="#virtual_renderBufferTo">renderBufferTo</a><br/>
+	<a href="#virtual_setBoneJointMap">setBoneJointMap</a><br/>
+	<a href="#virtual_setBoneWeightMap">setBoneWeightMap</a><br/>
+	<a href="#virtual_setBufferControlFlags">setBufferControlFlags</a><br/>
+	<a href="#virtual_setBufferUnitSize">setBufferUnitSize</a><br/>
+	<a href="#virtual_setExtendVertexAttribute">setExtendVertexAttribute</a><br/>
+	<a href="#virtual_setMorphingTargetMesh">setMorphingTargetMesh</a><br/>
+	<a href="#virtual_setMorphingTargetWeight">setMorphingTargetWeight</a><br/>
+	<a href="#virtual_updateIndexedPrimitive">updateIndexedPrimitive</a><br/>
+	<a href="#virtual_updateVertexVariant">updateVertexVariant</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_flagMeshMorphedVertex"/>
+<div class="headline">flagMeshMorphedVertex</div>
+<div class="usage">public static const EntisGLS4.VertexBuffer.MeshInfoFlag&#9; flagMeshMorphedVertex = 1</div>
+<div class="normal">
+getMeshInfoAt フラグ : モーフィング処理後の頂点を取得<br/></div>
+<br/>
+<a name="static_flagMeshBoneTransformed"/>
+<div class="headline">flagMeshBoneTransformed</div>
+<div class="usage">public static const EntisGLS4.VertexBuffer.MeshInfoFlag&#9; flagMeshBoneTransformed = 2</div>
+<div class="normal">
+getMeshInfoAt フラグ : ボーン処理後の頂点を取得<br/></div>
+<br/>
+<a name="static_flagMeshTransformed"/>
+<div class="headline">flagMeshTransformed</div>
+<div class="usage">public static const EntisGLS4.VertexBuffer.MeshInfoFlag&#9; flagMeshTransformed = 3</div>
+<div class="normal">
+getMeshInfoAt フラグ : 頂点処理後の頂点を取得<br/></div>
+<br/>
+<a name="static_bufferAutoMerge"/>
+<div class="headline">bufferAutoMerge</div>
+<div class="usage">public static const EntisGLS4.VertexBuffer.BufferControlFlag&#9; bufferAutoMerge = 1</div>
+<div class="normal">
+バッファ制御フラグ : 自動結合<br/></div>
+<br/>
+<a name="static_bufferKeepDeviceBuffer"/>
+<div class="headline">bufferKeepDeviceBuffer</div>
+<div class="usage">public static const EntisGLS4.VertexBuffer.BufferControlFlag&#9; bufferKeepDeviceBuffer = 2</div>
+<div class="normal">
+バッファ制御フラグ : クリア時にデバイス上のバッファを保持し続ける<br/></div>
+<br/>
+<a name="static_bufferDynamicVertex"/>
+<div class="headline">bufferDynamicVertex</div>
+<div class="usage">public static const EntisGLS4.VertexBuffer.BufferControlFlag&#9; bufferDynamicVertex = 4</div>
+<div class="normal">
+バッファ制御フラグ : 動的な頂点配列（デバイス上でインターリーブしない）<br/></div>
+<br/>
+<a name="static_bufferDynamicIndex"/>
+<div class="headline">bufferDynamicIndex</div>
+<div class="usage">public static const EntisGLS4.VertexBuffer.BufferControlFlag&#9; bufferDynamicIndex = 8</div>
+<div class="normal">
+バッファ制御フラグ : 動的なインデックス配列<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_VertexBuffer"/>
+<div class="headline">VertexBuffer</div>
+<div class="usage">public native VertexBuffer( )</div>
+<div class="normal">
+VertexBuffer 構築<br/></div>
+<br/>
+
+<a name="virtual_addInstanceVariant"/>
+<div class="headline">addInstanceVariant</div>
+<div class="usage">public native boolean addInstanceVariant( EntisGLS4.VertexVariantBuffer vvb, const Matrix4* matInstance, const EntisGLS4.ColorMulAdd* colorInstance )</div>
+<div class="normal">
+インスタンス追加設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vvb</div>
+<div class="param_desc">
+追加する VertexVariantBuffer</div>
+<div class="param_name">matInstance</div>
+<div class="param_desc">
+インスタンスの行列</div>
+<div class="param_name">colorInstance</div>
+<div class="param_desc">
+インスタンスの色</div>
+</div>
+<br/>
+
+<a name="virtual_addPrimitiveBuffer"/>
+<div class="headline">addPrimitiveBuffer</div>
+<div class="usage">public native boolean addPrimitiveBuffer( EntisGLS4.Material material, uint flags, EntisGLS4.PrimitiveType typePrimitive, const EntisGLS4.VertexBuffer.PrimitiveBuffer prmbuf, ulong countIndex, ulong countVertex )</div>
+<div class="normal">
+プリミティブを追加する（バッファの管理は VertexBuffer に移る）<br/></div>
+<div class="notes_parameter">
+<div class="param_name">material</div>
+<div class="param_desc">
+プリミティブのマテリアル</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+レンダリング・フラグ (EntisGLS4.RenderBuffer.render～)</div>
+<div class="param_name">typePrimitive</div>
+<div class="param_desc">
+プリミティブ・タイプ</div>
+<div class="param_name">prmbuf</div>
+<div class="param_desc">
+allocatePrimitiveBuffer で確保したバッファ</div>
+<div class="param_name">countIndex</div>
+<div class="param_desc">
+実際に追加するインデックス数</div>
+<div class="param_name">countVertex</div>
+<div class="param_desc">
+実際に追加する頂点数</div>
+</div>
+<br/>
+
+<a name="virtual_allocateMorphing"/>
+<div class="headline">allocateMorphing</div>
+<div class="usage">public native boolean allocateMorphing( ulong iMesh, ulong nCount )</div>
+<div class="normal">
+メッシュにモーフターゲット枠を確保<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+モーフィング・ターゲット数</div>
+</div>
+<br/>
+
+<a name="virtual_allocatePrimitiveBuffer"/>
+<div class="headline">allocatePrimitiveBuffer</div>
+<div class="usage">public native boolean allocatePrimitiveBuffer( EntisGLS4.VertexBuffer.PrimitiveBuffer prmbuf, EntisGLS4.PrimitiveType typePrimitive, ulong countIndex, ulong countVertex )</div>
+<div class="normal">
+プリミティブを追加するためのバッファを確保する<br/></div>
+<div class="notes_parameter">
+<div class="param_name">prmbuf</div>
+<div class="param_desc">
+バッファポインタを受け取る PrimitiveBuffer</div>
+<div class="param_name">typePrimitive</div>
+<div class="param_desc">
+プリミティブ・タイプ</div>
+<div class="param_name">countIndex</div>
+<div class="param_desc">
+インデックス配列長</div>
+<div class="param_name">countVertex</div>
+<div class="param_desc">
+頂点配列長</div>
+</div>
+<br/>
+
+<a name="virtual_attachDefaultMaterial"/>
+<div class="headline">attachDefaultMaterial</div>
+<div class="usage">public native void attachDefaultMaterial( EntisGLS4.Material material )</div>
+<div class="normal">
+デフォルトマテリアル設定<br/></div>
+<br/>
+
+<a name="virtual_clearAllInstance"/>
+<div class="headline">clearAllInstance</div>
+<div class="usage">public native boolean clearAllInstance( )</div>
+<div class="normal">
+インスタンス全消去<br/></div>
+<br/>
+
+<a name="virtual_clearBuffer"/>
+<div class="headline">clearBuffer</div>
+<div class="usage">public native void clearBuffer( )</div>
+<div class="normal">
+バッファを消去<br/></div>
+<br/>
+
+<a name="virtual_countOfTotalPolygons"/>
+<div class="headline">countOfTotalPolygons</div>
+<div class="usage">public native ulong countOfTotalPolygons( ) const</div>
+<div class="normal">
+総ポリゴン数集計<br/></div>
+<br/>
+
+<a name="virtual_countOfTotalVertices"/>
+<div class="headline">countOfTotalVertices</div>
+<div class="usage">public native ulong countOfTotalVertices( ) const</div>
+<div class="normal">
+総頂点数集計<br/></div>
+<br/>
+
+<a name="virtual_createVariantBuffer"/>
+<div class="headline">createVariantBuffer</div>
+<div class="usage">public native EntisGLS4.VertexVariantBuffer createVariantBuffer( )</div>
+<div class="normal">
+現在の設定に適合する VertexVariantBuffer を生成<br/></div>
+<br/>
+
+<a name="virtual_enableMultiInstancingMode"/>
+<div class="headline">enableMultiInstancingMode</div>
+<div class="usage">public native boolean enableMultiInstancingMode( boolean enable )</div>
+<div class="normal">
+マルチインスタンス描画モード設定</div>
+<br/>
+<div class="indent1">
+マルチインスタンス描画モードで VertexBuffer を描画するとaddInstanceVariant で設定されたインスタンスが描画されます。</div><br/>
+<br/>
+
+<a name="virtual_freePrimitiveBuffer"/>
+<div class="headline">freePrimitiveBuffer</div>
+<div class="usage">public native boolean freePrimitiveBuffer( const EntisGLS4.VertexBuffer.PrimitiveBuffer prmbuf )</div>
+<div class="normal">
+プリミティブを追加せずにバッファを開放する<br/></div>
+<br/>
+
+<a name="virtual_getBufferControlFlags"/>
+<div class="headline">getBufferControlFlags</div>
+<div class="usage">public native EntisGLS4.VertexBuffer.BufferControlFlag getBufferControlFlags( ) const</div>
+<div class="normal">
+バッファ制御フラグ取得<br/></div>
+<br/>
+
+<a name="virtual_getCircumscribedParallelepiped"/>
+<div class="headline">getCircumscribedParallelepiped</div>
+<div class="usage">public native boolean getCircumscribedParallelepiped( Vector3* vMin, Vector3* vMax )</div>
+<div class="normal">
+メッシュ外接直方体取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vMin</div>
+<div class="param_desc">
+最小値を受け取る Vector3</div>
+<div class="param_name">vMax</div>
+<div class="param_desc">
+最大値を受け取る Vector3</div>
+</div>
+<br/>
+
+<a name="virtual_getCircumscribedSphere"/>
+<div class="headline">getCircumscribedSphere</div>
+<div class="usage">public native double getCircumscribedSphere( Vector3* vCenter )</div>
+<div class="normal">
+メッシュ外接球取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vCenter</div>
+<div class="param_desc">
+中心座標を受け取る Vector3</div>
+</div>
+<br/>
+
+<a name="virtual_getDefaultMaterial"/>
+<div class="headline">getDefaultMaterial</div>
+<div class="usage">public native EntisGLS4.Material getDefaultMaterial( ) const</div>
+<div class="normal">
+デフォルトマテリアル取得<br/></div>
+<br/>
+
+<a name="virtual_getInstancingCount"/>
+<div class="headline">getInstancingCount</div>
+<div class="usage">public native ulong getInstancingCount( ) const</div>
+<div class="normal">
+インスタンス数取得<br/></div>
+<br/>
+
+<a name="virtual_getInstancingEntries"/>
+<div class="headline">getInstancingEntries</div>
+<div class="usage">public native ulong getInstancingEntries( EntisGLS4.VertexVariantBuffer[] vvbs, Matrix4* pmatInstance, EntisGLS4.ColorMulAdd* pcolorInstance, ulong iFirst, ulong nCount ) const</div>
+<div class="normal">
+インスタンス取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vvbs</div>
+<div class="param_desc">
+インスタンスを受け取る配列</div>
+<div class="param_name">pmatInstance</div>
+<div class="param_desc">
+インスタンスの行列を受け取る Matrix4 配列</div>
+<div class="param_name">pcolorInstance</div>
+<div class="param_desc">
+インスタンスの色を受け取る ColorMulAdd 配列</div>
+<div class="param_name">iFirst</div>
+<div class="param_desc">
+受け取る先頭のインスタンスの指標</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+受け取るインスタンス情報の数</div>
+</div>
+<br/>
+
+<a name="virtual_getMeshCount"/>
+<div class="headline">getMeshCount</div>
+<div class="usage">public native ulong getMeshCount( ) const</div>
+<div class="normal">
+メッシュ数を取得する<br/></div>
+<br/>
+
+<a name="virtual_getMeshInfoAt"/>
+<div class="headline">getMeshInfoAt</div>
+<div class="usage">public native boolean getMeshInfoAt( EntisGLS4.VertexBuffer.MeshInfo info, ulong iMesh, ulong nCopyVertices, ulong iFirstVertex = 0, EntisGLS4.VertexBuffer.MeshInfoFlag flags = 0 ) const</div>
+<div class="normal">
+メッシュ情報取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">info</div>
+<div class="param_desc">
+メッシュ情報を受け取る MeshInfo</div>
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">nCopyVertices</div>
+<div class="param_desc">
+受け取る頂点数</div>
+<div class="param_name">iFirstVertex</div>
+<div class="param_desc">
+受け取る初めの頂点指標</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+メッシュ情報取得フラグ (flagMesh～)</div>
+</div>
+<br/>
+
+<a name="virtual_isModelIntoView"/>
+<div class="headline">isModelIntoView</div>
+<div class="usage">public native boolean isModelIntoView( EntisGLS4.RenderContext render, double scaleMargin = 0.5, double modelMargin = 1. )</div>
+<div class="normal">
+モデル描画が表示範囲にあるか見積もる<br/></div>
+<br/>
+
+<a name="virtual_isMultiInstancingMode"/>
+<div class="headline">isMultiInstancingMode</div>
+<div class="usage">public native boolean isMultiInstancingMode( ) const</div>
+<div class="normal">
+マルチインスタンス描画モード判定<br/></div>
+<br/>
+
+<a name="virtual_newReferenceVariantBuffer"/>
+<div class="headline">newReferenceVariantBuffer</div>
+<div class="usage">public native EntisGLS4.VertexBuffer newReferenceVariantBuffer( )</div>
+<div class="normal">
+参照バリアントを生成</div>
+<br/>
+<div class="indent1">
+この関数は createVariantBuffer とほぼ同じですが、この関数では VertexBuffer として描画に使用できるバリアントを生成します。</div><br/>
+<br/>
+
+<a name="virtual_releaseAllDeviceResources"/>
+<div class="headline">releaseAllDeviceResources</div>
+<div class="usage">public native void releaseAllDeviceResources( )</div>
+<div class="normal">
+デバイスリソースを解放<br/></div>
+<br/>
+
+<a name="virtual_renderBufferTo"/>
+<div class="headline">renderBufferTo</div>
+<div class="usage">public native boolean renderBufferTo( EntisGLS4.RenderBuffer render, ulong flagsExclusion = 0, ulong iFirst = 0, long iEnd = -1, ulong nInstancing = 0, const Matrix4* pmatInstancing = null, const EntisGLS4.ColorMulAdd* pColorInstancing = null ) const</div>
+<div class="normal">
+バッファを RenderBuffer へ出力<br/></div>
+<div class="notes_parameter">
+<div class="param_name">render</div>
+<div class="param_desc">
+出力先 RenderBuffer</div>
+<div class="param_name">flagsExclusion</div>
+<div class="param_desc">
+描画から除外するシェーディング・フラグ（このフラグを持つマテリアルのメッシュを描画しない）</div>
+<div class="param_name">iFirst</div>
+<div class="param_desc">
+出力する初めのメッシュ指標</div>
+<div class="param_name">iEnd</div>
+<div class="param_desc">
+出力する最後のメッシュ（iEnd を含まない）。-1 の時は最後まで</div>
+<div class="param_name">nInstancing</div>
+<div class="param_desc">
+インスタンス数。0 の時は pmatInstancing, pColorInstancing を使用せずに１つ出力</div>
+<div class="param_name">pmatInstancing</div>
+<div class="param_desc">
+インスタンス毎の Matrix4 配列</div>
+<div class="param_name">pColorInstancing</div>
+<div class="param_desc">
+インスタンス毎の ColorMulAdd 配列</div>
+</div>
+<br/>
+
+<a name="virtual_setBoneJointMap"/>
+<div class="headline">setBoneJointMap</div>
+<div class="usage">public native boolean setBoneJointMap( ulong iMesh, ulong nBoneCount, ulong nJointCount, const uint*[] ppJointMaps )</div>
+<div class="normal">
+メッシュにジョイントマップを設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">nBoneCount</div>
+<div class="param_desc">
+関連ボーン数</div>
+<div class="param_name">nJointCount</div>
+<div class="param_desc">
+ジョイント数（レイヤー数）</div>
+<div class="param_name">ppJointMaps</div>
+<div class="param_desc">
+ウェイトマップに対応する頂点ごとのボーン指標配列</div>
+</div>
+<br/>
+
+<a name="virtual_setBoneWeightMap"/>
+<div class="headline">setBoneWeightMap</div>
+<div class="usage">public native boolean setBoneWeightMap( ulong iMesh, ulong nCount, const float*[] ppWeightMaps )</div>
+<div class="normal">
+メッシュにウェイトマップを設定</div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+ウェイトマップ・レイヤー数 (==ppWeightMaps.length())</div>
+<div class="param_name">ppWeightMaps</div>
+<div class="param_desc">
+レイヤー毎のウェイトマップ</div>
+</div>
+<div class="indent1">
+先だって setBoneJointMap でジョイントマップを設定している場合には対応するウェイトマップを設定します。</div><br/>
+<br/>
+
+<a name="virtual_setBufferControlFlags"/>
+<div class="headline">setBufferControlFlags</div>
+<div class="usage">public native void setBufferControlFlags( EntisGLS4.VertexBuffer.BufferControlFlag nFlags )</div>
+<div class="normal">
+バッファ制御フラグ設定<br/></div>
+<br/>
+
+<a name="virtual_setBufferUnitSize"/>
+<div class="headline">setBufferUnitSize</div>
+<div class="usage">public native void setBufferUnitSize( ulong bytes )</div>
+<div class="normal">
+バッファのメモリブロックサイズ設定<br/></div>
+<br/>
+
+<a name="virtual_setExtendVertexAttribute"/>
+<div class="headline">setExtendVertexAttribute</div>
+<div class="usage">public native boolean setExtendVertexAttribute( ulong iMesh, ulong countElements, ulong countVertex, const float* pfpAttrElements )</div>
+<div class="normal">
+追加的な頂点属性を設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">countElements</div>
+<div class="param_desc">
+頂点ごとの要素数</div>
+<div class="param_name">countVertex</div>
+<div class="param_desc">
+頂点数</div>
+<div class="param_name">pfpAttrElements</div>
+<div class="param_desc">
+頂点属性要素配列</div>
+</div>
+<br/>
+
+<a name="virtual_setMorphingTargetMesh"/>
+<div class="headline">setMorphingTargetMesh</div>
+<div class="usage">public native boolean setMorphingTargetMesh( ulong iMesh, ulong iMorph, ulong countVertex, const Vector4* pvVertex, const Vector4* pvNormal, const Vector2* pvUVMap, const EntisGLS4.ColorMulAdd* pColor )</div>
+<div class="normal">
+メッシュにモーフターゲットを設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">iMorph</div>
+<div class="param_desc">
+モーフィング・ターゲット指標</div>
+<div class="param_name">countVertex</div>
+<div class="param_desc">
+頂点数</div>
+<div class="param_name">pvVertex</div>
+<div class="param_desc">
+モーフィング頂点配列</div>
+<div class="param_name">pvNormal</div>
+<div class="param_desc">
+モーフィング法線配列</div>
+<div class="param_name">pvUVMap</div>
+<div class="param_desc">
+モーフィング UV 配列</div>
+<div class="param_name">pColor</div>
+<div class="param_desc">
+モーフィング頂点色配列</div>
+</div>
+<br/>
+
+<a name="virtual_setMorphingTargetWeight"/>
+<div class="headline">setMorphingTargetWeight</div>
+<div class="usage">public native boolean setMorphingTargetWeight( ulong iMesh, ulong iMorph, ulong countVertex, const float* pfpWeight )</div>
+<div class="normal">
+メッシュのモーフターゲットにウェイトを設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">iMorph</div>
+<div class="param_desc">
+モーフィング・ターゲット指標</div>
+<div class="param_name">countVertex</div>
+<div class="param_desc">
+頂点数</div>
+<div class="param_name">pfpWeight</div>
+<div class="param_desc">
+モーフィング適用度配列</div>
+</div>
+<br/>
+
+<a name="virtual_updateIndexedPrimitive"/>
+<div class="headline">updateIndexedPrimitive</div>
+<div class="usage">public native boolean updateIndexedPrimitive( ulong iMesh, uint flags, ulong countIndex, ulong countVertex, const Vector4* pvVertex, const Vector4* pvNormal, const Vector2* pvUVMap, const EntisGLS4.ColorMulAdd* pColor, const uint* pIndexedList )</div>
+<div class="normal">
+プリミティブを更新<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+レンダリング・フラグ (EntisGLS4.RenderBuffer.render～)</div>
+<div class="param_name">countIndex</div>
+<div class="param_desc">
+インデックス配列長</div>
+<div class="param_name">countVertex</div>
+<div class="param_desc">
+頂点配列長</div>
+<div class="param_name">pvVertex</div>
+<div class="param_desc">
+更新する頂点座標配列（null なら更新しない）</div>
+<div class="param_name">pvNormal</div>
+<div class="param_desc">
+更新する法線配列（null なら更新しない）</div>
+<div class="param_name">pvUVMap</div>
+<div class="param_desc">
+更新する UV 配列（null なら更新しない）</div>
+<div class="param_name">pColor</div>
+<div class="param_desc">
+更新する頂点色配列（null なら更新しない）</div>
+<div class="param_name">pIndexedList</div>
+<div class="param_desc">
+更新するインデックス配列（null なら更新しない）</div>
+</div>
+<br/>
+
+<a name="virtual_updateVertexVariant"/>
+<div class="headline">updateVertexVariant</div>
+<div class="usage">public native boolean updateVertexVariant( EntisGLS4.VertexVariantBuffer vvb, ulong iFirst = 0, long iEnd = -1 )</div>
+<div class="normal">
+VertexVariantBuffer のパラメータを VertexBuffer へ反映<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

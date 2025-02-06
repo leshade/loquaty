@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.RenderDevice</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.RenderDevice</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class RenderDevice ;</div>
+<div class="normal">
+デバイス<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.RenderDevice.xhtml">EntisGLS4.RenderDevice</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.RenderDevice.FeatureFlag.xhtml">EntisGLS4.RenderDevice.FeatureFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.RenderDevice.Features.xhtml">EntisGLS4.RenderDevice.Features</a></div>
+<div class="indent2"><a href="EntisGLS4.RenderDevice.ProcedurePriority.xhtml">EntisGLS4.RenderDevice.ProcedurePriority</a></div>
+<div class="indent2"><a href="EntisGLS4.RenderDevice.ShaderDesc.xhtml">EntisGLS4.RenderDevice.ShaderDesc</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_procedureAsync">procedureAsync</a><br/>
+	<a href="#static_procedureSync">procedureSync</a><br/>
+	<a href="#static_procedureDelayable">procedureDelayable</a><br/>
+	<a href="#static_procedureLater">procedureLater</a><br/>
+	<a href="#static_procedureNoRender">procedureNoRender</a><br/>
+	<a href="#static_feature0_TextureNonPowerOf2">feature0_TextureNonPowerOf2</a><br/>
+	<a href="#static_feature0_DepthTexture">feature0_DepthTexture</a><br/>
+	<a href="#static_feature0_CubemapTexture">feature0_CubemapTexture</a><br/>
+	<a href="#static_feature0_MultisampleTexture">feature0_MultisampleTexture</a><br/>
+	<a href="#static_feature0_CompressionS3TC">feature0_CompressionS3TC</a><br/>
+	<a href="#static_feature0_ProgramBinary">feature0_ProgramBinary</a><br/>
+	<a href="#static_feature0_MultiRenderTarget">feature0_MultiRenderTarget</a><br/>
+	<a href="#static_feature0_GeometryShader">feature0_GeometryShader</a><br/>
+	<a href="#static_feature0_TextureFloat">feature0_TextureFloat</a><br/>
+	<a href="#static_feature0_ColorBufferFloat">feature0_ColorBufferFloat</a><br/>
+	<a href="#static_feature0_InstancedDraw">feature0_InstancedDraw</a><br/>
+	<a href="#static_feature0_MultiShapeDraw">feature0_MultiShapeDraw</a><br/>
+	<a href="#static_feature0_CustomShader">feature0_CustomShader</a><br/>
+	<a href="#static_feature0_ComputeShader">feature0_ComputeShader</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_RenderDevice">RenderDevice</a><br/>
+	<a href="#virtual_buildCustomShader">buildCustomShader</a><br/>
+	<a href="#virtual_commitImage">commitImage</a><br/>
+	<a href="#virtual_commitVertexBuffer">commitVertexBuffer</a><br/>
+	<a href="#virtual_getCustomShaderAs">getCustomShaderAs</a><br/>
+	<a href="#virtual_getDeviceFeatures">getDeviceFeatures</a><br/>
+	<a href="#virtual_isOnRenderThread">isOnRenderThread</a><br/>
+	<a href="#virtual_newRenderer">newRenderer</a><br/>
+	<a href="#virtual_procedure">procedure</a><br/>
+	<a href="#virtual_releaseImage">releaseImage</a><br/>
+	<a href="#virtual_releaseVertexBuffer">releaseVertexBuffer</a><br/>
+	<a href="#virtual_removeCustomShader">removeCustomShader</a><br/>
+	<a href="#virtual_waitUntilAsyncAllProcedures">waitUntilAsyncAllProcedures</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_procedureAsync"/>
+<div class="headline">procedureAsync</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureAsync = 0</div>
+<div class="normal">
+優先度：非同期実行<br/></div>
+<br/>
+<a name="static_procedureSync"/>
+<div class="headline">procedureSync</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureSync = 1</div>
+<div class="normal">
+優先度：同期実行<br/></div>
+<br/>
+<a name="static_procedureDelayable"/>
+<div class="headline">procedureDelayable</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureDelayable = 2</div>
+<div class="normal">
+優先度：非同期実行（優先度低・画面描画優先）<br/></div>
+<br/>
+<a name="static_procedureLater"/>
+<div class="headline">procedureLater</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureLater = 3</div>
+<div class="normal">
+優先度：非同期実行（即座に実行しない）<br/></div>
+<br/>
+<a name="static_procedureNoRender"/>
+<div class="headline">procedureNoRender</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureNoRender = 4</div>
+<div class="normal">
+優先度：非レンダリングスレッドでレンダリング非同期実行（呼び出しは非同期／同期か不問・確実に同期を取る責任は呼び出し側にある）<br/></div>
+<br/>
+<a name="static_feature0_TextureNonPowerOf2"/>
+<div class="headline">feature0_TextureNonPowerOf2</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_TextureNonPowerOf2 = 1</div>
+<div class="normal">
+デバイス機能フラグ [0]：２の累乗でないテクスチャサイズ<br/></div>
+<br/>
+<a name="static_feature0_DepthTexture"/>
+<div class="headline">feature0_DepthTexture</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_DepthTexture = 2</div>
+<div class="normal">
+デバイス機能フラグ [0]：深度テクスチャ<br/></div>
+<br/>
+<a name="static_feature0_CubemapTexture"/>
+<div class="headline">feature0_CubemapTexture</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_CubemapTexture = 4</div>
+<div class="normal">
+デバイス機能フラグ [0]：キューブマップ・テクスチャ<br/></div>
+<br/>
+<a name="static_feature0_MultisampleTexture"/>
+<div class="headline">feature0_MultisampleTexture</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_MultisampleTexture = 8</div>
+<div class="normal">
+デバイス機能フラグ [0]：マルチサンプリング・テクスチャ<br/></div>
+<br/>
+<a name="static_feature0_CompressionS3TC"/>
+<div class="headline">feature0_CompressionS3TC</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_CompressionS3TC = 16</div>
+<div class="normal">
+デバイス機能フラグ [0]：S3TC 圧縮テクスチャ<br/></div>
+<br/>
+<a name="static_feature0_ProgramBinary"/>
+<div class="headline">feature0_ProgramBinary</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_ProgramBinary = 0x100</div>
+<div class="normal">
+デバイス機能フラグ [0]：シェーダー・バイナリ<br/></div>
+<br/>
+<a name="static_feature0_MultiRenderTarget"/>
+<div class="headline">feature0_MultiRenderTarget</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_MultiRenderTarget = 0x200</div>
+<div class="normal">
+デバイス機能フラグ [0]：マルチ・レンダー・ターゲット<br/></div>
+<br/>
+<a name="static_feature0_GeometryShader"/>
+<div class="headline">feature0_GeometryShader</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_GeometryShader = 0x400</div>
+<div class="normal">
+デバイス機能フラグ [0]：ジオメトリ・シェーダー<br/></div>
+<br/>
+<a name="static_feature0_TextureFloat"/>
+<div class="headline">feature0_TextureFloat</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_TextureFloat = 0x1000</div>
+<div class="normal">
+デバイス機能フラグ [0]：float テクスチャ<br/></div>
+<br/>
+<a name="static_feature0_ColorBufferFloat"/>
+<div class="headline">feature0_ColorBufferFloat</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_ColorBufferFloat = 0x2000</div>
+<div class="normal">
+デバイス機能フラグ [0]：float テクスチャ（カラーバッファ）<br/></div>
+<br/>
+<a name="static_feature0_InstancedDraw"/>
+<div class="headline">feature0_InstancedDraw</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_InstancedDraw = 0x4000</div>
+<div class="normal">
+デバイス機能フラグ [0]：インスタンス描画<br/></div>
+<br/>
+<a name="static_feature0_MultiShapeDraw"/>
+<div class="headline">feature0_MultiShapeDraw</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_MultiShapeDraw = 0x8000</div>
+<div class="normal">
+デバイス機能フラグ [0]：インスタンス描画（VertexVariantBuffer 対応）<br/></div>
+<br/>
+<a name="static_feature0_CustomShader"/>
+<div class="headline">feature0_CustomShader</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_CustomShader = 0x10000</div>
+<div class="normal">
+デバイス機能フラグ [0]：シェーダー<br/></div>
+<br/>
+<a name="static_feature0_ComputeShader"/>
+<div class="headline">feature0_ComputeShader</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.FeatureFlag&#9; feature0_ComputeShader = 0x20000</div>
+<div class="normal">
+デバイス機能フラグ [0]：コンピュート・シェーダー<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_RenderDevice"/>
+<div class="headline">RenderDevice</div>
+<div class="usage">public abstract RenderDevice( )</div>
+<br/>
+
+<a name="virtual_buildCustomShader"/>
+<div class="headline">buildCustomShader</div>
+<div class="usage">public native EntisGLS4.CustomShader buildCustomShader( String id, const EntisGLS4.RenderDevice.ShaderDesc shddsc )</div>
+<div class="normal">
+シェーダーをコンパイルして作成する<br/></div>
+<br/>
+
+<a name="virtual_commitImage"/>
+<div class="headline">commitImage</div>
+<div class="usage">public native boolean commitImage( EntisGLS4.Image img, long msecTimeout = 0 )</div>
+<div class="normal">
+画像リソースをデバイス上で使えるように準備する<br/>（事前に準備しておかなくてもデバイス上の描画に利用できますが初回描画時に転送時間がかかります）<br/></div>
+<br/>
+
+<a name="virtual_commitVertexBuffer"/>
+<div class="headline">commitVertexBuffer</div>
+<div class="usage">public native boolean commitVertexBuffer( EntisGLS4.VertexBuffer vb, long msecTimeout = 0 )</div>
+<div class="normal">
+頂点バッファをデバイス上で使えるように準備する<br/>（事前に準備しておかなくてもデバイス上の描画に利用できますが初回描画時に転送時間がかかります）<br/></div>
+<br/>
+
+<a name="virtual_getCustomShaderAs"/>
+<div class="headline">getCustomShaderAs</div>
+<div class="usage">public native EntisGLS4.CustomShader getCustomShaderAs( String id ) const</div>
+<div class="normal">
+シェーダーを取得する<br/></div>
+<br/>
+
+<a name="virtual_getDeviceFeatures"/>
+<div class="headline">getDeviceFeatures</div>
+<div class="usage">public native boolean getDeviceFeatures( EntisGLS4.RenderDevice.Features* features )</div>
+<div class="normal">
+デバイス機能を取得する<br/></div>
+<div class="notes_parameter">
+<div class="param_name">features</div>
+<div class="param_desc">
+デバイス機能を取得する Features 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_isOnRenderThread"/>
+<div class="headline">isOnRenderThread</div>
+<div class="usage">public native boolean isOnRenderThread( ) const</div>
+<div class="normal">
+レンダリング・スレッドか？<br/></div>
+<br/>
+
+<a name="virtual_newRenderer"/>
+<div class="headline">newRenderer</div>
+<div class="usage">public native EntisGLS4.RenderContext newRenderer( )</div>
+<div class="normal">
+RenderContext を作成する<br/></div>
+<br/>
+
+<a name="virtual_procedure"/>
+<div class="headline">procedure</div>
+<div class="usage">public native boolean procedure( Function&lt;void()&gt; func, EntisGLS4.RenderDevice.ProcedurePriority priority )</div>
+<div class="normal">
+レンダリング・スレッドで実行<br/></div>
+<br/>
+
+<a name="virtual_releaseImage"/>
+<div class="headline">releaseImage</div>
+<div class="usage">public native boolean releaseImage( EntisGLS4.Image img, long msecTimeout = 0 )</div>
+<div class="normal">
+デバイス上に確保された画像用メモリを解放する<br/></div>
+<br/>
+
+<a name="virtual_releaseVertexBuffer"/>
+<div class="headline">releaseVertexBuffer</div>
+<div class="usage">public native boolean releaseVertexBuffer( EntisGLS4.VertexBuffer vb, long msecTimeout = 0 )</div>
+<div class="normal">
+デバイス上に確保された頂点バッファを解放する<br/></div>
+<br/>
+
+<a name="virtual_removeCustomShader"/>
+<div class="headline">removeCustomShader</div>
+<div class="usage">public native void removeCustomShader( String id )</div>
+<div class="normal">
+シェーダーを解放する<br/>（同一 id のシェーダーを再度コンパイルするには先に remove しておく必要があります）<br/></div>
+<br/>
+
+<a name="virtual_waitUntilAsyncAllProcedures"/>
+<div class="headline">waitUntilAsyncAllProcedures</div>
+<div class="usage">public native boolean waitUntilAsyncAllProcedures( long msecTimeout = -1 )</div>
+<div class="normal">
+非同期実行の完了を待つ<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

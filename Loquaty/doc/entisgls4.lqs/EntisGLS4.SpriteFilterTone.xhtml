@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SpriteFilterTone</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SpriteFilterTone</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SpriteFilterTone ;</div>
+<div class="normal">
+Sprite トーンカーブ描画フィルター<br/>※フィルターパラメータに応じてトーンカーブを適用して描画するフィルター<br/>※CPU処理専用<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SpriteFilter.xhtml">EntisGLS4.SpriteFilter</a>
+<div class="indent1"><a href="EntisGLS4.SpriteFilterTone.xhtml">EntisGLS4.SpriteFilterTone</a>
+</div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SpriteFilterTone.FilterFlag.xhtml">EntisGLS4.SpriteFilterTone.FilterFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_flagMaskWithAlpha">flagMaskWithAlpha</a><br/>
+	<a href="#static_flagGrayFilter">flagGrayFilter</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SpriteFilterTone">SpriteFilterTone</a><br/>
+	<a href="#virtual_enableMorphing">enableMorphing</a><br/>
+	<a href="#virtual_setToneFilter">setToneFilter</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_flagMaskWithAlpha"/>
+<div class="headline">flagMaskWithAlpha</div>
+<div class="usage">public static const EntisGLS4.SpriteFilterTone.FilterFlag&#9; flagMaskWithAlpha = 2</div>
+<div class="normal">
+フィルターフラグ：トーンカーブ適用後にαチャネルで RGB チャネルを乗算する<br/></div>
+<br/>
+<a name="static_flagGrayFilter"/>
+<div class="headline">flagGrayFilter</div>
+<div class="usage">public static const EntisGLS4.SpriteFilterTone.FilterFlag&#9; flagGrayFilter = 8</div>
+<div class="normal">
+フィルターフラグ：入力画像をグレイスケールに変換した後にトーンカーブを適用する<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SpriteFilterTone"/>
+<div class="headline">SpriteFilterTone</div>
+<div class="usage">public native SpriteFilterTone( )</div>
+<div class="normal">
+SpriteFilterTone 構築<br/></div>
+<br/>
+
+<a name="virtual_enableMorphing"/>
+<div class="headline">enableMorphing</div>
+<div class="usage">public native void enableMorphing( boolean flagMorph )</div>
+<div class="normal">
+モーフィング有効／無効化<br/></div>
+<div class="notes_parameter">
+<div class="param_name">flagMorph</div>
+<div class="param_desc">
+false の場合、フィルターパラメータは無視して常に100％でトーンカーブを適用します。</div>
+</div>
+<br/>
+
+<a name="virtual_setToneFilter"/>
+<div class="headline">setToneFilter</div>
+<div class="usage">public native void setToneFilter( const uint8* pRed, const uint8* pGreen, const uint8* pBlue, const uint8* pAlpha, uint nFlags = 0 )</div>
+<div class="normal">
+トーンカーブを設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pRed</div>
+<div class="param_desc">
+uint8[0x100] : 赤チャネル・トーンカーブ</div>
+<div class="param_name">pGreen</div>
+<div class="param_desc">
+uint8[0x100] : 緑チャネル・トーンカーブ</div>
+<div class="param_name">pBlue</div>
+<div class="param_desc">
+uint8[0x100] : 青チャネル・トーンカーブ</div>
+<div class="param_name">pAlpha</div>
+<div class="param_desc">
+uint8[0x100] : αチャネル・トーンカーブ</div>
+<div class="param_name">nFlags</div>
+<div class="param_desc">
+フィルターフラグ（EntisGLS4.SpriteFilterTone.flag～）の組み合わせ</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

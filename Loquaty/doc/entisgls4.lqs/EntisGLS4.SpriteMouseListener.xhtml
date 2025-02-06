@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SpriteMouseListener</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SpriteMouseListener</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SpriteMouseListener ;</div>
+<div class="normal">
+マウス入力インターフェース<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SpriteMouseListener.xhtml">EntisGLS4.SpriteMouseListener</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SpriteMouseListener.MouseFlag.xhtml">EntisGLS4.SpriteMouseListener.MouseFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_MouseIDMask">MouseIDMask</a><br/>
+	<a href="#static_ButtonIDMask">ButtonIDMask</a><br/>
+	<a href="#static_TouchFlag">TouchFlag</a><br/>
+	<a href="#static_VirtualMouseFlag">VirtualMouseFlag</a><br/>
+	<a href="#static_VirtualTouchFlag">VirtualTouchFlag</a><br/>
+	<a href="#static_LeftButtonID">LeftButtonID</a><br/>
+	<a href="#static_RightButtonID">RightButtonID</a><br/>
+	<a href="#static_MiddleButtonID">MiddleButtonID</a><br/>
+	<a href="#static_WheelDeltaUnit">WheelDeltaUnit</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_getButtonID">getButtonID</a><br/>
+	<a href="#func_getMouseID">getMouseID</a><br/>
+	<a href="#func_isFromTouch">isFromTouch</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SpriteMouseListener">SpriteMouseListener</a><br/>
+	<a href="#virtual_afterButtonDblClk">afterButtonDblClk</a><br/>
+	<a href="#virtual_afterButtonDown">afterButtonDown</a><br/>
+	<a href="#virtual_afterButtonUp">afterButtonUp</a><br/>
+	<a href="#virtual_afterLButtonDblClk">afterLButtonDblClk</a><br/>
+	<a href="#virtual_afterLButtonDown">afterLButtonDown</a><br/>
+	<a href="#virtual_afterLButtonUp">afterLButtonUp</a><br/>
+	<a href="#virtual_afterMButtonDblClk">afterMButtonDblClk</a><br/>
+	<a href="#virtual_afterMButtonDown">afterMButtonDown</a><br/>
+	<a href="#virtual_afterMButtonUp">afterMButtonUp</a><br/>
+	<a href="#virtual_afterRButtonDblClk">afterRButtonDblClk</a><br/>
+	<a href="#virtual_afterRButtonDown">afterRButtonDown</a><br/>
+	<a href="#virtual_afterRButtonUp">afterRButtonUp</a><br/>
+	<a href="#virtual_enumerateLDownPoints">enumerateLDownPoints</a><br/>
+	<a href="#virtual_findMouseIndexById">findMouseIndexById</a><br/>
+	<a href="#virtual_getLDownPointsCount">getLDownPointsCount</a><br/>
+	<a href="#virtual_getMousePointAs">getMousePointAs</a><br/>
+	<a href="#virtual_getMousePointAt">getMousePointAt</a><br/>
+	<a href="#virtual_getPointerCount">getPointerCount</a><br/>
+	<a href="#virtual_isLButtonDownAt">isLButtonDownAt</a><br/>
+	<a href="#virtual_isRButtonDownAt">isRButtonDownAt</a><br/>
+	<a href="#virtual_onButtonDblClk">onButtonDblClk</a><br/>
+	<a href="#virtual_onButtonDown">onButtonDown</a><br/>
+	<a href="#virtual_onButtonUp">onButtonUp</a><br/>
+	<a href="#virtual_onLButtonDblClk">onLButtonDblClk</a><br/>
+	<a href="#virtual_onLButtonDown">onLButtonDown</a><br/>
+	<a href="#virtual_onLButtonUp">onLButtonUp</a><br/>
+	<a href="#virtual_onMButtonDblClk">onMButtonDblClk</a><br/>
+	<a href="#virtual_onMButtonDown">onMButtonDown</a><br/>
+	<a href="#virtual_onMButtonUp">onMButtonUp</a><br/>
+	<a href="#virtual_onMouseLeave">onMouseLeave</a><br/>
+	<a href="#virtual_onMouseMove">onMouseMove</a><br/>
+	<a href="#virtual_onMouseWheel">onMouseWheel</a><br/>
+	<a href="#virtual_onRButtonDblClk">onRButtonDblClk</a><br/>
+	<a href="#virtual_onRButtonDown">onRButtonDown</a><br/>
+	<a href="#virtual_onRButtonUp">onRButtonUp</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_MouseIDMask"/>
+<div class="headline">MouseIDMask</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; MouseIDMask = 0xFFFF</div>
+<div class="normal">
+マウス識別子マスク<br/></div>
+<br/>
+<a name="static_ButtonIDMask"/>
+<div class="headline">ButtonIDMask</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; ButtonIDMask = 0xFF0000</div>
+<div class="normal">
+ボタン識別子マスク<br/></div>
+<br/>
+<a name="static_TouchFlag"/>
+<div class="headline">TouchFlag</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; TouchFlag = 0x1000000</div>
+<div class="normal">
+タッチパネル操作時フラグ<br/></div>
+<br/>
+<a name="static_VirtualMouseFlag"/>
+<div class="headline">VirtualMouseFlag</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; VirtualMouseFlag = 0x2000000</div>
+<div class="normal">
+仮想マウス操作時フラグ<br/></div>
+<br/>
+<a name="static_VirtualTouchFlag"/>
+<div class="headline">VirtualTouchFlag</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; VirtualTouchFlag = 0x4000000</div>
+<div class="normal">
+仮想タッチ操作時フラグ<br/></div>
+<br/>
+<a name="static_LeftButtonID"/>
+<div class="headline">LeftButtonID</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; LeftButtonID = 0</div>
+<div class="normal">
+マウス左ボタン<br/></div>
+<br/>
+<a name="static_RightButtonID"/>
+<div class="headline">RightButtonID</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; RightButtonID = 1</div>
+<div class="normal">
+マウス右ボタン<br/></div>
+<br/>
+<a name="static_MiddleButtonID"/>
+<div class="headline">MiddleButtonID</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; MiddleButtonID = 2</div>
+<div class="normal">
+マウス中央ボタン<br/></div>
+<br/>
+<a name="static_WheelDeltaUnit"/>
+<div class="headline">WheelDeltaUnit</div>
+<div class="usage">public static const EntisGLS4.SpriteMouseListener.MouseFlag&#9; WheelDeltaUnit = 0x100</div>
+<div class="normal">
+マウスホイール・デルタ単位<br/></div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_getButtonID"/>
+<div class="headline">getButtonID</div>
+<div class="usage">public static native uint getButtonID( ulong nFlags )</div>
+<div class="normal">
+マウスボタン識別子を取得</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+(nFlags &amp; ButtonIDMask) &gt;&gt; 16</div>
+</div>
+<br/>
+
+<a name="func_getMouseID"/>
+<div class="headline">getMouseID</div>
+<div class="usage">public static native uint getMouseID( ulong nFlags )</div>
+<div class="normal">
+マウス識別子を取得（マルチタッチ用）</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+nFlags &amp; MouseIDMask</div>
+</div>
+<br/>
+
+<a name="func_isFromTouch"/>
+<div class="headline">isFromTouch</div>
+<div class="usage">public static native boolean isFromTouch( ulong nFlags )</div>
+<div class="normal">
+タッチパネル入力判定</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+(nFlags &amp; TouchFlag) != 0</div>
+</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SpriteMouseListener"/>
+<div class="headline">SpriteMouseListener</div>
+<div class="usage">public native SpriteMouseListener( )</div>
+<div class="normal">
+SpriteMouseListener 構築<br/></div>
+<br/>
+
+<a name="virtual_afterButtonDblClk"/>
+<div class="headline">afterButtonDblClk</div>
+<div class="usage">public boolean afterButtonDblClk( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+マウスボタン・ダブルクリック時（後処理）</div>
+<br/>
+<div class="indent1">
+どの Sprite もマウスイベントを処理しなかった時に呼び出されます。</div><br/>
+<br/>
+
+<a name="virtual_afterButtonDown"/>
+<div class="headline">afterButtonDown</div>
+<div class="usage">public boolean afterButtonDown( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+マウスボタン押下時（後処理）</div>
+<br/>
+<div class="indent1">
+どの Sprite もマウスイベントを処理しなかった時に呼び出されます。</div><br/>
+<br/>
+
+<a name="virtual_afterButtonUp"/>
+<div class="headline">afterButtonUp</div>
+<div class="usage">public boolean afterButtonUp( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+マウスボタン押下時（後処理）</div>
+<br/>
+<div class="indent1">
+どの Sprite もマウスイベントを処理しなかった時に呼び出されます。</div><br/>
+<br/>
+
+<a name="virtual_afterLButtonDblClk"/>
+<div class="headline">afterLButtonDblClk</div>
+<div class="usage">public boolean afterLButtonDblClk( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+左ボタン・ダブルクリック時<br/></div>
+<br/>
+
+<a name="virtual_afterLButtonDown"/>
+<div class="headline">afterLButtonDown</div>
+<div class="usage">public boolean afterLButtonDown( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+左ボタン押下時<br/></div>
+<br/>
+
+<a name="virtual_afterLButtonUp"/>
+<div class="headline">afterLButtonUp</div>
+<div class="usage">public boolean afterLButtonUp( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+左ボタン解放時<br/></div>
+<br/>
+
+<a name="virtual_afterMButtonDblClk"/>
+<div class="headline">afterMButtonDblClk</div>
+<div class="usage">public boolean afterMButtonDblClk( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+中央ボタン・ダブルクリック時<br/></div>
+<br/>
+
+<a name="virtual_afterMButtonDown"/>
+<div class="headline">afterMButtonDown</div>
+<div class="usage">public boolean afterMButtonDown( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+中央ボタン押下時<br/></div>
+<br/>
+
+<a name="virtual_afterMButtonUp"/>
+<div class="headline">afterMButtonUp</div>
+<div class="usage">public boolean afterMButtonUp( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+中央ボタン解放時<br/></div>
+<br/>
+
+<a name="virtual_afterRButtonDblClk"/>
+<div class="headline">afterRButtonDblClk</div>
+<div class="usage">public boolean afterRButtonDblClk( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+右ボタン・ダブルクリック時<br/></div>
+<br/>
+
+<a name="virtual_afterRButtonDown"/>
+<div class="headline">afterRButtonDown</div>
+<div class="usage">public boolean afterRButtonDown( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+右ボタン押下時<br/></div>
+<br/>
+
+<a name="virtual_afterRButtonUp"/>
+<div class="headline">afterRButtonUp</div>
+<div class="usage">public boolean afterRButtonUp( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+右ボタン解放時<br/></div>
+<br/>
+
+<a name="virtual_enumerateLDownPoints"/>
+<div class="headline">enumerateLDownPoints</div>
+<div class="usage">public native const Vector2d* enumerateLDownPoints( ) const</div>
+<div class="normal">
+左ドラッグ中／タップ中ポインタ座標取得<br/></div>
+<br/>
+
+<a name="virtual_findMouseIndexById"/>
+<div class="headline">findMouseIndexById</div>
+<div class="usage">public native int findMouseIndexById( uint idMouse ) const</div>
+<div class="normal">
+指標検索（マルチタッチ）<br/></div>
+<br/>
+
+<a name="virtual_getLDownPointsCount"/>
+<div class="headline">getLDownPointsCount</div>
+<div class="usage">public native uint getLDownPointsCount( ) const</div>
+<div class="normal">
+左ドラッグ中／タップ中ポインタ数取得<br/></div>
+<br/>
+
+<a name="virtual_getMousePointAs"/>
+<div class="headline">getMousePointAs</div>
+<div class="usage">public native boolean getMousePointAs( uint idMouse, Vector2d* vPos ) const</div>
+<div class="normal">
+ポインタ座標取得（マルチタッチ）</div>
+<div class="notes_parameter">
+<div class="param_name">idMouse</div>
+<div class="param_desc">
+マウス識別子</div>
+<div class="param_name">vPos</div>
+<div class="param_desc">
+マウス座標（タッチ座標）を受け取る Vector2d</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+マウス識別子に対応するマウス／タッチポイントが存在する場合 true</div>
+</div>
+<br/>
+
+<a name="virtual_getMousePointAt"/>
+<div class="headline">getMousePointAt</div>
+<div class="usage">public native boolean getMousePointAt( ulong index, Vector2d* vPos ) const</div>
+<div class="normal">
+ポインタ座標取得（マルチタッチ）<br/></div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+ポインタ・インデックス (getPointerCount() 未満)</div>
+<div class="param_name">vPos</div>
+<div class="param_desc">
+マウス座標（タッチ座標）を受け取る Vector2d</div>
+</div>
+<br/>
+
+<a name="virtual_getPointerCount"/>
+<div class="headline">getPointerCount</div>
+<div class="usage">public native uint getPointerCount( ) const</div>
+<div class="normal">
+有効ポインタ数取得（マルチタッチ）<br/></div>
+<br/>
+
+<a name="virtual_isLButtonDownAt"/>
+<div class="headline">isLButtonDownAt</div>
+<div class="usage">public native boolean isLButtonDownAt( ulong index = 0 ) const</div>
+<div class="normal">
+マウス左ボタンの押下状態取得<br/></div>
+<br/>
+
+<a name="virtual_isRButtonDownAt"/>
+<div class="headline">isRButtonDownAt</div>
+<div class="usage">public native boolean isRButtonDownAt( ulong index = 0 ) const</div>
+<div class="normal">
+マウス右ボタンの押下状態取得<br/></div>
+<br/>
+
+<a name="virtual_onButtonDblClk"/>
+<div class="headline">onButtonDblClk</div>
+<div class="usage">public boolean onButtonDblClk( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+マウスボタン・ダブルクリック時</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+true の時、このリスナでハンドラを終了し、より後方のハンドラに処理をまわさない。</div>
+</div>
+<br/>
+
+<a name="virtual_onButtonDown"/>
+<div class="headline">onButtonDown</div>
+<div class="usage">public boolean onButtonDown( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+マウスボタン押下時</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+true の時、このリスナでハンドラを終了し、より後方のハンドラに処理をまわさない。</div>
+</div>
+<br/>
+
+<a name="virtual_onButtonUp"/>
+<div class="headline">onButtonUp</div>
+<div class="usage">public boolean onButtonUp( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+マウスボタン解放時</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+true の時、このリスナでハンドラを終了し、より後方のハンドラに処理をまわさない。</div>
+</div>
+<br/>
+
+<a name="virtual_onLButtonDblClk"/>
+<div class="headline">onLButtonDblClk</div>
+<div class="usage">public boolean onLButtonDblClk( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+左ボタン・ダブルクリック時<br/></div>
+<br/>
+
+<a name="virtual_onLButtonDown"/>
+<div class="headline">onLButtonDown</div>
+<div class="usage">public boolean onLButtonDown( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+左ボタン押下時<br/></div>
+<br/>
+
+<a name="virtual_onLButtonUp"/>
+<div class="headline">onLButtonUp</div>
+<div class="usage">public boolean onLButtonUp( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+左ボタン解放時<br/></div>
+<br/>
+
+<a name="virtual_onMButtonDblClk"/>
+<div class="headline">onMButtonDblClk</div>
+<div class="usage">public boolean onMButtonDblClk( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+中央ボタン・ダブルクリック時<br/></div>
+<br/>
+
+<a name="virtual_onMButtonDown"/>
+<div class="headline">onMButtonDown</div>
+<div class="usage">public boolean onMButtonDown( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+中央ボタン押下時<br/></div>
+<br/>
+
+<a name="virtual_onMButtonUp"/>
+<div class="headline">onMButtonUp</div>
+<div class="usage">public boolean onMButtonUp( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+中央ボタン解放時<br/></div>
+<br/>
+
+<a name="virtual_onMouseLeave"/>
+<div class="headline">onMouseLeave</div>
+<div class="usage">public void onMouseLeave( EntisGLS4.Sprite sprite, ulong nFlags )</div>
+<div class="normal">
+マウス移動（ウィンドウ外へ移動）<br/></div>
+<br/>
+
+<a name="virtual_onMouseMove"/>
+<div class="headline">onMouseMove</div>
+<div class="usage">public boolean onMouseMove( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+マウス移動</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+true の時、このリスナでハンドラを終了し、より後方のハンドラに処理をまわさない。</div>
+</div>
+<br/>
+
+<a name="virtual_onMouseWheel"/>
+<div class="headline">onMouseWheel</div>
+<div class="usage">public boolean onMouseWheel( EntisGLS4.Sprite sprite, int zDelta, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+ホイール回転</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+true の時、このリスナでハンドラを終了し、より後方のハンドラに処理をまわさない。</div>
+</div>
+<br/>
+
+<a name="virtual_onRButtonDblClk"/>
+<div class="headline">onRButtonDblClk</div>
+<div class="usage">public boolean onRButtonDblClk( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+右ボタン・ダブルクリック時<br/></div>
+<br/>
+
+<a name="virtual_onRButtonDown"/>
+<div class="headline">onRButtonDown</div>
+<div class="usage">public boolean onRButtonDown( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+右ボタン押下時<br/></div>
+<br/>
+
+<a name="virtual_onRButtonUp"/>
+<div class="headline">onRButtonUp</div>
+<div class="usage">public boolean onRButtonUp( EntisGLS4.Sprite sprite, double xPos, double yPos, ulong nFlags )</div>
+<div class="normal">
+右ボタン解放時<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

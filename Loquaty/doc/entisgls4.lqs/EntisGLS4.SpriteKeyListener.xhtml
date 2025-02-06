@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SpriteKeyListener</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SpriteKeyListener</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SpriteKeyListener ;</div>
+<div class="normal">
+キー入力／コマンド処理インターフェース<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SpriteKeyListener.xhtml">EntisGLS4.SpriteKeyListener</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SpriteKeyListener">SpriteKeyListener</a><br/>
+	<a href="#virtual_onChar">onChar</a><br/>
+	<a href="#virtual_onCommand">onCommand</a><br/>
+	<a href="#virtual_onCompositionString">onCompositionString</a><br/>
+	<a href="#virtual_onEndComposition">onEndComposition</a><br/>
+	<a href="#virtual_onKeyDown">onKeyDown</a><br/>
+	<a href="#virtual_onKeyUp">onKeyUp</a><br/>
+	<a href="#virtual_onStartComposition">onStartComposition</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SpriteKeyListener"/>
+<div class="headline">SpriteKeyListener</div>
+<div class="usage">public native SpriteKeyListener( )</div>
+<div class="normal">
+SpriteKeyListener 構築<br/></div>
+<br/>
+
+<a name="virtual_onChar"/>
+<div class="headline">onChar</div>
+<div class="usage">public boolean onChar( EntisGLS4.Sprite sprite, uint codeChar )</div>
+<div class="normal">
+文字入力</div>
+<div class="notes_parameter">
+<div class="param_name">codeChar</div>
+<div class="param_desc">
+Unicode での入力文字</div>
+</div>
+<div class="indent1">
+入力された文字コードを受け取ります。<br/>onKeyDown や onCompositionString で処理された文字は受け取りません。</div><br/>
+<br/>
+
+<a name="virtual_onCommand"/>
+<div class="headline">onCommand</div>
+<div class="usage">public boolean onCommand( EntisGLS4.Sprite sprite, String cmd, long param, long code, int priority, boolean overwritable )</div>
+<div class="normal">
+コマンド<br/></div>
+<br/>
+
+<a name="virtual_onCompositionString"/>
+<div class="headline">onCompositionString</div>
+<div class="usage">public boolean onCompositionString( EntisGLS4.Sprite sprite, const EntisGLS4.InputCompositionString icsComp )</div>
+<div class="normal">
+コンポジション文字列<br/></div>
+<div class="notes_parameter">
+<div class="param_name">icsComp</div>
+<div class="param_desc">
+入力中、又は入力完了した文字列情報を受け取ります</div>
+</div>
+<br/>
+
+<a name="virtual_onEndComposition"/>
+<div class="headline">onEndComposition</div>
+<div class="usage">public boolean onEndComposition( EntisGLS4.Sprite sprite )</div>
+<div class="normal">
+コンポジション終了<br/></div>
+<br/>
+
+<a name="virtual_onKeyDown"/>
+<div class="headline">onKeyDown</div>
+<div class="usage">public boolean onKeyDown( EntisGLS4.Sprite sprite, long nVirtKey, ulong nFlags )</div>
+<div class="normal">
+キー押下時<br/></div>
+<div class="notes_parameter">
+<div class="param_name">nVirtKey</div>
+<div class="param_desc">
+仮想キーコード (VirtualKeyCode)</div>
+<div class="param_name">nFlags</div>
+<div class="param_desc">
+仮想キー・コンテキストフラグ (VirtualKeyFlag)</div>
+</div>
+<br/>
+
+<a name="virtual_onKeyUp"/>
+<div class="headline">onKeyUp</div>
+<div class="usage">public boolean onKeyUp( EntisGLS4.Sprite sprite, long nVirtKey, ulong nFlags )</div>
+<div class="normal">
+キー解放時<br/></div>
+<div class="notes_parameter">
+<div class="param_name">nVirtKey</div>
+<div class="param_desc">
+仮想キーコード (VirtualKeyCode)</div>
+<div class="param_name">nFlags</div>
+<div class="param_desc">
+仮想キー・コンテキストフラグ (VirtualKeyFlag)</div>
+</div>
+<br/>
+
+<a name="virtual_onStartComposition"/>
+<div class="headline">onStartComposition</div>
+<div class="usage">public boolean onStartComposition( EntisGLS4.Sprite sprite, EntisGLS4.InputStartComposition iscForm )</div>
+<div class="normal">
+コンポジション開始<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iscForm</div>
+<div class="param_desc">
+IME で入力中の文字列を表示する位置やフォントをこの関数がここに設定します</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

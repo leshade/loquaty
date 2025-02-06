@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<materials>
+	<material id="material_box">
+		<face>
+			<attribute ambient="0" back_diffusion="76" back_light="0."
+			   back_light_add="0" back_light_mul="FFFFFF" border_color="0"
+			   border_thickness_a="1." border_thickness_b="0." color_add="D2D2D4"
+			   color_mul="0" deepness="0" deepness_pow="256" diffusion="256"
+			   emission="0" ex_flags="back_diffusion"
+			   flags="gouraud_shading normalized_uv single_side" reflection="0"
+			   refraction="0." rim_color="FFFFFF" rim_light="0."
+			   rim_light_deepness="0.100000001" shade_add="0" shade_mul="0"
+			   shade_threshold="0." specular="128" specular_color="FFFFFF"
+			   specular_size="32" toon_shade_brightness="0.5"
+			   toon_shade_threshold="0.5" transparency="0"/>
+		</face>
+	</material>
+	<material id="material_course">
+		<face>
+			<attribute ambient="0" back_diffusion="0" back_light="0."
+			   back_light_add="0" back_light_mul="FFFFFF" border_color="0"
+			   border_thickness_a="1." border_thickness_b="0." color_add="FF8000"
+			   color_mul="0" deepness="91" deepness_pow="256" diffusion="256"
+			   emission="0" ex_flags=""
+			   flags="gouraud_shading normalized_uv no_write_zbuffer hint_of_full_alpha hint_of_alpha no_shadow_object"
+			   reflection="0" refraction="0." rim_color="FFFFFF" rim_light="0."
+			   rim_light_deepness="0.100000001" shade_add="0" shade_mul="0"
+			   shade_threshold="0." specular="0" specular_color="FFFFFF"
+			   specular_size="32" toon_shade_brightness="0.5"
+			   toon_shade_threshold="0.5" transparency="196"/>
+		</face>
+	</material>
+	<material id="material_flag">
+		<face>
+			<attribute ambient="194" back_diffusion="0" back_light="0."
+			   back_light_add="0" back_light_mul="FFFFFF" border_color="0"
+			   border_thickness_a="1." border_thickness_b="0." color_add="FFC000"
+			   color_mul="0" deepness="0" deepness_pow="256" diffusion="0"
+			   emission="150" ex_flags=""
+			   flags="gouraud_shading normalized_uv no_write_zbuffer hint_of_full_alpha hint_of_alpha no_shadow_object no_drop_shadow vertex_alpha"
+			   reflection="0" refraction="0." rim_color="FFFFFF" rim_light="0."
+			   rim_light_deepness="0.100000001" shade_add="0" shade_mul="0"
+			   shade_threshold="0." specular="0" specular_color="FFFFFF"
+			   specular_size="32" toon_shade_brightness="0.5"
+			   toon_shade_threshold="0.5" transparency="128"/>
+		</face>
+	</material>
+	<material id="material_half_plate">
+		<face>
+			<attribute ambient="194" back_diffusion="0" back_light="0."
+			   back_light_add="0" back_light_mul="FFFFFF" border_color="0"
+			   border_thickness_a="1." border_thickness_b="0." color_add="FFFFFF"
+			   color_mul="0" deepness="0" deepness_pow="256" diffusion="0"
+			   emission="58" ex_flags=""
+			   flags="gouraud_shading normalized_uv no_write_zbuffer hint_of_alpha no_shadow_object no_drop_shadow vertex_alpha"
+			   reflection="0" refraction="0." rim_color="FFFFFF" rim_light="0."
+			   rim_light_deepness="0.100000001" shade_add="0" shade_mul="0"
+			   shade_threshold="0." specular="0" specular_color="FFFFFF"
+			   specular_size="32" toon_shade_brightness="0.5"
+			   toon_shade_threshold="0.5" transparency="128"/>
+		</face>
+	</material>
+	<material id="material_light">
+		<face>
+			<attribute ambient="128" back_diffusion="0" back_light="0."
+			   back_light_add="0" back_light_mul="FFFFFF" border_color="0"
+			   border_thickness_a="1." border_thickness_b="0." color_add="FFFFFF"
+			   color_mul="595959" deepness="0" deepness_pow="256" diffusion="0"
+			   emission="128" ex_flags=""
+			   flags="gouraud_shading normalized_uv no_write_zbuffer no_shadow_object no_drop_shadow vertex_alpha"
+			   reflection="0" refraction="0." rim_color="FFFFFF" rim_light="0."
+			   rim_light_deepness="0.100000001" shade_add="0" shade_mul="0"
+			   shade_threshold="0." specular="0" specular_color="FFFFFF"
+			   specular_size="32" toon_shade_brightness="0.5"
+			   toon_shade_threshold="0.5" transparency="0"/>
+		</face>
+	</material>
+	<material id="material_line">
+		<face>
+			<attribute ambient="256" back_diffusion="0" back_light="0."
+			   back_light_add="0" back_light_mul="FFFFFF" border_color="0"
+			   border_thickness_a="1." border_thickness_b="0." color_add="FF8000"
+			   color_mul="0" deepness="129" deepness_pow="256" diffusion="0"
+			   emission="50" ex_flags=""
+			   flags="gouraud_shading normalized_uv no_write_zbuffer hint_of_full_alpha hint_of_alpha no_shadow_object no_drop_shadow"
+			   reflection="0" refraction="0." rim_color="FFFFFF" rim_light="0."
+			   rim_light_deepness="0.100000001" shade_add="0" shade_mul="0"
+			   shade_threshold="0." specular="0" specular_color="FFFFFF"
+			   specular_size="32" toon_shade_brightness="0.5"
+			   toon_shade_threshold="0.5" transparency="126"/>
+		</face>
+	</material>
+	<material id="material_plane">
+		<face>
+			<attribute ambient="0" back_diffusion="0" back_light="0."
+			   back_light_add="0" back_light_mul="FFFFFF" border_color="0"
+			   border_thickness_a="1." border_thickness_b="0." color_add="E3E3E3"
+			   color_mul="0" deepness="0" deepness_pow="256" diffusion="256"
+			   emission="0" ex_flags=""
+			   flags="gouraud_shading normalized_uv single_side" reflection="0"
+			   refraction="0." rim_color="FFFFFF" rim_light="0."
+			   rim_light_deepness="0.100000001" shade_add="0" shade_mul="0"
+			   shade_threshold="0." specular="0" specular_color="FFFFFF"
+			   specular_size="32" toon_shade_brightness="0.5"
+			   toon_shade_threshold="0.5" transparency="0"/>
+		</face>
+	</material>
+	<material id="material_skybox">
+		<face>
+			<attribute ambient="0" back_diffusion="0" back_light="0."
+			   back_light_add="0" back_light_mul="FFFFFF" border_color="0"
+			   border_thickness_a="1." border_thickness_b="0." color_add="FFFFFF"
+			   color_mul="0" deepness="0" deepness_pow="256" diffusion="256"
+			   emission="0" ex_flags=""
+			   flags="normalized_uv single_side no_write_zbuffer no_shadow_object no_drop_shadow"
+			   reflection="0" refraction="0." rim_color="FFFFFF" rim_light="0."
+			   rim_light_deepness="0.100000001" shade_add="0" shade_mul="0"
+			   shade_threshold="0." specular="128" specular_color="FFFFFF"
+			   specular_size="32" toon_shade_brightness="0.5"
+			   toon_shade_threshold="0.5" transparency="0"/>
+		</face>
+	</material>
+</materials>

@@ -1,0 +1,128 @@
+﻿
+namespace	EntisGLS4
+{
+	class	SceneItem ;
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 当たり判定インターフェース
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Collider	extends NativeObject
+	{
+		// 衝突情報
+		struct	HitInfo
+		{
+			// 交点（ローカル座標系）
+			Vector3		vHitLocal ;
+			// 交点（グローバル座標系）
+			Vector3		vHitGlobal ;
+			// 法線（ローカル座標系）
+			Vector3		vNormalLocal ;
+			// 法線（グローバル座標系）
+			Vector3		vNormal ;
+			// ローカル座標からグローバル座標へ変換する行列（全ての積）
+			Matrix3		matLocal ;
+			// ローカル座標からグローバル座標へ変換する移動（全ての合成）
+			Vector3		vLocalBase ;
+			// 交点までの距離
+			float		fpDistance ;
+			// 交差インスタンス指標
+			ulong		iInstance ;
+			// 交差メッシュ指標
+			ulong		iMesh ;
+			// 交差ポリゴン指標
+			ulong		iPolygon ;
+			// 交差したアイテムの Scene.ItemClass 値のビットマスク
+			ulong		maskClasses ;
+			// 交差したアイテムの Collision.ColliderClass 値のビットマスク
+			ulong		maskColliders ;
+		}
+
+		// 衝突結果
+		class	Result
+		{
+			public HitInfo		htinf ;
+			public SceneItem	item ;
+		}
+
+		public abstract Collider() ;
+
+		// 球との交差判定
+		public native boolean isHitAgainstSphere
+			( const Vector3d* vPos, float radius,
+				Result[] hitRes, uint resMax = 1,
+				ulong maskColliders = -1, ulong maskClasses = -1 ) const ;
+		// 線分との交差判定
+		public native boolean isSegmentCrossing
+			( const Vector3d* vPos0, const Vector3d* vPos1,
+				float errorGap, Result hitRes,
+				ulong maskColliders = -1, ulong maskClasses = -1 ) const ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 当たり判定バッファ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Collision	extends RenderBuffer
+						implements Collider
+	{
+		enum using ColliderClass<int>
+		{
+			indexShape,
+			indexBarrier,
+			indexHit,
+			indexAttack,
+			indexEvent,
+			indexBone,
+			indexPhysics,
+			indexReserved,
+			indexUser0,
+		}
+
+		// Collision 構築関数
+		public native Collision() ;
+
+		// （点／球、線分／円柱の）追加判定幅取得
+		public native float getCurrentThickness() const ;
+		// （点／球、線分／円柱の）追加判定幅設定
+		public native void setCurrentThickness( float thickness ) ;
+		// 以降に追加するメッシュに関連付けるユーザーデータを設定
+		public native void attachMeshUserData( SceneItem userData ) ;
+		// 以降に追加するメッシュに関連付けるユーザーデータを取得
+		public native SceneItem getMeshUserData() const ;
+		// シーンクラスマスク（※Scene::class～ に対応するビットマスク）設定
+		public native void setSceneClassesMask( uint32 maskClasses ) ;
+		// シーンクラスマスク（※Scene::class～ に対応するビットマスク）取得
+		public native uint32 getSceneClassesMask() const ;
+		// ユーザー拡張クラスマスク設定
+		public native void setUserClassesMask( uint maskClasses ) ;
+		// ユーザー拡張クラスマスク取得
+		public native uint getUserClassesMask() const ;
+
+		// ソリッド球を追加（※座標は RenderBuffer の現在の座標変換に従う）
+		public native boolean addSolidSphere
+			( const Vector3d* vPos, float radius, uint iInstanceNum ) ;
+		// ソリッド直方体を追加（※座標は RenderBuffer の現在の座標変換に従う）
+		public native boolean addSolidCube
+			( const Vector3d* vPos, const Vector3d* vCubeSize, uint iInstanceNum ) ;
+		// ソリッド円柱を追加（※座標は RenderBuffer の現在の座標変換に従う）
+		public native boolean addSolidTubeList
+			( const Vector3* pPoints, uint nPointCount, float radius ) ;
+		// 当たり判定オブジェクトを追加する（※座標は RenderBuffer の現在の座標変換に従う）
+		public native boolean addColliderObject
+			( Collider collider,
+				const Matrix4* pmatInstancing = null, uint iInstanceNum = 0 ) ;
+
+		// メッシュツリー・一括構築開始宣言（複数回可）
+		// <desc> endBatchBuild までの間に追加されたメッシュやソリッド当たり判定を
+		// 逐次処理ではなく、一括処理することによって効率化することを期待できる。</desc>
+		public native void beginBatchBuild() ;
+		// メッシュツリー・一括構築終了（beginBatchBuild と同じ回数呼び出す）
+		public native void endBatchBuild() ;
+	}
+
+
+}
+

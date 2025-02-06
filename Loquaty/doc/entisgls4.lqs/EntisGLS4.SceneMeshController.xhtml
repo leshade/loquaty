@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneMeshController</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneMeshController</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneMeshController ;</div>
+<div class="normal">
+スクリプト実装 Scene メッシュ生成コントローラー<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneController.xhtml">EntisGLS4.SceneController</a>
+<div class="indent1"><a href="EntisGLS4.SceneCustomController.xhtml">EntisGLS4.SceneCustomController</a>
+<div class="indent1"><a href="EntisGLS4.SceneMeshController.xhtml">EntisGLS4.SceneMeshController</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneMeshController">SceneMeshController</a><br/>
+	<a href="#virtual_addMesh">addMesh</a><br/>
+	<a href="#virtual_updateMesh">updateMesh</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneMeshController"/>
+<div class="headline">SceneMeshController</div>
+<div class="usage">public native SceneMeshController( String typeId )</div>
+<div class="normal">
+SceneMeshController 構築<br/></div>
+<br/>
+
+<a name="virtual_addMesh"/>
+<div class="headline">addMesh</div>
+<div class="usage">public void addMesh( EntisGLS4.Scene scene, EntisGLS4.SceneItem item, EntisGLS4.VertexBuffer[] vbs )</div>
+<div class="normal">
+メッシュ追加処理（全視点・ビュー共通処理）<br/></div>
+<br/>
+
+<a name="virtual_updateMesh"/>
+<div class="headline">updateMesh</div>
+<div class="usage">public void updateMesh( EntisGLS4.Scene scene, EntisGLS4.SceneItem item, EntisGLS4.VertexBuffer[] vbs )</div>
+<div class="normal">
+フレーム描画前処理（全視点・ビュー共通処理）<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

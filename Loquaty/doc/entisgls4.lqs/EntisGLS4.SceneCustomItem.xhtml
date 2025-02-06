@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneCustomItem</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneCustomItem</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneCustomItem ;</div>
+<div class="normal">
+スクリプト実装 Scene アイテム</div>
+<br/>
+<div class="indent1">
+シーン・コンポジションのアイテムとして機能し、また GUI エディタ上のインターフェースを提供します。<br/><br/>public なメンバ変数が以下の型の場合、xml 形式のコメントでGUI インターフェースを設定できます。<br/><blockquote>boolean, int, uint, double, ARGB8(RGB要素のみ), Vector3, Vector3d,<br/>Matrix3, Matrix3d, Quaternion, Quaterniond, Vector2, Vector2d,<br/>Vector4, Vector4d, Matrix4, Matrix4d,<br/>String, Image, AudioPlayer, ModelBuffer, ModelPose, SceneItem</blockquote><br/>以下のタグでより詳細に設定できます。<br/><blockquote><dl><dt>&lt;name&gt; タグ</dt><dd>表示項目名（必須）</dd></dl><dl><dt>&lt;id&gt; タグ</dt><dd>保存時のパラメータ ID。省略時には変数名がそのまま ID となります。<br/>（※ SceneItem.ParameterID や SceneCommon.ParameterID 列挙子と同じ名前は正常に機能しません）</dd></dl><dl><dt>&lt;desc&gt; タグ</dt><dd>詳細説明</dd></dl><dl><dt>&lt;sub_type&gt; タグ</dt><dd>GUI 上の型指定（省略した場合には対応するデフォルトの型が適用されます）<br/>matrix, position, direction, zoom, rotation, color, scalar,<br/>integer, boolean, selector, command, pose, matrix4, vector4, vector2</dd></dl><dl><dt>&lt;range&gt; タグ</dt><dd>scalar 値域指定。 min=最小値, max 最大値</dd></dl><dl><dt>&lt;selector&gt; タグ</dt><dd>GUI 上でドロップダウンリスト形式で入力。<br/>int, String で使用可。<br/>Image, AudioPlayer, ModelBuffer, ModelPose は自動的にドロップダウンリストになるため必要ありません。</dd></dl><dl><dt>&lt;selector&gt;&lt;enum&gt; タグ</dt><dd>ドロップダウンリストの位置項目。 name=表示名, num=選択時の数値, str=選択時の文字列</dd></dl><br/></blockquote><div class="code_quote">// 例<br/>class ExampleItem extends SceneCustomItem<br/>{<br/>&nbsp; &nbsp; /*<br/>&nbsp; &nbsp; &lt;name&gt;色&lt;/name&gt;<br/>&nbsp; &nbsp; &#32;&lt;selector&gt;<br/>&nbsp; &nbsp; &#32;&nbsp; &nbsp; &lt;enum name=&quot;黒&quot; num=&quot;0&quot;/&gt;<br/>&nbsp; &nbsp; &#32;&nbsp; &nbsp; &lt;enum name=&quot;青&quot; num=&quot;1&quot;/&gt;<br/>&nbsp; &nbsp; &#32;&nbsp; &nbsp; &lt;enum name=&quot;赤&quot; num=&quot;2&quot;/&gt;<br/>&nbsp; &nbsp; &#32;&nbsp; &nbsp; &lt;enum name=&quot;緑&quot; num=&quot;3&quot;/&gt;<br/>&nbsp; &nbsp; &#32;&lt;/selector&gt;<br/>&nbsp; &nbsp; */<br/>&nbsp; &nbsp; public int m_type ;<br/><br/>&nbsp; &nbsp; // &lt;name&gt;向き&lt;/name&gt;<br/>&nbsp; &nbsp; // &lt;sub_type&gt;direction&lt;/sub_type&gt;<br/>&nbsp; &nbsp; public Vector3d m_direction ;<br/><br/>&nbsp; &nbsp; // &lt;name&gt;速度&lt;/name&gt;<br/>&nbsp; &nbsp; // &lt;range min=&quot;0&quot; max=&quot;100&quot;/&gt;<br/>&nbsp; &nbsp; public double m_velocity ;<br/><br/>&nbsp; &nbsp; // エディタで入力しない変数<br/>&nbsp; &nbsp; public int m_noname ;<br/><br/>&nbsp; &nbsp; // &lt;name&gt;エディタで入力しない変数&lt;/name&gt;<br/>&nbsp; &nbsp; protected int m_invisible ;<br/>}</div></div><br/>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneCommon.xhtml">EntisGLS4.SceneCommon</a>
+<div class="indent1"><a href="EntisGLS4.SceneCustomItem.xhtml">EntisGLS4.SceneCustomItem</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneCustomItem">SceneCustomItem</a><br/>
+	<a href="#virtual_afterItemRenderModel">afterItemRenderModel</a><br/>
+	<a href="#virtual_beforeItemRenderModel">beforeItemRenderModel</a><br/>
+	<a href="#virtual_onExtendNotify">onExtendNotify</a><br/>
+	<a href="#virtual_onItemRenderCollision">onItemRenderCollision</a><br/>
+	<a href="#virtual_onItemRenderEvent">onItemRenderEvent</a><br/>
+	<a href="#virtual_onItemRenderModel">onItemRenderModel</a><br/>
+	<a href="#virtual_onPrepareToRender">onPrepareToRender</a><br/>
+	<a href="#virtual_onTimer">onTimer</a><br/>
+	<a href="#virtual_onUpdateFrame">onUpdateFrame</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneCustomItem"/>
+<div class="headline">SceneCustomItem</div>
+<div class="usage">public native SceneCustomItem( String typeId )</div>
+<div class="normal">
+SceneCustomItem 構築<br/></div>
+<br/>
+
+<a name="virtual_afterItemRenderModel"/>
+<div class="headline">afterItemRenderModel</div>
+<div class="usage">public void afterItemRenderModel( const EntisGLS4.Scene scene, EntisGLS4.RenderContext render, ulong flagsExclusion = 0 )</div>
+<div class="normal">
+描画後処理<br/></div>
+<br/>
+
+<a name="virtual_beforeItemRenderModel"/>
+<div class="headline">beforeItemRenderModel</div>
+<div class="usage">public void beforeItemRenderModel( const EntisGLS4.Scene scene, EntisGLS4.RenderContext render, ulong flagsExclusion = 0 )</div>
+<div class="normal">
+描画前処理<br/></div>
+<br/>
+
+<a name="virtual_onExtendNotify"/>
+<div class="headline">onExtendNotify</div>
+<div class="usage">public void onExtendNotify( String cmd, String param, const void* pExParam, ulong nExParamBytes )</div>
+<div class="normal">
+拡張的な処理の通知<br/></div>
+<div class="notes_parameter">
+<div class="param_name">cmd</div>
+<div class="param_desc">
+通知コマンド SceneNotifyCommand</div>
+<div class="param_name">param</div>
+<div class="param_desc">
+通知コマンドのパラメータ</div>
+</div>
+<br/>
+
+<a name="virtual_onItemRenderCollision"/>
+<div class="headline">onItemRenderCollision</div>
+<div class="usage">public void onItemRenderCollision( const EntisGLS4.Scene scene, EntisGLS4.Collision render )</div>
+<div class="normal">
+当たり判定追加<br/></div>
+<br/>
+
+<a name="virtual_onItemRenderEvent"/>
+<div class="headline">onItemRenderEvent</div>
+<div class="usage">public void onItemRenderEvent( EntisGLS4.Scene scene, EntisGLS4.Scene.ItemClass clsItem )</div>
+<div class="normal">
+レンダリング前後処理（全視点共通）<br/></div>
+<br/>
+
+<a name="virtual_onItemRenderModel"/>
+<div class="headline">onItemRenderModel</div>
+<div class="usage">public void onItemRenderModel( const EntisGLS4.Scene scene, EntisGLS4.RenderContext render, ulong flagsExclusion = 0 )</div>
+<div class="normal">
+表示モデル追加<br/></div>
+<br/>
+
+<a name="virtual_onPrepareToRender"/>
+<div class="headline">onPrepareToRender</div>
+<div class="usage">public void onPrepareToRender( EntisGLS4.RenderDevice device, uint flags = 0 )</div>
+<div class="normal">
+レンダリングの為のデバイスリソース準備<br/></div>
+<br/>
+
+<a name="virtual_onTimer"/>
+<div class="headline">onTimer</div>
+<div class="usage">public void onTimer( EntisGLS4.Scene scene, uint msecDelta )</div>
+<div class="normal">
+タイマー処理<br/></div>
+<br/>
+
+<a name="virtual_onUpdateFrame"/>
+<div class="headline">onUpdateFrame</div>
+<div class="usage">public void onUpdateFrame( double frame, EntisGLS4.SceneSequencer.SeekMethod seek )</div>
+<div class="normal">
+フレーム更新後処理<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

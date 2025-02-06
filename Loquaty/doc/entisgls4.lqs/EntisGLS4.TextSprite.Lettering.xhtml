@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.TextSprite.Lettering</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.TextSprite.Lettering</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct Lettering<br/>
+{<br/>
+&nbsp; &nbsp; Point&nbsp; &nbsp; ptStartWriting ;<br/>
+&nbsp; &nbsp; ImageRect&nbsp; &nbsp; rectWritable ;<br/>
+&nbsp; &nbsp; EntisGLS4.TextSprite.Lettering.AlignmentType&nbsp; &nbsp; typeAlignment ;<br/>
+&nbsp; &nbsp; EntisGLS4.TextSprite.Lettering.VerticalWriting&nbsp; &nbsp; flagVertical ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; pitchChar ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; offsetChar ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; scalePitch ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; offsetInHalf ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; offsetOutHalf ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; pitchTab ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; pitchLine ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; widthIndent ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; minHyphening ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxProhibition ;<br/>
+}</div>
+<div class="normal">
+レタリング情報<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.TextSprite.Lettering.xhtml">EntisGLS4.TextSprite.Lettering</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.TextSprite.Lettering.AlignmentType.xhtml">EntisGLS4.TextSprite.Lettering.AlignmentType</a></div>
+<div class="indent2"><a href="EntisGLS4.TextSprite.Lettering.VerticalWriting.xhtml">EntisGLS4.TextSprite.Lettering.VerticalWriting</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_alignLeft">alignLeft</a><br/>
+	<a href="#static_alignRight">alignRight</a><br/>
+	<a href="#static_alignCenter">alignCenter</a><br/>
+	<a href="#static_alignLong">alignLong</a><br/>
+	<a href="#static_writingHorizontal">writingHorizontal</a><br/>
+	<a href="#static_writingVertical">writingVertical</a><br/>
+</div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_ptStartWriting">ptStartWriting</a><br/>
+	<a href="#member_rectWritable">rectWritable</a><br/>
+	<a href="#member_typeAlignment">typeAlignment</a><br/>
+	<a href="#member_flagVertical">flagVertical</a><br/>
+	<a href="#member_pitchChar">pitchChar</a><br/>
+	<a href="#member_offsetChar">offsetChar</a><br/>
+	<a href="#member_scalePitch">scalePitch</a><br/>
+	<a href="#member_offsetInHalf">offsetInHalf</a><br/>
+	<a href="#member_offsetOutHalf">offsetOutHalf</a><br/>
+	<a href="#member_pitchTab">pitchTab</a><br/>
+	<a href="#member_pitchLine">pitchLine</a><br/>
+	<a href="#member_widthIndent">widthIndent</a><br/>
+	<a href="#member_minHyphening">minHyphening</a><br/>
+	<a href="#member_maxProhibition">maxProhibition</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_alignLeft"/>
+<div class="headline">alignLeft</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Lettering.AlignmentType&#9; alignLeft = 0</div>
+<div class="normal">
+アライメント：左揃え／上揃え<br/></div>
+<br/>
+<a name="static_alignRight"/>
+<div class="headline">alignRight</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Lettering.AlignmentType&#9; alignRight = 1</div>
+<div class="normal">
+アライメント：右揃え／下揃え<br/></div>
+<br/>
+<a name="static_alignCenter"/>
+<div class="headline">alignCenter</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Lettering.AlignmentType&#9; alignCenter = 2</div>
+<div class="normal">
+アライメント：中央揃え<br/></div>
+<br/>
+<a name="static_alignLong"/>
+<div class="headline">alignLong</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Lettering.AlignmentType&#9; alignLong = 3</div>
+<div class="normal">
+アライメント：両端揃え<br/></div>
+<br/>
+<a name="static_writingHorizontal"/>
+<div class="headline">writingHorizontal</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Lettering.VerticalWriting&#9; writingHorizontal = 0</div>
+<div class="normal">
+縦書きフラグ：横書き<br/></div>
+<br/>
+<a name="static_writingVertical"/>
+<div class="headline">writingVertical</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Lettering.VerticalWriting&#9; writingVertical = 1</div>
+<div class="normal">
+縦書きフラグ：縦書き<br/></div>
+<br/>
+
+
+<div class="chapter">Members</div>
+<a name="member_ptStartWriting"/>
+<div class="headline">ptStartWriting</div>
+<div class="usage">public Point&#9; ptStartWriting = {x: 0,y: 0}</div>
+<div class="normal">
+描画開始位置<br/></div>
+<br/>
+<a name="member_rectWritable"/>
+<div class="headline">rectWritable</div>
+<div class="usage">public ImageRect&#9; rectWritable = {x: 0,y: 0,w: 0,h: 0}</div>
+<div class="normal">
+描画可能域<br/></div>
+<br/>
+<a name="member_typeAlignment"/>
+<div class="headline">typeAlignment</div>
+<div class="usage">public EntisGLS4.TextSprite.Lettering.AlignmentType&#9; typeAlignment = 0</div>
+<div class="normal">
+整列方式（align～）<br/></div>
+<br/>
+<a name="member_flagVertical"/>
+<div class="headline">flagVertical</div>
+<div class="usage">public EntisGLS4.TextSprite.Lettering.VerticalWriting&#9; flagVertical = 0</div>
+<div class="normal">
+縦書き方式（writing～）<br/></div>
+<br/>
+<a name="member_pitchChar"/>
+<div class="headline">pitchChar</div>
+<div class="usage">public int&#9; pitchChar = 0</div>
+<div class="normal">
+固定文字ピッチ (0 以外のときに使用)<br/></div>
+<br/>
+<a name="member_offsetChar"/>
+<div class="headline">offsetChar</div>
+<div class="usage">public int&#9; offsetChar = 0</div>
+<div class="normal">
+文字ピッチ加算値<br/></div>
+<br/>
+<a name="member_scalePitch"/>
+<div class="headline">scalePitch</div>
+<div class="usage">public int&#9; scalePitch = 0x10000</div>
+<div class="normal">
+文字ピッチ比率（*0x10000）<br/></div>
+<br/>
+<a name="member_offsetInHalf"/>
+<div class="headline">offsetInHalf</div>
+<div class="usage">public int&#9; offsetInHalf = 0</div>
+<div class="normal">
+全角文字から半角文字の文字ピッチ加算<br/></div>
+<br/>
+<a name="member_offsetOutHalf"/>
+<div class="headline">offsetOutHalf</div>
+<div class="usage">public int&#9; offsetOutHalf = 0</div>
+<div class="normal">
+半角文字から全角文字の文字ピッチ加算<br/></div>
+<br/>
+<a name="member_pitchTab"/>
+<div class="headline">pitchTab</div>
+<div class="usage">public int&#9; pitchTab = 0</div>
+<div class="normal">
+タブピッチ<br/></div>
+<br/>
+<a name="member_pitchLine"/>
+<div class="headline">pitchLine</div>
+<div class="usage">public int&#9; pitchLine = 0</div>
+<div class="normal">
+行間 (0 のときはフォントサイズに依存)<br/></div>
+<br/>
+<a name="member_widthIndent"/>
+<div class="headline">widthIndent</div>
+<div class="usage">public int&#9; widthIndent = 0</div>
+<div class="normal">
+２行目以降インデント<br/></div>
+<br/>
+<a name="member_minHyphening"/>
+<div class="headline">minHyphening</div>
+<div class="usage">public uint&#9; minHyphening = 7</div>
+<div class="normal">
+最小ハイフニング長<br/></div>
+<br/>
+<a name="member_maxProhibition"/>
+<div class="headline">maxProhibition</div>
+<div class="usage">public uint&#9; maxProhibition = 3</div>
+<div class="normal">
+最大禁則ぶら下げ長<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

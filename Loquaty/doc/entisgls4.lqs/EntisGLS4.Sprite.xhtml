@@ -1,0 +1,1625 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Sprite</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Sprite</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class Sprite ;</div>
+<div class="normal">
+スプライト<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Sprite.xhtml">EntisGLS4.Sprite</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.Sprite.CommandPriority.xhtml">EntisGLS4.Sprite.CommandPriority</a></div>
+<div class="indent2"><a href="EntisGLS4.Sprite.Parameter.xhtml">EntisGLS4.Sprite.Parameter</a></div>
+<div class="indent2"><a href="EntisGLS4.Sprite.ScrollDirection.xhtml">EntisGLS4.Sprite.ScrollDirection</a></div>
+<div class="indent2"><a href="EntisGLS4.Sprite.SpriteFlag.xhtml">EntisGLS4.Sprite.SpriteFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.Sprite.UIFlag.xhtml">EntisGLS4.Sprite.UIFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.Sprite.Virtual3DParam.xhtml">EntisGLS4.Sprite.Virtual3DParam</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_flagZScale">flagZScale</a><br/>
+	<a href="#static_uiDisabled">uiDisabled</a><br/>
+	<a href="#static_uiDisabledKeyInput">uiDisabledKeyInput</a><br/>
+	<a href="#static_uiDisabledMouseWheel">uiDisabledMouseWheel</a><br/>
+	<a href="#static_uiHaveFocus">uiHaveFocus</a><br/>
+	<a href="#static_uiFocusable">uiFocusable</a><br/>
+	<a href="#static_uiUnclickable">uiUnclickable</a><br/>
+	<a href="#static_uiNoMoveFocusByKey">uiNoMoveFocusByKey</a><br/>
+	<a href="#static_uiGroupMember">uiGroupMember</a><br/>
+	<a href="#static_uiModalFirst">uiModalFirst</a><br/>
+	<a href="#static_uiModalEnd">uiModalEnd</a><br/>
+	<a href="#static_scrollDefault">scrollDefault</a><br/>
+	<a href="#static_scrollHorz">scrollHorz</a><br/>
+	<a href="#static_scrollVert">scrollVert</a><br/>
+	<a href="#static_commandLow">commandLow</a><br/>
+	<a href="#static_commandBelow">commandBelow</a><br/>
+	<a href="#static_commandNormal">commandNormal</a><br/>
+	<a href="#static_commandAbove">commandAbove</a><br/>
+	<a href="#static_commandHigh">commandHigh</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Sprite">Sprite</a><br/>
+	<a href="#virtual_addChild">addChild</a><br/>
+	<a href="#virtual_addFilter">addFilter</a><br/>
+	<a href="#virtual_addTimer">addTimer</a><br/>
+	<a href="#virtual_attachAnimation">attachAnimation</a><br/>
+	<a href="#virtual_attachImage">attachImage</a><br/>
+	<a href="#virtual_attachKeyListener">attachKeyListener</a><br/>
+	<a href="#virtual_attachMouseListener">attachMouseListener</a><br/>
+	<a href="#virtual_attachScrollBar">attachScrollBar</a><br/>
+	<a href="#virtual_beginAnimation">beginAnimation</a><br/>
+	<a href="#virtual_cancelAction">cancelAction</a><br/>
+	<a href="#virtual_changePriority">changePriority</a><br/>
+	<a href="#virtual_changeSpritePriority">changeSpritePriority</a><br/>
+	<a href="#virtual_checkButton">checkButton</a><br/>
+	<a href="#virtual_checkSpriteButton">checkSpriteButton</a><br/>
+	<a href="#virtual_createBuffer">createBuffer</a><br/>
+	<a href="#virtual_defrostFrameUpdate">defrostFrameUpdate</a><br/>
+	<a href="#virtual_detachKeyListener">detachKeyListener</a><br/>
+	<a href="#virtual_detachMouseListener">detachMouseListener</a><br/>
+	<a href="#virtual_detachScrollBar">detachScrollBar</a><br/>
+	<a href="#virtual_duplicate">duplicate</a><br/>
+	<a href="#virtual_flushAction">flushAction</a><br/>
+	<a href="#virtual_freezeFrameUpdate">freezeFrameUpdate</a><br/>
+	<a href="#virtual_getAttachedImage">getAttachedImage</a><br/>
+	<a href="#virtual_getAttachedLeftImage">getAttachedLeftImage</a><br/>
+	<a href="#virtual_getBufferRenderDevice">getBufferRenderDevice</a><br/>
+	<a href="#virtual_getCenterPosition">getCenterPosition</a><br/>
+	<a href="#virtual_getChildAt">getChildAt</a><br/>
+	<a href="#virtual_getChildCount">getChildCount</a><br/>
+	<a href="#virtual_getClickableRect">getClickableRect</a><br/>
+	<a href="#virtual_getDrawParamFlags">getDrawParamFlags</a><br/>
+	<a href="#virtual_getFillBackColor">getFillBackColor</a><br/>
+	<a href="#virtual_getFilter2Parameter">getFilter2Parameter</a><br/>
+	<a href="#virtual_getFilterParameter">getFilterParameter</a><br/>
+	<a href="#virtual_getHitSpriteAt">getHitSpriteAt</a><br/>
+	<a href="#virtual_getID">getID</a><br/>
+	<a href="#virtual_getImageCenter">getImageCenter</a><br/>
+	<a href="#virtual_getImageInfo">getImageInfo</a><br/>
+	<a href="#virtual_getImageSize">getImageSize</a><br/>
+	<a href="#virtual_getItemAs">getItemAs</a><br/>
+	<a href="#virtual_getMouseCapture">getMouseCapture</a><br/>
+	<a href="#virtual_getParallax">getParallax</a><br/>
+	<a href="#virtual_getParallaxFocusRatio">getParallaxFocusRatio</a><br/>
+	<a href="#virtual_getParallaxScreenX">getParallaxScreenX</a><br/>
+	<a href="#virtual_getParameter">getParameter</a><br/>
+	<a href="#virtual_getParent">getParent</a><br/>
+	<a href="#virtual_getPosition">getPosition</a><br/>
+	<a href="#virtual_getPosition2D">getPosition2D</a><br/>
+	<a href="#virtual_getPriority">getPriority</a><br/>
+	<a href="#virtual_getProjectionScreen">getProjectionScreen</a><br/>
+	<a href="#virtual_getRectangle">getRectangle</a><br/>
+	<a href="#virtual_getRotation">getRotation</a><br/>
+	<a href="#virtual_getScrollPageSize">getScrollPageSize</a><br/>
+	<a href="#virtual_getScrollPos">getScrollPos</a><br/>
+	<a href="#virtual_getScrollRange">getScrollRange</a><br/>
+	<a href="#virtual_getSpriteFlags">getSpriteFlags</a><br/>
+	<a href="#virtual_getSpritePriority">getSpritePriority</a><br/>
+	<a href="#virtual_getSpriteRectangle">getSpriteRectangle</a><br/>
+	<a href="#virtual_getSpriteScrollPageSize">getSpriteScrollPageSize</a><br/>
+	<a href="#virtual_getSpriteScrollPos">getSpriteScrollPos</a><br/>
+	<a href="#virtual_getSpriteScrollRange">getSpriteScrollRange</a><br/>
+	<a href="#virtual_getSpriteText">getSpriteText</a><br/>
+	<a href="#virtual_getSpriteTextRectangle">getSpriteTextRectangle</a><br/>
+	<a href="#virtual_getSpriteTransparency">getSpriteTransparency</a><br/>
+	<a href="#virtual_getText">getText</a><br/>
+	<a href="#virtual_getTransparency">getTransparency</a><br/>
+	<a href="#virtual_getUIFlag">getUIFlag</a><br/>
+	<a href="#virtual_getVirtual3DParam">getVirtual3DParam</a><br/>
+	<a href="#virtual_getZoom">getZoom</a><br/>
+	<a href="#virtual_globalToLocal">globalToLocal</a><br/>
+	<a href="#virtual_hasKeyFocus">hasKeyFocus</a><br/>
+	<a href="#virtual_hasUpdate">hasUpdate</a><br/>
+	<a href="#virtual_invokeCommands">invokeCommands</a><br/>
+	<a href="#virtual_isAction">isAction</a><br/>
+	<a href="#virtual_isBuffered">isBuffered</a><br/>
+	<a href="#virtual_isButtonChecked">isButtonChecked</a><br/>
+	<a href="#virtual_isEnabled">isEnabled</a><br/>
+	<a href="#virtual_isHitSprite">isHitSprite</a><br/>
+	<a href="#virtual_isSpriteButtonChecked">isSpriteButtonChecked</a><br/>
+	<a href="#virtual_isSpriteEnabled">isSpriteEnabled</a><br/>
+	<a href="#virtual_isSpriteVisible">isSpriteVisible</a><br/>
+	<a href="#virtual_isVisible">isVisible</a><br/>
+	<a href="#virtual_killKeyFocus">killKeyFocus</a><br/>
+	<a href="#virtual_loadImage">loadImage</a><br/>
+	<a href="#virtual_localToGlobal">localToGlobal</a><br/>
+	<a href="#virtual_modifyDrawFlags">modifyDrawFlags</a><br/>
+	<a href="#virtual_modifySpriteFlags">modifySpriteFlags</a><br/>
+	<a href="#virtual_modifyUIFlag">modifyUIFlag</a><br/>
+	<a href="#virtual_moveKeyFocusDirectionOf">moveKeyFocusDirectionOf</a><br/>
+	<a href="#virtual_moveNextKeyFocus">moveNextKeyFocus</a><br/>
+	<a href="#virtual_movePrevKeyFocus">movePrevKeyFocus</a><br/>
+	<a href="#virtual_pauseAllAction">pauseAllAction</a><br/>
+	<a href="#virtual_postCommand">postCommand</a><br/>
+	<a href="#virtual_postUpdate">postUpdate</a><br/>
+	<a href="#virtual_releaseBuffer">releaseBuffer</a><br/>
+	<a href="#virtual_releaseMouseCapture">releaseMouseCapture</a><br/>
+	<a href="#virtual_removeAllChildren">removeAllChildren</a><br/>
+	<a href="#virtual_removeAllFilters">removeAllFilters</a><br/>
+	<a href="#virtual_removeAllTimers">removeAllTimers</a><br/>
+	<a href="#virtual_removeChild">removeChild</a><br/>
+	<a href="#virtual_removeFilter">removeFilter</a><br/>
+	<a href="#virtual_removeTimer">removeTimer</a><br/>
+	<a href="#virtual_restartAllAction">restartAllAction</a><br/>
+	<a href="#virtual_setActionLinearTo">setActionLinearTo</a><br/>
+	<a href="#virtual_setCenterPosition">setCenterPosition</a><br/>
+	<a href="#virtual_setClickableRect">setClickableRect</a><br/>
+	<a href="#virtual_setEnable">setEnable</a><br/>
+	<a href="#virtual_setFillBackColor">setFillBackColor</a><br/>
+	<a href="#virtual_setFilter2Parameter">setFilter2Parameter</a><br/>
+	<a href="#virtual_setFilterParameter">setFilterParameter</a><br/>
+	<a href="#virtual_setID">setID</a><br/>
+	<a href="#virtual_setKeyFocus">setKeyFocus</a><br/>
+	<a href="#virtual_setLoopAnimation">setLoopAnimation</a><br/>
+	<a href="#virtual_setMouseCapture">setMouseCapture</a><br/>
+	<a href="#virtual_setParallax">setParallax</a><br/>
+	<a href="#virtual_setParameter">setParameter</a><br/>
+	<a href="#virtual_setPosition">setPosition</a><br/>
+	<a href="#virtual_setPosition3D">setPosition3D</a><br/>
+	<a href="#virtual_setProjectionScreen">setProjectionScreen</a><br/>
+	<a href="#virtual_setRenderDevice">setRenderDevice</a><br/>
+	<a href="#virtual_setRotation">setRotation</a><br/>
+	<a href="#virtual_setScrollPageSize">setScrollPageSize</a><br/>
+	<a href="#virtual_setScrollPos">setScrollPos</a><br/>
+	<a href="#virtual_setScrollRange">setScrollRange</a><br/>
+	<a href="#virtual_setSpriteEnable">setSpriteEnable</a><br/>
+	<a href="#virtual_setSpriteImage">setSpriteImage</a><br/>
+	<a href="#virtual_setSpriteScrollPageSize">setSpriteScrollPageSize</a><br/>
+	<a href="#virtual_setSpriteScrollPos">setSpriteScrollPos</a><br/>
+	<a href="#virtual_setSpriteScrollRange">setSpriteScrollRange</a><br/>
+	<a href="#virtual_setSpriteText">setSpriteText</a><br/>
+	<a href="#virtual_setSpriteTextFont">setSpriteTextFont</a><br/>
+	<a href="#virtual_setSpriteTransparency">setSpriteTransparency</a><br/>
+	<a href="#virtual_setSpriteVisible">setSpriteVisible</a><br/>
+	<a href="#virtual_setText">setText</a><br/>
+	<a href="#virtual_setTextFont">setTextFont</a><br/>
+	<a href="#virtual_setTransparency">setTransparency</a><br/>
+	<a href="#virtual_setVirtualCamera">setVirtualCamera</a><br/>
+	<a href="#virtual_setVisible">setVisible</a><br/>
+	<a href="#virtual_setZoom">setZoom</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_flagZScale"/>
+<div class="headline">flagZScale</div>
+<div class="usage">public static const EntisGLS4.Sprite.SpriteFlag&#9; flagZScale = 1</div>
+<div class="normal">
+スプライトフラグ：ｚ座標によって透視変換と拡大縮小を行い、疑似的な３Ｄ表示を行う<br/></div>
+<br/>
+<a name="static_uiDisabled"/>
+<div class="headline">uiDisabled</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiDisabled = 1</div>
+<div class="normal">
+UI 動作フラグ：すべての入力を禁止<br/></div>
+<br/>
+<a name="static_uiDisabledKeyInput"/>
+<div class="headline">uiDisabledKeyInput</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiDisabledKeyInput = 2</div>
+<div class="normal">
+UI 動作フラグ：キー入力禁止<br/></div>
+<br/>
+<a name="static_uiDisabledMouseWheel"/>
+<div class="headline">uiDisabledMouseWheel</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiDisabledMouseWheel = 4</div>
+<div class="normal">
+UI 動作フラグ：マウスホイール入力禁止<br/></div>
+<br/>
+<a name="static_uiHaveFocus"/>
+<div class="headline">uiHaveFocus</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiHaveFocus = 16</div>
+<div class="normal">
+UI 動作フラグ：キー入力フォーカスを持っている<br/></div>
+<br/>
+<a name="static_uiFocusable"/>
+<div class="headline">uiFocusable</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiFocusable = 32</div>
+<div class="normal">
+UI 動作フラグ：キー入力フォーカスを持つことが可能<br/></div>
+<br/>
+<a name="static_uiUnclickable"/>
+<div class="headline">uiUnclickable</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiUnclickable = 64</div>
+<div class="normal">
+UI 動作フラグ：クリックできない<br/></div>
+<br/>
+<a name="static_uiNoMoveFocusByKey"/>
+<div class="headline">uiNoMoveFocusByKey</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiNoMoveFocusByKey = 0x80</div>
+<div class="normal">
+UI 動作フラグ：キー入力によるフォーカス移動禁止<br/></div>
+<br/>
+<a name="static_uiGroupMember"/>
+<div class="headline">uiGroupMember</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiGroupMember = 0x100</div>
+<div class="normal">
+UI 動作フラグ：グループ・メンバー・フラグ<br/></div>
+<br/>
+<a name="static_uiModalFirst"/>
+<div class="headline">uiModalFirst</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiModalFirst = 0x200</div>
+<div class="normal">
+UI 動作フラグ：モーダル入力を受け付けるはじめの Sprite<br/></div>
+<br/>
+<a name="static_uiModalEnd"/>
+<div class="headline">uiModalEnd</div>
+<div class="usage">public static const EntisGLS4.Sprite.UIFlag&#9; uiModalEnd = 0x400</div>
+<div class="normal">
+UI 動作フラグ：モーダル入力を受け付ける最後の Sprite<br/></div>
+<br/>
+<a name="static_scrollDefault"/>
+<div class="headline">scrollDefault</div>
+<div class="usage">public static const EntisGLS4.Sprite.ScrollDirection&#9; scrollDefault = 0</div>
+<div class="normal">
+スクロール方向：デフォルト<br/></div>
+<br/>
+<a name="static_scrollHorz"/>
+<div class="headline">scrollHorz</div>
+<div class="usage">public static const EntisGLS4.Sprite.ScrollDirection&#9; scrollHorz = 1</div>
+<div class="normal">
+スクロール方向：水平<br/></div>
+<br/>
+<a name="static_scrollVert"/>
+<div class="headline">scrollVert</div>
+<div class="usage">public static const EntisGLS4.Sprite.ScrollDirection&#9; scrollVert = 2</div>
+<div class="normal">
+スクロール方向：垂直<br/></div>
+<br/>
+<a name="static_commandLow"/>
+<div class="headline">commandLow</div>
+<div class="usage">public static const EntisGLS4.Sprite.CommandPriority&#9; commandLow = -5</div>
+<div class="normal">
+コマンド優先度：低い<br/></div>
+<br/>
+<a name="static_commandBelow"/>
+<div class="headline">commandBelow</div>
+<div class="usage">public static const EntisGLS4.Sprite.CommandPriority&#9; commandBelow = -1</div>
+<div class="normal">
+コマンド優先度：少し低い<br/></div>
+<br/>
+<a name="static_commandNormal"/>
+<div class="headline">commandNormal</div>
+<div class="usage">public static const EntisGLS4.Sprite.CommandPriority&#9; commandNormal = 0</div>
+<div class="normal">
+コマンド優先度：通常<br/></div>
+<br/>
+<a name="static_commandAbove"/>
+<div class="headline">commandAbove</div>
+<div class="usage">public static const EntisGLS4.Sprite.CommandPriority&#9; commandAbove = 1</div>
+<div class="normal">
+コマンド優先度：少し高い<br/></div>
+<br/>
+<a name="static_commandHigh"/>
+<div class="headline">commandHigh</div>
+<div class="usage">public static const EntisGLS4.Sprite.CommandPriority&#9; commandHigh = 5</div>
+<div class="normal">
+コマンド優先度：高い<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Sprite"/>
+<div class="headline">Sprite</div>
+<div class="usage">public native Sprite( )</div>
+<div class="normal">
+Sprite 構築<br/></div>
+<br/>
+
+<a name="virtual_addChild"/>
+<div class="headline">addChild</div>
+<div class="usage">public native void addChild( EntisGLS4.Sprite sprite )</div>
+<div class="normal">
+子スプライト追加</div>
+<br/>
+<div class="indent1">
+※追加された Sprite は親スプライトで所有権を持たないのでremoveChild するか親 Sprite が破棄されるまで、呼び出し元で保持しておく必要があります。</div><br/>
+<br/>
+
+<a name="virtual_addFilter"/>
+<div class="headline">addFilter</div>
+<div class="usage">public native void addFilter( EntisGLS4.SpriteFilter filter )</div>
+<div class="normal">
+フィルタ追加<br/></div>
+<br/>
+
+<a name="virtual_addTimer"/>
+<div class="headline">addTimer</div>
+<div class="usage">public native void addTimer( EntisGLS4.SpriteTimer timer )</div>
+<div class="normal">
+タイマ処理追加<br/></div>
+<br/>
+
+<a name="virtual_attachAnimation"/>
+<div class="headline">attachAnimation</div>
+<div class="usage">public native void attachAnimation( EntisGLS4.Image image, const ImageRect* pClip = null )</div>
+<div class="normal">
+アニメーション関連付け<br/></div>
+<br/>
+
+<a name="virtual_attachImage"/>
+<div class="headline">attachImage</div>
+<div class="usage">public native void attachImage( EntisGLS4.Image image, EntisGLS4.Image leftImage = null )</div>
+<div class="normal">
+画像関連付け<br/></div>
+<br/>
+
+<a name="virtual_attachKeyListener"/>
+<div class="headline">attachKeyListener</div>
+<div class="usage">public native void attachKeyListener( EntisGLS4.SpriteKeyListener listener )</div>
+<div class="normal">
+マウス入力リスナ設定<br/></div>
+<br/>
+
+<a name="virtual_attachMouseListener"/>
+<div class="headline">attachMouseListener</div>
+<div class="usage">public native void attachMouseListener( EntisGLS4.SpriteMouseListener listener )</div>
+<div class="normal">
+マウス入力リスナ設定<br/></div>
+<br/>
+
+<a name="virtual_attachScrollBar"/>
+<div class="headline">attachScrollBar</div>
+<div class="usage">public native void attachScrollBar( EntisGLS4.Sprite scrollBar, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロールバー関連付け<br/></div>
+<div class="notes_parameter">
+<div class="param_name">scrollBar</div>
+<div class="param_desc">
+スクロールバー</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_beginAnimation"/>
+<div class="headline">beginAnimation</div>
+<div class="usage">public native void beginAnimation( long countLoop = -1, ulong iLoopStart = 0, ulong iLoopEnd = 0, ulong iStartFrame = 0, ulong msecDuration = 0 )</div>
+<div class="normal">
+アニメーション開始<br/></div>
+<br/>
+
+<a name="virtual_cancelAction"/>
+<div class="headline">cancelAction</div>
+<div class="usage">public native void cancelAction( )</div>
+<div class="normal">
+アニメーションキャンセル</div>
+<br/>
+<div class="indent1">
+実行中のアニメーションを即時に終了します。座標などは現在の値のままにします。</div><br/>
+<br/>
+
+<a name="virtual_changePriority"/>
+<div class="headline">changePriority</div>
+<div class="usage">public native void changePriority( int priority )</div>
+<div class="normal">
+表示優先度変更<br/></div>
+<div class="notes_parameter">
+<div class="param_name">priority</div>
+<div class="param_desc">
+表示優先度（数値が大きいほうが奥）</div>
+</div>
+<br/>
+
+<a name="virtual_changeSpritePriority"/>
+<div class="headline">changeSpritePriority</div>
+<div class="usage">public native void changeSpritePriority( String id, int priority )</div>
+<div class="normal">
+表示優先度変更<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">priority</div>
+<div class="param_desc">
+表示優先度（数値が大きいほうが奥）</div>
+</div>
+<br/>
+
+<a name="virtual_checkButton"/>
+<div class="headline">checkButton</div>
+<div class="usage">public native void checkButton( boolean flagCheck )</div>
+<div class="normal">
+ボタンチェック属性設定<br/></div>
+<br/>
+
+<a name="virtual_checkSpriteButton"/>
+<div class="headline">checkSpriteButton</div>
+<div class="usage">public native void checkSpriteButton( String id, boolean flagCheck )</div>
+<div class="normal">
+ボタンチェック属性<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">flagCheck</div>
+<div class="param_desc">
+ボタンチェック状態</div>
+</div>
+<br/>
+
+<a name="virtual_createBuffer"/>
+<div class="headline">createBuffer</div>
+<div class="usage">public native boolean createBuffer( uint width, uint height, uint format = 0, uint depth = 32, ulong nBufFlags = 0, boolean flagZBuffer = false, boolean flagStereo3D = false )</div>
+<div class="normal">
+バッファ生成<br/></div>
+<br/>
+
+<a name="virtual_defrostFrameUpdate"/>
+<div class="headline">defrostFrameUpdate</div>
+<div class="usage">public native boolean defrostFrameUpdate( )</div>
+<div class="normal">
+フレームバッファ更新一時停止解除</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+true の場合、一時停止が解除された</div>
+</div>
+<div class="indent1">
+freezeFrameUpdate と同じ回数だけ呼び出す必要があります。</div><br/>
+<br/>
+
+<a name="virtual_detachKeyListener"/>
+<div class="headline">detachKeyListener</div>
+<div class="usage">public native void detachKeyListener( EntisGLS4.SpriteKeyListener listener )</div>
+<div class="normal">
+マウス入力リスナ解除<br/></div>
+<br/>
+
+<a name="virtual_detachMouseListener"/>
+<div class="headline">detachMouseListener</div>
+<div class="usage">public native void detachMouseListener( EntisGLS4.SpriteMouseListener listener )</div>
+<div class="normal">
+マウス入力リスナ解除<br/></div>
+<br/>
+
+<a name="virtual_detachScrollBar"/>
+<div class="headline">detachScrollBar</div>
+<div class="usage">public native void detachScrollBar( EntisGLS4.Sprite scrollBar, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロールバー関連付け解除<br/></div>
+<div class="notes_parameter">
+<div class="param_name">scrollBar</div>
+<div class="param_desc">
+スクロールバー</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_duplicate"/>
+<div class="headline">duplicate</div>
+<div class="usage">public native EntisGLS4.Sprite duplicate( )</div>
+<div class="normal">
+複製<br/></div>
+<br/>
+
+<a name="virtual_flushAction"/>
+<div class="headline">flushAction</div>
+<div class="usage">public native void flushAction( )</div>
+<div class="normal">
+アニメーション即時完了</div>
+<br/>
+<div class="indent1">
+実行中のアニメーションを即時に終了し、アニメーションの完了状態に設定します。</div><br/>
+<br/>
+
+<a name="virtual_freezeFrameUpdate"/>
+<div class="headline">freezeFrameUpdate</div>
+<div class="usage">public native void freezeFrameUpdate( )</div>
+<div class="normal">
+フレームバッファ更新一時停止<br/></div>
+<br/>
+
+<a name="virtual_getAttachedImage"/>
+<div class="headline">getAttachedImage</div>
+<div class="usage">public native EntisGLS4.Image getAttachedImage( ) const</div>
+<div class="normal">
+関連付けられた画像取得<br/></div>
+<br/>
+
+<a name="virtual_getAttachedLeftImage"/>
+<div class="headline">getAttachedLeftImage</div>
+<div class="usage">public native EntisGLS4.Image getAttachedLeftImage( ) const</div>
+<div class="normal">
+関連付けられた画像（ステレオ立体視の左目用）取得<br/></div>
+<br/>
+
+<a name="virtual_getBufferRenderDevice"/>
+<div class="headline">getBufferRenderDevice</div>
+<div class="usage">public native EntisGLS4.RenderDevice getBufferRenderDevice( ) const</div>
+<div class="normal">
+レンダリングデバイスの取得<br/></div>
+<br/>
+
+<a name="virtual_getCenterPosition"/>
+<div class="headline">getCenterPosition</div>
+<div class="usage">public native const Vector2d* getCenterPosition( ) const</div>
+<div class="normal">
+中心座標取得<br/></div>
+<br/>
+
+<a name="virtual_getChildAt"/>
+<div class="headline">getChildAt</div>
+<div class="usage">public native EntisGLS4.Sprite getChildAt( ulong index ) const</div>
+<div class="normal">
+子スプライト取得<br/></div>
+<br/>
+
+<a name="virtual_getChildCount"/>
+<div class="headline">getChildCount</div>
+<div class="usage">public native ulong getChildCount( ) const</div>
+<div class="normal">
+子スプライト数取得<br/></div>
+<br/>
+
+<a name="virtual_getClickableRect"/>
+<div class="headline">getClickableRect</div>
+<div class="usage">public native const ImageRect* getClickableRect( ) const</div>
+<div class="normal">
+ヒット領域取得<br/></div>
+<br/>
+
+<a name="virtual_getDrawParamFlags"/>
+<div class="headline">getDrawParamFlags</div>
+<div class="usage">public native EntisGLS4.PaintParam.PaintFlag getDrawParamFlags( ) const</div>
+<div class="normal">
+描画フラグ取得<br/></div>
+<br/>
+
+<a name="virtual_getFillBackColor"/>
+<div class="headline">getFillBackColor</div>
+<div class="usage">public native boolean getFillBackColor( uint* argbFill ) const</div>
+<div class="normal">
+背景色取得<br/></div>
+<br/>
+
+<a name="virtual_getFilter2Parameter"/>
+<div class="headline">getFilter2Parameter</div>
+<div class="usage">public native int getFilter2Parameter( ) const</div>
+<br/>
+
+<a name="virtual_getFilterParameter"/>
+<div class="headline">getFilterParameter</div>
+<div class="usage">public native int getFilterParameter( ) const</div>
+<div class="normal">
+フィルタパラメータ取得<br/></div>
+<br/>
+
+<a name="virtual_getHitSpriteAt"/>
+<div class="headline">getHitSpriteAt</div>
+<div class="usage">public native EntisGLS4.Sprite getHitSpriteAt( Vector2d* vPos ) const</div>
+<div class="normal">
+ヒットアイテム検索<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vPos</div>
+<div class="param_desc">
+ヒットする Sprite を探すローカル座標を渡し、Sprite がヒットしたときにはヒットした Sprite のローカル座標を受け取る Vector2d</div>
+</div>
+<br/>
+
+<a name="virtual_getID"/>
+<div class="headline">getID</div>
+<div class="usage">public native String getID( ) const</div>
+<div class="normal">
+識別子取得<br/></div>
+<br/>
+
+<a name="virtual_getImageCenter"/>
+<div class="headline">getImageCenter</div>
+<div class="usage">public native const Vector2d* getImageCenter( ) const</div>
+<br/>
+
+<a name="virtual_getImageInfo"/>
+<div class="headline">getImageInfo</div>
+<div class="usage">public native boolean getImageInfo( EntisGLS4.ImageInfo* imginf ) const</div>
+<div class="normal">
+関連付けられた画像情報取得<br/></div>
+<br/>
+
+<a name="virtual_getImageSize"/>
+<div class="headline">getImageSize</div>
+<div class="usage">public native Size* getImageSize( ) const</div>
+<div class="normal">
+関連付けられた画像サイズ取得<br/></div>
+<br/>
+
+<a name="virtual_getItemAs"/>
+<div class="headline">getItemAs</div>
+<div class="usage">public native EntisGLS4.Sprite getItemAs( String id ) const</div>
+<div class="normal">
+指定アイテム取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+子アイテム ID (孫アイテム以下は \ で区切って指定)</div>
+</div>
+<br/>
+
+<a name="virtual_getMouseCapture"/>
+<div class="headline">getMouseCapture</div>
+<div class="usage">public native EntisGLS4.Sprite getMouseCapture( ) const</div>
+<div class="normal">
+キャプチャー中の子スプライトを取得<br/></div>
+<br/>
+
+<a name="virtual_getParallax"/>
+<div class="headline">getParallax</div>
+<div class="usage">public native double getParallax( ) const</div>
+<br/>
+
+<a name="virtual_getParallaxFocusRatio"/>
+<div class="headline">getParallaxFocusRatio</div>
+<div class="usage">public native double getParallaxFocusRatio( ) const</div>
+<br/>
+
+<a name="virtual_getParallaxScreenX"/>
+<div class="headline">getParallaxScreenX</div>
+<div class="usage">public native double getParallaxScreenX( ) const</div>
+<br/>
+
+<a name="virtual_getParameter"/>
+<div class="headline">getParameter</div>
+<div class="usage">public native const EntisGLS4.Sprite.Parameter* getParameter( ) const</div>
+<div class="normal">
+表示パラメータ取得<br/></div>
+<br/>
+
+<a name="virtual_getParent"/>
+<div class="headline">getParent</div>
+<div class="usage">public native EntisGLS4.Sprite getParent( ) const</div>
+<div class="normal">
+親スプライト取得<br/></div>
+<br/>
+
+<a name="virtual_getPosition"/>
+<div class="headline">getPosition</div>
+<div class="usage">public native const Vector3d* getPosition( ) const</div>
+<div class="normal">
+座標取得<br/></div>
+<br/>
+
+<a name="virtual_getPosition2D"/>
+<div class="headline">getPosition2D</div>
+<div class="usage">public native const Vector2d* getPosition2D( ) const</div>
+<br/>
+
+<a name="virtual_getPriority"/>
+<div class="headline">getPriority</div>
+<div class="usage">public native int getPriority( ) const</div>
+<div class="normal">
+表示優先度取得（数値が大きいほうが奥）<br/></div>
+<br/>
+
+<a name="virtual_getProjectionScreen"/>
+<div class="headline">getProjectionScreen</div>
+<div class="usage">public native boolean getProjectionScreen( Vector3* vScreen, double* zScale, double* fpPixelAspect ) const</div>
+<div class="normal">
+擬似 3D 投影スクリーン座標取得<br/></div>
+<br/>
+
+<a name="virtual_getRectangle"/>
+<div class="headline">getRectangle</div>
+<div class="usage">public native boolean getRectangle( ImageRect* rectExt ) const</div>
+<div class="normal">
+外接矩形取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">rectExt</div>
+<div class="param_desc">
+外接矩形を受け取る ImageRect 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_getRotation"/>
+<div class="headline">getRotation</div>
+<div class="usage">public native double getRotation( ) const</div>
+<div class="normal">
+回転角取得<br/></div>
+<br/>
+
+<a name="virtual_getScrollPageSize"/>
+<div class="headline">getScrollPageSize</div>
+<div class="usage">public native int getScrollPageSize( EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・ページサイズ属性取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_getScrollPos"/>
+<div class="headline">getScrollPos</div>
+<div class="usage">public native int getScrollPos( EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・トラック位置属性取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_getScrollRange"/>
+<div class="headline">getScrollRange</div>
+<div class="usage">public native int getScrollRange( EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・トラック範囲属性取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_getSpriteFlags"/>
+<div class="headline">getSpriteFlags</div>
+<div class="usage">public native EntisGLS4.Sprite.SpriteFlag getSpriteFlags( ) const</div>
+<div class="normal">
+スプライト処理フラグ取得（EntisGLS4.Sprite.flag～）<br/></div>
+<br/>
+
+<a name="virtual_getSpritePriority"/>
+<div class="headline">getSpritePriority</div>
+<div class="usage">public native int getSpritePriority( String id ) const</div>
+<div class="normal">
+表示優先度取得（数値が大きいほうが奥）<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+</div>
+<br/>
+
+<a name="virtual_getSpriteRectangle"/>
+<div class="headline">getSpriteRectangle</div>
+<div class="usage">public native boolean getSpriteRectangle( String id, ImageRect* rectExt ) const</div>
+<div class="normal">
+表示領域取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">rectExt</div>
+<div class="param_desc">
+表示領域外接矩形を受け取る ImageRect</div>
+</div>
+<br/>
+
+<a name="virtual_getSpriteScrollPageSize"/>
+<div class="headline">getSpriteScrollPageSize</div>
+<div class="usage">public native int getSpriteScrollPageSize( String id, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 ) const</div>
+<div class="normal">
+スクロール・ページサイズ属性取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_getSpriteScrollPos"/>
+<div class="headline">getSpriteScrollPos</div>
+<div class="usage">public native int getSpriteScrollPos( String id, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 ) const</div>
+<div class="normal">
+スクロール・トラック位置属性取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_getSpriteScrollRange"/>
+<div class="headline">getSpriteScrollRange</div>
+<div class="usage">public native int getSpriteScrollRange( String id, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 ) const</div>
+<div class="normal">
+スクロール・トラック位置範囲属性取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_getSpriteText"/>
+<div class="headline">getSpriteText</div>
+<div class="usage">public native String getSpriteText( String id ) const</div>
+<div class="normal">
+文字列属性取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+</div>
+<br/>
+
+<a name="virtual_getSpriteTextRectangle"/>
+<div class="headline">getSpriteTextRectangle</div>
+<div class="usage">public native boolean getSpriteTextRectangle( String id, ImageRect* rectExt ) const</div>
+<div class="normal">
+テキスト表示領域取得</div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">rectExt</div>
+<div class="param_desc">
+表示領域外接矩形を受け取る ImageRect</div>
+</div>
+<div class="indent1">
+テキストを表示する Sprite で、実際にテキストが表示される領域を取得します。</div><br/>
+<br/>
+
+<a name="virtual_getSpriteTransparency"/>
+<div class="headline">getSpriteTransparency</div>
+<div class="usage">public native uint getSpriteTransparency( String id ) const</div>
+<div class="normal">
+透明度取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+</div>
+<br/>
+
+<a name="virtual_getText"/>
+<div class="headline">getText</div>
+<div class="usage">public native String getText( ) const</div>
+<div class="normal">
+文字列属性取得<br/></div>
+<br/>
+
+<a name="virtual_getTransparency"/>
+<div class="headline">getTransparency</div>
+<div class="usage">public native uint getTransparency( ) const</div>
+<div class="normal">
+透明度取得<br/></div>
+<br/>
+
+<a name="virtual_getUIFlag"/>
+<div class="headline">getUIFlag</div>
+<div class="usage">public native EntisGLS4.Sprite.UIFlag getUIFlag( ) const</div>
+<div class="normal">
+UI フラグ取得（EntisGLS4.Sprite.ui～）<br/></div>
+<br/>
+
+<a name="virtual_getVirtual3DParam"/>
+<div class="headline">getVirtual3DParam</div>
+<div class="usage">public native const EntisGLS4.Sprite.Virtual3DParam* getVirtual3DParam( ) const</div>
+<div class="normal">
+仮想３Ｄ設定取得<br/></div>
+<br/>
+
+<a name="virtual_getZoom"/>
+<div class="headline">getZoom</div>
+<div class="usage">public native const Vector2d* getZoom( ) const</div>
+<div class="normal">
+拡大率取得<br/></div>
+<br/>
+
+<a name="virtual_globalToLocal"/>
+<div class="headline">globalToLocal</div>
+<div class="usage">public native boolean globalToLocal( Vector2d* vPos ) const</div>
+<div class="normal">
+グローバル座標からローカル座標へ変換<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vPos</div>
+<div class="param_desc">
+呼び出し時にグローバル座標を保持し、ローカル座標を受け取る Vector2 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_hasKeyFocus"/>
+<div class="headline">hasKeyFocus</div>
+<div class="usage">public native boolean hasKeyFocus( ) const</div>
+<div class="normal">
+キーフォーカスを有しているか？<br/></div>
+<br/>
+
+<a name="virtual_hasUpdate"/>
+<div class="headline">hasUpdate</div>
+<div class="usage">public native boolean hasUpdate( ) const</div>
+<div class="normal">
+更新領域状態取得<br/></div>
+<br/>
+
+<a name="virtual_invokeCommands"/>
+<div class="headline">invokeCommands</div>
+<div class="usage">public native boolean invokeCommands( String strXMLCommands, XMLDocument xmlResults = null )</div>
+<div class="normal">
+コマンド処理<br/></div>
+<div class="notes_parameter">
+<div class="param_name">strXMLCommands</div>
+<div class="param_desc">
+xml 形式のコマンド</div>
+<div class="param_name">xmlResults</div>
+<div class="param_desc">
+結果を受け取る XMLDocument</div>
+</div>
+<br/>
+
+<a name="virtual_isAction"/>
+<div class="headline">isAction</div>
+<div class="usage">public native boolean isAction( ) const</div>
+<div class="normal">
+アニメーション中か？<br/></div>
+<br/>
+
+<a name="virtual_isBuffered"/>
+<div class="headline">isBuffered</div>
+<div class="usage">public native boolean isBuffered( ) const</div>
+<div class="normal">
+バッファを保持しているか？<br/></div>
+<br/>
+
+<a name="virtual_isButtonChecked"/>
+<div class="headline">isButtonChecked</div>
+<div class="usage">public native boolean isButtonChecked( )</div>
+<div class="normal">
+ボタンチェック属性取得<br/></div>
+<br/>
+
+<a name="virtual_isEnabled"/>
+<div class="headline">isEnabled</div>
+<div class="usage">public native boolean isEnabled( ) const</div>
+<div class="normal">
+入力禁止状態取得</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+false の時禁止状態</div>
+</div>
+<br/>
+
+<a name="virtual_isHitSprite"/>
+<div class="headline">isHitSprite</div>
+<div class="usage">public native boolean isHitSprite( double x, double y ) const</div>
+<div class="normal">
+ヒット判定<br/></div>
+<br/>
+
+<a name="virtual_isSpriteButtonChecked"/>
+<div class="headline">isSpriteButtonChecked</div>
+<div class="usage">public native boolean isSpriteButtonChecked( String id ) const</div>
+<div class="normal">
+ボタンチェック属性取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+</div>
+<br/>
+
+<a name="virtual_isSpriteEnabled"/>
+<div class="headline">isSpriteEnabled</div>
+<div class="usage">public native boolean isSpriteEnabled( String id ) const</div>
+<div class="normal">
+入力禁止状態取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+</div>
+<br/>
+
+<a name="virtual_isSpriteVisible"/>
+<div class="headline">isSpriteVisible</div>
+<div class="usage">public native boolean isSpriteVisible( String id ) const</div>
+<div class="normal">
+可視状態取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+</div>
+<br/>
+
+<a name="virtual_isVisible"/>
+<div class="headline">isVisible</div>
+<div class="usage">public native boolean isVisible( ) const</div>
+<div class="normal">
+表示フラグ取得<br/></div>
+<br/>
+
+<a name="virtual_killKeyFocus"/>
+<div class="headline">killKeyFocus</div>
+<div class="usage">public native boolean killKeyFocus( )</div>
+<div class="normal">
+キーフォーカスを解除<br/></div>
+<br/>
+
+<a name="virtual_loadImage"/>
+<div class="headline">loadImage</div>
+<div class="usage">public native boolean loadImage( String path )</div>
+<div class="normal">
+画像ファイル読み込み<br/></div>
+<br/>
+
+<a name="virtual_localToGlobal"/>
+<div class="headline">localToGlobal</div>
+<div class="usage">public native boolean localToGlobal( Vector2d* vPos ) const</div>
+<div class="normal">
+ローカル座標からグローバル座標へ変換<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vPos</div>
+<div class="param_desc">
+呼び出し時にローカル座標を保持し、グローバル座標を受け取る Vector2 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_modifyDrawFlags"/>
+<div class="headline">modifyDrawFlags</div>
+<div class="usage">public native void modifyDrawFlags( EntisGLS4.PaintParam.PaintFlag nAddFlags, EntisGLS4.PaintParam.PaintFlag nRemoveFlags = 0 )</div>
+<div class="normal">
+描画フラグ変更<br/></div>
+<br/>
+
+<a name="virtual_modifySpriteFlags"/>
+<div class="headline">modifySpriteFlags</div>
+<div class="usage">public native void modifySpriteFlags( EntisGLS4.Sprite.SpriteFlag nAddFlags, EntisGLS4.Sprite.SpriteFlag nRemoveFlags = 0 )</div>
+<div class="normal">
+スプライト処理フラグ変更（EntisGLS4.Sprite.flag～）<br/></div>
+<br/>
+
+<a name="virtual_modifyUIFlag"/>
+<div class="headline">modifyUIFlag</div>
+<div class="usage">public native ulong modifyUIFlag( EntisGLS4.Sprite.UIFlag nAddFlags, EntisGLS4.Sprite.UIFlag nRemoveFlags = 0 )</div>
+<div class="normal">
+UI フラグ変更（EntisGLS4.Sprite.ui～）<br/></div>
+<br/>
+
+<a name="virtual_moveKeyFocusDirectionOf"/>
+<div class="headline">moveKeyFocusDirectionOf</div>
+<div class="usage">public native boolean moveKeyFocusDirectionOf( const Vector2d* vDir )</div>
+<div class="normal">
+指定の方向へフォーカスを移動する<br/></div>
+<br/>
+
+<a name="virtual_moveNextKeyFocus"/>
+<div class="headline">moveNextKeyFocus</div>
+<div class="usage">public native boolean moveNextKeyFocus( )</div>
+<div class="normal">
+次のフォーカスを受け取り可能なスプライトへフォーカスを移動する<br/></div>
+<br/>
+
+<a name="virtual_movePrevKeyFocus"/>
+<div class="headline">movePrevKeyFocus</div>
+<div class="usage">public native boolean movePrevKeyFocus( )</div>
+<div class="normal">
+前のフォーカスを受け取り可能なスプライトへフォーカスを移動する<br/></div>
+<br/>
+
+<a name="virtual_pauseAllAction"/>
+<div class="headline">pauseAllAction</div>
+<div class="usage">public native void pauseAllAction( )</div>
+<div class="normal">
+全アニメーション一時停止<br/></div>
+<br/>
+
+<a name="virtual_postCommand"/>
+<div class="headline">postCommand</div>
+<div class="usage">public native boolean postCommand( String cmd, long param = 0, long code = 0, int priority = 0, boolean overwritable = false )</div>
+<div class="normal">
+コマンド送出<br/></div>
+<div class="notes_parameter">
+<div class="param_name">cmd</div>
+<div class="param_desc">
+コマンド</div>
+<div class="param_name">param</div>
+<div class="param_desc">
+パラメータ</div>
+<div class="param_name">code</div>
+<div class="param_desc">
+コード</div>
+<div class="param_name">priority</div>
+<div class="param_desc">
+優先度</div>
+<div class="param_name">overwritable</div>
+<div class="param_desc">
+true の時、未処理の同じコマンドがキューに存在する場合に上書きする</div>
+</div>
+<br/>
+
+<a name="virtual_postUpdate"/>
+<div class="headline">postUpdate</div>
+<div class="usage">public native void postUpdate( ImageRect* pUpdate = null )</div>
+<div class="normal">
+更新領域通知<br/></div>
+<br/>
+
+<a name="virtual_releaseBuffer"/>
+<div class="headline">releaseBuffer</div>
+<div class="usage">public native void releaseBuffer( )</div>
+<div class="normal">
+バッファ解放<br/></div>
+<br/>
+
+<a name="virtual_releaseMouseCapture"/>
+<div class="headline">releaseMouseCapture</div>
+<div class="usage">public native boolean releaseMouseCapture( )</div>
+<div class="normal">
+マウス入力キャプチャー解放<br/></div>
+<br/>
+
+<a name="virtual_removeAllChildren"/>
+<div class="headline">removeAllChildren</div>
+<div class="usage">public native void removeAllChildren( )</div>
+<div class="normal">
+全子スプライト削除<br/></div>
+<br/>
+
+<a name="virtual_removeAllFilters"/>
+<div class="headline">removeAllFilters</div>
+<div class="usage">public native void removeAllFilters( )</div>
+<br/>
+
+<a name="virtual_removeAllTimers"/>
+<div class="headline">removeAllTimers</div>
+<div class="usage">public native void removeAllTimers( )</div>
+<br/>
+
+<a name="virtual_removeChild"/>
+<div class="headline">removeChild</div>
+<div class="usage">public native boolean removeChild( EntisGLS4.Sprite sprite )</div>
+<div class="normal">
+子スプライト削除<br/></div>
+<br/>
+
+<a name="virtual_removeFilter"/>
+<div class="headline">removeFilter</div>
+<div class="usage">public native void removeFilter( EntisGLS4.SpriteFilter filter )</div>
+<div class="normal">
+フィルタ削除<br/></div>
+<br/>
+
+<a name="virtual_removeTimer"/>
+<div class="headline">removeTimer</div>
+<div class="usage">public native void removeTimer( EntisGLS4.SpriteTimer timer )</div>
+<div class="normal">
+タイマ処理削除<br/></div>
+<br/>
+
+<a name="virtual_restartAllAction"/>
+<div class="headline">restartAllAction</div>
+<div class="usage">public native void restartAllAction( )</div>
+<div class="normal">
+全アニメーション再開<br/></div>
+<br/>
+
+<a name="virtual_setActionLinearTo"/>
+<div class="headline">setActionLinearTo</div>
+<div class="usage">public native void setActionLinearTo( uint msecDuration, uint transparency, const Vector2d* pos = null, const Vector2d* zoom = null, double a0 = 0., double a1 = 0. )</div>
+<div class="normal">
+簡易アニメーション設定</div>
+<div class="notes_parameter">
+<div class="param_name">msecDuration</div>
+<div class="param_desc">
+アニメーション時間（ミリ秒）</div>
+<div class="param_name">transparency</div>
+<div class="param_desc">
+変化後の透明度 [0, 0x100]</div>
+<div class="param_name">pos</div>
+<div class="param_desc">
+移動後の座標</div>
+<div class="param_name">zoom</div>
+<div class="param_desc">
+移動後の拡大率</div>
+<div class="param_name">a0</div>
+<div class="param_desc">
+開始時速度比</div>
+<div class="param_name">a1</div>
+<div class="param_desc">
+終了時速度比</div>
+</div>
+<div class="indent1">
+(a0,a1)=(1,1) で等速運動、(0,2) で等加速度運動、(2,0) では等加速（減速）度運動と等しくなります。<br/>(a0,a1)=(0,0) では静止状態から加速→減速して停止のような動きになります。</div><br/>
+<br/>
+
+<a name="virtual_setCenterPosition"/>
+<div class="headline">setCenterPosition</div>
+<div class="usage">public native void setCenterPosition( double x, double y )</div>
+<div class="normal">
+中心座標設定<br/></div>
+<br/>
+
+<a name="virtual_setClickableRect"/>
+<div class="headline">setClickableRect</div>
+<div class="usage">public native void setClickableRect( const ImageRect* rect )</div>
+<div class="normal">
+ヒット領域設定<br/></div>
+<br/>
+
+<a name="virtual_setEnable"/>
+<div class="headline">setEnable</div>
+<div class="usage">public native void setEnable( boolean flagEnable )</div>
+<div class="normal">
+入力禁止状態設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">flagEnable</div>
+<div class="param_desc">
+true で入力有効、false で入力禁止</div>
+</div>
+<br/>
+
+<a name="virtual_setFillBackColor"/>
+<div class="headline">setFillBackColor</div>
+<div class="usage">public native boolean setFillBackColor( uint argbFill, boolean flagFillBack = true )</div>
+<div class="normal">
+背景色設定<br/></div>
+<br/>
+
+<a name="virtual_setFilter2Parameter"/>
+<div class="headline">setFilter2Parameter</div>
+<div class="usage">public native void setFilter2Parameter( int paramFilter )</div>
+<br/>
+
+<a name="virtual_setFilterParameter"/>
+<div class="headline">setFilterParameter</div>
+<div class="usage">public native void setFilterParameter( int paramFilter )</div>
+<div class="normal">
+フィルタパラメータ設定<br/></div>
+<br/>
+
+<a name="virtual_setID"/>
+<div class="headline">setID</div>
+<div class="usage">public native void setID( String id )</div>
+<div class="normal">
+識別子設定<br/></div>
+<br/>
+
+<a name="virtual_setKeyFocus"/>
+<div class="headline">setKeyFocus</div>
+<div class="usage">public native boolean setKeyFocus( )</div>
+<div class="normal">
+キーフォーカスを要求<br/></div>
+<br/>
+
+<a name="virtual_setLoopAnimation"/>
+<div class="headline">setLoopAnimation</div>
+<div class="usage">public native void setLoopAnimation( long countLoop = -1, ulong iLoopStart = 0, ulong iLoopEnd = 0 )</div>
+<div class="normal">
+ループ設定変更<br/></div>
+<br/>
+
+<a name="virtual_setMouseCapture"/>
+<div class="headline">setMouseCapture</div>
+<div class="usage">public native boolean setMouseCapture( )</div>
+<div class="normal">
+マウス入力キャプチャー要求<br/></div>
+<br/>
+
+<a name="virtual_setParallax"/>
+<div class="headline">setParallax</div>
+<div class="usage">public native void setParallax( double xParallax, double zFocusRate = 1., double xScreenDelta = 0. )</div>
+<div class="normal">
+視差設定<br/></div>
+<br/>
+
+<a name="virtual_setParameter"/>
+<div class="headline">setParameter</div>
+<div class="usage">public native void setParameter( const EntisGLS4.Sprite.Parameter* param )</div>
+<div class="normal">
+表示パラメータ設定<br/></div>
+<br/>
+
+<a name="virtual_setPosition"/>
+<div class="headline">setPosition</div>
+<div class="usage">public native void setPosition( double x, double y )</div>
+<div class="normal">
+座標設定<br/></div>
+<br/>
+
+<a name="virtual_setPosition3D"/>
+<div class="headline">setPosition3D</div>
+<div class="usage">public native void setPosition3D( double x, double y, double z )</div>
+<div class="normal">
+座標設定<br/></div>
+<br/>
+<div class="headline">setPosition3D</div>
+<div class="usage">public native void setPosition3D( const Vector3d* vPos )</div>
+<div class="normal">
+座標設定<br/></div>
+<br/>
+
+<a name="virtual_setProjectionScreen"/>
+<div class="headline">setProjectionScreen</div>
+<div class="usage">public native void setProjectionScreen( const Vector3* vScreen, double zScale = 1., double fpPixelAspect = 1. )</div>
+<div class="normal">
+擬似 3D 投影スクリーン座標設定<br/></div>
+<br/>
+
+<a name="virtual_setRenderDevice"/>
+<div class="headline">setRenderDevice</div>
+<div class="usage">public native boolean setRenderDevice( EntisGLS4.RenderDevice device )</div>
+<div class="normal">
+レンダリングデバイスの設定<br/></div>
+<br/>
+
+<a name="virtual_setRotation"/>
+<div class="headline">setRotation</div>
+<div class="usage">public native void setRotation( double zAngle )</div>
+<div class="normal">
+回転角設定<br/></div>
+<br/>
+
+<a name="virtual_setScrollPageSize"/>
+<div class="headline">setScrollPageSize</div>
+<div class="usage">public native void setScrollPageSize( int nPageSize, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・ページサイズ属性設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">nPageSize</div>
+<div class="param_desc">
+ページサイズ</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_setScrollPos"/>
+<div class="headline">setScrollPos</div>
+<div class="usage">public native void setScrollPos( int nPos, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・トラック位置属性設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">nPos</div>
+<div class="param_desc">
+スクロール位置</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_setScrollRange"/>
+<div class="headline">setScrollRange</div>
+<div class="usage">public native void setScrollRange( int nRange, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・トラック範囲属性設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">nRange</div>
+<div class="param_desc">
+スクロール範囲（最大値）</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteEnable"/>
+<div class="headline">setSpriteEnable</div>
+<div class="usage">public native void setSpriteEnable( String id, boolean flagEnable )</div>
+<div class="normal">
+入力禁止状態設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">flagEnable</div>
+<div class="param_desc">
+入力有効フラグ（false で入力禁止）</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteImage"/>
+<div class="headline">setSpriteImage</div>
+<div class="usage">public native void setSpriteImage( String id, String imageID )</div>
+<div class="normal">
+画像属性設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">imageID</div>
+<div class="param_desc">
+設定する画像 ID</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteScrollPageSize"/>
+<div class="headline">setSpriteScrollPageSize</div>
+<div class="usage">public native void setSpriteScrollPageSize( String id, int nPageSize, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・ページサイズ属性<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">nPageSize</div>
+<div class="param_desc">
+ページサイズ</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteScrollPos"/>
+<div class="headline">setSpriteScrollPos</div>
+<div class="usage">public native void setSpriteScrollPos( String id, int nPos, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・トラック位置属性設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">nPos</div>
+<div class="param_desc">
+スクロール位置</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteScrollRange"/>
+<div class="headline">setSpriteScrollRange</div>
+<div class="usage">public native void setSpriteScrollRange( String id, int nRange, EntisGLS4.Sprite.ScrollDirection scrlDir = 0 )</div>
+<div class="normal">
+スクロール・トラック位置範囲属性設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">nRange</div>
+<div class="param_desc">
+スクロール範囲（最大値）</div>
+<div class="param_name">scrlDir</div>
+<div class="param_desc">
+スクロール方向</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteText"/>
+<div class="headline">setSpriteText</div>
+<div class="usage">public native void setSpriteText( String id, String text )</div>
+<div class="normal">
+文字列属性設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">text</div>
+<div class="param_desc">
+設定する文字列</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteTextFont"/>
+<div class="headline">setSpriteTextFont</div>
+<div class="usage">public native void setSpriteTextFont( String id, String font, int size = 0 )</div>
+<div class="normal">
+文字フォント属性設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">font</div>
+<div class="param_desc">
+フォントフェース名</div>
+<div class="param_name">size</div>
+<div class="param_desc">
+フォントサイズ（ピクセル単位）</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteTransparency"/>
+<div class="headline">setSpriteTransparency</div>
+<div class="usage">public native void setSpriteTransparency( String id, uint transparency )</div>
+<div class="normal">
+透明度設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">transparency</div>
+<div class="param_desc">
+透明度 [0, 0x100]</div>
+</div>
+<br/>
+
+<a name="virtual_setSpriteVisible"/>
+<div class="headline">setSpriteVisible</div>
+<div class="usage">public native void setSpriteVisible( String id, boolean visible )</div>
+<div class="normal">
+可視状態設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">id</div>
+<div class="param_desc">
+アイテム ID （getItemAs 参照）</div>
+<div class="param_name">visible</div>
+<div class="param_desc">
+可視状態</div>
+</div>
+<br/>
+
+<a name="virtual_setText"/>
+<div class="headline">setText</div>
+<div class="usage">public native void setText( String text )</div>
+<div class="normal">
+文字列属性設定<br/></div>
+<br/>
+
+<a name="virtual_setTextFont"/>
+<div class="headline">setTextFont</div>
+<div class="usage">public native void setTextFont( String font, int size = 0 )</div>
+<div class="normal">
+文字フォント属性設定<br/></div>
+<br/>
+
+<a name="virtual_setTransparency"/>
+<div class="headline">setTransparency</div>
+<div class="usage">public native void setTransparency( uint transparency )</div>
+<div class="normal">
+透明度設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">transparency</div>
+<div class="param_desc">
+透明度 [0, 0x100]</div>
+</div>
+<br/>
+
+<a name="virtual_setVirtualCamera"/>
+<div class="headline">setVirtualCamera</div>
+<div class="usage">public native void setVirtualCamera( const Vector3d* vCamera, const Vector3d* vTarget )</div>
+<div class="normal">
+カメラ設定<br/></div>
+<br/>
+
+<a name="virtual_setVisible"/>
+<div class="headline">setVisible</div>
+<div class="usage">public native void setVisible( boolean visible )</div>
+<div class="normal">
+表示フラグ設定<br/></div>
+<br/>
+
+<a name="virtual_setZoom"/>
+<div class="headline">setZoom</div>
+<div class="usage">public native void setZoom( double x, double y )</div>
+<div class="normal">
+拡大率設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

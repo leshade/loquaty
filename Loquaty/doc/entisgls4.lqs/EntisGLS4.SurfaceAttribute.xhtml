@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SurfaceAttribute</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SurfaceAttribute</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct SurfaceAttribute<br/>
+{<br/>
+&nbsp; &nbsp; EntisGLS4.ShadingFlag&nbsp; &nbsp; flagsShading ;<br/>
+&nbsp; &nbsp; EntisGLS4.ColorMulAdd&nbsp; &nbsp; colorBase ;<br/>
+&nbsp; &nbsp; EntisGLS4.ColorMulAdd&nbsp; &nbsp; colorShade ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; nAmbient ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; nDiffusion ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; nSpecular ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; nSpecularSize ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; nTransparency ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; nDeepness ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; nDeepnessPower ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; nReflection ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpRefraction ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; nEmission ;<br/>
+&nbsp; &nbsp; EntisGLS4.ShadingExtensionFlag&nbsp; &nbsp; nExFlags ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; cosShadeThreshold ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpToonShadeThreshold ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpToonShadeBrightness ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbSpecularColor ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbBorderColor ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpBorderThicknessA ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpBorderThicknessB ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpBackLight ;<br/>
+&nbsp; &nbsp; EntisGLS4.ColorMulAdd&nbsp; &nbsp; colorBackLight ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpRimLight ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpRimLightDeepness ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbRimLightColor ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; nBackDiffusion ;<br/>
+}</div>
+<div class="normal">
+表面属性<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.SurfaceAttribute.xhtml">EntisGLS4.SurfaceAttribute</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_flagsShading">flagsShading</a><br/>
+	<a href="#member_colorBase">colorBase</a><br/>
+	<a href="#member_colorShade">colorShade</a><br/>
+	<a href="#member_nAmbient">nAmbient</a><br/>
+	<a href="#member_nDiffusion">nDiffusion</a><br/>
+	<a href="#member_nSpecular">nSpecular</a><br/>
+	<a href="#member_nSpecularSize">nSpecularSize</a><br/>
+	<a href="#member_nTransparency">nTransparency</a><br/>
+	<a href="#member_nDeepness">nDeepness</a><br/>
+	<a href="#member_nDeepnessPower">nDeepnessPower</a><br/>
+	<a href="#member_nReflection">nReflection</a><br/>
+	<a href="#member_fpRefraction">fpRefraction</a><br/>
+	<a href="#member_nEmission">nEmission</a><br/>
+	<a href="#member_nExFlags">nExFlags</a><br/>
+	<a href="#member_cosShadeThreshold">cosShadeThreshold</a><br/>
+	<a href="#member_fpToonShadeThreshold">fpToonShadeThreshold</a><br/>
+	<a href="#member_fpToonShadeBrightness">fpToonShadeBrightness</a><br/>
+	<a href="#member_rgbSpecularColor">rgbSpecularColor</a><br/>
+	<a href="#member_rgbBorderColor">rgbBorderColor</a><br/>
+	<a href="#member_fpBorderThicknessA">fpBorderThicknessA</a><br/>
+	<a href="#member_fpBorderThicknessB">fpBorderThicknessB</a><br/>
+	<a href="#member_fpBackLight">fpBackLight</a><br/>
+	<a href="#member_colorBackLight">colorBackLight</a><br/>
+	<a href="#member_fpRimLight">fpRimLight</a><br/>
+	<a href="#member_fpRimLightDeepness">fpRimLightDeepness</a><br/>
+	<a href="#member_rgbRimLightColor">rgbRimLightColor</a><br/>
+	<a href="#member_nBackDiffusion">nBackDiffusion</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_flagsShading"/>
+<div class="headline">flagsShading</div>
+<div class="usage">public EntisGLS4.ShadingFlag&#9; flagsShading = 0x10000010004</div>
+<div class="normal">
+シェーディング・フラグ (EntisGLS4.shading～)<br/></div>
+<br/>
+<a name="member_colorBase"/>
+<div class="headline">colorBase</div>
+<div class="usage">public EntisGLS4.ColorMulAdd&#9; colorBase = {rgbMul: {b: 255,g: 255,r: 255,a: 0},rgbAdd: {b: 0,g: 0,r: 0,a: 0}}</div>
+<div class="normal">
+基本色<br/></div>
+<br/>
+<a name="member_colorShade"/>
+<div class="headline">colorShade</div>
+<div class="usage">public EntisGLS4.ColorMulAdd&#9; colorShade = {rgbMul: {b: 0,g: 0,r: 0,a: 0},rgbAdd: {b: 0,g: 0,r: 0,a: 0}}</div>
+<div class="normal">
+影色<br/></div>
+<br/>
+<a name="member_nAmbient"/>
+<div class="headline">nAmbient</div>
+<div class="usage">public int&#9; nAmbient = 0</div>
+<div class="normal">
+環境光 (x256)<br/></div>
+<br/>
+<a name="member_nDiffusion"/>
+<div class="headline">nDiffusion</div>
+<div class="usage">public int&#9; nDiffusion = 0x100</div>
+<div class="normal">
+拡散反射強度 (x256)<br/></div>
+<br/>
+<a name="member_nSpecular"/>
+<div class="headline">nSpecular</div>
+<div class="usage">public int&#9; nSpecular = 0x80</div>
+<div class="normal">
+鏡面反射強度 (x256)<br/></div>
+<br/>
+<a name="member_nSpecularSize"/>
+<div class="headline">nSpecularSize</div>
+<div class="usage">public int&#9; nSpecularSize = 8</div>
+<div class="normal">
+鏡面反射の鋭さ (x256)<br/></div>
+<br/>
+<a name="member_nTransparency"/>
+<div class="headline">nTransparency</div>
+<div class="usage">public int&#9; nTransparency = 0</div>
+<div class="normal">
+透明度 (x256)<br/></div>
+<br/>
+<a name="member_nDeepness"/>
+<div class="headline">nDeepness</div>
+<div class="usage">public int&#9; nDeepness = 0</div>
+<div class="normal">
+透明深度係数 (x256)<br/></div>
+<br/>
+<a name="member_nDeepnessPower"/>
+<div class="headline">nDeepnessPower</div>
+<div class="usage">public int&#9; nDeepnessPower = 0x100</div>
+<div class="normal">
+透明深度指数 (x256)<br/></div>
+<br/>
+<a name="member_nReflection"/>
+<div class="headline">nReflection</div>
+<div class="usage">public uint&#9; nReflection = 0</div>
+<div class="normal">
+反射率 (x256)<br/></div>
+<br/>
+<a name="member_fpRefraction"/>
+<div class="headline">fpRefraction</div>
+<div class="usage">public float&#9; fpRefraction = 0.</div>
+<div class="normal">
+屈折率 (-1.0)（0.0 の時屈折率 1.0）<br/></div>
+<br/>
+<a name="member_nEmission"/>
+<div class="headline">nEmission</div>
+<div class="usage">public uint&#9; nEmission = 0</div>
+<div class="normal">
+発光度 (x256)<br/></div>
+<br/>
+<a name="member_nExFlags"/>
+<div class="headline">nExFlags</div>
+<div class="usage">public EntisGLS4.ShadingExtensionFlag&#9; nExFlags = 0</div>
+<div class="normal">
+拡張フラグ (EntisGLS4.shadingEx～)<br/></div>
+<br/>
+<a name="member_cosShadeThreshold"/>
+<div class="headline">cosShadeThreshold</div>
+<div class="usage">public float&#9; cosShadeThreshold = 0.</div>
+<div class="normal">
+陰角度余弦 (default = 0.0)<br/></div>
+<br/>
+<a name="member_fpToonShadeThreshold"/>
+<div class="headline">fpToonShadeThreshold</div>
+<div class="usage">public float&#9; fpToonShadeThreshold = 0.5</div>
+<div class="normal">
+トゥーンシェード中間色閾値 (default = 0.5)<br/></div>
+<br/>
+<a name="member_fpToonShadeBrightness"/>
+<div class="headline">fpToonShadeBrightness</div>
+<div class="usage">public float&#9; fpToonShadeBrightness = 0.5</div>
+<div class="normal">
+トゥーンシェード中間色輝度 (default = 0.5)<br/></div>
+<br/>
+<a name="member_rgbSpecularColor"/>
+<div class="headline">rgbSpecularColor</div>
+<div class="usage">public ARGB8&#9; rgbSpecularColor = {b: 255,g: 255,r: 255,a: 0}</div>
+<div class="normal">
+鏡面反射色<br/></div>
+<br/>
+<a name="member_rgbBorderColor"/>
+<div class="headline">rgbBorderColor</div>
+<div class="usage">public ARGB8&#9; rgbBorderColor = {b: 0,g: 0,r: 0,a: 0}</div>
+<div class="normal">
+輪郭線色<br/></div>
+<br/>
+<a name="member_fpBorderThicknessA"/>
+<div class="headline">fpBorderThicknessA</div>
+<div class="usage">public float&#9; fpBorderThicknessA = 1.</div>
+<div class="normal">
+輪郭線太さ係数 a<br/></div>
+<br/>
+<a name="member_fpBorderThicknessB"/>
+<div class="headline">fpBorderThicknessB</div>
+<div class="usage">public float&#9; fpBorderThicknessB = 0.</div>
+<div class="normal">
+輪郭線太さ係数 b<br/></div>
+<br/>
+<a name="member_fpBackLight"/>
+<div class="headline">fpBackLight</div>
+<div class="usage">public float&#9; fpBackLight = 0.</div>
+<div class="normal">
+バックライト輝度<br/></div>
+<br/>
+<a name="member_colorBackLight"/>
+<div class="headline">colorBackLight</div>
+<div class="usage">public EntisGLS4.ColorMulAdd&#9; colorBackLight = {rgbMul: {b: 255,g: 255,r: 255,a: 0},rgbAdd: {b: 0,g: 0,r: 0,a: 0}}</div>
+<div class="normal">
+バックライト色<br/></div>
+<br/>
+<a name="member_fpRimLight"/>
+<div class="headline">fpRimLight</div>
+<div class="usage">public float&#9; fpRimLight = 0.</div>
+<div class="normal">
+リムライト輝度<br/></div>
+<br/>
+<a name="member_fpRimLightDeepness"/>
+<div class="headline">fpRimLightDeepness</div>
+<div class="usage">public float&#9; fpRimLightDeepness = 0.10000000149012</div>
+<div class="normal">
+リムライトサイズ<br/></div>
+<br/>
+<a name="member_rgbRimLightColor"/>
+<div class="headline">rgbRimLightColor</div>
+<div class="usage">public ARGB8&#9; rgbRimLightColor = {b: 255,g: 255,r: 255,a: 0}</div>
+<div class="normal">
+リムライト色<br/></div>
+<br/>
+<a name="member_nBackDiffusion"/>
+<div class="headline">nBackDiffusion</div>
+<div class="usage">public int&#9; nBackDiffusion = 0</div>
+<div class="normal">
+裏拡散反射（疑似AO）<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Collider.HitInfo</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Collider.HitInfo</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct HitInfo<br/>
+{<br/>
+&nbsp; &nbsp; Vector3&nbsp; &nbsp; vHitLocal ;<br/>
+&nbsp; &nbsp; Vector3&nbsp; &nbsp; vHitGlobal ;<br/>
+&nbsp; &nbsp; Vector3&nbsp; &nbsp; vNormalLocal ;<br/>
+&nbsp; &nbsp; Vector3&nbsp; &nbsp; vNormal ;<br/>
+&nbsp; &nbsp; Matrix3&nbsp; &nbsp; matLocal ;<br/>
+&nbsp; &nbsp; Vector3&nbsp; &nbsp; vLocalBase ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpDistance ;<br/>
+&nbsp; &nbsp; ulong&nbsp; &nbsp; iInstance ;<br/>
+&nbsp; &nbsp; ulong&nbsp; &nbsp; iMesh ;<br/>
+&nbsp; &nbsp; ulong&nbsp; &nbsp; iPolygon ;<br/>
+&nbsp; &nbsp; ulong&nbsp; &nbsp; maskClasses ;<br/>
+&nbsp; &nbsp; ulong&nbsp; &nbsp; maskColliders ;<br/>
+}</div>
+<div class="normal">
+衝突情報<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.Collider.HitInfo.xhtml">EntisGLS4.Collider.HitInfo</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_vHitLocal">vHitLocal</a><br/>
+	<a href="#member_vHitGlobal">vHitGlobal</a><br/>
+	<a href="#member_vNormalLocal">vNormalLocal</a><br/>
+	<a href="#member_vNormal">vNormal</a><br/>
+	<a href="#member_matLocal">matLocal</a><br/>
+	<a href="#member_vLocalBase">vLocalBase</a><br/>
+	<a href="#member_fpDistance">fpDistance</a><br/>
+	<a href="#member_iInstance">iInstance</a><br/>
+	<a href="#member_iMesh">iMesh</a><br/>
+	<a href="#member_iPolygon">iPolygon</a><br/>
+	<a href="#member_maskClasses">maskClasses</a><br/>
+	<a href="#member_maskColliders">maskColliders</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_vHitLocal"/>
+<div class="headline">vHitLocal</div>
+<div class="usage">public Vector3&#9; vHitLocal = {x: 0.,y: 0.,z: 0.}</div>
+<div class="normal">
+交点（ローカル座標系）<br/></div>
+<br/>
+<a name="member_vHitGlobal"/>
+<div class="headline">vHitGlobal</div>
+<div class="usage">public Vector3&#9; vHitGlobal = {x: 0.,y: 0.,z: 0.}</div>
+<div class="normal">
+交点（グローバル座標系）<br/></div>
+<br/>
+<a name="member_vNormalLocal"/>
+<div class="headline">vNormalLocal</div>
+<div class="usage">public Vector3&#9; vNormalLocal = {x: 0.,y: 0.,z: 0.}</div>
+<div class="normal">
+法線（ローカル座標系）<br/></div>
+<br/>
+<a name="member_vNormal"/>
+<div class="headline">vNormal</div>
+<div class="usage">public Vector3&#9; vNormal = {x: 0.,y: 0.,z: 0.}</div>
+<div class="normal">
+法線（グローバル座標系）<br/></div>
+<br/>
+<a name="member_matLocal"/>
+<div class="headline">matLocal</div>
+<div class="usage">public Matrix3&#9; matLocal = {m: [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]]}</div>
+<div class="normal">
+ローカル座標からグローバル座標へ変換する行列（全ての積）<br/></div>
+<br/>
+<a name="member_vLocalBase"/>
+<div class="headline">vLocalBase</div>
+<div class="usage">public Vector3&#9; vLocalBase = {x: 0.,y: 0.,z: 0.}</div>
+<div class="normal">
+ローカル座標からグローバル座標へ変換する移動（全ての合成）<br/></div>
+<br/>
+<a name="member_fpDistance"/>
+<div class="headline">fpDistance</div>
+<div class="usage">public float&#9; fpDistance = 0.</div>
+<div class="normal">
+交点までの距離<br/></div>
+<br/>
+<a name="member_iInstance"/>
+<div class="headline">iInstance</div>
+<div class="usage">public ulong&#9; iInstance = 0</div>
+<div class="normal">
+交差インスタンス指標<br/></div>
+<br/>
+<a name="member_iMesh"/>
+<div class="headline">iMesh</div>
+<div class="usage">public ulong&#9; iMesh = 0</div>
+<div class="normal">
+交差メッシュ指標<br/></div>
+<br/>
+<a name="member_iPolygon"/>
+<div class="headline">iPolygon</div>
+<div class="usage">public ulong&#9; iPolygon = 0</div>
+<div class="normal">
+交差ポリゴン指標<br/></div>
+<br/>
+<a name="member_maskClasses"/>
+<div class="headline">maskClasses</div>
+<div class="usage">public ulong&#9; maskClasses = 0</div>
+<div class="normal">
+交差したアイテムの Scene.ItemClass 値のビットマスク<br/></div>
+<br/>
+<a name="member_maskColliders"/>
+<div class="headline">maskColliders</div>
+<div class="usage">public ulong&#9; maskColliders = 0</div>
+<div class="normal">
+交差したアイテムの Collision.ColliderClass 値のビットマスク<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

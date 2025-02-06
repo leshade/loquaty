@@ -31,6 +31,8 @@ Loquaty は汎用的なスクリプト言語で、「ポインタ型のある Ja
 - `Loquaty/bin/win64/plugins/` - Win64 loquaty.exe 用プラグイン・ディレクトリ
 - [`Loquaty/example/SimpleGame/SimpleGame.lqs`](./Loquaty/example/SimpleGame/SimpleGame.lqs) - サンプル簡易ゲーム・スクリプト
 - `Loquaty/example/SimpleGame/run.bat` - サンプル簡易ゲーム実行用 bat ファイル (Win64 用)
+- [`Loquaty/example/AvoidanceFlight/AvoidanceFlight.lqs`](./Loquaty/example/AvoidanceFlight/AvoidanceFlight.lqs) - サンプルゲーム・スクリプト
+- `Loquaty/example/AvoidanceFlight/run.bat` - サンプルゲーム実行用 bat ファイル (Win64 用)
 
 
 ## 使い方 (C++)
@@ -72,6 +74,11 @@ auto [value, exception] =
 ### [SimpleGame.lqs](./Loquaty/example/SimpleGame/SimpleGame.lqs)
 
 ![demo](./Loquaty/example/demo/SimpleGame.gif)
+
+
+### [AvoidanceFlight](./Loquaty/example/AvoidanceFlight/AvoidanceFlight.lqs)
+
+![demo](./Loquaty/example/demo/AvoidanceFlight.gif)
 
 
 
@@ -253,3 +260,19 @@ Loquaty は基本的に外部の依存性が少なく、現バージョンにお
 現バージョンの Loquaty は JIT コンパイラを搭載していないため、他の JIT コンパイラを有する言語には速度面で劣るものの、JIT コンパイラを有さない言語と比較すると大差ないか、条件によっては Loquaty のほうが多少高速な場合もあります。  
 そのためほとんどの場面で処理速度を気にせず利用できます。  
   
+
+## ライセンス
+
+Copyright 2024-2025 Leshade Entis (理影).
+
+Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.

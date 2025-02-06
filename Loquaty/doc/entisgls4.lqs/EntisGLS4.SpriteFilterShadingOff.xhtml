@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SpriteFilterShadingOff</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SpriteFilterShadingOff</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SpriteFilterShadingOff ;</div>
+<div class="normal">
+Sprite 簡易ぼかしフィルター<br/>※フィルターパラメータに応じてぼかし処理して描画するフィルター<br/>※CPU/GPU 処理両対応<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SpriteFilter.xhtml">EntisGLS4.SpriteFilter</a>
+<div class="indent1"><a href="EntisGLS4.SpriteFilterShadingOff.xhtml">EntisGLS4.SpriteFilterShadingOff</a>
+</div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SpriteFilterShadingOff">SpriteFilterShadingOff</a><br/>
+	<a href="#virtual_setTransitionOption">setTransitionOption</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SpriteFilterShadingOff"/>
+<div class="headline">SpriteFilterShadingOff</div>
+<div class="usage">public native SpriteFilterShadingOff( )</div>
+<div class="normal">
+SpriteFilterShadingOff 構築<br/></div>
+<br/>
+
+<a name="virtual_setTransitionOption"/>
+<div class="headline">setTransitionOption</div>
+<div class="usage">public native void setTransitionOption( boolean flagTransition, uint argbOverColor )</div>
+<div class="normal">
+トランジッション設定（第二パラメータでの透明度と色効果）<br/></div>
+<div class="notes_parameter">
+<div class="param_name">flagTransition</div>
+<div class="param_desc">
+トランジッションモード</div>
+<div class="param_name">argbOverColor</div>
+<div class="param_desc">
+ぼかし処理の後に被せる描画色 (ARGB8 パック形式)</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

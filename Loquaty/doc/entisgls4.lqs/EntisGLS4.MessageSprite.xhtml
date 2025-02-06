@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.MessageSprite</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.MessageSprite</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class MessageSprite ;</div>
+<div class="normal">
+メッセージ表示 Sprite<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Sprite.xhtml">EntisGLS4.Sprite</a>
+<div class="indent1"><a href="EntisGLS4.MessageSprite.xhtml">EntisGLS4.MessageSprite</a>
+</div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.MessageSprite.LinkStatus.xhtml">EntisGLS4.MessageSprite.LinkStatus</a></div>
+<div class="indent2"><a href="EntisGLS4.MessageSprite.MessageStyle.xhtml">EntisGLS4.MessageSprite.MessageStyle</a></div>
+<div class="indent2"><a href="EntisGLS4.MessageSprite.RichTextStyle.xhtml">EntisGLS4.MessageSprite.RichTextStyle</a></div>
+<div class="indent2"><a href="EntisGLS4.MessageSprite.ViewActionStyle.xhtml">EntisGLS4.MessageSprite.ViewActionStyle</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_linkStatusNormal">linkStatusNormal</a><br/>
+	<a href="#static_linkStatusFocus">linkStatusFocus</a><br/>
+	<a href="#static_linkStatusPushing">linkStatusPushing</a><br/>
+	<a href="#static_linkStatusCount">linkStatusCount</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_MessageSprite">MessageSprite</a><br/>
+	<a href="#virtual_addMessageText">addMessageText</a><br/>
+	<a href="#virtual_addMessageXML">addMessageXML</a><br/>
+	<a href="#virtual_clearMessage">clearMessage</a><br/>
+	<a href="#virtual_flushMessage">flushMessage</a><br/>
+	<a href="#virtual_getCircumscribedRect">getCircumscribedRect</a><br/>
+	<a href="#virtual_getMessageCharacterCount">getMessageCharacterCount</a><br/>
+	<a href="#virtual_getMessageStyle">getMessageStyle</a><br/>
+	<a href="#virtual_getNextMessagePoint">getNextMessagePoint</a><br/>
+	<a href="#virtual_getPlainText">getPlainText</a><br/>
+	<a href="#virtual_isMessagePending">isMessagePending</a><br/>
+	<a href="#virtual_releaseCharacterAtlas">releaseCharacterAtlas</a><br/>
+	<a href="#virtual_setCharacterAtlas">setCharacterAtlas</a><br/>
+	<a href="#virtual_setMessageSpeedRatio">setMessageSpeedRatio</a><br/>
+	<a href="#virtual_setMessageStyle">setMessageStyle</a><br/>
+	<a href="#virtual_verticalAlignmentMessage">verticalAlignmentMessage</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_linkStatusNormal"/>
+<div class="headline">linkStatusNormal</div>
+<div class="usage">public static const EntisGLS4.MessageSprite.LinkStatus&#9; linkStatusNormal = 0</div>
+<br/>
+<a name="static_linkStatusFocus"/>
+<div class="headline">linkStatusFocus</div>
+<div class="usage">public static const EntisGLS4.MessageSprite.LinkStatus&#9; linkStatusFocus = 1</div>
+<br/>
+<a name="static_linkStatusPushing"/>
+<div class="headline">linkStatusPushing</div>
+<div class="usage">public static const EntisGLS4.MessageSprite.LinkStatus&#9; linkStatusPushing = 2</div>
+<br/>
+<a name="static_linkStatusCount"/>
+<div class="headline">linkStatusCount</div>
+<div class="usage">public static const EntisGLS4.MessageSprite.LinkStatus&#9; linkStatusCount = 3</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_MessageSprite"/>
+<div class="headline">MessageSprite</div>
+<div class="usage">public native MessageSprite( )</div>
+<div class="normal">
+MessageSprite 構築<br/></div>
+<br/>
+
+<a name="virtual_addMessageText"/>
+<div class="headline">addMessageText</div>
+<div class="usage">public native void addMessageText( String text )</div>
+<div class="normal">
+表示文字列追加<br/></div>
+<br/>
+
+<a name="virtual_addMessageXML"/>
+<div class="headline">addMessageXML</div>
+<div class="usage">public native void addMessageXML( String textXML )</div>
+<div class="normal">
+表示文字列追加<br/></div>
+<br/>
+
+<a name="virtual_clearMessage"/>
+<div class="headline">clearMessage</div>
+<div class="usage">public native void clearMessage( )</div>
+<div class="normal">
+表示文字を全消去<br/></div>
+<br/>
+
+<a name="virtual_flushMessage"/>
+<div class="headline">flushMessage</div>
+<div class="usage">public native void flushMessage( )</div>
+<div class="normal">
+表示中の文字を即座に完了させる<br/></div>
+<br/>
+
+<a name="virtual_getCircumscribedRect"/>
+<div class="headline">getCircumscribedRect</div>
+<div class="usage">public native const ImageRect* getCircumscribedRect( ) const</div>
+<div class="normal">
+表示文字の外接矩形（ローカル座標）取得<br/></div>
+<br/>
+
+<a name="virtual_getMessageCharacterCount"/>
+<div class="headline">getMessageCharacterCount</div>
+<div class="usage">public native ulong getMessageCharacterCount( ) const</div>
+<div class="normal">
+表示文字数取得<br/></div>
+<br/>
+
+<a name="virtual_getMessageStyle"/>
+<div class="headline">getMessageStyle</div>
+<div class="usage">public native const EntisGLS4.MessageSprite.MessageStyle getMessageStyle( ) const</div>
+<div class="normal">
+スタイル取得<br/></div>
+<br/>
+
+<a name="virtual_getNextMessagePoint"/>
+<div class="headline">getNextMessagePoint</div>
+<div class="usage">public native const Point* getNextMessagePoint( ) const</div>
+<div class="normal">
+次の出力位置を取得<br/></div>
+<br/>
+
+<a name="virtual_getPlainText"/>
+<div class="headline">getPlainText</div>
+<div class="usage">public native String getPlainText( ) const</div>
+<div class="normal">
+表示メッセージのプレーンテキスト取得<br/></div>
+<br/>
+
+<a name="virtual_isMessagePending"/>
+<div class="headline">isMessagePending</div>
+<div class="usage">public native boolean isMessagePending( ) const</div>
+<div class="normal">
+文字が表示中（フェード中）か？<br/></div>
+<br/>
+
+<a name="virtual_releaseCharacterAtlas"/>
+<div class="headline">releaseCharacterAtlas</div>
+<div class="usage">public native void releaseCharacterAtlas( )</div>
+<div class="normal">
+文字アトラス化設定解除<br/></div>
+<br/>
+
+<a name="virtual_setCharacterAtlas"/>
+<div class="headline">setCharacterAtlas</div>
+<div class="usage">public native void setCharacterAtlas( uint width, uint height )</div>
+<div class="normal">
+文字アトラス化設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">width</div>
+<div class="param_desc">
+アトラス化用バッファの幅（ピクセル）</div>
+<div class="param_name">height</div>
+<div class="param_desc">
+アトラス化用バッファの高さ（ピクセル）</div>
+</div>
+<br/>
+
+<a name="virtual_setMessageSpeedRatio"/>
+<div class="headline">setMessageSpeedRatio</div>
+<div class="usage">public native void setMessageSpeedRatio( uint fxSpeedRatio )</div>
+<div class="normal">
+出力速度比 (*256) 設定 (0x10000 は一瞬表示)<br/></div>
+<br/>
+
+<a name="virtual_setMessageStyle"/>
+<div class="headline">setMessageStyle</div>
+<div class="usage">public native void setMessageStyle( const EntisGLS4.MessageSprite.MessageStyle style )</div>
+<div class="normal">
+スタイル設定<br/></div>
+<br/>
+
+<a name="virtual_verticalAlignmentMessage"/>
+<div class="headline">verticalAlignmentMessage</div>
+<div class="usage">public native void verticalAlignmentMessage( )</div>
+<div class="normal">
+垂直アライメント適用<br/>（TextStyle の boxAlign 設定に基づいて垂直位置を補正する）<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

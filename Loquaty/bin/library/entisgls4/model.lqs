@@ -1,0 +1,413 @@
+﻿
+namespace	EntisGLS4
+{
+	class	ModelBuffer ;
+
+	//////////////////////////////////////////////////////////////////////////
+	// テクスチャ画像ライブラリ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	TextureLibrary	extends NativeObject
+	{
+		// TextureLibrary 構築
+		public native TextureLibrary() ;
+		// 画像取得
+		public native Image getTextureAs
+					( String id, boolean noRefOther = false ) const ;
+		// 画像登録
+		// <desc>texture は TextureLibrary で参照を保持しないので
+		// 呼び出し元で保持しておく必要があります。</desc>
+		public native boolean addTextureAs( String id, Image texture ) ;
+		// 登録削除
+		public native boolean removeTextureAs( String id ) ;
+		// 全登録削除
+		public native void removeAllTextures() ;
+		// 画像検索
+		public native long findTexture( Image image ) const ;
+		// 登録数取得
+		public native ulong getTextureCount() const ;
+		// 登録名取得
+		public native String getTextureIdentityAt( ulong index ) const ;
+		// 登録名取得
+		public native String getTextureIdentityOf( Image image ) const ;
+		// 画像取得
+		public native Image getTextureAt( ulong index ) const ;
+		// 親ライブラリを設定する
+		public native void setParentLibrary( TextureLibrary lib ) ;
+		// 参照ライブラリを追加する
+		public native ulong addReferenceLibrary( TextureLibrary lib ) ;
+		// 親ライブラリを取得する
+		public native TextureLibrary getParentLibrary() const ;
+		// 参照ライブラリ数を取得する
+		public native ulong getReferenceLibraryCount() const ;
+		// 参照ライブラリを取得する
+		public native TextureLibrary getReferenceLibraryAt( ulong index ) const ;
+		// 参照ライブラリを解除する
+		public native void detachReferenceLibraryAt( ulong index ) ;
+		// 参照ライブラリを解除する
+		public native void detachReferenceLibraryOf( TextureLibrary lib ) ;
+		// 全ての参照ライブラリを解除する
+		public native void detachAllReferenceLibraries() ;
+
+		// デバイスメモリ上に準備する
+		public native boolean commitToDevice
+				( RenderDevice device, long msecTimeout = 0 ) ;
+		// デバイス上リソースを開放する
+		public native boolean releaseAllDeviceResources() ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// マテリアル・ライブラリ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	MaterialLibrary	extends NativeObject
+	{
+		// MaterialLibrary 構築
+		public native MaterialLibrary() ;
+
+		// ファイル (.xmlsmt) 読み込み
+		public native boolean loadLibraryXML
+			( String file, const TextureLibrary libTexture ) ;
+
+		// 表面属性取得
+		public native Material getMaterialAs
+					( String id, boolean noRefOther = false ) const ;
+		// 表面属性登録
+		// <desc>material は MaterialLibrary で参照を保持しないので
+		// 呼び出し元で保持しておく必要があります。</desc>
+		public native boolean addMaterialAs
+				( String id, Material material ) ;
+		// 登録削除
+		public native boolean removeMaterialAs( String id ) ;
+		// 全登録削除
+		public native void removeAllMaterials() ;
+		// マテリアル検索
+		public native long findMaterial( Material material ) const ;
+		// 登録数取得
+		public native ulong getMaterialCount() const ;
+		// 登録名取得
+		public native String getMaterialIdentityAt( ulong index ) const ;
+		// 登録名取得
+		public native String getMaterialIdentityOf( Material material ) const ;
+		// マテリアル取得
+		public native Material getMaterialAt( ulong index ) const ;
+		// 親ライブラリを設定する
+		public native void setParentLibrary( MaterialLibrary lib ) ;
+		// 参照ライブラリを追加する
+		public native ulong addReferenceLibrary( MaterialLibrary lib ) ;
+		// 親ライブラリを取得する
+		public native MaterialLibrary getParentLibrary() const ;
+		// 参照ライブラリ数を取得する
+		public native ulong getReferenceLibraryCount() const ;
+		// 参照ライブラリを取得する
+		public native MaterialLibrary getReferenceLibraryAt( ulong index ) const ;
+		// 参照ライブラリを解除する
+		public native void detachReferenceLibraryAt( ulong index ) ;
+		// 参照ライブラリを解除する
+		public native void detachReferenceLibraryOf( MaterialLibrary lib ) ;
+		// 全ての参照ライブラリを解除する
+		public native void detachAllReferenceLibraries() ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// モデルのポーズ／モーション
+	//////////////////////////////////////////////////////////////////////////
+
+	class	ModelPose	extends NativeObject
+	{
+		// ModelPose 構築
+		public native ModelPose() ;
+
+		// メタ情報
+		struct	MetaInfo
+		{
+			// フラグ（※ゼロ）
+			uint32	nFlags ;
+			// モーション時間（ミリ秒単位）
+			uint32	msecDuration ;
+			// フレームレート（*0x10000/秒）
+			uint32	fxFrameRatio ;
+		} ;
+
+		// メタ情報取得
+		public native const MetaInfo* getMetaInfo() const ;
+
+		// ポーズターゲットリセット
+		public native void resetPoseTarget() ;
+		// モデルへポーズ設定
+		public native void applyPoseTo
+			( ModelBuffer model,
+				double w = 1.0 /* 適用度 [0.0, 1.0] */,
+				double t = 0.0 /* 適用するモーション内の時間 [sec] */ ) ;
+		// モデルへポーズ設定（回転行列は積算）
+		public native void productPoseTo
+			( ModelBuffer model,
+				double w = 1.0 /* 適用度 [0.0, 1.0] */,
+				double t = 0.0 /* 適用するモーション内の時間 [sec] */ ) ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// モデルのポーズ・ライブラリ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	ModelPoseLibrary	extends NativeObject
+	{
+		// ModelPoseLibrary 構築
+		public native ModelPoseLibrary() ;
+
+		// ポーズファイル (.psfx) 読み込み
+		public native boolean loadLibrary( String file ) ;
+		// ポーズファイル (.psfx) 読み込み
+		public native boolean readLibrary( File file ) ;
+		// ポーズファイル (.xmlpsf) 読み込み
+		public native boolean loadLibraryXML( String file ) ;
+		// ポーズファイル (.psfx) 書き出し
+		public native boolean saveLibrary( String file ) ;
+		// ポーズファイル (.psfx) 書き出し
+		public native boolean writeLibrary( File file ) ;
+		// ポーズファイル (.xmlpsf) 書き出し
+		public native boolean saveLibraryXML( String file ) ;
+
+		// ポーズ取得
+		public native ModelPose getPoseAs
+					( String id, boolean onlyLocal = false ) const ;
+		// ポーズ取得
+		public native ModelPose getPoseAt( ulong index ) const ;
+		// ポーズ検索
+		public native long findPose( ModelPose pose ) const ;
+		// ポーズ数取得
+		public native ulong getPoseCount() const ;
+		// 登録名取得
+		public native String getPoseIdentityAt( ulong index ) const ;
+		// 登録名取得
+		public native String getPoseIdentityOf
+				( ModelPose pose, boolean onlyLocal = false ) const ;
+
+		// ポーズ追加
+		// <desc>pose は ModelPoseLibrary で参照を保持しないので
+		// 呼び出し元で保持しておく必要があります。</desc>
+		public native void addPoseAs( String id, ModelPose pose ) ;
+		// ポーズ削除
+		public native void removePoseAs( String id ) ;
+		// 全ポーズ削除
+		public native void removeAllPoses() ;
+		// 親ライブラリを設定する
+		public native void setParentLibrary( ModelPoseLibrary lib ) ;
+		// 参照ライブラリを追加する
+		public native ulong addReferenceLibrary( ModelPoseLibrary lib ) ;
+		// 親ライブラリを取得する
+		public native ModelPoseLibrary getParentLibrary() const ;
+		// 参照ライブラリ数を取得する
+		public native ulong getReferenceLibraryCount() const ;
+		// 参照ライブラリを取得する
+		public native ModelPoseLibrary getReferenceLibraryAt( ulong index ) const ;
+		// 参照ライブラリを解除する
+		public native void detachReferenceLibraryAt( ulong index ) ;
+		// 参照ライブラリを解除する
+		public native void detachReferenceLibraryOf( ModelPoseLibrary lib ) ;
+		// 全ての参照ライブラリを解除する
+		public native void detachAllReferenceLibraries() ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// モデルのボーン
+	//////////////////////////////////////////////////////////////////////////
+
+	class	ModelBone	extends NativeObject
+	{
+		// ボーンフラグ
+		enum using BoneFlag<uint32>
+		{
+			// 物理演算
+			flagBonePhysics		= 0x00000001,
+			// 当たり判定無し（物理演算時）
+			flagNoCollision		= 0x00000010,
+			// IK 操作時のトラッキング位置マーク
+			flagTrackingPos		= 0x00000100,
+			// 元モデルの行列を保持
+			flagHaveOrgMatrix	= 0x00000200,
+			// 物理演算一時停止
+			flagFreezePhysics	= 0x00010000,
+		} ;
+
+		public abstract ModelBone() ;
+
+		// ボーンの変換行列計算（モデル内空間）
+		public native void calcBoneTransformation
+				( Matrix3d* matrix, Vector3d* translate ) const ;
+		// ボーンの座標計算（モデル内座標）
+		public native const Vector3d* calcBoneBasePosition() const ;
+		// ボーンの基準座標（回転とオフセットを含まない初期状態のモデル内座標）
+		public native const Vector3d* calcBoneNormalizedPosition() const ;
+		// グローバル空間変換行列を計算
+		public native void calcGlobalTransformation
+				( Matrix3d* matrix, Vector3d* pos ) const ;
+		// グローバル空間座標を計算
+		public native const Vector3d* calcGlobalPosition() const ;
+		// 親ボーン取得
+		public native ModelBone getParentBone() const ;
+		// ボーンフラグ取得
+		public native BoneFlag getBoneFlags() const ;
+		// ボーンのローカル変換行列を設定する
+		public native void setTransformation( const Matrix3d* matBone ) ;
+		// （モデル内空間）変換行列をボーン・ローカルに変換して設定する
+		public native void applyTransformation
+			( const Matrix3d* matModel, const Vector3d* vModelPos ) ;
+		// 平行移動（ボーン内空間）取得
+		public native const Vector3d* getBoneOffset() const ;
+		// 平行移動（ボーン内空間）設定
+		public native void setBoneOffset( const Vector3d* vOffset ) ;
+		// ボーンハンドル（ボーン内ローカル座標）取得
+		public native const Vector3d* getBoneHandle() const ;
+		// IK 操作
+		public native void operateInverseKinematics
+			( const Vector3d* vPos /* IK ターゲット座標（モデル空間） */,
+				const Matrix3d* matRotate /* IK ターゲット回転行列（モデル空間） */,
+				const Vector3d* vLocalTip /* リグ座標（ボーン・ローカル座標） */,
+				double fpBendingWeight /* 曲げ比重 [0,1] */,
+				double zGimbalWeight /* 軸周り回転比重 [0,1] */,
+				double fpTipBoneWeight /* 先端（この）ボーンに適用する回転 matRotate の適用度 [0,1] */,
+				ulong nEffectParents = 0xFFFFFFFF /* 遡って IK 処理する親ボーン最大数 */ ) ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// モデルのマーカー情報
+	//////////////////////////////////////////////////////////////////////////
+
+	class	ModelMarker	extends NativeObject
+	{
+		// マーカーのタイプ
+		enum using Type
+		{
+			// 無効なタイプ
+			typeInvalid	= -1,
+			// 位置と方向
+			typePosition,
+			// ボーン物理演算排他オブジェクト
+			typeBoneColider,
+			// 被当たり判定ポイント（形状指定）
+			typeCollision,
+			// 当たり判定ポイント（形状指定）
+			typeCollider,
+			// 当たり判定作用ポイント
+			typeEffector,
+			typeCount,
+		} ;
+
+		// マーカーの形状
+		enum using Shape
+		{
+			// 球
+			shapeSphere,
+			// 立方体
+			shapeCube,
+			// 円柱
+			shapeTube,
+			shapeCount,
+		} ;
+
+		// マーカー情報
+		struct	Info
+		{
+			// タイプ
+			Type		type ;
+			// 形状
+			Shape		shape ;
+			// 当たり判定番号
+			Collision.ColliderClass	collider ;
+			// 回転
+			Quaternion	rotation ;
+			// 座標
+			Vector3		position ;
+			// 方向
+			Vector3		direction ;
+			// サイズ
+			Vector3		size ;
+			// 半径
+			float		radius ;
+			// 長さ（円柱）
+			float		length ;
+		}
+
+		public abstract ModelMarker() ;
+
+		// マーカー情報取得
+		public native const Info* getInfo() const ;
+		// 参照ボーン名取得
+		public native String getRefBoneId() const ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// モデルデータ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	ModelBuffer	extends VertexBuffer
+	{
+		// ModelBuffer 構築
+		public native ModelBuffer() ;
+
+		// モデル読み込み (*.mdfx, *.xmlmdf, *.mdf, *.glb, *.vrm)
+		public native boolean loadModel
+			( String file /* ファイルパス */,
+				String mime = null /* 読み込むファイルフォーマットの MIME。
+									null の場合はファイルパスの拡張子から判断されます。 */ ) ;
+		// モデル読み込み (*.mdfx, *.xmlmdf, *.mdf, *.glb, *.vrm)
+		public native boolean readModel
+			( File file /* 読み込むファイル */,
+				String mime /* 読み込むファイルフォーマットの MIME。
+								"application/x-mdfx"
+								"application/x-xmlmdf"
+								"application/x-mdf"
+								"modle/gltf+binary" */ ) ;
+		// モデル書き出し (*.mdfx, *.xmlmdf)
+		public native boolean saveModel
+			( String file /* ファイルパス */,
+				String mime = null /* 保存するファイルフォーマットの MIME。
+										null の場合は "application/x-mdfx"。
+										"application/x-mdfx"
+										"application/x-xmlmdf" */,
+				String imageMIME = null /* テクスチャ画像を外部に保存する場合の画像フォーマットの MIME */ ) ;
+		// モデル書き出し (*.mdfx, *.xmlmdf)
+		public native boolean writeModel
+			( File file,
+				String mime = null /* 保存するファイルフォーマットの MIME。
+										null の場合は "application/x-mdfx"。
+										"application/x-mdfx"
+										"application/x-xmlmdf" */,
+				String imageMIME = null /* テクスチャ画像を外部に保存する場合の画像フォーマットの MIME */ ) ;
+
+		// テクスチャ・ライブラリ取得
+		public native TextureLibrary getTextureLibrary() const ;
+		// マテリアル・ライブラリ取得
+		public native MaterialLibrary getMaterialLibrary() const ;
+		// ポーズ・ライブラリ取得
+		public native ModelPoseLibrary getPoseLibrary() const ;
+
+		// ボーン取得
+		public native ModelBone getBoneAs( String boneId ) const ;
+		// ボーンID取得
+		public native String getBoneIdentityOf( ModelBone bone ) const ;
+
+		// マーカー数取得
+		public native ulong getMarkerCount() const ;
+		// マーカー情報ID取得
+		public native String getMarkerIdentityAt( ulong index ) const ;
+		// マーカー情報取得
+		public native ModelMarker getMarkerAt( ulong index ) const ;
+		// マーカー情報取得
+		public native ModelMarker getMarkerAs( String markerId ) const ;
+	}
+
+}
+
+

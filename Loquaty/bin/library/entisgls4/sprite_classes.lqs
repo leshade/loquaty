@@ -1,0 +1,611 @@
+﻿
+@include "entisgls4/sprite.lqs"
+
+
+namespace	EntisGLS4
+{
+	//////////////////////////////////////////////////////////////////////////
+	// Sprite ウィンドウ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	WindowSprite	extends Sprite
+							implements Window
+	{
+		// WindowSprite 構築
+		public native WindowSprite() ;
+
+		// 直接描画系ルート Sprite 取得
+		// <return>直接描画系のルート Sprite</return>
+		// <desc>直接描画系 Sprite は疑似ディスプレイの座標空間ではなく、
+		// 実ディスプレイの座標空間・ピクセル密度で表示されます。<br/>
+		// ※疑似ディスプレイはフルスクリーンや、ウィンドウモードで
+		// ウィンドウサイズが変更された場合、自動的に伸縮描画されることに注意してください。</desc>
+		public native Sprite getDirectRoot() const ;
+
+		// 画面の更新通知
+		@override
+		public native boolean postUpdate( const ImageRect* pUpdate = null ) ;
+
+		// Sprite タイマ処理の有効／無効化
+		public native void enableSpriteTimer( boolean flagTimer ) ;
+
+		// 自動カーソル消去時間設定（-1 で自動消去無し）
+		public native void setAutoHideCursor( long msecTimeout ) ;
+
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 矩形表示 Sprite
+	//////////////////////////////////////////////////////////////////////////
+
+	class	RectangleSprite		extends Sprite
+	{
+		// RectangleSprite 構築
+		public native RectangleSprite() ;
+
+		// 矩形サイズ設定
+		public native void setRectangleSize( int w, int h ) ;
+
+		// 矩形サイズ取得
+		public native const Size* getRectangleSize() const ;
+
+		// 塗りつぶし色設定
+		public native void setRectangleColor( uint argb ) ;
+
+		// 塗りつぶし色取得
+		public native uint getRectangleColor() const ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 文字列表示 Sprite
+	//////////////////////////////////////////////////////////////////////////
+
+	class	TextSprite	extends Sprite
+	{
+		// レタリング情報
+		struct	Lettering
+		{
+			enum using AlignmentType<uint16>
+			{
+				// アライメント：左揃え／上揃え
+				alignLeft	= 0,
+				// アライメント：右揃え／下揃え
+				alignRight	= 1,
+				// アライメント：中央揃え
+				alignCenter	= 2,
+				// アライメント：両端揃え
+				alignLong	= 3,
+			}
+
+			enum using VerticalWriting<uint16>
+			{
+				// 縦書きフラグ：横書き
+				writingHorizontal	= 0,
+				// 縦書きフラグ：縦書き
+				writingVertical		= 1,
+			}
+
+			// 描画開始位置
+			Point			ptStartWriting ;
+			// 描画可能域
+			ImageRect		rectWritable ;
+			// 整列方式（align～）
+			AlignmentType	typeAlignment = alignLeft ;
+			// 縦書き方式（writing～）
+			VerticalWriting	flagVertical = writingHorizontal ;
+			// 固定文字ピッチ (0 以外のときに使用)
+			int32			pitchChar ;
+			// 文字ピッチ加算値
+			int32			offsetChar ;
+			// 文字ピッチ比率（*0x10000）
+			int32			scalePitch = 0x10000 ;
+			// 全角文字から半角文字の文字ピッチ加算
+			int32			offsetInHalf ;
+			// 半角文字から全角文字の文字ピッチ加算
+			int32			offsetOutHalf ;
+			// タブピッチ
+			int32			pitchTab ;
+			// 行間 (0 のときはフォントサイズに依存)
+			int32			pitchLine ;
+			// ２行目以降インデント
+			int32			widthIndent ;
+			// 最小ハイフニング長
+			uint32			minHyphening = 7 ;
+			// 最大禁則ぶら下げ長
+			uint32			maxProhibition = 3 ;
+		}
+
+		// 文字装飾情報
+		struct	Decoration
+		{
+			enum using DecorationFlag<uint>
+			{
+				// フラグ：陰付
+				flagShadow		= 0x0001,
+				// フラグ：縁取り
+				flagBorder		= 0x0002,
+				// フラグ：縁取り２（外側）
+				flagBorder2		= 0x0004,
+				// フラグ：グラデーション色指定
+				flagGradation	= 0x0008,
+			}
+
+			// フラグの組み合わせ
+			DecorationFlag	nFlags ;
+			// 文字の色
+			ARGB8		rgbaBody ;
+			// 縁取りの幅
+			uint32		widthBorder ;
+			// 縁取りの色
+			ARGB8		rgbaBorder ;
+			// 影の色
+			ARGB8		rgbaShadow ;
+			// 影のオフセット
+			Point		ptShadow ;
+			// 縁取り２の幅
+			uint32		widthBorder2 ;
+			// 縁取り２の色
+			ARGB8		rgbaBorder2 ;
+			// グラデーションの色数
+			uint32		nGradationCount ;
+			// グラデーションの幅（垂直方向）
+			// 文字画像がこの高さ以上の場合にはグラデージョンは反復する。
+			// 0 の場合には文字画像の高さに合わせる。
+			uint32		nGradationHeight ;
+			// グラデーション色配列
+			ARGB8[16]	rgbGradation ;
+		}
+
+		// テキスト・スタイル
+		class	TextStyle
+		{
+			// ボックス・アライメント
+			enum using BoxAlignment<uint32>
+			{
+				// 水平配置：左揃え
+				alignBoxLeft		= 0x00,
+				// 水平配置：右揃え
+				alignBoxRight		= 0x01,
+				// 水平配置：中央揃え
+				alignBoxCenter		= 0x02,
+				// 垂直配置：上揃え
+				alignBoxTop			= 0x00,
+				// 垂直配置：下揃え
+				alignBoxBottom		= 0x10,
+				// 垂直配置：中央揃え
+				alignBoxVCenter		= 0x20,
+				// 水平配置マスク
+				alignBoxHorzMask	= 0x0F,
+				// 垂直配置マスク
+				alignBoxVertMask	= 0xF0,
+			}
+
+			// ボックス・アライメント
+			public BoxAlignment	boxAlign ;
+			// フォント
+			public FontStyle	font = new FontStyle() ;
+			// レタリング情報
+			public Lettering	lettering ;
+			// レタリング情報（禁則文字）
+			public String		prohibition =
+							",.!?;:)]，．、。！？；：」】）〕｝〉》』"
+							+ "ぁぃぅぇぉっゃゅょァィゥェォッャュョー～" ;
+			// 文字装飾情報
+			public Decoration	decoration ;
+
+			public TextStyle( const TextStyle style )
+			{
+				this := style ;
+			}
+
+			public TextStyle operator := ( const TextStyle style )
+			{
+				boxAlign = style.boxAlign ;
+				font = new FontStyle( style.font ) ;
+				lettering := style.lettering ;
+				prohibition = style.prohibition ;
+				decoration := style.decoration ;
+				return	this ;
+			}
+		}
+
+		// TextSprite 構築
+		public native TextSprite() ;
+
+		// スタイル設定
+		public native void setTextStyle( const TextStyle style ) ;
+
+		// スタイル取得
+		public native const TextStyle getTextStyle() const ;
+
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// テキスト編集 Sprite
+	//////////////////////////////////////////////////////////////////////////
+
+	class	EditSprite	extends Sprite
+	{
+		// エディット・スタイル・フラグ
+		enum using EditStyleFlag<uint>
+		{
+			// エディット・スタイル・フラグ：１行
+			editSingleLine		= 0x00000000,
+			// エディット・スタイル・フラグ：複数行
+			editMultiLine		= 0x00000001,
+			// エディット・スタイル・フラグ：複数行／１行・フラグマスク
+			editMultiLineMask	= 0x00000001,
+			// エディット・スタイル・フラグ：行を右端で折り返す
+			editLineWrap		= 0x00000002,
+			// エディット・スタイル・フラグ：改行コードの入力許可 
+			editAcceptReturn	= 0x00000010,
+			// エディット・スタイル・フラグ：タブコードの入力許可
+			editAcceptTab		= 0x00000020,
+			// エディット・スタイル・フラグ：自動インデント
+			editAutoIndent		= 0x00000040,
+			// エディット・スタイル・フラグ：複数行選択時のタブは行頭に挿入
+			editMultiLineTab	= 0x00000080,
+			// エディット・スタイル・フラグ：読み取り専用
+			editReadOnly		= 0x00000100,
+			// エディット・スタイル・フラグ：アルファベット入力禁止
+			editDenyAlphabet	= 0x00001000,
+			// エディット・スタイル・フラグ：数字入力禁止
+			editDenyNumber		= 0x00002000,
+			// エディット・スタイル・フラグ：半角文字入力禁止
+			editDeny8bitChar	= 0x00004000,
+			// エディット・スタイル・フラグ：全角文字入力禁止
+			editDenyMBChar		= 0x00008000,
+			// エディット・スタイル・フラグ：数値入力
+			editNumber			= 0x00010000,
+			// エディット・スタイル・フラグ：パスワード入力
+			editPassword		= 0x00020000,
+			// エディット・スタイル・フラグ：垂直カレット
+			editColumnCaret		= 0x00000000,
+			// エディット・スタイル・フラグ：水平カレット
+			editUnderbarCaret	= 0x00100000,
+			// エディット・スタイル・フラグ：垂直／水平カレット・フラグマスク
+			editCaretMask		= 0x00100000,
+			// エディット・スタイル・フラグ：IME 入力表示用フォント指定
+			editFontForIME		= 0x10000000,
+		}
+
+		// エディット・スタイル
+		class	ExitStyle	extends TextSprite.TextStyle
+		{
+			// エディット・スタイル・フラグの組み合わせ（edit～）
+			public EditStyleFlag	nEditFlags = editMultiLine | editLineWrap
+												| editAcceptReturn | editAcceptTab ;
+			// カレットの幅（ピクセル単位）
+			public uint32		nCaretWidth = 2 ;
+			// カレットの点滅周期（ミリ秒単位）
+			public uint32		nCaretBlinkInterval = 1000 ;
+			// カレット表示色（ARGB）
+			public ARGB8		rgbaCaretColor = { 0xff, 0xff, 0xff, 0xff } ;
+			public ARGB8		rgbaSelBackColor = { 0xff, 0xff, 0xff, 0xff } ;
+			public TextSprite.Decoration
+								decoSel = { 0, { 0, 0, 0, 0xff } } ;
+			public FontStyle	fontIME = FontStyle() ;
+
+			public ExitStyle( const ExitStyle style )
+			{
+				this := style ;
+			}
+
+			public ExitStyle operator := ( const ExitStyle style )
+			{
+				super::operator := ( style ) ;
+				nEditFlags = style.nEditFlags ;
+				nCaretWidth = style.nCaretWidth ;
+				nCaretBlinkInterval = style.nCaretBlinkInterval ;
+				rgbaCaretColor := style.rgbaCaretColor ;
+				rgbaSelBackColor := style.rgbaSelBackColor ;
+				decoSel := style.decoSel ;
+				fontIME = FontStyle( style.fontIME ) ;
+				return	this ;
+			}
+		}
+
+		// EditSprite 構築
+		public native EditSprite() ;
+
+		// スタイル設定
+		public native void setEditStyle( const ExitStyle style ) ;
+		// スタイル取得
+		public native const ExitStyle getEditStyle() const ;
+
+		// カーソル位置取得
+		public native ulong getCursorIndex() const ;
+		// 選択範囲取得
+		public native void getSel
+			( ulong* iSelFirst /* 選択先頭位置を受け取る ulong 変数 */,
+				ulong* iSelEnd /* 選択終端位置を受け取る ulong 変数 */ ) const ;
+		// 選択範囲設定
+		public native void setSel( long iFirst, long iEnd ) ;
+		// 選択範囲の文字列を取得
+		public native String getSelText() const ;
+		// 指定範囲の文字列を取得
+		public native String getRangeText( long iFirst, long iEnd ) const ;
+		// 文字コピー可能か？
+		public native boolean canCopyText() const ;
+		// 文字切り取り可能か？
+		public native boolean canCutText() const ;
+		// 文字列貼り付け可能か？
+		public native boolean canPasteText() const ;
+		// 選択文字列削除
+		public native void doClear() ;
+		// 選択文字列切り取り
+		public native void doCut() ;
+		// 選択文字列コピー
+		public native void doCopy() ;
+		// 選択文字列貼りつけ
+		public native void doPaste() ;
+		// 選択文字列置き換え
+		public native void doReplace( String text ) ;
+		// UNDO 可能か？
+		public native boolean canUndo() ;
+		// UNDO 実行
+		public native void undo() ;
+		// REDO 可能か？
+		public native boolean canRedo() ;
+		// REDO 実行
+		public native void redo() ;
+
+		// 文字検索フラグ
+		enum using FindTextFlag<uint>
+		{
+			// 文字検索フラグ：後方へ検索
+			findUp			= 0x0001,
+			// 文字検索フラグ：大文字小文字を区別しない
+			findNoCase		= 0x0002,
+			// 文字検索フラグ：単語単位で比較する
+			findWholeWord	= 0x0004,
+		}
+
+		// 文字検索
+		public native boolean doFindText
+			( String text, FindTextFlag nFlags = 0 ) ;
+		// 文字検索
+		public native boolean doFindTextFrom
+			( ulong iStartChar,
+				String text, FindTextFlag nFlags = 0 ) ;
+
+		// 文字指標から座標を計算
+		public native const Point* getCharPosFromIndex( ulong iChar ) const ;
+		// 文字指標から行番号(0～)を取得
+		public native ulong getLineFromIndex( ulong iChar ) const ;
+		// 行(0～)の先頭の文字指標を取得
+		public native ulong getLineIndex( ulong nLine ) const ;
+		// 行(0～)の文字数を取得
+		public native ulong getLineLength( ulong nLine ) const ;
+		// 行数を取得
+		public native ulong getLineCount() const ;
+		// 全文字数取得
+		public native ulong getLength() const ;
+		// 指定行(0～)の文字列を取得
+		public native String getLineText( ulong nLine, ulong iOffset = 0 ) const ;
+		// スクロール位置取得（ピクセル, 行）
+		public native const Point* getScrollPos( ulong* pLineOffset = null ) const ;
+		// スクロール位置設定
+		public native void setScrollPos
+			( int xPos, int yLine, int iLineOffset = 0, int yOffset = 0 ) ;
+		// 行の最大幅（ピクセル）を取得
+		public native ulong getMaxLineWidth() const ;
+		// 行間取得
+		public native ulong getLineHeight() const ;
+		// 垂直相対スクロール
+		public native void scrollDeltaVertical( int yDelta ) ;
+
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// メッセージ表示 Sprite
+	//////////////////////////////////////////////////////////////////////////
+
+	class	MessageSprite	extends Sprite
+	{
+		struct	ViewActionStyle
+		{
+			// 表示速度 [ms/char]
+			uint32		msecPerChar = 0 ;
+			// フェードイン時間 [ms]
+			uint32		msecFade= 0 ;
+			// 表示移動元オフセット
+			Vector2		vMove ;
+			// 表示開始時拡大率
+			Vector2		vZoom = { 1, 1 } ;
+			// 表示開始時回転角 [deg]
+			float		zRotation = 0 ;
+			uint32		reserved ;
+		} ;
+
+		// リンク表示状態
+		enum using LinkStatus
+		{
+			linkStatusNormal,
+			linkStatusFocus,
+			linkStatusPushing,
+			linkStatusCount,
+		}
+
+		class	RichTextStyle	extends TextSprite.TextStyle
+		{
+			// ルビ表示用フォント
+			public FontStyle	fontRuby = FontStyle() ;
+			// リンク表示用装飾
+			public TextSprite.Decoration[linkStatusCount]
+								decoLink ;
+
+			public RichTextStyle( const RichTextStyle style )
+			{
+				this := style ;
+			}
+
+			public RichTextStyle operator := ( const RichTextStyle style )
+			{
+				super::operator := ( style ) ;
+				fontRuby = FontStyle( style.fontRuby ) ;
+				decoLink.copy( style.decoLink,
+								sizeof(TextSprite.Decoration) * linkStatusCount ) ;
+				return	this ;
+			}
+		}
+
+		class	MessageStyle	extends RichTextStyle
+		{
+			public ViewActionStyle	viewAction ;
+
+			public MessageStyle( const RichTextStyle style )
+			{
+				this := style ;
+			}
+
+			public MessageStyle operator := ( const MessageStyle style )
+			{
+				super::operator := ( style ) ;
+				viewAction := style.viewAction ;
+				return	this ;
+			}
+		}
+
+		// MessageSprite 構築
+		public native MessageSprite() ;
+
+		// スタイル設定
+		public native void setMessageStyle( const MessageStyle style ) ;
+		// スタイル取得
+		public native const MessageStyle getMessageStyle() const ;
+
+		// 文字アトラス化設定
+		public native void setCharacterAtlas
+			( uint32 width /* アトラス化用バッファの幅（ピクセル） */,
+				uint32 height /* アトラス化用バッファの高さ（ピクセル） */ ) ;
+		// 文字アトラス化設定解除
+		public native void releaseCharacterAtlas() ;
+
+		// 表示文字を全消去
+		public native void clearMessage() ;
+		// 表示中の文字を即座に完了させる
+		public native void flushMessage() ;
+		// 文字が表示中（フェード中）か？
+		public native boolean isMessagePending() const ;
+		// 出力速度比 (*256) 設定 (0x10000 は一瞬表示)
+		public native void setMessageSpeedRatio( uint32 fxSpeedRatio ) ;
+		// 表示文字列追加
+		public native void addMessageText( String text ) ;
+		// 表示文字列追加
+		public native void addMessageXML( String textXML ) ;
+		// 垂直アライメント適用
+		//（TextStyle の boxAlign 設定に基づいて垂直位置を補正する）
+		public native void verticalAlignmentMessage() ;
+		// 次の出力位置を取得
+		public native const Point* getNextMessagePoint() const ;
+		// 表示文字の外接矩形（ローカル座標）取得
+		public native const ImageRect* getCircumscribedRect() const ;
+		// 表示文字数取得
+		public native ulong getMessageCharacterCount() const ;
+		// 表示メッセージのプレーンテキスト取得
+		public native String getPlainText() const ;
+
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 動画再生表示 Sprite
+	//////////////////////////////////////////////////////////////////////////
+
+	class	MovieSprite		extends Sprite
+	{
+		// MovieSprite 構築
+		public native MovieSprite() ;
+
+		// 動画ファイルを開く
+		public native boolean openMovieFile( String path ) ;
+		// 動画ファイルを閉じる
+		public native boolean closeMovieFile() ;
+
+		// 再生フラグ
+		enum using PlayFlag<ulong>
+		{
+			// 再生フラグ：直接描画
+			playDrawDirect	= 0x0001,
+		}
+
+		// 再生を開始する
+		public native boolean playMovie( PlayFlag nFlags = 0 ) ;
+		// 停止する
+		public native boolean stopMovie() ;
+
+		// ループポイント[/frame] を設定する
+		public native boolean setMovieLoop
+			( boolean flagLoop = true, long nStart = -1, long nEnd = -1 ) ;
+		// ループ設定取得
+		public native boolean isMovieLoop
+			( long * pStart = null, long * pEnd = null ) const ;
+
+		// 再生を一時停止する
+		public native boolean pauseMovie() ;
+		// 再生を再開する
+		public native boolean restartMovie() ;
+
+		// 音量取得 [L/R]
+		public native boolean getVolume( float* pVolumes, ulong nChannels ) ;
+		// 音量設定 [L/R]
+		public native boolean setVolume( const float* pVolumes, ulong nChannels ) ;
+		// 再生中か？
+		public native boolean isMoviePlaying() const ;
+		// 一時停止中か？
+		public native boolean isMoviePaused() const ;
+
+		// メディアのサンプル周波数を取得する
+		public native uint32 getMovieFrequency() const ;
+		// メディアの全長 [/sample] を取得する
+		public native ulong getMovieLength() const ;
+		// 再生位置 [/sample] を取得する
+		public native ulong getMoviePosition() const ;
+		// 再生位置 [/sample] を変更する
+		public native void seekMovie( ulong nPos ) ;
+		// ビデオサイズを取得する
+		public native const Size* getMovieSize() const ;
+		// 再生終端到達判定
+		public native boolean hasEndedOfDuration() const ;
+		// 終端到達フラグをクリア
+		public native void resetEndOfDuration() ;
+
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// ユーザー描画可能な Sprite
+	//////////////////////////////////////////////////////////////////////////
+
+	class	RenderableSprite	extends Sprite
+	{
+		// RenderableSprite 構築
+		public native RenderableSprite() ;
+
+		// 描画
+		// <desc>※onPrepareFrame～onFinishFrame の間、複数回呼び出される
+		// 可能性があることに注意（立体視等により）</desc>
+		public abstract void onRender
+			( RenderContext render,
+				int stereoView = RenderContext.stereoViewAuto ) ;
+		// フレーム描画（視点に関係しない）共通処理
+		public abstract void onPrepareFrame() ;
+		// フレーム描画（視点に関係しない）完了後処理
+		public abstract void onFinishFrame() ;
+
+	}
+
+}
+
+

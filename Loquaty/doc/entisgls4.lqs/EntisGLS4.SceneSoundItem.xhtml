@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneSoundItem</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneSoundItem</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneSoundItem ;</div>
+<div class="normal">
+Scene サウンド・アイテム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneCommon.xhtml">EntisGLS4.SceneCommon</a>
+<div class="indent1"><a href="EntisGLS4.SceneSoundItem.xhtml">EntisGLS4.SceneSoundItem</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SceneSoundItem.Instance.xhtml">EntisGLS4.SceneSoundItem.Instance</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneSoundItem.InstanceFlag.xhtml">EntisGLS4.SceneSoundItem.InstanceFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_instanceAutoDeleteOnEnd">instanceAutoDeleteOnEnd</a><br/>
+	<a href="#static_instanceAutoDeleteWithItem">instanceAutoDeleteWithItem</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneSoundItem">SceneSoundItem</a><br/>
+	<a href="#virtual_createInstance">createInstance</a><br/>
+	<a href="#virtual_getPlayingTimeOfInstance">getPlayingTimeOfInstance</a><br/>
+	<a href="#virtual_isValidInstance">isValidInstance</a><br/>
+	<a href="#virtual_playInstance">playInstance</a><br/>
+	<a href="#virtual_removeInstance">removeInstance</a><br/>
+	<a href="#virtual_setInstancePosition">setInstancePosition</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_instanceAutoDeleteOnEnd"/>
+<div class="headline">instanceAutoDeleteOnEnd</div>
+<div class="usage">public static const EntisGLS4.SceneSoundItem.InstanceFlag&#9; instanceAutoDeleteOnEnd = 1</div>
+<div class="normal">
+再生完了時にインスタンス破棄<br/></div>
+<br/>
+<a name="static_instanceAutoDeleteWithItem"/>
+<div class="headline">instanceAutoDeleteWithItem</div>
+<div class="usage">public static const EntisGLS4.SceneSoundItem.InstanceFlag&#9; instanceAutoDeleteWithItem = 2</div>
+<div class="normal">
+参照アイテム削除時にインスタンス破棄<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneSoundItem"/>
+<div class="headline">SceneSoundItem</div>
+<div class="usage">public native SceneSoundItem( )</div>
+<div class="normal">
+SceneSoundItem 構築<br/></div>
+<br/>
+
+<a name="virtual_createInstance"/>
+<div class="headline">createInstance</div>
+<div class="usage">public native EntisGLS4.SceneSoundItem.Instance createInstance( EntisGLS4.SceneSoundItem.InstanceFlag nFlags = 0, double fpSubVolume = 1., EntisGLS4.SceneItem refItem = null, const Matrix3d* matrix = null, const Vector3d* pos = null )</div>
+<div class="normal">
+インスタンス生成<br/></div>
+<div class="notes_parameter">
+<div class="param_name">nFlags</div>
+<div class="param_desc">
+インスタンス・フラグ</div>
+<div class="param_name">fpSubVolume</div>
+<div class="param_desc">
+音量</div>
+<div class="param_name">refItem</div>
+<div class="param_desc">
+参照（追従）アイテム</div>
+<div class="param_name">matrix</div>
+<div class="param_desc">
+変換行列（参照アイテムのローカル／(refItem==null) の時はグローバル）</div>
+<div class="param_name">pos</div>
+<div class="param_desc">
+音源座標（参照アイテムのローカル／(refItem==null) の時はグローバル）</div>
+</div>
+<br/>
+
+<a name="virtual_getPlayingTimeOfInstance"/>
+<div class="headline">getPlayingTimeOfInstance</div>
+<div class="usage">public native boolean getPlayingTimeOfInstance( double* secPlaying, EntisGLS4.SceneSoundItem.Instance instance ) const</div>
+<div class="normal">
+インスタンス再生時間と再生中か照会<br/></div>
+<br/>
+
+<a name="virtual_isValidInstance"/>
+<div class="headline">isValidInstance</div>
+<div class="usage">public native boolean isValidInstance( EntisGLS4.SceneSoundItem.Instance instance ) const</div>
+<div class="normal">
+インスタンスが存在するか？<br/></div>
+<br/>
+
+<a name="virtual_playInstance"/>
+<div class="headline">playInstance</div>
+<div class="usage">public native void playInstance( EntisGLS4.SceneSoundItem.Instance instance )</div>
+<div class="normal">
+再生開始<br/></div>
+<br/>
+
+<a name="virtual_removeInstance"/>
+<div class="headline">removeInstance</div>
+<div class="usage">public native void removeInstance( EntisGLS4.SceneSoundItem.Instance instance )</div>
+<div class="normal">
+インスタンス削除<br/></div>
+<br/>
+
+<a name="virtual_setInstancePosition"/>
+<div class="headline">setInstancePosition</div>
+<div class="usage">public native void setInstancePosition( EntisGLS4.SceneSoundItem.Instance instance, const Vector3d* vPos ) const</div>
+<div class="normal">
+インスタンス座標変更<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

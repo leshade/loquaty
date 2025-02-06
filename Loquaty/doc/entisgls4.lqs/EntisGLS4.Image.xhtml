@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Image</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Image</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class Image ;</div>
+<div class="normal">
+画像オブジェクト</div>
+<br/>
+<div class="indent1">
+Image オブジェクトは１枚、又は複数の画像を保持しますがselectFrame によって選択されている１枚の画像として扱われます。<br/>selectFrame による作用が問題になる場合には newReference 関数で特定のフレームだけの Image オブジェクトを取得します。</div><br/>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Image.xhtml">EntisGLS4.Image</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.Image.BufferTypeFlag.xhtml">EntisGLS4.Image.BufferTypeFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.Image.BuildAtlasFlag.xhtml">EntisGLS4.Image.BuildAtlasFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.Image.BuildAtlasParam.xhtml">EntisGLS4.Image.BuildAtlasParam</a></div>
+<div class="indent2"><a href="EntisGLS4.Image.CubeMapFrameIndex.xhtml">EntisGLS4.Image.CubeMapFrameIndex</a></div>
+<div class="indent2"><a href="EntisGLS4.Image.EncoderOptionFlag.xhtml">EntisGLS4.Image.EncoderOptionFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.Image.EncoderOptions.xhtml">EntisGLS4.Image.EncoderOptions</a></div>
+<div class="indent2"><a href="EntisGLS4.Image.LockBufferMethod.xhtml">EntisGLS4.Image.LockBufferMethod</a></div>
+<div class="indent2"><a href="EntisGLS4.Image.NormalizeFormatFlag.xhtml">EntisGLS4.Image.NormalizeFormatFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_cubemapNegativeX">cubemapNegativeX</a><br/>
+	<a href="#static_cubemapPositiveY">cubemapPositiveY</a><br/>
+	<a href="#static_cubemapNegativeZ">cubemapNegativeZ</a><br/>
+	<a href="#static_cubemapPositiveX">cubemapPositiveX</a><br/>
+	<a href="#static_cubemapNegativeY">cubemapNegativeY</a><br/>
+	<a href="#static_cubemapPositiveZ">cubemapPositiveZ</a><br/>
+	<a href="#static_bufferNoWritable">bufferNoWritable</a><br/>
+	<a href="#static_bufferNoReadable">bufferNoReadable</a><br/>
+	<a href="#static_bufferNonPowerOf2">bufferNonPowerOf2</a><br/>
+	<a href="#static_bufferForTexture">bufferForTexture</a><br/>
+	<a href="#static_bufferForMipmapTexture">bufferForMipmapTexture</a><br/>
+	<a href="#static_bufferForRenderTarget">bufferForRenderTarget</a><br/>
+	<a href="#static_bufferCubeMapTexture">bufferCubeMapTexture</a><br/>
+	<a href="#static_bufferDeviceRenderBuffer">bufferDeviceRenderBuffer</a><br/>
+	<a href="#static_bufferMultisample">bufferMultisample</a><br/>
+	<a href="#static_bufferCompressedTexture">bufferCompressedTexture</a><br/>
+	<a href="#static_bufferCompressionFormatMask">bufferCompressionFormatMask</a><br/>
+	<a href="#static_bufferCompressionFormatShifter">bufferCompressionFormatShifter</a><br/>
+	<a href="#static_bufferTexture3D">bufferTexture3D</a><br/>
+	<a href="#static_bufferTextureArray">bufferTextureArray</a><br/>
+	<a href="#static_bufferSampleNoSmooth">bufferSampleNoSmooth</a><br/>
+	<a href="#static_bufferSampleTiling">bufferSampleTiling</a><br/>
+	<a href="#static_bufferOnMemory">bufferOnMemory</a><br/>
+	<a href="#static_bufferOnDeviceOnly">bufferOnDeviceOnly</a><br/>
+	<a href="#static_bufferRenderNonTextureFlags">bufferRenderNonTextureFlags</a><br/>
+	<a href="#static_lockRead">lockRead</a><br/>
+	<a href="#static_lockWrite">lockWrite</a><br/>
+	<a href="#static_lockReadWrite">lockReadWrite</a><br/>
+	<a href="#static_formatMergeAnimation">formatMergeAnimation</a><br/>
+	<a href="#static_formatCastSize">formatCastSize</a><br/>
+	<a href="#static_formatCastSizeBottom">formatCastSizeBottom</a><br/>
+	<a href="#static_formatStraightPixel">formatStraightPixel</a><br/>
+	<a href="#static_formatNoDithering">formatNoDithering</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_buildAtlas">buildAtlas</a><br/>
+	<a href="#func_makeAdditionalTone">makeAdditionalTone</a><br/>
+	<a href="#func_makeBrightnessTone">makeBrightnessTone</a><br/>
+	<a href="#func_makeGammaTone">makeGammaTone</a><br/>
+	<a href="#func_makeMultipleTone">makeMultipleTone</a><br/>
+	<a href="#func_makeOffsetMultipleTone">makeOffsetMultipleTone</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Image">Image</a><br/>
+	<a href="#virtual_applyToneFilter">applyToneFilter</a><br/>
+	<a href="#virtual_blendAddImage">blendAddImage</a><br/>
+	<a href="#virtual_blendBackImage">blendBackImage</a><br/>
+	<a href="#virtual_blendImage">blendImage</a><br/>
+	<a href="#virtual_blendImageBackgroundColor">blendImageBackgroundColor</a><br/>
+	<a href="#virtual_blendMulImage">blendMulImage</a><br/>
+	<a href="#virtual_blendWithAlphaChannel">blendWithAlphaChannel</a><br/>
+	<a href="#virtual_convertImage">convertImage</a><br/>
+	<a href="#virtual_copyImage">copyImage</a><br/>
+	<a href="#virtual_createColorImageFromGrayscale">createColorImageFromGrayscale</a><br/>
+	<a href="#virtual_createFilledBezierShape">createFilledBezierShape</a><br/>
+	<a href="#virtual_createFilledPolygonShape">createFilledPolygonShape</a><br/>
+	<a href="#virtual_createImage">createImage</a><br/>
+	<a href="#virtual_denormalizeForTexture">denormalizeForTexture</a><br/>
+	<a href="#virtual_enlargeHalfImage">enlargeHalfImage</a><br/>
+	<a href="#virtual_fillImage">fillImage</a><br/>
+	<a href="#virtual_flushBuffer">flushBuffer</a><br/>
+	<a href="#virtual_frameFromMilliSec">frameFromMilliSec</a><br/>
+	<a href="#virtual_getBufferFlags">getBufferFlags</a><br/>
+	<a href="#virtual_getFrameCount">getFrameCount</a><br/>
+	<a href="#virtual_getImageFormat">getImageFormat</a><br/>
+	<a href="#virtual_getImageHeight">getImageHeight</a><br/>
+	<a href="#virtual_getImageInfo">getImageInfo</a><br/>
+	<a href="#virtual_getImageSize">getImageSize</a><br/>
+	<a href="#virtual_getImageWidth">getImageWidth</a><br/>
+	<a href="#virtual_getPaletteTable">getPaletteTable</a><br/>
+	<a href="#virtual_getPixelARGB">getPixelARGB</a><br/>
+	<a href="#virtual_getReferenceRectOfAtlas">getReferenceRectOfAtlas</a><br/>
+	<a href="#virtual_getSelectedFrame">getSelectedFrame</a><br/>
+	<a href="#virtual_getSequenceLength">getSequenceLength</a><br/>
+	<a href="#virtual_getSequenceTable">getSequenceTable</a><br/>
+	<a href="#virtual_getTotalTime">getTotalTime</a><br/>
+	<a href="#virtual_halfBlendImage">halfBlendImage</a><br/>
+	<a href="#virtual_loadImage">loadImage</a><br/>
+	<a href="#virtual_lockBuffer">lockBuffer</a><br/>
+	<a href="#virtual_multiplyImageRGBAlpha">multiplyImageRGBAlpha</a><br/>
+	<a href="#virtual_newAnimationReference">newAnimationReference</a><br/>
+	<a href="#virtual_newReference">newReference</a><br/>
+	<a href="#virtual_normalizeFormat">normalizeFormat</a><br/>
+	<a href="#virtual_normalizeToMipmapTexture">normalizeToMipmapTexture</a><br/>
+	<a href="#virtual_normalizeToRenderTarget">normalizeToRenderTarget</a><br/>
+	<a href="#virtual_normalizeToTexture">normalizeToTexture</a><br/>
+	<a href="#virtual_orthogonalRotate">orthogonalRotate</a><br/>
+	<a href="#virtual_putImageChannelTo">putImageChannelTo</a><br/>
+	<a href="#virtual_putImageMAddChannelTo">putImageMAddChannelTo</a><br/>
+	<a href="#virtual_readImage">readImage</a><br/>
+	<a href="#virtual_releaseBuffer">releaseBuffer</a><br/>
+	<a href="#virtual_saveImage">saveImage</a><br/>
+	<a href="#virtual_selectFrame">selectFrame</a><br/>
+	<a href="#virtual_setAnimationDuration">setAnimationDuration</a><br/>
+	<a href="#virtual_setImageOrigin">setImageOrigin</a><br/>
+	<a href="#virtual_setPaletteTable">setPaletteTable</a><br/>
+	<a href="#virtual_setSequenceTable">setSequenceTable</a><br/>
+	<a href="#virtual_unlockBuffer">unlockBuffer</a><br/>
+	<a href="#virtual_writeImage">writeImage</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_cubemapNegativeX"/>
+<div class="headline">cubemapNegativeX</div>
+<div class="usage">public static const EntisGLS4.Image.CubeMapFrameIndex&#9; cubemapNegativeX = 0</div>
+<div class="normal">
+CubeMap のフレーム番号 : Left<br/></div>
+<br/>
+<a name="static_cubemapPositiveY"/>
+<div class="headline">cubemapPositiveY</div>
+<div class="usage">public static const EntisGLS4.Image.CubeMapFrameIndex&#9; cubemapPositiveY = 1</div>
+<div class="normal">
+CubeMap のフレーム番号 : Down<br/></div>
+<br/>
+<a name="static_cubemapNegativeZ"/>
+<div class="headline">cubemapNegativeZ</div>
+<div class="usage">public static const EntisGLS4.Image.CubeMapFrameIndex&#9; cubemapNegativeZ = 2</div>
+<div class="normal">
+CubeMap のフレーム番号 : Front<br/></div>
+<br/>
+<a name="static_cubemapPositiveX"/>
+<div class="headline">cubemapPositiveX</div>
+<div class="usage">public static const EntisGLS4.Image.CubeMapFrameIndex&#9; cubemapPositiveX = 3</div>
+<div class="normal">
+CubeMap のフレーム番号 : Right<br/></div>
+<br/>
+<a name="static_cubemapNegativeY"/>
+<div class="headline">cubemapNegativeY</div>
+<div class="usage">public static const EntisGLS4.Image.CubeMapFrameIndex&#9; cubemapNegativeY = 4</div>
+<div class="normal">
+CubeMap のフレーム番号 : Up<br/></div>
+<br/>
+<a name="static_cubemapPositiveZ"/>
+<div class="headline">cubemapPositiveZ</div>
+<div class="usage">public static const EntisGLS4.Image.CubeMapFrameIndex&#9; cubemapPositiveZ = 5</div>
+<div class="normal">
+CubeMap のフレーム番号 : Back<br/></div>
+<br/>
+<a name="static_bufferNoWritable"/>
+<div class="headline">bufferNoWritable</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferNoWritable = 1</div>
+<div class="normal">
+バッファフラグ：書き出し不可ヒント（未使用）<br/></div>
+<br/>
+<a name="static_bufferNoReadable"/>
+<div class="headline">bufferNoReadable</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferNoReadable = 2</div>
+<div class="normal">
+バッファフラグ：読み出し不可ヒント（未使用）<br/></div>
+<br/>
+<a name="static_bufferNonPowerOf2"/>
+<div class="headline">bufferNonPowerOf2</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferNonPowerOf2 = 8</div>
+<div class="normal">
+バッファフラグ：VRAM 上のサイズは２の累乗に限らない<br/></div>
+<br/>
+<a name="static_bufferForTexture"/>
+<div class="headline">bufferForTexture</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferForTexture = 16</div>
+<div class="normal">
+バッファフラグ：テクスチャソース使用ヒント（未使用）<br/></div>
+<br/>
+<a name="static_bufferForMipmapTexture"/>
+<div class="headline">bufferForMipmapTexture</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferForMipmapTexture = 32</div>
+<div class="normal">
+バッファフラグ：VRAM 上ではミップマップ化<br/></div>
+<br/>
+<a name="static_bufferForRenderTarget"/>
+<div class="headline">bufferForRenderTarget</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferForRenderTarget = 64</div>
+<div class="normal">
+バッファフラグ：レンダリング対象ヒント（未使用）<br/></div>
+<br/>
+<a name="static_bufferCubeMapTexture"/>
+<div class="headline">bufferCubeMapTexture</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferCubeMapTexture = 0x80</div>
+<div class="normal">
+バッファフラグ：キューブマッピング用<br/></div>
+<br/>
+<a name="static_bufferDeviceRenderBuffer"/>
+<div class="headline">bufferDeviceRenderBuffer</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferDeviceRenderBuffer = 0x200</div>
+<div class="normal">
+バッファフラグ：レンダリング専用バッファ<br/></div>
+<br/>
+<a name="static_bufferMultisample"/>
+<div class="headline">bufferMultisample</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferMultisample = 0x400</div>
+<div class="normal">
+バッファフラグ：マルチサンプリング（レンダリング対象）<br/></div>
+<br/>
+<a name="static_bufferCompressedTexture"/>
+<div class="headline">bufferCompressedTexture</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferCompressedTexture = 0x800</div>
+<div class="normal">
+バッファフラグ：可能なら VRAM 上は圧縮形式<br/></div>
+<br/>
+<a name="static_bufferCompressionFormatMask"/>
+<div class="headline">bufferCompressionFormatMask</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferCompressionFormatMask = 0x7F000000</div>
+<div class="normal">
+バッファフラグ：圧縮フォーマット・ビットマスク<br/></div>
+<br/>
+<a name="static_bufferCompressionFormatShifter"/>
+<div class="headline">bufferCompressionFormatShifter</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferCompressionFormatShifter = 24</div>
+<div class="normal">
+バッファフラグ：圧縮フォーマット・ビットシフタ<br/></div>
+<br/>
+<a name="static_bufferTexture3D"/>
+<div class="headline">bufferTexture3D</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferTexture3D = 0x1000</div>
+<div class="normal">
+バッファフラグ：VRAM 上では 3D テクスチャ<br/></div>
+<br/>
+<a name="static_bufferTextureArray"/>
+<div class="headline">bufferTextureArray</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferTextureArray = 0x2000</div>
+<div class="normal">
+バッファフラグ：VRAM 上では テクスチャ配列 ※bufferTexture3D との組み合わせは未対応<br/></div>
+<br/>
+<a name="static_bufferSampleNoSmooth"/>
+<div class="headline">bufferSampleNoSmooth</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferSampleNoSmooth = 0x10000</div>
+<div class="normal">
+バッファフラグ：デフォルトで補完無効<br/></div>
+<br/>
+<a name="static_bufferSampleTiling"/>
+<div class="headline">bufferSampleTiling</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferSampleTiling = 0x20000</div>
+<div class="normal">
+バッファフラグ：デフォルトでタイリング (WRAP)<br/></div>
+<br/>
+<a name="static_bufferOnMemory"/>
+<div class="headline">bufferOnMemory</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferOnMemory = 0</div>
+<div class="normal">
+バッファフラグ：RAM 上にバッファ保持<br/></div>
+<br/>
+<a name="static_bufferOnDeviceOnly"/>
+<div class="headline">bufferOnDeviceOnly</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferOnDeviceOnly = 0x100</div>
+<div class="normal">
+バッファフラグ：VRAM 上のみ<br/></div>
+<br/>
+<a name="static_bufferRenderNonTextureFlags"/>
+<div class="headline">bufferRenderNonTextureFlags</div>
+<div class="usage">public static const EntisGLS4.Image.BufferTypeFlag&#9; bufferRenderNonTextureFlags = 0x600</div>
+<div class="normal">
+バッファフラグ：描画先にのみ使えるフラグ集合<br/></div>
+<br/>
+<a name="static_lockRead"/>
+<div class="headline">lockRead</div>
+<div class="usage">public static const EntisGLS4.Image.LockBufferMethod&#9; lockRead = 1</div>
+<div class="normal">
+lockBuffer 読み取りモード<br/></div>
+<br/>
+<a name="static_lockWrite"/>
+<div class="headline">lockWrite</div>
+<div class="usage">public static const EntisGLS4.Image.LockBufferMethod&#9; lockWrite = 2</div>
+<div class="normal">
+lockBuffer 書き込みモード<br/></div>
+<br/>
+<a name="static_lockReadWrite"/>
+<div class="headline">lockReadWrite</div>
+<div class="usage">public static const EntisGLS4.Image.LockBufferMethod&#9; lockReadWrite = 3</div>
+<div class="normal">
+lockBuffer 読み書きモード<br/></div>
+<br/>
+<a name="static_formatMergeAnimation"/>
+<div class="headline">formatMergeAnimation</div>
+<div class="usage">public static const EntisGLS4.Image.NormalizeFormatFlag&#9; formatMergeAnimation = 1</div>
+<div class="normal">
+フォーマット正規化フラグ：アニメーション画像を1枚にまとめる<br/></div>
+<br/>
+<a name="static_formatCastSize"/>
+<div class="headline">formatCastSize</div>
+<div class="usage">public static const EntisGLS4.Image.NormalizeFormatFlag&#9; formatCastSize = 2</div>
+<div class="normal">
+フォーマット正規化フラグ：サイズ変更（縮小）<br/></div>
+<br/>
+<a name="static_formatCastSizeBottom"/>
+<div class="headline">formatCastSizeBottom</div>
+<div class="usage">public static const EntisGLS4.Image.NormalizeFormatFlag&#9; formatCastSizeBottom = 4</div>
+<div class="normal">
+フォーマット正規化フラグ：サイズ変更（縮小）<br/></div>
+<br/>
+<a name="static_formatStraightPixel"/>
+<div class="headline">formatStraightPixel</div>
+<div class="usage">public static const EntisGLS4.Image.NormalizeFormatFlag&#9; formatStraightPixel = 16</div>
+<div class="normal">
+フォーマット正規化フラグ：データはそのままフォーマット情報のみ変更<br/></div>
+<br/>
+<a name="static_formatNoDithering"/>
+<div class="headline">formatNoDithering</div>
+<div class="usage">public static const EntisGLS4.Image.NormalizeFormatFlag&#9; formatNoDithering = 0x10000</div>
+<div class="normal">
+フォーマット正規化フラグ：減色処理時にディザリングしない<br/></div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_buildAtlas"/>
+<div class="headline">buildAtlas</div>
+<div class="usage">public static native EntisGLS4.Image buildAtlas( EntisGLS4.Image[] images, const EntisGLS4.Image.BuildAtlasParam* param, ulong* pUsedCount = null, ulong* pUsedIndices = null )</div>
+<div class="normal">
+画像のアトラス化処理<br/></div>
+<div class="notes_parameter">
+<div class="param_name">images</div>
+<div class="param_desc">
+アトラス化する画像配列</div>
+<div class="param_name">param</div>
+<div class="param_desc">
+アトラス化するパラメータ</div>
+<div class="param_name">pUsedCount</div>
+<div class="param_desc">
+実際にアトラス化された画像枚数を受け取る ulong 変数</div>
+<div class="param_name">pUsedIndices</div>
+<div class="param_desc">
+実際にアトラス化された画像インデックス(images)を受け取る ulong 配列</div>
+</div>
+<br/>
+
+<a name="func_makeAdditionalTone"/>
+<div class="headline">makeAdditionalTone</div>
+<div class="usage">public static native void makeAdditionalTone( uint8* pTone, float v )</div>
+<div class="normal">
+加算トーンカーブ生成 : x + v<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pTone</div>
+<div class="param_desc">
+トーンカーブを受け取る uint8[0x100] 配列</div>
+</div>
+<br/>
+
+<a name="func_makeBrightnessTone"/>
+<div class="headline">makeBrightnessTone</div>
+<div class="usage">public static native void makeBrightnessTone( uint8* pTone, float v )</div>
+<div class="normal">
+輝度トーンカーブ生成 : (1 - x) * v [v &gt; 0], x * (v + 1) [v &lt; 0]<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pTone</div>
+<div class="param_desc">
+トーンカーブを受け取る uint8[0x100] 配列</div>
+</div>
+<br/>
+
+<a name="func_makeGammaTone"/>
+<div class="headline">makeGammaTone</div>
+<div class="usage">public static native void makeGammaTone( uint8* pTone, float v )</div>
+<div class="normal">
+ガンマカーブ生成 : x ^ (1 / v)<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pTone</div>
+<div class="param_desc">
+トーンカーブを受け取る uint8[0x100] 配列</div>
+</div>
+<br/>
+
+<a name="func_makeMultipleTone"/>
+<div class="headline">makeMultipleTone</div>
+<div class="usage">public static native void makeMultipleTone( uint8* pTone, float v )</div>
+<div class="normal">
+積算トーンカーブ生成 : x * v<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pTone</div>
+<div class="param_desc">
+トーンカーブを受け取る uint8[0x100] 配列</div>
+</div>
+<br/>
+
+<a name="func_makeOffsetMultipleTone"/>
+<div class="headline">makeOffsetMultipleTone</div>
+<div class="usage">public static native void makeOffsetMultipleTone( uint8* pTone, float v )</div>
+<div class="normal">
+積算トーンカーブ生成 : (x - 0.5) * v + 0.5<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pTone</div>
+<div class="param_desc">
+トーンカーブを受け取る uint8[0x100] 配列</div>
+</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Image"/>
+<div class="headline">Image</div>
+<div class="usage">public native Image( )</div>
+<div class="normal">
+画像オブジェクト構築<br/></div>
+<br/>
+
+<a name="virtual_applyToneFilter"/>
+<div class="headline">applyToneFilter</div>
+<div class="usage">public native boolean applyToneFilter( const uint8* pRedTone, const uint8* pGreenTone, const uint8* pBlueTone, const uint8* pAlphaTone, const ImageRect* pDstRect = null )</div>
+<div class="normal">
+トーンカーブ適用<br/></div>
+<br/>
+
+<a name="virtual_blendAddImage"/>
+<div class="headline">blendAddImage</div>
+<div class="usage">public native boolean blendAddImage( EntisGLS4.Image pSrcImage, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+画像描画（全チャネル加算）<br/></div>
+<br/>
+
+<a name="virtual_blendBackImage"/>
+<div class="headline">blendBackImage</div>
+<div class="usage">public native boolean blendBackImage( EntisGLS4.Image pSrcImage, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+画像描画（逆順／pSrcImage の上に this を描画した結果を得る）<br/></div>
+<br/>
+
+<a name="virtual_blendImage"/>
+<div class="headline">blendImage</div>
+<div class="usage">public native boolean blendImage( EntisGLS4.Image pSrcImage, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+画像描画<br/></div>
+<br/>
+
+<a name="virtual_blendImageBackgroundColor"/>
+<div class="headline">blendImageBackgroundColor</div>
+<div class="usage">public native boolean blendImageBackgroundColor( uint packedBackColor )</div>
+<div class="normal">
+背景色合成<br/></div>
+<br/>
+
+<a name="virtual_blendMulImage"/>
+<div class="headline">blendMulImage</div>
+<div class="usage">public native boolean blendMulImage( EntisGLS4.Image pSrcImage, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+画像描画（全チャネル乗算）<br/></div>
+<br/>
+
+<a name="virtual_blendWithAlphaChannel"/>
+<div class="headline">blendWithAlphaChannel</div>
+<div class="usage">public native boolean blendWithAlphaChannel( EntisGLS4.Image pAlphaImage, int fxAlphaCoefficient = 0x100, int fxAlphaIntercept = 0, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+αチャネルを一次関数を伴って積算合成<br/></div>
+<br/>
+
+<a name="virtual_convertImage"/>
+<div class="headline">convertImage</div>
+<div class="usage">public native boolean convertImage( EntisGLS4.Image pSrcImage, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+フォーマット変換<br/></div>
+<br/>
+
+<a name="virtual_copyImage"/>
+<div class="headline">copyImage</div>
+<div class="usage">public native boolean copyImage( EntisGLS4.Image pSrcImage, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+画像複製<br/></div>
+<br/>
+
+<a name="virtual_createColorImageFromGrayscale"/>
+<div class="headline">createColorImageFromGrayscale</div>
+<div class="usage">public native boolean createColorImageFromGrayscale( EntisGLS4.Image pGrayscale, uint packedColor )</div>
+<div class="normal">
+グレイスケールを ARGB に拡張変換する<br/></div>
+<br/>
+
+<a name="virtual_createFilledBezierShape"/>
+<div class="headline">createFilledBezierShape</div>
+<div class="usage">public native boolean createFilledBezierShape( Vector2* vMakedOffset, const Vector2* pVertices, uint nCount, float fpUnit = 1. )</div>
+<div class="normal">
+ベジェ曲線閉鎖領域グレイスケール画像生成<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vMakedOffset</div>
+<div class="param_desc">
+生成された画像のオフセット座標を受け取る Vector2</div>
+<div class="param_name">pVertices</div>
+<div class="param_desc">
+制御点座標配列</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+制御点数</div>
+<div class="param_name">fpUnit</div>
+<div class="param_desc">
+vMakedOffset の座標単位</div>
+</div>
+<br/>
+
+<a name="virtual_createFilledPolygonShape"/>
+<div class="headline">createFilledPolygonShape</div>
+<div class="usage">public native boolean createFilledPolygonShape( Vector2* vMakedOffset, const Vector2* pVertices, uint nCount, float fpUnit = 1. )</div>
+<div class="normal">
+多角形（凹形状可能）グレイスケール画像生成<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vMakedOffset</div>
+<div class="param_desc">
+生成された画像のオフセット座標を受け取る Vector2</div>
+<div class="param_name">pVertices</div>
+<div class="param_desc">
+頂点座標配列</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+頂点数</div>
+<div class="param_name">fpUnit</div>
+<div class="param_desc">
+vMakedOffset の座標単位</div>
+</div>
+<br/>
+
+<a name="virtual_createImage"/>
+<div class="headline">createImage</div>
+<div class="usage">public native boolean createImage( uint width, uint height, EntisGLS4.ImageFormatFlag format = 0, uint depth = 32, EntisGLS4.Image.BufferTypeFlag nFlags = 0, ulong countFrame = 1, ulong msecLong = 0 )</div>
+<div class="normal">
+画像バッファ生成<br/></div>
+<br/>
+
+<a name="virtual_denormalizeForTexture"/>
+<div class="headline">denormalizeForTexture</div>
+<div class="usage">public native boolean denormalizeForTexture( uint nFlags )</div>
+<div class="normal">
+テクスチャのための正規化フラグを除去する<br/></div>
+<br/>
+
+<a name="virtual_enlargeHalfImage"/>
+<div class="headline">enlargeHalfImage</div>
+<div class="usage">public native boolean enlargeHalfImage( EntisGLS4.Image pSrcImage )</div>
+<div class="normal">
+1/2 縮小<br/></div>
+<br/>
+
+<a name="virtual_fillImage"/>
+<div class="headline">fillImage</div>
+<div class="usage">public native boolean fillImage( uint packedPixel, const ImageRect* pRect = null )</div>
+<div class="normal">
+画像フィル<br/></div>
+<div class="notes_parameter">
+<div class="param_name">packedPixel</div>
+<div class="param_desc">
+ピクセルを埋める値</div>
+<div class="param_name">pRect</div>
+<div class="param_desc">
+ピクセルを埋める矩形</div>
+</div>
+<br/>
+
+<a name="virtual_flushBuffer"/>
+<div class="headline">flushBuffer</div>
+<div class="usage">public native boolean flushBuffer( EntisGLS4.Image.LockBufferMethod flags = 3 )</div>
+<div class="normal">
+lockBuffer で取得したバッファへ書き込んだ更新をunlockBuffer の前に反映させたい場合に呼び出す</div>
+<div class="notes_parameter">
+<div class="param_name">flags</div>
+<div class="param_desc">
+lockBuffer モード</div>
+</div>
+<br/>
+
+<a name="virtual_frameFromMilliSec"/>
+<div class="headline">frameFromMilliSec</div>
+<div class="usage">public native ulong frameFromMilliSec( ulong msec ) const</div>
+<div class="normal">
+時間からフレーム番号へ変換<br/></div>
+<br/>
+
+<a name="virtual_getBufferFlags"/>
+<div class="headline">getBufferFlags</div>
+<div class="usage">public native EntisGLS4.Image.BufferTypeFlag getBufferFlags( )</div>
+<div class="normal">
+バッファフラグ取得<br/></div>
+<br/>
+
+<a name="virtual_getFrameCount"/>
+<div class="headline">getFrameCount</div>
+<div class="usage">public native ulong getFrameCount( ) const</div>
+<div class="normal">
+フレーム数取得<br/></div>
+<br/>
+
+<a name="virtual_getImageFormat"/>
+<div class="headline">getImageFormat</div>
+<div class="usage">public native EntisGLS4.ImageFormatFlag getImageFormat( ) const</div>
+<div class="normal">
+画像フォーマット取得<br/></div>
+<br/>
+
+<a name="virtual_getImageHeight"/>
+<div class="headline">getImageHeight</div>
+<div class="usage">public native uint getImageHeight( ) const</div>
+<div class="normal">
+画像高取得<br/></div>
+<br/>
+
+<a name="virtual_getImageInfo"/>
+<div class="headline">getImageInfo</div>
+<div class="usage">public native boolean getImageInfo( EntisGLS4.ImageInfo* imginf ) const</div>
+<div class="normal">
+画像情報取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">imginf</div>
+<div class="param_desc">
+画像情報を受け取る ImageInfo 構造体</div>
+</div>
+<br/>
+
+<a name="virtual_getImageSize"/>
+<div class="headline">getImageSize</div>
+<div class="usage">public native Size* getImageSize( ) const</div>
+<div class="normal">
+画像サイズ取得<br/></div>
+<br/>
+
+<a name="virtual_getImageWidth"/>
+<div class="headline">getImageWidth</div>
+<div class="usage">public native uint getImageWidth( ) const</div>
+<div class="normal">
+画像幅取得<br/></div>
+<br/>
+
+<a name="virtual_getPaletteTable"/>
+<div class="headline">getPaletteTable</div>
+<div class="usage">public native uint getPaletteTable( ARGB8* pPalette, uint nCount )</div>
+<div class="normal">
+パレット・テーブル取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pPalette</div>
+<div class="param_desc">
+パレットテーブルを格納した ARGB8 配列</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+パレット配列長</div>
+</div>
+<br/>
+
+<a name="virtual_getPixelARGB"/>
+<div class="headline">getPixelARGB</div>
+<div class="usage">public native boolean getPixelARGB( ARGB8* argb, int xPos, int yPos )</div>
+<div class="normal">
+ピクセル取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">argb</div>
+<div class="param_desc">
+ピクセル情報を ARGB 形式で受け取る変数</div>
+<div class="param_name">xPos</div>
+<div class="param_desc">
+ｘ座標</div>
+<div class="param_name">yPos</div>
+<div class="param_desc">
+ｙ座標</div>
+</div>
+<br/>
+
+<a name="virtual_getReferenceRectOfAtlas"/>
+<div class="headline">getReferenceRectOfAtlas</div>
+<div class="usage">public native boolean getReferenceRectOfAtlas( ImageRect* rect, long iFrame = -1 ) const</div>
+<div class="normal">
+アトラス化された画像の参照矩形を取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">rect</div>
+<div class="param_desc">
+アトラス化された画像内の矩形を受け取る ImageRect</div>
+<div class="param_name">iFrame</div>
+<div class="param_desc">
+フレーム番号。-1 の時は現在のフレーム</div>
+</div>
+<br/>
+
+<a name="virtual_getSelectedFrame"/>
+<div class="headline">getSelectedFrame</div>
+<div class="usage">public native ulong getSelectedFrame( int* pSide = null ) const</div>
+<div class="normal">
+選択中フレーム取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pSide</div>
+<div class="param_desc">
+ステレオ立体視画像の場合、視点を受け取る int 変数</div>
+</div>
+<br/>
+
+<a name="virtual_getSequenceLength"/>
+<div class="headline">getSequenceLength</div>
+<div class="usage">public native ulong getSequenceLength( ) const</div>
+<div class="normal">
+アニメーション・総フレーム数取得<br/></div>
+<br/>
+
+<a name="virtual_getSequenceTable"/>
+<div class="headline">getSequenceTable</div>
+<div class="usage">public native ulong getSequenceTable( uint* pSeq, ulong nCount ) const</div>
+<div class="normal">
+アニメーション・フレーム・シーケンス取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pSeq</div>
+<div class="param_desc">
+フレーム番号を受け取る配列</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+フレーム配列長</div>
+</div>
+<br/>
+
+<a name="virtual_getTotalTime"/>
+<div class="headline">getTotalTime</div>
+<div class="usage">public native ulong getTotalTime( ) const</div>
+<div class="normal">
+アニメーション全長（時間）取得 [msec]<br/></div>
+<br/>
+
+<a name="virtual_halfBlendImage"/>
+<div class="headline">halfBlendImage</div>
+<div class="usage">public native boolean halfBlendImage( EntisGLS4.Image pSrcImage, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+半透明描画<br/></div>
+<br/>
+
+<a name="virtual_loadImage"/>
+<div class="headline">loadImage</div>
+<div class="usage">public native boolean loadImage( String strFilePath, String strMIME = null, uint nLimitFrames = 0 )</div>
+<div class="normal">
+画像読み込み<br/></div>
+<br/>
+
+<a name="virtual_lockBuffer"/>
+<div class="headline">lockBuffer</div>
+<div class="usage">public native uint8* lockBuffer( EntisGLS4.ImageInfo* imginf, EntisGLS4.Image.LockBufferMethod flags = 3, const ImageRect* pRect = null )</div>
+<div class="normal">
+画像バッファ取得</div>
+<div class="notes_parameter">
+<div class="param_name">imginf</div>
+<div class="param_desc">
+画像情報を受け取る ImageInfo 構造体</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+lockBuffer モード</div>
+<div class="param_name">pRect</div>
+<div class="param_desc">
+バッファポインタを取得する矩形</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+画像配列へのポインタ</div>
+</div>
+<div class="indent1">
+この関数が返すポインタを使い終えたら unlockBuffer 関数を呼び出してください。この関数で取得されるポインタは簡易実装優先のため、メモリ範囲は保護されますが unlockBuffer 関数以降（あるいは画像が解放されて以降）は定義されない領域を参照することになるかもしれません。</div><br/>
+<br/>
+
+<a name="virtual_multiplyImageRGBAlpha"/>
+<div class="headline">multiplyImageRGBAlpha</div>
+<div class="usage">public native boolean multiplyImageRGBAlpha( )</div>
+<div class="normal">
+RGB をαチャネルで積算<br/></div>
+<br/>
+
+<a name="virtual_newAnimationReference"/>
+<div class="headline">newAnimationReference</div>
+<div class="usage">public native EntisGLS4.Image newAnimationReference( ImageRect* pFrameRects, ulong nRectsCount )</div>
+<div class="normal">
+NormalizeFormat で結合されたアニメーション画像への参照を生成<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pFrameRects</div>
+<div class="param_desc">
+アトラス化された矩形を受け取る ImageRect 配列</div>
+<div class="param_name">nRectsCount</div>
+<div class="param_desc">
+pFrameRects の配列長</div>
+</div>
+<br/>
+
+<a name="virtual_newReference"/>
+<div class="headline">newReference</div>
+<div class="usage">public native EntisGLS4.Image newReference( const ImageRect* pClip = null, long iFrame = -1, int iSide = 0 )</div>
+<div class="normal">
+画像バッファへの参照生成<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pClip</div>
+<div class="param_desc">
+参照領域矩形</div>
+<div class="param_name">iFrame</div>
+<div class="param_desc">
+フレーム番号。-1 の時は現在選択中のフレーム</div>
+<div class="param_name">iSide</div>
+<div class="param_desc">
+ステレオ立体視画像の場合の視点</div>
+</div>
+<br/>
+
+<a name="virtual_normalizeFormat"/>
+<div class="headline">normalizeFormat</div>
+<div class="usage">public native boolean normalizeFormat( EntisGLS4.ImageFormatFlag format = 0, uint depth = 0, EntisGLS4.Image.NormalizeFormatFlag nFlags = 0, uint width = 0, uint height = 0 )</div>
+<div class="normal">
+画像フォーマットを要求されるものに正規化</div>
+<div class="notes_parameter">
+<div class="param_name">format</div>
+<div class="param_desc">
+画像フォーマットフラグ</div>
+<div class="param_name">depth</div>
+<div class="param_desc">
+ピクセル辺りのビット数</div>
+<div class="param_name">nFlags</div>
+<div class="param_desc">
+フォーマット正規化フラグ</div>
+</div>
+<div class="indent1">
+画像読み込み後などに、処理できるフォーマットに変換するために呼び出します。0 を指定したパラメータは変換されず維持されます。</div><br/>
+<br/>
+
+<a name="virtual_normalizeToMipmapTexture"/>
+<div class="headline">normalizeToMipmapTexture</div>
+<div class="usage">public native boolean normalizeToMipmapTexture( uint nFlags = 0 )</div>
+<div class="normal">
+画像をミップマップテクスチャのための正規化<br/></div>
+<br/>
+
+<a name="virtual_normalizeToRenderTarget"/>
+<div class="headline">normalizeToRenderTarget</div>
+<div class="usage">public native boolean normalizeToRenderTarget( uint nFlags = 0 )</div>
+<div class="normal">
+レンダリング・ターゲットのための正規化<br/></div>
+<br/>
+
+<a name="virtual_normalizeToTexture"/>
+<div class="headline">normalizeToTexture</div>
+<div class="usage">public native boolean normalizeToTexture( uint nFlags = 0 )</div>
+<div class="normal">
+画像のテクスチャのための正規化<br/></div>
+<br/>
+
+<a name="virtual_orthogonalRotate"/>
+<div class="headline">orthogonalRotate</div>
+<div class="usage">public native boolean orthogonalRotate( EntisGLS4.Image pSrcImage, int degRotateAngle )</div>
+<div class="normal">
+90度単位回転（反時計回り）<br/></div>
+<br/>
+
+<a name="virtual_putImageChannelTo"/>
+<div class="headline">putImageChannelTo</div>
+<div class="usage">public native boolean putImageChannelTo( int iDstChannel, EntisGLS4.Image pSrcImage, int iSrcChannel, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+チャネル転送<br/></div>
+<br/>
+
+<a name="virtual_putImageMAddChannelTo"/>
+<div class="headline">putImageMAddChannelTo</div>
+<div class="usage">public native boolean putImageMAddChannelTo( int iDstChannel, EntisGLS4.Image pSrcImage, uint packedColorMul, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+packedColorMul と pSrcImage の ARGB 各チャネルの積和値を任意チャネルに出力<br/></div>
+<br/>
+
+<a name="virtual_readImage"/>
+<div class="headline">readImage</div>
+<div class="usage">public native boolean readImage( File file, String strMIME = null, uint nLimitFrames = 0 )</div>
+<div class="normal">
+画像読み込み<br/></div>
+<br/>
+
+<a name="virtual_releaseBuffer"/>
+<div class="headline">releaseBuffer</div>
+<div class="usage">public native void releaseBuffer( )</div>
+<div class="normal">
+保有リソース解放<br/></div>
+<br/>
+
+<a name="virtual_saveImage"/>
+<div class="headline">saveImage</div>
+<div class="usage">public native boolean saveImage( String strFilePath, String strMIME = null, const EntisGLS4.Image.EncoderOptions* pOpt = null )</div>
+<div class="normal">
+画像書き出し<br/></div>
+<br/>
+
+<a name="virtual_selectFrame"/>
+<div class="headline">selectFrame</div>
+<div class="usage">public native boolean selectFrame( ulong iFrame, EntisGLS4.StereoImageIndex iSide = 0 )</div>
+<div class="normal">
+フレーム選択<br/></div>
+<br/>
+
+<a name="virtual_setAnimationDuration"/>
+<div class="headline">setAnimationDuration</div>
+<div class="usage">public native void setAnimationDuration( long msecDuration )</div>
+<div class="normal">
+アニメーション全長時間設定<br/></div>
+<br/>
+
+<a name="virtual_setImageOrigin"/>
+<div class="headline">setImageOrigin</div>
+<div class="usage">public native void setImageOrigin( int x, int y )</div>
+<div class="normal">
+中心座標情報設定<br/></div>
+<br/>
+
+<a name="virtual_setPaletteTable"/>
+<div class="headline">setPaletteTable</div>
+<div class="usage">public native uint setPaletteTable( const ARGB8* pPalette, uint nCount )</div>
+<div class="normal">
+パレット・テーブル設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pPalette</div>
+<div class="param_desc">
+設定するパレットテーブルを格納した ARGB8 配列</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+パレットテーブル配列長</div>
+</div>
+<br/>
+
+<a name="virtual_setSequenceTable"/>
+<div class="headline">setSequenceTable</div>
+<div class="usage">public native void setSequenceTable( const uint* pSeq, ulong nCount )</div>
+<div class="normal">
+アニメーション・フレーム・シーケンス・テーブルの設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">pSeq</div>
+<div class="param_desc">
+設定するフレーム番号配列</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+フレーム番号配列長</div>
+</div>
+<br/>
+
+<a name="virtual_unlockBuffer"/>
+<div class="headline">unlockBuffer</div>
+<div class="usage">public native boolean unlockBuffer( EntisGLS4.Image.LockBufferMethod flags = 3 )</div>
+<div class="normal">
+lockBuffer で取得したバッファを解放する<br/></div>
+<div class="notes_parameter">
+<div class="param_name">flags</div>
+<div class="param_desc">
+lockBuffer モード</div>
+</div>
+<br/>
+
+<a name="virtual_writeImage"/>
+<div class="headline">writeImage</div>
+<div class="usage">public native boolean writeImage( File file, String strMIME, const EntisGLS4.Image.EncoderOptions* pOpt = null )</div>
+<div class="normal">
+画像書き出し<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ShadowMapInfo</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ShadowMapInfo</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct ShadowMapInfo<br/>
+{<br/>
+&nbsp; &nbsp; Vector4&nbsp; &nbsp; vLight ;<br/>
+&nbsp; &nbsp; Vector4&nbsp; &nbsp; vRay ;<br/>
+&nbsp; &nbsp; Vector4&nbsp; &nbsp; vTarget ;<br/>
+&nbsp; &nbsp; Vector4&nbsp; &nbsp; vAxisX ;<br/>
+&nbsp; &nbsp; Vector4&nbsp; &nbsp; vAxisY ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpFixErrorGap ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpVarErrorGap ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zPersScreen ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zPersScale ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zPersNear ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; zPersFar ;<br/>
+&nbsp; &nbsp; uint[4]&nbsp; &nbsp; nReserved ;<br/>
+}</div>
+<div class="normal">
+シャドウマップ情報<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.ShadowMapInfo.xhtml">EntisGLS4.ShadowMapInfo</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_vLight">vLight</a><br/>
+	<a href="#member_vRay">vRay</a><br/>
+	<a href="#member_vTarget">vTarget</a><br/>
+	<a href="#member_vAxisX">vAxisX</a><br/>
+	<a href="#member_vAxisY">vAxisY</a><br/>
+	<a href="#member_fpFixErrorGap">fpFixErrorGap</a><br/>
+	<a href="#member_fpVarErrorGap">fpVarErrorGap</a><br/>
+	<a href="#member_zPersScreen">zPersScreen</a><br/>
+	<a href="#member_zPersScale">zPersScale</a><br/>
+	<a href="#member_zPersNear">zPersNear</a><br/>
+	<a href="#member_zPersFar">zPersFar</a><br/>
+	<a href="#member_nReserved">nReserved</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_getCameraMatrix">getCameraMatrix</a><br/>
+	<a href="#virtual_setShadowMappingInfo">setShadowMappingInfo</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_vLight"/>
+<div class="headline">vLight</div>
+<div class="usage">public Vector4&#9; vLight = {x: 0.,y: 0.,z: 0.,w: 1.}</div>
+<div class="normal">
+投影原点<br/></div>
+<br/>
+<a name="member_vRay"/>
+<div class="headline">vRay</div>
+<div class="usage">public Vector4&#9; vRay = {x: 0.,y: 0.,z: 0.,w: 1.}</div>
+<div class="normal">
+光線ベクトル<br/></div>
+<br/>
+<a name="member_vTarget"/>
+<div class="headline">vTarget</div>
+<div class="usage">public Vector4&#9; vTarget = {x: 0.,y: 0.,z: 0.,w: 1.}</div>
+<div class="normal">
+シャドウマップ画像原点座標<br/></div>
+<br/>
+<a name="member_vAxisX"/>
+<div class="headline">vAxisX</div>
+<div class="usage">public Vector4&#9; vAxisX = {x: 0.,y: 0.,z: 0.,w: 1.}</div>
+<div class="normal">
+シャドウマップのｘ基底ベクトル<br/></div>
+<br/>
+<a name="member_vAxisY"/>
+<div class="headline">vAxisY</div>
+<div class="usage">public Vector4&#9; vAxisY = {x: 0.,y: 0.,z: 0.,w: 1.}</div>
+<div class="normal">
+シャドウマップのｙ基底ベクトル<br/></div>
+<br/>
+<a name="member_fpFixErrorGap"/>
+<div class="headline">fpFixErrorGap</div>
+<div class="usage">public float&#9; fpFixErrorGap = 0.</div>
+<div class="normal">
+z 演算誤差固定比率（1/4096 等）<br/></div>
+<br/>
+<a name="member_fpVarErrorGap"/>
+<div class="headline">fpVarErrorGap</div>
+<div class="usage">public float&#9; fpVarErrorGap = 0.</div>
+<div class="normal">
+角度に応じた z 演算誤差比率（1/512 等）<br/></div>
+<br/>
+<a name="member_zPersScreen"/>
+<div class="headline">zPersScreen</div>
+<div class="usage">public float&#9; zPersScreen = 0.</div>
+<div class="normal">
+透視変換用パラメータ<br/></div>
+<br/>
+<a name="member_zPersScale"/>
+<div class="headline">zPersScale</div>
+<div class="usage">public float&#9; zPersScale = 0.</div>
+<br/>
+<a name="member_zPersNear"/>
+<div class="headline">zPersNear</div>
+<div class="usage">public float&#9; zPersNear = 0.</div>
+<div class="normal">
+シャドウマッピングの手前ｚ<br/></div>
+<br/>
+<a name="member_zPersFar"/>
+<div class="headline">zPersFar</div>
+<div class="usage">public float&#9; zPersFar = 0.</div>
+<div class="normal">
+シャドウマッピングの奥ｚ<br/></div>
+<br/>
+<a name="member_nReserved"/>
+<div class="headline">nReserved</div>
+<div class="usage">public uint[4]&#9; nReserved = [0, 0, 0, 0]</div>
+<div class="normal">
+予約領域<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_getCameraMatrix"/>
+<div class="headline">getCameraMatrix</div>
+<div class="usage">public native void getCameraMatrix( Matrix3d* matCamera ) const</div>
+<div class="normal">
+カメラ行列取得<br/></div>
+<br/>
+
+<a name="virtual_setShadowMappingInfo"/>
+<div class="headline">setShadowMappingInfo</div>
+<div class="usage">public native boolean setShadowMappingInfo( EntisGLS4.RenderContext renderShadowMap, const EntisGLS4.LightEntry* lightShadowMap, const Vector3d* vCameraTarget, const Size* sizeDepthMap, double zScreen, double zDistance, double zScale = 1., double zNear = 100., double zFar = 10000., double zErrorPrec = -12., double zErrorSubPrec = -10., double degAngleVarX = 0., double degAngleVarY = 0. )</div>
+<div class="normal">
+パラメータ設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

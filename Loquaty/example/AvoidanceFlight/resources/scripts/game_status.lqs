@@ -1,0 +1,22 @@
+﻿
+
+class	GameStatus
+{
+	// 現在のレベル
+	public int		m_level ;
+
+	// 通過区間数
+	public int		m_past ;
+
+	// 現在のスコア
+	public ulong	m_score ;
+
+	// ハイスコア
+	public ulong	m_hiscore ;
+}
+
+
+const String	CmdNotifyStatus	= "ID_NotifyStatus" ;
+const String	CmdGameOver		= "ID_GameOver" ;
+
+

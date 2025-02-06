@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.AudioInputStream</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.AudioInputStream</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class AudioInputStream ;</div>
+<div class="normal">
+オーディオ入力ストリーム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.AudioInputStream.xhtml">EntisGLS4.AudioInputStream</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_AudioInputStream">AudioInputStream</a><br/>
+	<a href="#virtual_getAudioFormat">getAudioFormat</a><br/>
+	<a href="#virtual_getAudioLength">getAudioLength</a><br/>
+	<a href="#virtual_getAudioOptinalInfo">getAudioOptinalInfo</a><br/>
+	<a href="#virtual_readAudio">readAudio</a><br/>
+	<a href="#virtual_seekAudio">seekAudio</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_AudioInputStream"/>
+<div class="headline">AudioInputStream</div>
+<div class="usage">public abstract AudioInputStream( )</div>
+<br/>
+
+<a name="virtual_getAudioFormat"/>
+<div class="headline">getAudioFormat</div>
+<div class="usage">public native const EntisGLS4.SoundFormat* getAudioFormat( )</div>
+<div class="normal">
+サウンド形式取得<br/></div>
+<br/>
+
+<a name="virtual_getAudioLength"/>
+<div class="headline">getAudioLength</div>
+<div class="usage">public native long getAudioLength( ) const</div>
+<div class="normal">
+オーディオストリーム全長取得（未定は-1）[samples]<br/></div>
+<br/>
+
+<a name="virtual_getAudioOptinalInfo"/>
+<div class="headline">getAudioOptinalInfo</div>
+<div class="usage">public native EntisGLS4.MediaOptionalInfo getAudioOptinalInfo( )</div>
+<div class="normal">
+メディア補助情報取得<br/></div>
+<br/>
+
+<a name="virtual_readAudio"/>
+<div class="headline">readAudio</div>
+<div class="usage">public native ulong readAudio( void* buf, ulong samples )</div>
+<div class="normal">
+オーディオストリーム読み込み [samples]<br/></div>
+<br/>
+
+<a name="virtual_seekAudio"/>
+<div class="headline">seekAudio</div>
+<div class="usage">public native boolean seekAudio( ulong samples )</div>
+<div class="normal">
+オーディオストリーム位置変更<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

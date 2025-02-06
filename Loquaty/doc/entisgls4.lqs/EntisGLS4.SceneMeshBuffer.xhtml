@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneMeshBuffer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneMeshBuffer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneMeshBuffer ;</div>
+<div class="normal">
+Scene メッシュ・バッファ・アイテム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneCommon.xhtml">EntisGLS4.SceneCommon</a>
+<div class="indent1"><a href="EntisGLS4.SceneMeshBuffer.xhtml">EntisGLS4.SceneMeshBuffer</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Implement Classes</div>
+<div class="indent1"><a href="EntisGLS4.SceneInstancingItem.xhtml">EntisGLS4.SceneInstancingItem</a></div>
+<br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneMeshBuffer">SceneMeshBuffer</a><br/>
+	<a href="#virtual_lockMeshBuffer">lockMeshBuffer</a><br/>
+	<a href="#virtual_unlockMeshBuffer">unlockMeshBuffer</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneMeshBuffer"/>
+<div class="headline">SceneMeshBuffer</div>
+<div class="usage">public native SceneMeshBuffer( )</div>
+<div class="normal">
+SceneMeshBuffer 構築<br/></div>
+<br/>
+
+<a name="virtual_lockMeshBuffer"/>
+<div class="headline">lockMeshBuffer</div>
+<div class="usage">public native EntisGLS4.VertexBuffer[] lockMeshBuffer( )</div>
+<div class="normal">
+描画のためのメッシュバッファを取得する（Scene.classPreRender イベント中に呼び出す）</div>
+<br/>
+<div class="indent1">
+※この関数はスレッド排他的に動作するため長時間停止し得ますが、その間 Task の非同期実行状態として離脱することはできません。</div><br/>
+<br/>
+
+<a name="virtual_unlockMeshBuffer"/>
+<div class="headline">unlockMeshBuffer</div>
+<div class="usage">public native void unlockMeshBuffer( )</div>
+<div class="normal">
+lockMeshBuffer で取得したメッシュバッファの排他処理を解放する<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

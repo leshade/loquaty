@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<filter flags="transparent context_key" joystick_count="1">
+	<key_assign>
+		<input device="keyboard" key="up" />
+		<output device="joystick" device_number="6" key="up" />
+	</key_assign>
+	<key_assign>
+		<input device="keyboard" key="down" />
+		<output device="joystick" device_number="6" key="down" />
+	</key_assign>
+	<key_assign>
+		<input device="keyboard" key="left" />
+		<output device="joystick" device_number="6" key="left" />
+	</key_assign>
+	<key_assign>
+		<input device="keyboard" key="right" />
+		<output device="joystick" device_number="6" key="right" />
+	</key_assign>
+</filter>

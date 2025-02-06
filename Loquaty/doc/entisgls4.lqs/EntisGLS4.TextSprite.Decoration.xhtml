@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.TextSprite.Decoration</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.TextSprite.Decoration</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct Decoration<br/>
+{<br/>
+&nbsp; &nbsp; EntisGLS4.TextSprite.Decoration.DecorationFlag&nbsp; &nbsp; nFlags ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbaBody ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; widthBorder ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbaBorder ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbaShadow ;<br/>
+&nbsp; &nbsp; Point&nbsp; &nbsp; ptShadow ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; widthBorder2 ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbaBorder2 ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; nGradationCount ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; nGradationHeight ;<br/>
+&nbsp; &nbsp; ARGB8[16]&nbsp; &nbsp; rgbGradation ;<br/>
+}</div>
+<div class="normal">
+文字装飾情報<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.TextSprite.Decoration.xhtml">EntisGLS4.TextSprite.Decoration</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.TextSprite.Decoration.DecorationFlag.xhtml">EntisGLS4.TextSprite.Decoration.DecorationFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_flagShadow">flagShadow</a><br/>
+	<a href="#static_flagBorder">flagBorder</a><br/>
+	<a href="#static_flagBorder2">flagBorder2</a><br/>
+	<a href="#static_flagGradation">flagGradation</a><br/>
+</div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_nFlags">nFlags</a><br/>
+	<a href="#member_rgbaBody">rgbaBody</a><br/>
+	<a href="#member_widthBorder">widthBorder</a><br/>
+	<a href="#member_rgbaBorder">rgbaBorder</a><br/>
+	<a href="#member_rgbaShadow">rgbaShadow</a><br/>
+	<a href="#member_ptShadow">ptShadow</a><br/>
+	<a href="#member_widthBorder2">widthBorder2</a><br/>
+	<a href="#member_rgbaBorder2">rgbaBorder2</a><br/>
+	<a href="#member_nGradationCount">nGradationCount</a><br/>
+	<a href="#member_nGradationHeight">nGradationHeight</a><br/>
+	<a href="#member_rgbGradation">rgbGradation</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_flagShadow"/>
+<div class="headline">flagShadow</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Decoration.DecorationFlag&#9; flagShadow = 1</div>
+<div class="normal">
+フラグ：陰付<br/></div>
+<br/>
+<a name="static_flagBorder"/>
+<div class="headline">flagBorder</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Decoration.DecorationFlag&#9; flagBorder = 2</div>
+<div class="normal">
+フラグ：縁取り<br/></div>
+<br/>
+<a name="static_flagBorder2"/>
+<div class="headline">flagBorder2</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Decoration.DecorationFlag&#9; flagBorder2 = 4</div>
+<div class="normal">
+フラグ：縁取り２（外側）<br/></div>
+<br/>
+<a name="static_flagGradation"/>
+<div class="headline">flagGradation</div>
+<div class="usage">public static const EntisGLS4.TextSprite.Decoration.DecorationFlag&#9; flagGradation = 8</div>
+<div class="normal">
+フラグ：グラデーション色指定<br/></div>
+<br/>
+
+
+<div class="chapter">Members</div>
+<a name="member_nFlags"/>
+<div class="headline">nFlags</div>
+<div class="usage">public EntisGLS4.TextSprite.Decoration.DecorationFlag&#9; nFlags = 0</div>
+<div class="normal">
+フラグの組み合わせ<br/></div>
+<br/>
+<a name="member_rgbaBody"/>
+<div class="headline">rgbaBody</div>
+<div class="usage">public ARGB8&#9; rgbaBody = {b: 0,g: 0,r: 0,a: 0}</div>
+<div class="normal">
+文字の色<br/></div>
+<br/>
+<a name="member_widthBorder"/>
+<div class="headline">widthBorder</div>
+<div class="usage">public uint&#9; widthBorder = 0</div>
+<div class="normal">
+縁取りの幅<br/></div>
+<br/>
+<a name="member_rgbaBorder"/>
+<div class="headline">rgbaBorder</div>
+<div class="usage">public ARGB8&#9; rgbaBorder = {b: 0,g: 0,r: 0,a: 0}</div>
+<div class="normal">
+縁取りの色<br/></div>
+<br/>
+<a name="member_rgbaShadow"/>
+<div class="headline">rgbaShadow</div>
+<div class="usage">public ARGB8&#9; rgbaShadow = {b: 0,g: 0,r: 0,a: 0}</div>
+<div class="normal">
+影の色<br/></div>
+<br/>
+<a name="member_ptShadow"/>
+<div class="headline">ptShadow</div>
+<div class="usage">public Point&#9; ptShadow = {x: 0,y: 0}</div>
+<div class="normal">
+影のオフセット<br/></div>
+<br/>
+<a name="member_widthBorder2"/>
+<div class="headline">widthBorder2</div>
+<div class="usage">public uint&#9; widthBorder2 = 0</div>
+<div class="normal">
+縁取り２の幅<br/></div>
+<br/>
+<a name="member_rgbaBorder2"/>
+<div class="headline">rgbaBorder2</div>
+<div class="usage">public ARGB8&#9; rgbaBorder2 = {b: 0,g: 0,r: 0,a: 0}</div>
+<div class="normal">
+縁取り２の色<br/></div>
+<br/>
+<a name="member_nGradationCount"/>
+<div class="headline">nGradationCount</div>
+<div class="usage">public uint&#9; nGradationCount = 0</div>
+<div class="normal">
+グラデーションの色数<br/></div>
+<br/>
+<a name="member_nGradationHeight"/>
+<div class="headline">nGradationHeight</div>
+<div class="usage">public uint&#9; nGradationHeight = 0</div>
+<div class="normal">
+グラデーションの幅（垂直方向）<br/>文字画像がこの高さ以上の場合にはグラデージョンは反復する。<br/>0 の場合には文字画像の高さに合わせる。<br/></div>
+<br/>
+<a name="member_rgbGradation"/>
+<div class="headline">rgbGradation</div>
+<div class="usage">public ARGB8[16]&#9; rgbGradation = [{b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}]</div>
+<div class="normal">
+グラデーション色配列<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

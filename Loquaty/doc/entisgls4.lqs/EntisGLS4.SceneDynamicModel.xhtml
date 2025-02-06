@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneDynamicModel</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneDynamicModel</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneDynamicModel ;</div>
+<div class="normal">
+Scene 動的モデル・アイテム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneCommon.xhtml">EntisGLS4.SceneCommon</a>
+<div class="indent1"><a href="EntisGLS4.SceneDynamicModel.xhtml">EntisGLS4.SceneDynamicModel</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneDynamicModel">SceneDynamicModel</a><br/>
+	<a href="#virtual_attachCollisionModel">attachCollisionModel</a><br/>
+	<a href="#virtual_attachModelRef">attachModelRef</a><br/>
+	<a href="#virtual_getCollisionID">getCollisionID</a><br/>
+	<a href="#virtual_getModelID">getModelID</a><br/>
+	<a href="#virtual_getVariantDrawTarget">getVariantDrawTarget</a><br/>
+	<a href="#virtual_isDynamicCollision">isDynamicCollision</a><br/>
+	<a href="#virtual_setCollisionID">setCollisionID</a><br/>
+	<a href="#virtual_setDynamicCollisionFlag">setDynamicCollisionFlag</a><br/>
+	<a href="#virtual_setModelID">setModelID</a><br/>
+	<a href="#virtual_setVariantDrawTaregt">setVariantDrawTaregt</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneDynamicModel"/>
+<div class="headline">SceneDynamicModel</div>
+<div class="usage">public native SceneDynamicModel( )</div>
+<div class="normal">
+SceneDynamicModel 構築<br/></div>
+<br/>
+
+<a name="virtual_attachCollisionModel"/>
+<div class="headline">attachCollisionModel</div>
+<div class="usage">public native void attachCollisionModel( EntisGLS4.VertexBuffer model )</div>
+<div class="normal">
+衝突判定モデル設定<br/></div>
+<br/>
+
+<a name="virtual_attachModelRef"/>
+<div class="headline">attachModelRef</div>
+<div class="usage">public native void attachModelRef( EntisGLS4.ModelBuffer model )</div>
+<div class="normal">
+表示モデル設定<br/></div>
+<br/>
+
+<a name="virtual_getCollisionID"/>
+<div class="headline">getCollisionID</div>
+<div class="usage">public native String getCollisionID( ) const</div>
+<div class="normal">
+衝突判定モデル取得<br/></div>
+<br/>
+
+<a name="virtual_getModelID"/>
+<div class="headline">getModelID</div>
+<div class="usage">public native String getModelID( ) const</div>
+<div class="normal">
+表示モデル取得<br/></div>
+<br/>
+
+<a name="virtual_getVariantDrawTarget"/>
+<div class="headline">getVariantDrawTarget</div>
+<div class="usage">public native String getVariantDrawTarget( ) const</div>
+<div class="normal">
+バリアント描画ターゲット取得<br/></div>
+<br/>
+
+<a name="virtual_isDynamicCollision"/>
+<div class="headline">isDynamicCollision</div>
+<div class="usage">public native boolean isDynamicCollision( ) const</div>
+<div class="normal">
+動的な衝突判定モデルか？<br/></div>
+<br/>
+
+<a name="virtual_setCollisionID"/>
+<div class="headline">setCollisionID</div>
+<div class="usage">public native void setCollisionID( String modelId )</div>
+<div class="normal">
+衝突判定モデル設定<br/></div>
+<br/>
+
+<a name="virtual_setDynamicCollisionFlag"/>
+<div class="headline">setDynamicCollisionFlag</div>
+<div class="usage">public native void setDynamicCollisionFlag( boolean flagDynamic )</div>
+<div class="normal">
+動的な衝突判定モデルに設定<br/></div>
+<br/>
+
+<a name="virtual_setModelID"/>
+<div class="headline">setModelID</div>
+<div class="usage">public native void setModelID( String modelId )</div>
+<div class="normal">
+表示モデル設定<br/></div>
+<br/>
+
+<a name="virtual_setVariantDrawTaregt"/>
+<div class="headline">setVariantDrawTaregt</div>
+<div class="usage">public native void setVariantDrawTaregt( String targetItemId )</div>
+<div class="normal">
+バリアント描画ターゲット設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

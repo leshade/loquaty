@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.LightEntry</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.LightEntry</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct LightEntry<br/>
+{<br/>
+&nbsp; &nbsp; EntisGLS4.LightEntry.LightType&nbsp; &nbsp; typeLight ;<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbColor ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpBrightness ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpAttenuationPower ;<br/>
+&nbsp; &nbsp; Vector4&nbsp; &nbsp; vecPosition ;<br/>
+&nbsp; &nbsp; Vector4&nbsp; &nbsp; vecDirection ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpAngle ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; fpGradation ;<br/>
+&nbsp; &nbsp; uint[2]&nbsp; &nbsp; nReserved2 ;<br/>
+}</div>
+<div class="normal">
+光源<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.LightEntry.xhtml">EntisGLS4.LightEntry</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.LightEntry.LightType.xhtml">EntisGLS4.LightEntry.LightType</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_typeAmbient">typeAmbient</a><br/>
+	<a href="#static_typeVector">typeVector</a><br/>
+	<a href="#static_typePoint">typePoint</a><br/>
+	<a href="#static_typeSpot">typeSpot</a><br/>
+	<a href="#static_typeFog">typeFog</a><br/>
+	<a href="#static_typeAmbientMul">typeAmbientMul</a><br/>
+	<a href="#static_typeMask">typeMask</a><br/>
+	<a href="#static_flagShadowMapping">flagShadowMapping</a><br/>
+</div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_typeLight">typeLight</a><br/>
+	<a href="#member_rgbColor">rgbColor</a><br/>
+	<a href="#member_fpBrightness">fpBrightness</a><br/>
+	<a href="#member_fpAttenuationPower">fpAttenuationPower</a><br/>
+	<a href="#member_vecPosition">vecPosition</a><br/>
+	<a href="#member_vecDirection">vecDirection</a><br/>
+	<a href="#member_fpAngle">fpAngle</a><br/>
+	<a href="#member_fpGradation">fpGradation</a><br/>
+	<a href="#member_nReserved2">nReserved2</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_typeAmbient"/>
+<div class="headline">typeAmbient</div>
+<div class="usage">public static const EntisGLS4.LightEntry.LightType&#9; typeAmbient = 1</div>
+<div class="normal">
+光源タイプ：環境光<br/></div>
+<br/>
+<a name="static_typeVector"/>
+<div class="headline">typeVector</div>
+<div class="usage">public static const EntisGLS4.LightEntry.LightType&#9; typeVector = 2</div>
+<div class="normal">
+光源タイプ：無限遠光源<br/></div>
+<br/>
+<a name="static_typePoint"/>
+<div class="headline">typePoint</div>
+<div class="usage">public static const EntisGLS4.LightEntry.LightType&#9; typePoint = 4</div>
+<div class="normal">
+光源タイプ：点光源<br/></div>
+<br/>
+<a name="static_typeSpot"/>
+<div class="headline">typeSpot</div>
+<div class="usage">public static const EntisGLS4.LightEntry.LightType&#9; typeSpot = 6</div>
+<div class="normal">
+光源タイプ：点光源（スポットライト）<br/></div>
+<br/>
+<a name="static_typeFog"/>
+<div class="headline">typeFog</div>
+<div class="usage">public static const EntisGLS4.LightEntry.LightType&#9; typeFog = 8</div>
+<div class="normal">
+光源タイプ：面境界擬似フォッグ<br/></div>
+<br/>
+<a name="static_typeAmbientMul"/>
+<div class="headline">typeAmbientMul</div>
+<div class="usage">public static const EntisGLS4.LightEntry.LightType&#9; typeAmbientMul = 9</div>
+<div class="normal">
+光源タイプ：環境光乗算<br/></div>
+<br/>
+<a name="static_typeMask"/>
+<div class="headline">typeMask</div>
+<div class="usage">public static const EntisGLS4.LightEntry.LightType&#9; typeMask = 255</div>
+<div class="normal">
+光源タイプ番号マスク<br/></div>
+<br/>
+<a name="static_flagShadowMapping"/>
+<div class="headline">flagShadowMapping</div>
+<div class="usage">public static const EntisGLS4.LightEntry.LightType&#9; flagShadowMapping = 0x80000000</div>
+<div class="normal">
+シャドウマッピング有効フラグ<br/></div>
+<br/>
+
+
+<div class="chapter">Members</div>
+<a name="member_typeLight"/>
+<div class="headline">typeLight</div>
+<div class="usage">public EntisGLS4.LightEntry.LightType&#9; typeLight = 0</div>
+<div class="normal">
+光源タイプ<br/></div>
+<br/>
+<a name="member_rgbColor"/>
+<div class="headline">rgbColor</div>
+<div class="usage">public ARGB8&#9; rgbColor = {b: 255,g: 255,r: 255,a: 0}</div>
+<div class="normal">
+光源色 (RGB)<br/></div>
+<br/>
+<a name="member_fpBrightness"/>
+<div class="headline">fpBrightness</div>
+<div class="usage">public float&#9; fpBrightness = 1.</div>
+<div class="normal">
+光源輝度<br/></div>
+<br/>
+<a name="member_fpAttenuationPower"/>
+<div class="headline">fpAttenuationPower</div>
+<div class="usage">public float&#9; fpAttenuationPower = 1.</div>
+<div class="normal">
+点光源減衰力 (1/r^x)<br/></div>
+<br/>
+<a name="member_vecPosition"/>
+<div class="headline">vecPosition</div>
+<div class="usage">public Vector4&#9; vecPosition = {x: 0.,y: 0.,z: 0.,w: 1.}</div>
+<div class="normal">
+光源位置 (※ w 要素は使用しない)<br/></div>
+<br/>
+<a name="member_vecDirection"/>
+<div class="headline">vecDirection</div>
+<div class="usage">public Vector4&#9; vecDirection = {x: 0.,y: 0.,z: 0.,w: 1.}</div>
+<div class="normal">
+光源ベクトル (※ w 要素は使用しない)<br/></div>
+<br/>
+<a name="member_fpAngle"/>
+<div class="headline">fpAngle</div>
+<div class="usage">public float&#9; fpAngle = 0.</div>
+<div class="normal">
+範囲角 cosθ<br/></div>
+<br/>
+<a name="member_fpGradation"/>
+<div class="headline">fpGradation</div>
+<div class="usage">public float&#9; fpGradation = 0.</div>
+<div class="normal">
+ぼかし範囲 Δcosθ<br/>ぼかし開始角＝acos(fpGradation+fpAngle)<br/></div>
+<br/>
+<a name="member_nReserved2"/>
+<div class="headline">nReserved2</div>
+<div class="usage">public uint[2]&#9; nReserved2 = [0, 0]</div>
+<div class="normal">
+予約領域<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

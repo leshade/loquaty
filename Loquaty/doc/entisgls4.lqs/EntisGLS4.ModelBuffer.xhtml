@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ModelBuffer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ModelBuffer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class ModelBuffer ;</div>
+<div class="normal">
+モデルデータ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.RenderBuffer.xhtml">EntisGLS4.RenderBuffer</a>
+<div class="indent1"><a href="EntisGLS4.VertexBuffer.xhtml">EntisGLS4.VertexBuffer</a>
+<div class="indent1"><a href="EntisGLS4.ModelBuffer.xhtml">EntisGLS4.ModelBuffer</a>
+</div></div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_ModelBuffer">ModelBuffer</a><br/>
+	<a href="#virtual_getBoneAs">getBoneAs</a><br/>
+	<a href="#virtual_getBoneIdentityOf">getBoneIdentityOf</a><br/>
+	<a href="#virtual_getMarkerAs">getMarkerAs</a><br/>
+	<a href="#virtual_getMarkerAt">getMarkerAt</a><br/>
+	<a href="#virtual_getMarkerCount">getMarkerCount</a><br/>
+	<a href="#virtual_getMarkerIdentityAt">getMarkerIdentityAt</a><br/>
+	<a href="#virtual_getMaterialLibrary">getMaterialLibrary</a><br/>
+	<a href="#virtual_getPoseLibrary">getPoseLibrary</a><br/>
+	<a href="#virtual_getTextureLibrary">getTextureLibrary</a><br/>
+	<a href="#virtual_loadModel">loadModel</a><br/>
+	<a href="#virtual_readModel">readModel</a><br/>
+	<a href="#virtual_saveModel">saveModel</a><br/>
+	<a href="#virtual_writeModel">writeModel</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_ModelBuffer"/>
+<div class="headline">ModelBuffer</div>
+<div class="usage">public native ModelBuffer( )</div>
+<div class="normal">
+ModelBuffer 構築<br/></div>
+<br/>
+
+<a name="virtual_getBoneAs"/>
+<div class="headline">getBoneAs</div>
+<div class="usage">public native EntisGLS4.ModelBone getBoneAs( String boneId ) const</div>
+<div class="normal">
+ボーン取得<br/></div>
+<br/>
+
+<a name="virtual_getBoneIdentityOf"/>
+<div class="headline">getBoneIdentityOf</div>
+<div class="usage">public native String getBoneIdentityOf( EntisGLS4.ModelBone bone ) const</div>
+<div class="normal">
+ボーンID取得<br/></div>
+<br/>
+
+<a name="virtual_getMarkerAs"/>
+<div class="headline">getMarkerAs</div>
+<div class="usage">public native EntisGLS4.ModelMarker getMarkerAs( String markerId ) const</div>
+<div class="normal">
+マーカー情報取得<br/></div>
+<br/>
+
+<a name="virtual_getMarkerAt"/>
+<div class="headline">getMarkerAt</div>
+<div class="usage">public native EntisGLS4.ModelMarker getMarkerAt( ulong index ) const</div>
+<div class="normal">
+マーカー情報取得<br/></div>
+<br/>
+
+<a name="virtual_getMarkerCount"/>
+<div class="headline">getMarkerCount</div>
+<div class="usage">public native ulong getMarkerCount( ) const</div>
+<div class="normal">
+マーカー数取得<br/></div>
+<br/>
+
+<a name="virtual_getMarkerIdentityAt"/>
+<div class="headline">getMarkerIdentityAt</div>
+<div class="usage">public native String getMarkerIdentityAt( ulong index ) const</div>
+<div class="normal">
+マーカー情報ID取得<br/></div>
+<br/>
+
+<a name="virtual_getMaterialLibrary"/>
+<div class="headline">getMaterialLibrary</div>
+<div class="usage">public native EntisGLS4.MaterialLibrary getMaterialLibrary( ) const</div>
+<div class="normal">
+マテリアル・ライブラリ取得<br/></div>
+<br/>
+
+<a name="virtual_getPoseLibrary"/>
+<div class="headline">getPoseLibrary</div>
+<div class="usage">public native EntisGLS4.ModelPoseLibrary getPoseLibrary( ) const</div>
+<div class="normal">
+ポーズ・ライブラリ取得<br/></div>
+<br/>
+
+<a name="virtual_getTextureLibrary"/>
+<div class="headline">getTextureLibrary</div>
+<div class="usage">public native EntisGLS4.TextureLibrary getTextureLibrary( ) const</div>
+<div class="normal">
+テクスチャ・ライブラリ取得<br/></div>
+<br/>
+
+<a name="virtual_loadModel"/>
+<div class="headline">loadModel</div>
+<div class="usage">public native boolean loadModel( String file, String mime = null )</div>
+<div class="normal">
+モデル読み込み (*.mdfx, *.xmlmdf, *.mdf, *.glb, *.vrm)<br/></div>
+<div class="notes_parameter">
+<div class="param_name">file</div>
+<div class="param_desc">
+ファイルパス</div>
+<div class="param_name">mime</div>
+<div class="param_desc">
+読み込むファイルフォーマットの MIME。<br/>
+									null の場合はファイルパスの拡張子から判断されます。</div>
+</div>
+<br/>
+
+<a name="virtual_readModel"/>
+<div class="headline">readModel</div>
+<div class="usage">public native boolean readModel( File file, String mime )</div>
+<div class="normal">
+モデル読み込み (*.mdfx, *.xmlmdf, *.mdf, *.glb, *.vrm)<br/></div>
+<div class="notes_parameter">
+<div class="param_name">file</div>
+<div class="param_desc">
+読み込むファイル</div>
+<div class="param_name">mime</div>
+<div class="param_desc">
+読み込むファイルフォーマットの MIME。<br/>
+								"application/x-mdfx"<br/>
+								"application/x-xmlmdf"<br/>
+								"application/x-mdf"<br/>
+								"modle/gltf+binary"</div>
+</div>
+<br/>
+
+<a name="virtual_saveModel"/>
+<div class="headline">saveModel</div>
+<div class="usage">public native boolean saveModel( String file, String mime = null, String imageMIME = null )</div>
+<div class="normal">
+モデル書き出し (*.mdfx, *.xmlmdf)<br/></div>
+<div class="notes_parameter">
+<div class="param_name">file</div>
+<div class="param_desc">
+ファイルパス</div>
+<div class="param_name">mime</div>
+<div class="param_desc">
+保存するファイルフォーマットの MIME。<br/>
+										null の場合は "application/x-mdfx"。<br/>
+										"application/x-mdfx"<br/>
+										"application/x-xmlmdf"</div>
+<div class="param_name">imageMIME</div>
+<div class="param_desc">
+テクスチャ画像を外部に保存する場合の画像フォーマットの MIME</div>
+</div>
+<br/>
+
+<a name="virtual_writeModel"/>
+<div class="headline">writeModel</div>
+<div class="usage">public native boolean writeModel( File file, String mime = null, String imageMIME = null )</div>
+<div class="normal">
+モデル書き出し (*.mdfx, *.xmlmdf)<br/></div>
+<div class="notes_parameter">
+<div class="param_name">mime</div>
+<div class="param_desc">
+保存するファイルフォーマットの MIME。<br/>
+										null の場合は "application/x-mdfx"。<br/>
+										"application/x-mdfx"<br/>
+										"application/x-xmlmdf"</div>
+<div class="param_name">imageMIME</div>
+<div class="param_desc">
+テクスチャ画像を外部に保存する場合の画像フォーマットの MIME</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

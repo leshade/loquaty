@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.RenderBuffer.OffsetBorderParam</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.RenderBuffer.OffsetBorderParam</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct OffsetBorderParam<br/>
+{<br/>
+&nbsp; &nbsp; ARGB8&nbsp; &nbsp; rgbBorder ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; aThickness ;<br/>
+&nbsp; &nbsp; float&nbsp; &nbsp; bThickness ;<br/>
+}</div>
+<div class="normal">
+輪郭線描画パラメータ<br/>輪郭線の実際の太さ（押し出し距離）は z*a/zs+b<br/>（zs は透視変換パラメータのスクリーン z 座標）<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.RenderBuffer.OffsetBorderParam.xhtml">EntisGLS4.RenderBuffer.OffsetBorderParam</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_rgbBorder">rgbBorder</a><br/>
+	<a href="#member_aThickness">aThickness</a><br/>
+	<a href="#member_bThickness">bThickness</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_rgbBorder"/>
+<div class="headline">rgbBorder</div>
+<div class="usage">public ARGB8&#9; rgbBorder = {b: 0,g: 0,r: 0,a: 0}</div>
+<div class="normal">
+描画色（RGB）<br/></div>
+<br/>
+<a name="member_aThickness"/>
+<div class="headline">aThickness</div>
+<div class="usage">public float&#9; aThickness = 0.</div>
+<div class="normal">
+太さパラメータ a<br/></div>
+<br/>
+<a name="member_bThickness"/>
+<div class="headline">bThickness</div>
+<div class="usage">public float&#9; bThickness = 0.00999999977648</div>
+<div class="normal">
+太さパラメータ b<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

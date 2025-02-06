@@ -1,0 +1,207 @@
+﻿
+namespace	EntisGLS4
+{
+	//////////////////////////////////////////////////////////////////////////
+	// サウンド・フォーマット
+	//////////////////////////////////////////////////////////////////////////
+
+	enum	SoundFormatFlag<uint32>
+	{
+		// フォーマット：リニア PCM 形式
+		LinearPCM	= 0,
+		// フォーマット：リニア PCM (Float) 形式
+		IEEEFloat	= 1,
+	}
+
+	struct	SoundFormat
+	{
+		// フォーマット
+		SoundFormatFlag	format ;
+		// サンプリング周波数 [Hz]
+		uint32	frequency ;
+		// チャネル数
+		uint32	channels ;
+		// サンプル当たりのビット数
+		uint32	bitsPerSample ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// メディア補助情報
+	//////////////////////////////////////////////////////////////////////////
+
+	class	MediaOptionalInfo
+	{
+		// 保持情報フラグ
+		enum using MemberFlag<uint64>
+		{
+			// 情報フラグ：ループ開始位置を保持
+			flagLoopStart	= 0x0001,
+			// 情報フラグ：ループ終了位置を保持
+			flagLoopEnd		= 0x0002,
+			// 情報フラグ：タイトル名を保持
+			flagTitle		= 0x0004,
+			// 情報フラグ：ボーカル・演奏者名を保持
+			flagVocalPlayer	= 0x0008,
+			// 情報フラグ：作曲者名を保持
+			flagComposer	= 0x0010,
+			// 情報フラグ：編曲者名を保持
+			flagArranger	= 0x0020,
+		}
+
+		// 保持情報フラグ
+		public MemberFlag	flags ;
+		// ループ開始位置（サンプル単位）
+		public uint64	loopStart ;
+		// ループ終了位置（サンプル単位）
+		public uint64	loopEnd ;
+		// タイトル名
+		public String	title ;
+		// ボーカル・演奏者名
+		public String	player ;
+		// 作曲者名
+		public String	composer ;
+		// 編曲者名
+		public String	arranger ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// オーディオ入力ストリーム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	AudioInputStream	extends NativeObject
+	{
+		public abstract AudioInputStream() ;
+
+		// サウンド形式取得
+		public native const SoundFormat* getAudioFormat() ;
+		// メディア補助情報取得
+		public native MediaOptionalInfo getAudioOptinalInfo() ;
+		// オーディオストリーム全長取得（未定は-1）[samples]
+		public native int64 getAudioLength( void ) const ;
+		// オーディオストリーム読み込み [samples]
+		public native ulong readAudio( void* buf, ulong samples ) ;
+		// オーディオストリーム位置変更
+		public native boolean seekAudio( uint64 samples ) ;
+
+	} ;
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// オーディオ・プレーヤー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	AudioPlayer	extends NativeObject
+	{
+		enum	OpenMode<uint64>
+		{
+			// オープンフラグ：自動判定
+			Auto	= 0,
+			// オープンフラグ：PCM に変換してメモリ上に保持する
+			Static	= 1,
+			// オープンフラグ：長さに応じて Static にするか DynamicOnMemory にするか自動判定する
+			AutoStatic	= 2,
+			// オープンフラグ：メモリ上に読み込み、デコード処理は逐次行う
+			DynamicOnMemory	= 3,
+			// オープンフラグ：ファイルからの読み込みも、デコード処理も逐次行う
+			DynamicRead	= 4,
+		}
+
+		// AudioPlayer 構築
+		public native AudioPlayer() ;
+
+		// 指定ファイルを開く
+		public native boolean open
+			( String file /* ファイルパス */, OpenMode flags = OpenMode.Auto ) ;
+		// 指定ファイルを開く
+		public native boolean create
+			( File file /* オーディオファイル */, OpenMode flags = OpenMode.Auto ) ;
+		// データを参照する複製プレイヤー生成
+		public native AudioPlayer clonePlayer() ;
+		// ファイルを閉じる
+		public native boolean close() ;
+		// 再生を開始する
+		public native boolean play( uint64 flags = 0 ) ;
+		// 再生を停止する
+		public native boolean stop() ;
+		// ループポイント[/sample] を設定する
+		public native boolean setLoop
+			( boolean loop = true, int64 nStart = -1, int64 nEnd = -1 ) ;
+		// 再生を一時停止する
+		public native boolean pause() ;
+		// 再生を再開する
+		public native boolean restart() ;
+		// 音量取得 [L/R]
+		public native boolean getVolume( float* pVolumes, ulong channels ) ;
+		// 音量設定 [L/R]
+		public native boolean setVolume( const float* pVolumes, ulong channels ) ;
+		// 再生中か？
+		public native boolean isPlaying() const ;
+		// 一時停止中か？
+		public native boolean isPaused() const ;
+		// メディアのサンプル周波数を取得する
+		public native uint32 getSampleFrequency() const ;
+		// メディアの全長 [/sample] を取得する
+		public native uint64 getTotalLength() const ;
+		// 再生位置 [/sample] を取得する
+		public native uint64 getPosition() ;
+		// 再生位置 [/sample] を変更する
+		public native void seekPosition( uint64 pos )  ;
+		// オーディオストリーム取得
+		public native AudioInputStream getAudioStream() ;
+		// オーディオストリーム解放
+		public native void releaseAudioStream( AudioInputStream stream ) ;
+
+		// 音量ライン番号
+		enum	VolumeLine
+		{
+			// 音量ライン番号：全体
+			Total		= 0,
+			// 音量ライン番号：全体２
+			Total2nd	= 1,
+			// 音量ライン番号：動画など複合音声
+			Composition	= 2,
+			// 音量ライン番号：UI 操作 SE など
+			System		= 3,
+			// 音量ライン番号：BGM など
+			Music		= 4,
+			// 音量ライン番号：SE など
+			Sound		= 5,
+			// 音量ライン番号：台詞など
+			Voice		= 6,
+			// 音量ライン番号：ユーザー定義０
+			UserFirst	= 7,
+			// 音量ライン番号：音量ライン数
+			Count		= 32,
+		}
+
+		// 音量を反映させるライン（ビットマスク）を取得する
+		public native uint32 getVolumeLineMask() const ;
+		// 音量を反映させるラインをクリアする（lineTotal,lineTotal2nd 以外）
+		public native void clearAllVolumeLines() ;
+		// 音量を反映させるライン（ビットマスク）を設定する
+		public native void setVolumeLineMask( uint32 maskLines ) ;
+		// 音量を反映させるラインを設定する
+		public native void setVolumeLine( uint line ) ;
+		// 音量を反映させるラインを解除する
+		public native void resetVolumeLine( uint line ) ;
+		// ライン音量設定
+		public static native void setLineVolume( uint line, double volume ) ;
+		// ライン音量取得
+		public static native double getLineVolume( uint line ) ;
+
+		// 音量フェーディング開始
+		public native void beginFadeVolume
+			( const float* pVolumes, ulong channels, ulong msecDuration ) ;
+		// 音量フェード中か？
+		public native boolean isVolumeFading() const ;
+		// 音量フェーディングキャンセル
+		public native void cancelFadeVolume() ;
+		// 音量フェーディング終了
+		public native void flushFadeVolume() ;
+
+	}
+}
+
+

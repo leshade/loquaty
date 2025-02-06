@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.MovieSprite</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.MovieSprite</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class MovieSprite ;</div>
+<div class="normal">
+動画再生表示 Sprite<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Sprite.xhtml">EntisGLS4.Sprite</a>
+<div class="indent1"><a href="EntisGLS4.MovieSprite.xhtml">EntisGLS4.MovieSprite</a>
+</div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.MovieSprite.PlayFlag.xhtml">EntisGLS4.MovieSprite.PlayFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_playDrawDirect">playDrawDirect</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_MovieSprite">MovieSprite</a><br/>
+	<a href="#virtual_closeMovieFile">closeMovieFile</a><br/>
+	<a href="#virtual_getMovieFrequency">getMovieFrequency</a><br/>
+	<a href="#virtual_getMovieLength">getMovieLength</a><br/>
+	<a href="#virtual_getMoviePosition">getMoviePosition</a><br/>
+	<a href="#virtual_getMovieSize">getMovieSize</a><br/>
+	<a href="#virtual_getVolume">getVolume</a><br/>
+	<a href="#virtual_hasEndedOfDuration">hasEndedOfDuration</a><br/>
+	<a href="#virtual_isMovieLoop">isMovieLoop</a><br/>
+	<a href="#virtual_isMoviePaused">isMoviePaused</a><br/>
+	<a href="#virtual_isMoviePlaying">isMoviePlaying</a><br/>
+	<a href="#virtual_openMovieFile">openMovieFile</a><br/>
+	<a href="#virtual_pauseMovie">pauseMovie</a><br/>
+	<a href="#virtual_playMovie">playMovie</a><br/>
+	<a href="#virtual_resetEndOfDuration">resetEndOfDuration</a><br/>
+	<a href="#virtual_restartMovie">restartMovie</a><br/>
+	<a href="#virtual_seekMovie">seekMovie</a><br/>
+	<a href="#virtual_setMovieLoop">setMovieLoop</a><br/>
+	<a href="#virtual_setVolume">setVolume</a><br/>
+	<a href="#virtual_stopMovie">stopMovie</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_playDrawDirect"/>
+<div class="headline">playDrawDirect</div>
+<div class="usage">public static const EntisGLS4.MovieSprite.PlayFlag&#9; playDrawDirect = 1</div>
+<div class="normal">
+再生フラグ：直接描画<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_MovieSprite"/>
+<div class="headline">MovieSprite</div>
+<div class="usage">public native MovieSprite( )</div>
+<div class="normal">
+MovieSprite 構築<br/></div>
+<br/>
+
+<a name="virtual_closeMovieFile"/>
+<div class="headline">closeMovieFile</div>
+<div class="usage">public native boolean closeMovieFile( )</div>
+<div class="normal">
+動画ファイルを閉じる<br/></div>
+<br/>
+
+<a name="virtual_getMovieFrequency"/>
+<div class="headline">getMovieFrequency</div>
+<div class="usage">public native uint getMovieFrequency( ) const</div>
+<div class="normal">
+メディアのサンプル周波数を取得する<br/></div>
+<br/>
+
+<a name="virtual_getMovieLength"/>
+<div class="headline">getMovieLength</div>
+<div class="usage">public native ulong getMovieLength( ) const</div>
+<div class="normal">
+メディアの全長 [/sample] を取得する<br/></div>
+<br/>
+
+<a name="virtual_getMoviePosition"/>
+<div class="headline">getMoviePosition</div>
+<div class="usage">public native ulong getMoviePosition( ) const</div>
+<div class="normal">
+再生位置 [/sample] を取得する<br/></div>
+<br/>
+
+<a name="virtual_getMovieSize"/>
+<div class="headline">getMovieSize</div>
+<div class="usage">public native const Size* getMovieSize( ) const</div>
+<div class="normal">
+ビデオサイズを取得する<br/></div>
+<br/>
+
+<a name="virtual_getVolume"/>
+<div class="headline">getVolume</div>
+<div class="usage">public native boolean getVolume( float* pVolumes, ulong nChannels )</div>
+<div class="normal">
+音量取得 [L/R]<br/></div>
+<br/>
+
+<a name="virtual_hasEndedOfDuration"/>
+<div class="headline">hasEndedOfDuration</div>
+<div class="usage">public native boolean hasEndedOfDuration( ) const</div>
+<div class="normal">
+再生終端到達判定<br/></div>
+<br/>
+
+<a name="virtual_isMovieLoop"/>
+<div class="headline">isMovieLoop</div>
+<div class="usage">public native boolean isMovieLoop( long* pStart = null, long* pEnd = null ) const</div>
+<div class="normal">
+ループ設定取得<br/></div>
+<br/>
+
+<a name="virtual_isMoviePaused"/>
+<div class="headline">isMoviePaused</div>
+<div class="usage">public native boolean isMoviePaused( ) const</div>
+<div class="normal">
+一時停止中か？<br/></div>
+<br/>
+
+<a name="virtual_isMoviePlaying"/>
+<div class="headline">isMoviePlaying</div>
+<div class="usage">public native boolean isMoviePlaying( ) const</div>
+<div class="normal">
+再生中か？<br/></div>
+<br/>
+
+<a name="virtual_openMovieFile"/>
+<div class="headline">openMovieFile</div>
+<div class="usage">public native boolean openMovieFile( String path )</div>
+<div class="normal">
+動画ファイルを開く<br/></div>
+<br/>
+
+<a name="virtual_pauseMovie"/>
+<div class="headline">pauseMovie</div>
+<div class="usage">public native boolean pauseMovie( )</div>
+<div class="normal">
+再生を一時停止する<br/></div>
+<br/>
+
+<a name="virtual_playMovie"/>
+<div class="headline">playMovie</div>
+<div class="usage">public native boolean playMovie( EntisGLS4.MovieSprite.PlayFlag nFlags = 0 )</div>
+<div class="normal">
+再生を開始する<br/></div>
+<br/>
+
+<a name="virtual_resetEndOfDuration"/>
+<div class="headline">resetEndOfDuration</div>
+<div class="usage">public native void resetEndOfDuration( )</div>
+<div class="normal">
+終端到達フラグをクリア<br/></div>
+<br/>
+
+<a name="virtual_restartMovie"/>
+<div class="headline">restartMovie</div>
+<div class="usage">public native boolean restartMovie( )</div>
+<div class="normal">
+再生を再開する<br/></div>
+<br/>
+
+<a name="virtual_seekMovie"/>
+<div class="headline">seekMovie</div>
+<div class="usage">public native void seekMovie( ulong nPos )</div>
+<div class="normal">
+再生位置 [/sample] を変更する<br/></div>
+<br/>
+
+<a name="virtual_setMovieLoop"/>
+<div class="headline">setMovieLoop</div>
+<div class="usage">public native boolean setMovieLoop( boolean flagLoop = true, long nStart = -1, long nEnd = -1 )</div>
+<div class="normal">
+ループポイント[/frame] を設定する<br/></div>
+<br/>
+
+<a name="virtual_setVolume"/>
+<div class="headline">setVolume</div>
+<div class="usage">public native boolean setVolume( const float* pVolumes, ulong nChannels )</div>
+<div class="normal">
+音量設定 [L/R]<br/></div>
+<br/>
+
+<a name="virtual_stopMovie"/>
+<div class="headline">stopMovie</div>
+<div class="usage">public native boolean stopMovie( )</div>
+<div class="normal">
+停止する<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

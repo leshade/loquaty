@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cotopha>
+
+	<opengl std_phong_shader="enabled"/>
+
+	<fonts>
+		<filter in="Default" out="Times New Roman"/>
+		<filter in="FixedDefault" out="Courier New"/>
+	</fonts>
+
+</cotopha>

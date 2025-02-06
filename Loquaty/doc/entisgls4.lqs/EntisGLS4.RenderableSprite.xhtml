@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.RenderableSprite</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.RenderableSprite</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class RenderableSprite ;</div>
+<div class="normal">
+ユーザー描画可能な Sprite<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Sprite.xhtml">EntisGLS4.Sprite</a>
+<div class="indent1"><a href="EntisGLS4.RenderableSprite.xhtml">EntisGLS4.RenderableSprite</a>
+</div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_RenderableSprite">RenderableSprite</a><br/>
+	<a href="#virtual_onFinishFrame">onFinishFrame</a><br/>
+	<a href="#virtual_onPrepareFrame">onPrepareFrame</a><br/>
+	<a href="#virtual_onRender">onRender</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_RenderableSprite"/>
+<div class="headline">RenderableSprite</div>
+<div class="usage">public native RenderableSprite( )</div>
+<div class="normal">
+RenderableSprite 構築<br/></div>
+<br/>
+
+<a name="virtual_onFinishFrame"/>
+<div class="headline">onFinishFrame</div>
+<div class="usage">public abstract void onFinishFrame( )</div>
+<div class="normal">
+フレーム描画（視点に関係しない）完了後処理<br/></div>
+<br/>
+
+<a name="virtual_onPrepareFrame"/>
+<div class="headline">onPrepareFrame</div>
+<div class="usage">public abstract void onPrepareFrame( )</div>
+<div class="normal">
+フレーム描画（視点に関係しない）共通処理<br/></div>
+<br/>
+
+<a name="virtual_onRender"/>
+<div class="headline">onRender</div>
+<div class="usage">public abstract void onRender( EntisGLS4.RenderContext render, int stereoView = -1 )</div>
+<div class="normal">
+描画</div>
+<br/>
+<div class="indent1">
+※onPrepareFrame～onFinishFrame の間、複数回呼び出される可能性があることに注意（立体視等により）</div><br/>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

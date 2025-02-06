@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.TextSprite.TextStyle</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.TextSprite.TextStyle</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class TextStyle ;</div>
+<div class="normal">
+テキスト・スタイル<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="EntisGLS4.TextSprite.TextStyle.xhtml">EntisGLS4.TextSprite.TextStyle</a>
+</div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.TextSprite.TextStyle.BoxAlignment.xhtml">EntisGLS4.TextSprite.TextStyle.BoxAlignment</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_alignBoxLeft">alignBoxLeft</a><br/>
+	<a href="#static_alignBoxRight">alignBoxRight</a><br/>
+	<a href="#static_alignBoxCenter">alignBoxCenter</a><br/>
+	<a href="#static_alignBoxTop">alignBoxTop</a><br/>
+	<a href="#static_alignBoxBottom">alignBoxBottom</a><br/>
+	<a href="#static_alignBoxVCenter">alignBoxVCenter</a><br/>
+	<a href="#static_alignBoxHorzMask">alignBoxHorzMask</a><br/>
+	<a href="#static_alignBoxVertMask">alignBoxVertMask</a><br/>
+</div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_font">font</a><br/>
+	<a href="#member_prohibition">prohibition</a><br/>
+	<a href="#member_boxAlign">boxAlign</a><br/>
+	<a href="#member_lettering">lettering</a><br/>
+	<a href="#member_decoration">decoration</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_TextStyle">TextStyle</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_alignBoxLeft"/>
+<div class="headline">alignBoxLeft</div>
+<div class="usage">public static const EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; alignBoxLeft = 0</div>
+<div class="normal">
+水平配置：左揃え<br/></div>
+<br/>
+<a name="static_alignBoxRight"/>
+<div class="headline">alignBoxRight</div>
+<div class="usage">public static const EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; alignBoxRight = 1</div>
+<div class="normal">
+水平配置：右揃え<br/></div>
+<br/>
+<a name="static_alignBoxCenter"/>
+<div class="headline">alignBoxCenter</div>
+<div class="usage">public static const EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; alignBoxCenter = 2</div>
+<div class="normal">
+水平配置：中央揃え<br/></div>
+<br/>
+<a name="static_alignBoxTop"/>
+<div class="headline">alignBoxTop</div>
+<div class="usage">public static const EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; alignBoxTop = 0</div>
+<div class="normal">
+垂直配置：上揃え<br/></div>
+<br/>
+<a name="static_alignBoxBottom"/>
+<div class="headline">alignBoxBottom</div>
+<div class="usage">public static const EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; alignBoxBottom = 16</div>
+<div class="normal">
+垂直配置：下揃え<br/></div>
+<br/>
+<a name="static_alignBoxVCenter"/>
+<div class="headline">alignBoxVCenter</div>
+<div class="usage">public static const EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; alignBoxVCenter = 32</div>
+<div class="normal">
+垂直配置：中央揃え<br/></div>
+<br/>
+<a name="static_alignBoxHorzMask"/>
+<div class="headline">alignBoxHorzMask</div>
+<div class="usage">public static const EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; alignBoxHorzMask = 15</div>
+<div class="normal">
+水平配置マスク<br/></div>
+<br/>
+<a name="static_alignBoxVertMask"/>
+<div class="headline">alignBoxVertMask</div>
+<div class="usage">public static const EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; alignBoxVertMask = 0xF0</div>
+<div class="normal">
+垂直配置マスク<br/></div>
+<br/>
+
+
+<div class="chapter">Members</div>
+<a name="member_font"/>
+<div class="headline">font</div>
+<div class="usage">public EntisGLS4.FontStyle&#9; font = { face: "Default", styles: 0, size: 16 }</div>
+<div class="normal">
+フォント<br/></div>
+<br/>
+<a name="member_prohibition"/>
+<div class="headline">prohibition</div>
+<div class="usage">public String&#9; prohibition = ",.!?;:)]，．、。！？；：」】）〕｝〉》』ぁぃぅぇぉっゃゅょァィゥェォッャュョー～"</div>
+<div class="normal">
+レタリング情報（禁則文字）<br/></div>
+<br/>
+<a name="member_boxAlign"/>
+<div class="headline">boxAlign</div>
+<div class="usage">public EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; boxAlign = 0</div>
+<div class="normal">
+ボックス・アライメント<br/></div>
+<br/>
+<a name="member_lettering"/>
+<div class="headline">lettering</div>
+<div class="usage">public EntisGLS4.TextSprite.Lettering&#9; lettering = {ptStartWriting: {x: 0,y: 0},rectWritable: {x: 0,y: 0,w: 0,h: 0},typeAlignment: 0,flagVertical: 0,pitchChar: 0,offsetChar: 0,scalePitch: 0x10000,offsetInHalf: 0,offsetOutHalf: 0,pitchTab: 0,pitchLine: 0,widthIndent: 0,minHyphening: 7,maxProhibition: 3}</div>
+<div class="normal">
+レタリング情報<br/></div>
+<br/>
+<a name="member_decoration"/>
+<div class="headline">decoration</div>
+<div class="usage">public EntisGLS4.TextSprite.Decoration&#9; decoration = {nFlags: 0,rgbaBody: {b: 0,g: 0,r: 0,a: 0},widthBorder: 0,rgbaBorder: {b: 0,g: 0,r: 0,a: 0},rgbaShadow: {b: 0,g: 0,r: 0,a: 0},ptShadow: {x: 0,y: 0},widthBorder2: 0,rgbaBorder2: {b: 0,g: 0,r: 0,a: 0},nGradationCount: 0,nGradationHeight: 0,rgbGradation: [{b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}]}</div>
+<div class="normal">
+文字装飾情報<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_TextStyle"/>
+<div class="headline">TextStyle</div>
+<div class="usage">public TextStyle( const EntisGLS4.TextSprite.TextStyle style )</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public EntisGLS4.TextSprite.TextStyle operator :=( const EntisGLS4.TextSprite.TextStyle style )</div>
+<br/>
+<br/><br/>
+</body>
+</html>

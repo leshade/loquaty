@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ImageComposition.Layer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ImageComposition.Layer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class Layer ;</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Image.xhtml">EntisGLS4.Image</a>
+<div class="indent1"><a href="EntisGLS4.ImageComposition.Layer.xhtml">EntisGLS4.ImageComposition.Layer</a>
+</div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Layer">Layer</a><br/>
+	<a href="#virtual_getLayerBlendMode">getLayerBlendMode</a><br/>
+	<a href="#virtual_getLayerName">getLayerName</a><br/>
+	<a href="#virtual_getLayerPosition">getLayerPosition</a><br/>
+	<a href="#virtual_getLayerTransparency">getLayerTransparency</a><br/>
+	<a href="#virtual_getLayerType">getLayerType</a><br/>
+	<a href="#virtual_getSubLayerAt">getSubLayerAt</a><br/>
+	<a href="#virtual_getSubLayerCount">getSubLayerCount</a><br/>
+	<a href="#virtual_getTotalLayerCount">getTotalLayerCount</a><br/>
+	<a href="#virtual_isLayerVisible">isLayerVisible</a><br/>
+	<a href="#virtual_layerSizeOf">layerSizeOf</a><br/>
+	<a href="#virtual_setLayerBlendMode">setLayerBlendMode</a><br/>
+	<a href="#virtual_setLayerName">setLayerName</a><br/>
+	<a href="#virtual_setLayerPosition">setLayerPosition</a><br/>
+	<a href="#virtual_setLayerTransparency">setLayerTransparency</a><br/>
+	<a href="#virtual_setLayerType">setLayerType</a><br/>
+	<a href="#virtual_setLayerVisible">setLayerVisible</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Layer"/>
+<div class="headline">Layer</div>
+<div class="usage">public native Layer( )</div>
+<div class="normal">
+Layer 構築<br/></div>
+<br/>
+<div class="headline">Layer</div>
+<div class="usage">public native Layer( const EntisGLS4.ImageComposition.Layer layer )</div>
+<div class="normal">
+Layer 複製<br/></div>
+<br/>
+
+<a name="virtual_getLayerBlendMode"/>
+<div class="headline">getLayerBlendMode</div>
+<div class="usage">public native uint getLayerBlendMode( ) const</div>
+<div class="normal">
+レイヤー・ブレンド・モード取得<br/></div>
+<br/>
+
+<a name="virtual_getLayerName"/>
+<div class="headline">getLayerName</div>
+<div class="usage">public native String getLayerName( ) const</div>
+<div class="normal">
+レイヤー名取得<br/></div>
+<br/>
+
+<a name="virtual_getLayerPosition"/>
+<div class="headline">getLayerPosition</div>
+<div class="usage">public native Point* getLayerPosition( ) const</div>
+<div class="normal">
+レイヤー位置取得<br/></div>
+<br/>
+
+<a name="virtual_getLayerTransparency"/>
+<div class="headline">getLayerTransparency</div>
+<div class="usage">public native uint getLayerTransparency( ) const</div>
+<div class="normal">
+レイヤー透明度取得 [0,0x100]<br/></div>
+<br/>
+
+<a name="virtual_getLayerType"/>
+<div class="headline">getLayerType</div>
+<div class="usage">public native PSD.LayerType getLayerType( ) const</div>
+<div class="normal">
+レイヤー・タイプ取得<br/></div>
+<br/>
+
+<a name="virtual_getSubLayerAt"/>
+<div class="headline">getSubLayerAt</div>
+<div class="usage">public native EntisGLS4.ImageComposition.Layer getSubLayerAt( ulong index ) const</div>
+<div class="normal">
+子レイヤー取得<br/></div>
+<br/>
+
+<a name="virtual_getSubLayerCount"/>
+<div class="headline">getSubLayerCount</div>
+<div class="usage">public native ulong getSubLayerCount( ) const</div>
+<div class="normal">
+子レイヤー数取得<br/></div>
+<br/>
+
+<a name="virtual_getTotalLayerCount"/>
+<div class="headline">getTotalLayerCount</div>
+<div class="usage">public native ulong getTotalLayerCount( ) const</div>
+<div class="normal">
+子レイヤーの総数（孫レイヤー以下を含む）<br/></div>
+<br/>
+
+<a name="virtual_isLayerVisible"/>
+<div class="headline">isLayerVisible</div>
+<div class="usage">public native boolean isLayerVisible( ) const</div>
+<div class="normal">
+レイヤー表示状態取得<br/></div>
+<br/>
+
+<a name="virtual_layerSizeOf"/>
+<div class="headline">layerSizeOf</div>
+<div class="usage">public native boolean layerSizeOf( ImageRect* rect, int threshold = 0 ) const</div>
+<div class="normal">
+レイヤーサイズ計算<br/></div>
+<br/>
+
+<a name="virtual_setLayerBlendMode"/>
+<div class="headline">setLayerBlendMode</div>
+<div class="usage">public native void setLayerBlendMode( uint blend )</div>
+<div class="normal">
+レイヤー・ブレンド・モード設定<br/></div>
+<br/>
+
+<a name="virtual_setLayerName"/>
+<div class="headline">setLayerName</div>
+<div class="usage">public native void setLayerName( String name )</div>
+<div class="normal">
+レイヤー名設定<br/></div>
+<br/>
+
+<a name="virtual_setLayerPosition"/>
+<div class="headline">setLayerPosition</div>
+<div class="usage">public native void setLayerPosition( const Point* pos )</div>
+<div class="normal">
+レイヤー位置設定<br/></div>
+<br/>
+
+<a name="virtual_setLayerTransparency"/>
+<div class="headline">setLayerTransparency</div>
+<div class="usage">public native void setLayerTransparency( uint transparency )</div>
+<div class="normal">
+レイヤー透明度設定 [0,0x100]<br/></div>
+<br/>
+
+<a name="virtual_setLayerType"/>
+<div class="headline">setLayerType</div>
+<div class="usage">public native void setLayerType( PSD.LayerType type )</div>
+<div class="normal">
+レイヤー・タイプ設定<br/></div>
+<br/>
+
+<a name="virtual_setLayerVisible"/>
+<div class="headline">setLayerVisible</div>
+<div class="usage">public native void setLayerVisible( boolean visible )</div>
+<div class="normal">
+レイヤー表示状態設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

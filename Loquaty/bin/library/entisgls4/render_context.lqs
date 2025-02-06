@@ -1,0 +1,1354 @@
+﻿
+@include "paint_context.lqs"
+
+
+namespace	EntisGLS4
+{
+	class	Material ;
+	class	VertexBuffer ;
+	class	RenderContext ;
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 色効果
+	//////////////////////////////////////////////////////////////////////////
+
+	struct	ColorMulAdd
+	{
+		ARGB8	rgbMul = { 0xff, 0xff, 0xff, 0xff } ;
+		ARGB8	rgbAdd = { 0, 0, 0, 0 } ;
+
+		public ColorMulAdd( const ColorMulAdd* cmadd )
+			: rgbMul( cmadd.rgbMul ), rgbAdd( cmadd.rgbAdd )
+		{
+		}
+		public ColorMulAdd( uint _rgbMul, uint _rgbAdd )
+			: rgbMul( _rgbMul ), rgbAdd( _rgbAdd )
+		{
+		}
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// シェーディング・フラグ
+	//////////////////////////////////////////////////////////////////////////
+
+	enum using ShadingFlag<ulong>
+	{
+		// シェーディング・フラグ：シェーディング無し
+		shadingMethodNothing			= 0x00000000,
+		// シェーディング・フラグ：フラットシェーディング（未使用）
+		shadingMethodFlat				= 0x00000001,
+		// シェーディング・フラグ：グーローシェーディング
+		shadingMethodGouraud			= 0x00000002,
+		// シェーディング・フラグ：フォンシェーディング
+		shadingMethodPhong				= 0x00000004,
+		// シェーディング・フラグ：トゥーン・シェーディング
+		shadingMethodToon				= 0x00000008,
+		// シェーディング・フラグ：シェーディング方式マスク
+		shadingMethodMask				= 0x000000FF,
+
+		// シェーディング・フラグ：テクスチャをタイリング
+		shadingTextureTiling			= 0x00000100,
+		// シェーディング・フラグ：αトリミング
+		shadingTextureTriming			= 0x00000200,
+		// シェーディング・フラグ：テクスチャ補完
+		shadingTextureSmoothing			= 0x00000400,
+		// シェーディング・フラグ：αディザリング
+		shadingTextureDithering			= 0x00000800,
+		// シェーディング・フラグ：（拡散反射成分）テクスチャマッピング
+		shadingTextureMapping			= 0x00001000,
+		// シェーディング・フラグ：環境マッピング
+		shadingEnvironmentMapping		= 0x00002000,
+		// シェーディング・フラグ：グローバル環境マッピング
+		shadingGEnvironmentMapping		= 0x00004000,
+		// シェーディング・フラグ：法線テクスチャ
+		shadingNormalTexture			= 0x00008000,
+		// シェーディング・フラグ：発光テクスチャ
+		shadingEmissionTexture			= 0x00400000,
+		// シェーディング・フラグ：αテクスチャ
+		shadingAlphaTexture				= 0x00800000,
+		// シェーディング・フラグ：標高テクスチャ
+		shadingHeightTexture			= 0x40000000,
+		// シェーディング・フラグ：屈折反映用大域環境マッピング有効
+		shadingRefractEnvMapping		= 0x0000004000000000,
+		// シェーディング・フラグ：スペキュラー・粗さ・反射率テクスチャ
+		shadingSpecularMapping			= 0x0000008000000000,
+		// シェーディング・フラグ：UV 座標は [0,1] （無指定はピクセル単位）
+		shadingNormalizedUVScale		= 0x0000010000000000,
+		// シェーディング・フラグ：大域AO（ライトマップ）テクスチャ
+		shadingGlobalAOLightMap			= 0x0000100000000000,
+		// シェーディング・フラグ：すべてのテクスチャフラグ
+		shadingAllLocalTextureMask		= shadingTextureMapping
+											| shadingEnvironmentMapping
+											| shadingNormalTexture
+											| shadingEmissionTexture
+											| shadingAlphaTexture
+											| shadingHeightTexture
+											| shadingSpecularMapping
+											| shadingGlobalAOLightMap,
+
+		// シェーディング・フラグ：片面ポリゴン
+		shadingSingleSidePlane			= 0x00010000,
+		// シェーディング・フラグ：ｚ比較を行わないで描画
+		shadingNoZBuffer				= 0x00020000,
+		// シェーディング・フラグ：ｚ比較のみ（ｚバッファへ書き込まない）
+		shadingZBufferNoWrite			= 0x00040000,
+		// シェーディング・フラグ：輪郭描画
+		shadingDrawOffsetBorder			= 0x00080000,
+		// シェーディング・フラグ：法線に従って膨張処理を行う（膨張距離は輪郭パラメータに準拠）
+		shadingMeshSurfaceOffset		= 0x0000000400000000,
+
+		// シェーディング・フラグ：描画順序ヒント＝描画域の透明・不透明は不明
+		shadingHintOfUnknown			= 0x00000000,
+		// シェーディング・フラグ：描画順序ヒント＝描画域のほとんどが不透明
+		shadingHintOfFullAlpha			= 0x00100000,
+		// シェーディング・フラグ：描画順序ヒント＝描画域の多くが 100% 透明と不透明
+		shadingHintOfAlpha				= 0x00200000,
+		// シェーディング・フラグ：描画順序ヒント＝描画域に多くの半透明（※ｚソート用ヒント）
+		shadingHintOfHalfAlpha			= 0x00300000,
+		// シェーディング・フラグ：描画順序ヒント＝優先度０
+		shadingHintPriority0			= 0x00000000,
+		// シェーディング・フラグ：描画順序ヒント＝優先度１
+		shadingHintPriority1			= 0x00100000,
+		// シェーディング・フラグ：描画順序ヒント＝優先度２
+		shadingHintPriority2			= 0x00200000,
+		// シェーディング・フラグ：描画順序ヒント＝優先度３
+		shadingHintPriority3			= 0x00300000,
+		// シェーディング・フラグ：描画順序ヒント・マスク
+		shadingHintMask					= 0x00300000,
+		// シェーディング・フラグ：描画順序ヒント＝ｚソートは必要としない（※ソート用ヒント：同マテリアルをひとまとめにしてよい）
+		shadingHintNoZSort				= 0x0000000200000000,
+
+		// シェーディング・フラグ：他のオブジェクトに影を落とさない
+		shadingNoShadowObject			= 0x01000000,
+		// シェーディング・フラグ：このオブジェクトに影を落とさない
+		shadingNoDropShadow				= 0x02000000,
+		// シェーディング・フラグ：他のオブジェクトに映りこまない
+		shadingNoReflectObject			= 0x04000000,
+		// シェーディング・フラグ：距離に関係なく他のオブジェクトに映りこむ
+		shadingGlobalReflectObject		= 0x08000000,
+		// シェーディング・フラグ：フォグ光源の影響を受けない
+		shadingNoFogEffect				= 0x10000000,
+		// シェーディング・フラグ：頂点色の乗算成分の Alpha を頂点αとして使用する
+		shadingVertexAlpha				= 0x20000000,
+
+		// シェーディング・フラグ：強制加算描画
+		shadingMakeBlendAdd				= 0x0000000800000000,
+		// シェーディング・フラグ：発光効果用出力
+		shadingEmisiveTarget			= 0x0000001000000000,
+		// シェーディング・フラグ：shadingDrawOffsetBorder の無効化
+		shadingNoDrawOffsetBorder		= 0x0000002000000000,
+		// シェーディング・フラグ：色効果無効化 （appendMatrixTransformation の色要素）
+		shadingDisableColorEffect		= 0x0000020000000000,
+		// シェーディング・フラグ：アプリケーション拡張１
+		shadingAppExtension1			= 0x0001000000000000,
+		// シェーディング・フラグ：アプリケーション拡張２
+		shadingAppExtension2			= 0x0002000000000000,
+		// シェーディング・フラグ：アプリケーション拡張３
+		shadingAppExtension3			= 0x0004000000000000,
+		// シェーディング・フラグ：アプリケーション拡張４
+		shadingAppExtension4			= 0x0008000000000000,
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 拡張フラグ
+	//////////////////////////////////////////////////////////////////////////
+
+	enum using ShadingExtensionFlag<uint32>
+	{
+		// SurfaceAttribute 拡張フラグ：cosShadeThreshold, fpToonShadeThreshold, fpToonShadeBrightness 有効
+		shadingExVarietyShade	= 0x00000001,
+		// SurfaceAttribute 拡張フラグ：nBackDiffusion 有効
+		shadingExBackDiffusion	= 0x00000002,
+		// SurfaceAttribute 拡張フラグ：rgbSpecularColor 有効
+		shadingExSpecularColor	= 0x00000004,
+		// SurfaceAttribute 拡張フラグ：rgbBorderColor, fpBorderThicknessA, fpBorderThicknessB 有効
+		shadingExBorderParam	= 0x00000008,
+		// SurfaceAttribute 拡張フラグ：fpBackLight 有効
+		shadingExBackLight		= 0x00000010,
+		// SurfaceAttribute 拡張フラグ：fpRimLight, fpRimLightPower, rgbRimLightColor 有効
+		shadingExRimLight		= 0x00000020,
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 表面属性
+	//////////////////////////////////////////////////////////////////////////
+
+	struct	SurfaceAttribute
+	{
+		// シェーディング・フラグ (EntisGLS4.shading～)
+		ShadingFlag		flagsShading = shadingMethodPhong
+										| shadingSingleSidePlane
+										| shadingNormalizedUVScale ;
+		// 基本色
+		ColorMulAdd	colorBase = { { 0xff, 0xff, 0xff, 0 }, { 0, 0, 0, 0 } } ;
+		// 影色
+		ColorMulAdd	colorShade = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 } } ;
+		// 環境光 (x256)
+		int32		nAmbient = 0 ;
+		// 拡散反射強度 (x256)
+		int32		nDiffusion = 0x100 ;
+		// 鏡面反射強度 (x256)
+		int32		nSpecular = 0x80 ;
+		// 鏡面反射の鋭さ (x256)
+		int32		nSpecularSize = 0x08 ;
+		// 透明度 (x256)
+		int32		nTransparency = 0 ;
+		// 透明深度係数 (x256)
+		int32		nDeepness = 0 ;
+		// 透明深度指数 (x256)
+		int32		nDeepnessPower = 0x100 ;
+		// 反射率 (x256)
+		uint32		nReflection = 0 ;
+		// 屈折率 (-1.0)（0.0 の時屈折率 1.0）
+		float		fpRefraction = 0.0f ;
+		// 発光度 (x256)
+		uint32		nEmission = 0 ;
+		// 拡張フラグ (EntisGLS4.shadingEx～)
+		ShadingExtensionFlag		nExFlags = 0 ;
+		// 陰角度余弦 (default = 0.0)
+		float		cosShadeThreshold = 0.0f ;
+		// トゥーンシェード中間色閾値 (default = 0.5)
+		float		fpToonShadeThreshold = 0.5f ;
+		// トゥーンシェード中間色輝度 (default = 0.5)
+		float		fpToonShadeBrightness = 0.5f ;
+		// 鏡面反射色
+		ARGB8		rgbSpecularColor = { 0xff, 0xff, 0xff, 0 } ;
+		// 輪郭線色
+		ARGB8		rgbBorderColor = { 0, 0, 0, 0 } ;
+		// 輪郭線太さ係数 a
+		float		fpBorderThicknessA = 1.0f ;
+		// 輪郭線太さ係数 b
+		float		fpBorderThicknessB = 0.0f ;
+		// バックライト輝度
+		float		fpBackLight = 0.0f ;
+		// バックライト色
+		ColorMulAdd	colorBackLight = { { 0xff, 0xff, 0xff, 0 }, { 0, 0, 0, 0 } } ;
+		// リムライト輝度
+		float		fpRimLight = 0.0f ;
+		// リムライトサイズ
+		float		fpRimLightDeepness = 0.1f ;
+		// リムライト色
+		ARGB8		rgbRimLightColor = { 0xff, 0xff, 0xff, 0 } ;
+		// 裏拡散反射（疑似AO）
+		int32		nBackDiffusion = 0 ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// マテリアル
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Material	extends NativeObject
+	{
+		enum	TextureType<int>
+		{
+			// テクスチャ・タイプ：拡散反射
+			Diffusion	= 0,
+			// テクスチャ・タイプ：法線
+			Normal		= 2,
+			// テクスチャ・タイプ：発光
+			Emission	= 3,
+			// テクスチャ・タイプ：環境マッピング
+			Environment	= 4,
+			// テクスチャ・タイプ：αチャネル
+			Alpha		= 5,
+			// テクスチャ・タイプ：標高
+			Height		= 6,
+			// テクスチャ・タイプ：反射（スペキュラ・粗さ・反射率）
+			Specular	= 7,
+			// テクスチャ・タイプ：大域AO（ライトマップ）
+			GlobalAO	= 8,
+		}
+
+		// Material 構築
+		public native Material() ;
+
+		// 表面属性取得
+		// <desc>返された SurfaceAttribute 構造体を書き換えると表面属性を変更できますが、
+		// 変更した値を確実にデバイスに反映させるために updateBuffer 関数を呼び出してください。</desc>
+		public native SurfaceAttribute* faceAttr() const ;
+
+		// 背面属性取得
+		// <desc>返された SurfaceAttribute 構造体を書き換えると背面属性を変更できますが、
+		// 変更した値を確実にデバイスに反映させるために updateBuffer 関数を呼び出してください。</desc>
+		public native SurfaceAttribute* backAttr() const ;
+
+		// 背面属性は有効か？
+		public native boolean isEnabledBackAttr() const ;
+
+		// 背面属性を有効／無効化
+		public native void enableBackAttr( boolean enableBack ) ;
+
+		// テクスチャ取得
+		public native Image getTexture( int index ) const ;
+
+		// 背面テクスチャ取得
+		public native Image getBackTexture( int index ) const ;
+
+		// テクスチャ・タイプ取得 (EntisGLS4.Material.texture～)
+		public native uint getTextureType( int index ) const ;
+
+		// 背面テクスチャ・タイプ取得 (EntisGLS4.Material.texture～)
+		public native uint getBackTextureType( int index ) const ;
+
+		// テクスチャ適用度取得
+		public native float getTextureApply( int index ) const ;
+
+		// 背面テクスチャ適用度取得
+		public native float getBackTextureApply( int index ) const ;
+
+		// テクスチャ・パラメータ取得
+		public native float getTextureParam( int index ) const ;
+
+		// 背面テクスチャ・パラメータ取得
+		public native float getBackTextureParam( int index ) const ;
+
+		// テクスチャ検索
+		public native int findTextureTypeOf( TextureType type ) const ;
+
+		// 背面テクスチャ検索
+		public native int findBackTextureTypeOf( TextureType type ) const ;
+
+		// テクスチャ設定
+		public native void setTexture
+			( Image image, int index = 0,
+				TextureType type = TextureType.Diffusion,
+				float apply = 1.0f, float param = 0.0f ) ;
+
+		// 背面テクスチャ設定
+		public native void setBackTexture
+			( Image image, int index = 0,
+				TextureType type = TextureType.Diffusion,
+				float apply = 1.0f, float param = 0.0f ) ;
+
+		// マテリアル更新
+		public native void updateBuffer() ;
+
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// シェーダー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	CustomShader	extends NativeObject
+	{
+		enum using UniformType
+		{
+			// パラメータ型：int32
+			uniformInt,
+			// パラメータ型：float
+			uniformFloat,
+			// パラメータ型：Vector2
+			uniformVector2,
+			// パラメータ型：Vector3
+			uniformVector3,
+			// パラメータ型：Vector4
+			uniformVector4,
+			// パラメータ型：float[2][2]
+			uniformMatrix2x2,
+			// パラメータ型：Matrix3
+			uniformMatrix3x3,
+			// パラメータ型：Matrix4
+			uniformMatrix4x4,
+			// パラメータ型：Image (テクスチャ・サンプラ)
+			uniformTexture,
+			// パラメータ型：Image （読み取り専用画像）
+			uniformImageRead,
+			// パラメータ型：Image （書き出し専用画像）
+			uniformImageWrite,
+			// パラメータ型：Image （読み書き画像）
+			uniformImageReadWrite,
+		}
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// デバイス
+	//////////////////////////////////////////////////////////////////////////
+
+	class	RenderDevice	extends NativeObject
+	{
+		// シェーダー記述ファイル
+		class	ShaderDesc	extends NativeObject
+		{
+			// ShaderDesc 構築
+			public native ShaderDesc() ;
+			// シェーダー記述ファイルを読み込む
+			public native boolean loadDescription( String path ) ;
+			// シェーダー記述ファイルを読み込む
+			public native boolean readDescription( File file ) ;
+		}
+
+		// 優先度
+		enum using ProcedurePriority
+		{
+			// 優先度：非同期実行
+			procedureAsync,
+			// 優先度：同期実行
+			procedureSync,
+			// 優先度：非同期実行（優先度低・画面描画優先）
+			procedureDelayable,
+			// 優先度：非同期実行（即座に実行しない）
+			procedureLater,
+			// 優先度：非レンダリングスレッドでレンダリング非同期実行（呼び出しは非同期／同期か不問・確実に同期を取る責任は呼び出し側にある）
+			procedureNoRender,
+		}
+
+		public abstract RenderDevice() ;
+
+		// レンダリング・スレッドか？
+		public native boolean isOnRenderThread() const ;
+
+		// レンダリング・スレッドで実行
+		public native boolean procedure
+			( Function<void()> func, ProcedurePriority priority ) ;
+
+		// 非同期実行の完了を待つ
+		public native boolean waitUntilAsyncAllProcedures( long msecTimeout = -1 ) ;
+
+		// RenderContext を作成する
+		public native RenderContext newRenderer() ;
+
+		// 画像リソースをデバイス上で使えるように準備する
+		// （事前に準備しておかなくてもデバイス上の描画に利用できますが初回描画時に転送時間がかかります）
+		public native boolean commitImage( Image img, long msecTimeout = 0 ) ;
+
+		// 頂点バッファをデバイス上で使えるように準備する
+		// （事前に準備しておかなくてもデバイス上の描画に利用できますが初回描画時に転送時間がかかります）
+		public native boolean commitVertexBuffer( VertexBuffer vb, long msecTimeout = 0 ) ;
+
+		// デバイス上に確保された画像用メモリを解放する
+		public native boolean releaseImage( Image img, long msecTimeout = 0 ) ;
+
+		// デバイス上に確保された頂点バッファを解放する
+		public native boolean releaseVertexBuffer( VertexBuffer vb, long msecTimeout = 0 ) ;
+
+		// デバイス機能フラグ
+		enum using FeatureFlag<uint32>
+		{
+			// デバイス機能フラグ [0]：２の累乗でないテクスチャサイズ
+			feature0_TextureNonPowerOf2	= 0x00000001,
+			// デバイス機能フラグ [0]：深度テクスチャ
+			feature0_DepthTexture		= 0x00000002,
+			// デバイス機能フラグ [0]：キューブマップ・テクスチャ
+			feature0_CubemapTexture		= 0x00000004,
+			// デバイス機能フラグ [0]：マルチサンプリング・テクスチャ
+			feature0_MultisampleTexture	= 0x00000008,
+			// デバイス機能フラグ [0]：S3TC 圧縮テクスチャ
+			feature0_CompressionS3TC	= 0x00000010,
+			// デバイス機能フラグ [0]：シェーダー・バイナリ
+			feature0_ProgramBinary		= 0x00000100,
+			// デバイス機能フラグ [0]：マルチ・レンダー・ターゲット
+			feature0_MultiRenderTarget	= 0x00000200,
+			// デバイス機能フラグ [0]：ジオメトリ・シェーダー
+			feature0_GeometryShader		= 0x00000400,
+			// デバイス機能フラグ [0]：float テクスチャ
+			feature0_TextureFloat		= 0x00001000,
+			// デバイス機能フラグ [0]：float テクスチャ（カラーバッファ）
+			feature0_ColorBufferFloat	= 0x00002000,
+			// デバイス機能フラグ [0]：インスタンス描画
+			feature0_InstancedDraw		= 0x00004000,
+			// デバイス機能フラグ [0]：インスタンス描画（VertexVariantBuffer 対応）
+			feature0_MultiShapeDraw		= 0x00008000,
+			// デバイス機能フラグ [0]：シェーダー
+			feature0_CustomShader		= 0x00010000,
+			// デバイス機能フラグ [0]：コンピュート・シェーダー
+			feature0_ComputeShader		= 0x00020000,
+		}
+
+		struct	Features
+		{
+			// 機能フラグ
+			uint32[4]	flagsFeatures ;
+			// 最大テクスチャサイズ
+			uint32	maxTextureSize ;
+			// 最大３Ｄテクスチャサイズ
+			uint32	max3DTextureSize ;
+			// 最大キューブマップ・テクスチャサイズ
+			uint32	maxCubeTextureSize ;
+			// 最大マルチテクスチャ（Fragment Shader）
+			uint32	maxMultiTextureUnits ;
+			// 最大マルチテクスチャ（Vertex Shader）
+			uint32	maxVSTexturesUnits ;
+			// 最大マルチテクスチャ（全ての合計）
+			uint32	maxCombinedTextureUnits ;
+			// GLSL 最大 attribute 数 [vec4]
+			uint32	maxVertexAttributes ;
+			// GLSL 最大 varying 数 [vec4]
+			uint32	maxVertexVaryings ;
+			// GLSL 最大 uniform 数 [vec4]
+			uint32	maxVertexUniforms ;
+			uint32	maxFragmentUniforms ;
+			// 最大 Draw Buffer 数
+			uint32	maxMutiRenderTarget ;
+			// 予約領域
+			uint32[19]	nReserved ;
+		} ;
+		// デバイス機能を取得する
+		public native boolean getDeviceFeatures
+			( Features* features /* デバイス機能を取得する Features 構造体 */ ) ;
+
+		// シェーダーを取得する
+		public native CustomShader getCustomShaderAs( String id ) const ;
+
+		// シェーダーをコンパイルして作成する
+		public native CustomShader buildCustomShader
+						( String id, const ShaderDesc shddsc ) ;
+
+		// シェーダーを解放する
+		// （同一 id のシェーダーを再度コンパイルするには先に remove しておく必要があります）
+		public native void removeCustomShader( String id ) ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// プリミティブ・タイプ
+	//////////////////////////////////////////////////////////////////////////
+
+	enum	PrimitiveType
+	{
+		// プリミティブ・タイプ：点
+		Point			= 0,
+		// プリミティブ・タイプ：直線
+		Line			= 2,
+		// プリミティブ・タイプ：連続直線
+		LineStrip		= 3,
+		// プリミティブ・タイプ：三角形
+		Triangle		= 4,
+		// プリミティブ・タイプ：連続三角形
+		TriangleStrip	= 5,
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// レンダーバッファ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	RenderBuffer	extends NativeObject
+	{
+		public abstract RenderBuffer() ;
+
+		// シェーディング・フラグ設定
+		public native void setShadingFlag( ulong flags ) ;
+
+		// シェーディング・フラグ取得
+		public native ulong getShadingFlag() const ;
+
+		// 座標変換・色効果・透明度を追加
+		public native boolean appendMatrixTransformation
+			( const Matrix3d* mat, const Vector3d* pos,
+				const ColorMulAdd* cmadd = null, uint transparency = 0 ) ;
+
+		// 座標変換・色効果・透明度を設定
+		public native boolean setMatrixTransformation
+			( const Matrix3d* mat, const Vector3d* pos,
+				const ColorMulAdd* cmadd = null, uint transparency = 0 ) ;
+
+		// 座標変換・色効果・透明度を保存する
+		// <desc>座標変換・色効果・透明度のほか、シェーダー設定、
+		// オプショナル機能設定も保存されます。</desc>
+		public native boolean pushTransformation() ;
+
+		// 座標変換・色効果・透明度を復元する
+		// <desc>座標変換・色効果・透明度のほか、シェーダー設定、
+		// オプショナル機能設定も復元されます。</desc>
+		public native boolean popTransformation() ;
+
+		// 座標変換・色効果・透明度を初期化する
+		public native boolean resetTransformation() ;
+
+		// カスタムシェーダー設定
+		public native boolean attachCustomShader( CustomShader shader ) ;
+
+		// カスタムシェーダー取得
+		public native CustomShader getCustomShader() ;
+
+		// カスタムシェーダーパラメータ設定
+		public native boolean setCustomShaderUniform
+				( String id, CustomShader.UniformType type, const void* data, uint count ) ;
+
+		public boolean setCustomShaderUniformInt
+				( String id, const int* data, uint count = 1 )
+		{
+			return	setCustomShaderUniform
+						( id, CustomShader.uniformInt, data, count ) ;
+		}
+		public boolean setCustomShaderUniformFloat
+				( String id, const float* data, uint count = 1 )
+		{
+			return	setCustomShaderUniform
+						( id, CustomShader.uniformFloat, data, count ) ;
+		}
+		public boolean setCustomShaderUniformVector2
+				( String id, const Vector2* data, uint count = 1 )
+		{
+			return	setCustomShaderUniform
+						( id, CustomShader.uniformVector2, data, count ) ;
+		}
+		public boolean setCustomShaderUniformVector3
+				( String id, const Vector3* data, uint count = 1 )
+		{
+			return	setCustomShaderUniform
+						( id, CustomShader.uniformVector3, data, count ) ;
+		}
+		public boolean setCustomShaderUniformVector4
+				( String id, const Vector4* data, uint count = 1 )
+		{
+			return	setCustomShaderUniform
+						( id, CustomShader.uniformVector4, data, count ) ;
+		}
+		public boolean setCustomShaderUniformMatrix3
+				( String id, const Matrix3* data, uint count = 1 )
+		{
+			return	setCustomShaderUniform
+						( id, CustomShader.uniformMatrix3x3, data, count ) ;
+		}
+		public boolean setCustomShaderUniformMatrix4
+				( String id, const Matrix4* data, uint count = 1 )
+		{
+			return	setCustomShaderUniform
+						( id, CustomShader.uniformMatrix4x4, data, count ) ;
+		}
+		public native boolean setCustomShaderUniformImage
+				( String id, int type, Image image ) ;
+		public boolean setCustomShaderUniformTexture( String id, Image image )
+		{
+			return	setCustomShaderUniformImage
+						( id, CustomShader.uniformTexture, image ) ;
+		}
+
+		// カスタムシェーダーパラメータ初期化
+		public native boolean resetCustomShaderUniform() ;
+
+		// レンダリング・フラグ
+		enum using AddRenderFlag<uint>
+		{
+			// レンダリング・フラグ：描画順序をフェンスする
+			renderFenceOrder	= 0x0001,
+			// レンダリング・フラグ：addIndexedPrimitive の自動結合を無効化
+			renderUncombinable	= 0x0002,
+		}
+
+		// プリミティブをレンダリングバッファに追加
+		public native boolean addIndexedPrimitive
+			( Material material /* マテリアル */,
+				AddRenderFlag flags /* レンダリング・フラグ (EntisGLS4.RenderBuffer.render～) */,
+				PrimitiveType typePrimitive /* プリミティブ・タイプ */,
+				uint countIndex /* インデックス配列長 */,
+				uint countVertex /* 頂点配列長 */,
+				const Vector4* pvVertex /* 頂点配列（w 要素は無視される） */,
+				const Vector4* pvNormal /* 法線配列（w 要素は無視される） */,
+				const Vector2* pvUVMap /* UV 座標配列（無い場合は null） */,
+				const ColorMulAdd* pColor /* 頂点色配列（無い場合は null） */,
+				const uint32* pIndexedList /* インデックス配列（無い場合は null） */ )  ;
+
+		// 頂点バッファの内容を描画
+		public native boolean addVertexBuffer
+			( AddRenderFlag flags /* レンダリング・フラグ (EntisGLS4.RenderBuffer.render～) */,
+				VertexBuffer vb /* 描画する頂点バッファ */,
+				uint iFirst = 0 /* vb 内の描画するメッシュのインデックス */,
+				int iEnd = -1 /* vb 内の描画するメッシュ数 */,
+				uint nInstancing = 0 /* 描画インスタンス数 */,
+				const Matrix4* pmatInstancing = null /* 各インスタンスの Matrix4 配列 */,
+				const ColorMulAdd* pColorInstancing = null /* 各インスタンスの ColorMulAdd 配列 */ ) ;
+
+		// 描画の確定
+		public native boolean flush() ;
+
+		// 機能番号
+		enum using FeatureType
+		{
+			// 機能番号 : sRGB 色空間 : param1 = {true|false}, param2 = null (&int32_t to get)
+			featureSRGB				= 0,
+			// 機能番号 : 大域環境マッピング : param1 = {0|envMappingRefraction|envMappingViewportDepth}, param3 = EnvMappingParam
+			featureEnvMap			= 1,
+			// 機能番号 : 輪郭線 : param1 = 0, param2 = OffsetBorderParam
+			featureOffsetBorder		= 2,
+			// 機能番号 : カリング・オーバーライド : param1 = FaceCullingOperation, param2 = null (int32 to get)
+			featureFaceCulling		= 3,
+			// 機能番号 : 深度マスク・オーバーライド : param1 = DepthMaskOperation, param2 = null (int32 to get)
+			featureDepthMask		= 4,
+			// 機能番号 : 描画関数・オーバーライド : param1 = BlendOperation, param2 = null (int32 to get)
+			featureBlendOperation	= 5,
+			// 機能番号 : 描画優先度（小さいほど先に描画される）: param1 = priority(0～15), param2 = null (int32 to get)
+			featureOrderPriority	= 7,
+			// 機能番号 : 点描画サイズ（ピクセル単位） ; param1 = 0, param2 = float*
+			featurePointSize		= 8,
+			// 機能番号 : 線描画幅（ピクセル単位） : param1 = 0, param2 = float*
+			featureLineWidth		= 9,
+		}
+
+		// オプショナル機能設定
+		public native boolean setOptionalFeature
+			( FeatureType feature /* 機能番号 EntisGLS4.RenderBuffer.feature～ */,
+				int32 param1 /* パラメータ１ */,
+				const void* param2 /* パラメータ２ */,
+				ulong sizeOfParam2 /* param2 のバイト数単位のサイズ */,
+				Object param3 = null /* パラメータ３*/ ) ;
+		// オプショナル機能取得
+		public native boolean getOptionalFeature
+			( FeatureType feature /* 機能番号 EntisGLS4.RenderBuffer.feature～ */,
+				int32 param1 /* パラメータ１ */,
+				void* param2 /* パラメータ２ */,
+				ulong sizeOfParam2 /* param2 のバイト数単位のサイズ */,
+				Object param3 = null /* パラメータ３*/ ) const ;
+
+		enum using EnvironmentMappingType<uint>
+		{
+			// 環境マッピング：半球（xz平面y軸投影）
+			envMappingHemisphere,
+			// 環境マッピング：球（xz平面y軸投影／上半分北半球／下半分南半球）
+			envMappingSphere,
+			// 環境マッピング：キューブマッピング
+			envMappingCube,
+			// 環境マッピング：ビューポート（前段レンダリングターゲット）
+			envMappingViewport,
+			// 環境マッピング：屈折反映ターゲット・フラグ
+			envMappingRefraction	= 0x0100,
+			// 環境マッピング：ビューポート深度・フラグ
+			envMappingViewportDepth	= 0x0200,
+		}
+
+		// 大域環境マッピングパラメータ
+		class	EnvMappingParam
+		{
+			// 環境マッピング用画像
+			public Image	image ;
+			// 環境マッピング・タイプ (EntisGLS4.RenderBuffer.envMapping～)
+			public uint		typeMap ;
+			// 回転行列
+			public Matrix3	matMap ;
+		} ;
+
+		// 輪郭線描画パラメータ
+		// 輪郭線の実際の太さ（押し出し距離）は z*a/zs+b
+		// （zs は透視変換パラメータのスクリーン z 座標）
+		struct	OffsetBorderParam
+		{
+			// 描画色（RGB）
+			ARGB8	rgbBorder ;
+			// 太さパラメータ a
+			float	aThickness = 0.0f ;
+			// 太さパラメータ b
+			float	bThickness = 0.01f ;
+		} ;
+	}
+
+	// カリング操作
+	enum	FaceCullingOperation
+	{
+		// デフォルト（マテリアルの設定を優先）
+		Default,
+		// 背面をカリング（表側だけ描画）
+		Back,
+		// 表面をカリング（裏側だけ描画）
+		Front,
+		// カリングしない（両面描画）
+		No,
+	}
+
+	// ｚバッファ操作
+	enum	DepthMaskOperation
+	{
+		// デフォルト（マテリアルの設定を優先）
+		Default,
+		// ｚテストと（バッファの値以下の場合の）書き込み実行
+		Enable,
+		// ｚテストのみ（バッファの値以下の場合に描画）
+		NoWrite,
+		// ｚテストのみ（バッファの値より大きい場合に描画）
+		NoWriteGT,
+		// ｚテストは行わない
+		NoTest,
+	}
+
+	// ブレンド操作
+	enum	BlendOperation
+	{
+		// デフォルト（マテリアルの設定を優先）
+		Default,
+		// dstRGB = dstRGB*(1-srcAlpha) + srcRGB
+		ProductedSrc,
+		// dstRGB = dstRGB + srcRGB
+		Add,
+		// dstRGB = dstRGB*(1-srcAlpha) + srcRGB*srcAlpha
+		UnproductedSrc,
+		// dstRGB = srcRGB
+		Copy,
+		// dstRGB = dsRGB*dstAlpha + srcRGB*srcAlpha
+		DstMasked,
+		// dstRGB = dstRGB * srcRGB
+		MulColor,
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 頂点バリアント・バッファ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	VertexVariantBuffer	extends NativeObject
+	{
+		public abstract VertexVariantBuffer() ;
+
+		// メッシュにボーン行列設定
+		public native boolean setBoneMatrix
+			( ulong iMesh /* メッシュ指標 */,
+				ulong nCount /* 行列の配列長 */,
+				const Matrix3* pMatrix /* 行列配列 */,
+				const Vector3* pTrans /* 平行移動要素配列 */ ) ;
+
+		// メッシュのボーン行列取得
+		public native ulong getBoneMatrix
+			( ulong iMesh /* メッシュ指標 */,
+				ulong nCount /* 行列の配列長 */,
+				Matrix3* pMatrix /* 受け取る行列配列 */,
+				Vector3* pTrans /* 受け取る平行移動座標配列 */ ) ;
+
+		// モーフィング設定
+		public native boolean setMorphingApplication
+			( ulong iMesh /* メッシュ指標 */,
+				const long* pTargetMesh /* モーフィング・ターゲット指標配列 */,
+				const float* pApplication /* モーフィング適用度配列 */,
+				ulong nTargetMeshCount /* モーフィング要素数 */ ) ;
+
+		// モーフィング設定取得
+		// <return>モーフィング要素が存在している場合 true</return>
+		public native boolean getMorphingApplication
+			( ulong iMesh /* メッシュ指標 */,
+				long* pTargetMesh /* モーフィング・ターゲット指標を受け取る long 変数 */,
+				float* pApplication /* モーフィング適用度を受け取る float 変数 */,
+				ulong iTargetMeshIndex /* 取得するモーフィング要素指標 */ ) ;
+
+		// メッシュ表示設定
+		public native boolean enableToRenderMesh
+			( ulong iFirst = 0 /* 表示設定する初めのメッシュ指標 */,
+				long iEnd = -1 /* 表示設定する最後のメッシュ指標（iEnd は含まない）。
+								-1 の場合は最後のメッシュまで */,
+				boolean fEnable = true /* 設定する表示状態 */ ) ;
+
+		// メッシュ表示フラグ取得
+		public native boolean isEnabledToRenderMesh( ulong iMesh /* メッシュ指標 */ ) const ;
+
+		// メッシュマテリアル設定
+		public native boolean setMaterialToRenderMesh
+			( ulong iMesh /* メッシュ指標 */, Material material /* 設定するマテリアル */ ) ;
+
+		// メッシュマテリアル取得
+		public native Material getMaterialToRenderMesh( ulong iMesh /* メッシュ指標 */ ) const ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 頂点バッファ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	VertexBuffer	extends RenderBuffer
+							implements VertexVariantBuffer
+	{
+		// getMeshInfoAt フラグ
+		enum using MeshInfoFlag<uint>
+		{
+			// getMeshInfoAt フラグ : モーフィング処理後の頂点を取得
+			flagMeshMorphedVertex	= 0x0001,
+			// getMeshInfoAt フラグ : ボーン処理後の頂点を取得
+			flagMeshBoneTransformed	= 0x0002,
+			// getMeshInfoAt フラグ : 頂点処理後の頂点を取得
+			flagMeshTransformed		= 0x0003,
+		}
+
+		// メッシュ情報
+		class	MeshInfo
+		{
+			// マテリアル
+			public Material		pMaterial ;
+			// プリミティブ・タイプ
+			public PrimitiveType	typeMesh ;
+			// プリミティブ数
+			public uint			countPrimitive ;
+			// 頂点数
+			public uint			countVertex ;
+			// 中心点座標
+			public Vector3		vCenter ;
+			// 外接球半径
+			public float		fpRadius ;
+			// 頂点座標を受け取る Vector4 配列 [nCopyVertices]
+			public Vector4*		pvVertex ;
+			// 法線を受け取る Vector4 配列 [nCopyVertices]
+			public Vector4*		pvNormal ;
+			// UV 座標を受け取る Vector2 配列 [nCopyVertices]
+			public Vector2*		pvUVMap ;
+			// 頂点色を受け取る ColorMulAdd 配列 [nCopyVertices]
+			public ColorMulAdd*	pColor ;
+			// 頂点インデックスを受け取る uint 配列 [countPrimitive*X]
+			public uint*		pIndexedList ;
+			// 拡張属性要素数
+			public uint			nExAttrElements ;
+			// 拡張属性要素を受け取る float 配列 [nCopyVertices*nExAttrElements]
+			public float*		pfpExAttrElements ;
+		}
+
+		// プリミティブ・バッファ
+		class	PrimitiveBuffer
+		{
+			public Vector4*		pvVertex ;
+			public Vector4*		pvNormal ;
+			public Vector2*		pvUVMap ;
+			public ColorMulAdd*	pColor ;
+			public uint*		pIndexedList ;
+		} ;
+
+		// バッファ制御フラグ
+		enum using BufferControlFlag<uint>
+		{
+			// バッファ制御フラグ : 自動結合
+			bufferAutoMerge			= 0x0001,
+			// バッファ制御フラグ : クリア時にデバイス上のバッファを保持し続ける
+			bufferKeepDeviceBuffer	= 0x0002,
+			// バッファ制御フラグ : 動的な頂点配列（デバイス上でインターリーブしない）
+			bufferDynamicVertex		= 0x0004,
+			// バッファ制御フラグ : 動的なインデックス配列
+			bufferDynamicIndex		= 0x0008,
+		}
+
+		// VertexBuffer 構築
+		public native VertexBuffer() ;
+
+		// バッファ制御フラグ取得
+		public native BufferControlFlag getBufferControlFlags() const ;
+
+		// バッファ制御フラグ設定
+		public native void setBufferControlFlags( BufferControlFlag nFlags ) ;
+
+		// デフォルトマテリアル取得
+		public native Material getDefaultMaterial() const ;
+
+		// デフォルトマテリアル設定
+		public native void attachDefaultMaterial( Material material ) ;
+
+		// プリミティブを追加するためのバッファを確保する
+		public native boolean allocatePrimitiveBuffer
+			( PrimitiveBuffer prmbuf /* バッファポインタを受け取る PrimitiveBuffer */,
+				PrimitiveType typePrimitive /* プリミティブ・タイプ */,
+				ulong countIndex /* インデックス配列長 */,
+				ulong countVertex /* 頂点配列長 */ ) ;
+
+		// プリミティブを追加する（バッファの管理は VertexBuffer に移る）
+		public native boolean addPrimitiveBuffer
+			( Material material /* プリミティブのマテリアル */,
+				uint flags /* レンダリング・フラグ (EntisGLS4.RenderBuffer.render～) */,
+				PrimitiveType typePrimitive /* プリミティブ・タイプ */,
+				const PrimitiveBuffer prmbuf /* allocatePrimitiveBuffer で確保したバッファ */,
+				ulong countIndex /* 実際に追加するインデックス数 */,
+				ulong countVertex /* 実際に追加する頂点数 */ ) ;
+
+		// プリミティブを追加せずにバッファを開放する
+		public native boolean freePrimitiveBuffer( const PrimitiveBuffer prmbuf ) ;
+
+		// メッシュ数を取得する
+		public native ulong getMeshCount() const ;
+
+		// メッシュ情報取得
+		public native boolean getMeshInfoAt
+			( MeshInfo info /* メッシュ情報を受け取る MeshInfo */,
+				ulong iMesh /* メッシュ指標 */,
+				ulong nCopyVertices /* 受け取る頂点数 */,
+				ulong iFirstVertex = 0 /* 受け取る初めの頂点指標 */,
+				MeshInfoFlag flags = 0 /* メッシュ情報取得フラグ (flagMesh～) */ ) const ;
+
+		// プリミティブを更新
+		public native boolean updateIndexedPrimitive
+			( ulong iMesh /* メッシュ指標 */,
+				uint flags /* レンダリング・フラグ (EntisGLS4.RenderBuffer.render～) */,
+				ulong countIndex /* インデックス配列長 */,
+				ulong countVertex /* 頂点配列長 */,
+				const Vector4* pvVertex /* 更新する頂点座標配列（null なら更新しない） */,
+				const Vector4* pvNormal /* 更新する法線配列（null なら更新しない） */,
+				const Vector2* pvUVMap /* 更新する UV 配列（null なら更新しない） */,
+				const ColorMulAdd* pColor /* 更新する頂点色配列（null なら更新しない） */,
+				const uint* pIndexedList /* 更新するインデックス配列（null なら更新しない） */ ) ;
+
+		// 追加的な頂点属性を設定
+		public native boolean setExtendVertexAttribute
+			( ulong iMesh /* メッシュ指標 */,
+				ulong countElements /* 頂点ごとの要素数 */,
+				ulong countVertex /* 頂点数 */,
+				const float* pfpAttrElements /* 頂点属性要素配列 */ ) ;
+
+		// メッシュにウェイトマップを設定
+		// <desc>先だって setBoneJointMap でジョイントマップを設定している場合には
+		// 対応するウェイトマップを設定します。</desc>
+		public native boolean setBoneWeightMap
+			( ulong iMesh /* メッシュ指標 */,
+				ulong nCount /* ウェイトマップ・レイヤー数 (==ppWeightMaps.length()) */,
+				const float*[] ppWeightMaps /* レイヤー毎のウェイトマップ */ ) ;
+
+		// メッシュにジョイントマップを設定
+		public native boolean setBoneJointMap
+			( ulong iMesh /* メッシュ指標 */,
+				ulong nBoneCount /* 関連ボーン数 */,
+				ulong nJointCount /* ジョイント数（レイヤー数） */,
+				const uint*[] ppJointMaps /* ウェイトマップに対応する頂点ごとのボーン指標配列 */ ) ;
+
+		// メッシュにモーフターゲット枠を確保
+		public native boolean allocateMorphing
+			( ulong iMesh /* メッシュ指標 */,
+				ulong nCount /* モーフィング・ターゲット数 */ ) ;
+
+		// メッシュにモーフターゲットを設定
+		public native boolean setMorphingTargetMesh
+			( ulong iMesh /* メッシュ指標 */,
+				ulong iMorph /* モーフィング・ターゲット指標 */,
+				ulong countVertex /* 頂点数 */,
+				const Vector4* pvVertex /* モーフィング頂点配列 */,
+				const Vector4* pvNormal /* モーフィング法線配列 */,
+				const Vector2* pvUVMap /* モーフィング UV 配列*/,
+				const ColorMulAdd* pColor /* モーフィング頂点色配列 */ ) ;
+
+		// メッシュのモーフターゲットにウェイトを設定
+		public native boolean setMorphingTargetWeight
+			( ulong iMesh/* メッシュ指標 */,
+				ulong iMorph /* モーフィング・ターゲット指標 */,
+				ulong countVertex /* 頂点数 */,
+				const float* pfpWeight /* モーフィング適用度配列 */ ) ;
+
+		// 現在の設定に適合する VertexVariantBuffer を生成
+		public native VertexVariantBuffer createVariantBuffer() ;
+
+		// VertexVariantBuffer のパラメータを VertexBuffer へ反映
+		public native boolean updateVertexVariant
+			( VertexVariantBuffer vvb, ulong iFirst = 0, long iEnd = -1 ) ;
+
+		// 参照バリアントを生成
+		// <desc>この関数は createVariantBuffer とほぼ同じですが、
+		// この関数では VertexBuffer として描画に使用できる
+		// バリアントを生成します。</desc>
+		public native VertexBuffer newReferenceVariantBuffer() ;
+
+		// バッファを RenderBuffer へ出力
+		public native boolean renderBufferTo
+			( RenderBuffer render /* 出力先 RenderBuffer */,
+				ulong flagsExclusion = 0 /* 描画から除外するシェーディング・フラグ（このフラグを持つマテリアルのメッシュを描画しない） */,
+				ulong iFirst = 0 /* 出力する初めのメッシュ指標 */,
+				long iEnd = -1 /* 出力する最後のメッシュ（iEnd を含まない）。-1 の時は最後まで */,
+				ulong nInstancing = 0 /* インスタンス数。0 の時は pmatInstancing, pColorInstancing を使用せずに１つ出力 */,
+				const Matrix4* pmatInstancing = null /* インスタンス毎の Matrix4 配列 */,
+				const ColorMulAdd* pColorInstancing = null /* インスタンス毎の ColorMulAdd 配列 */ ) const ;
+
+		// モデル描画が表示範囲にあるか見積もる
+		public native boolean isModelIntoView
+			( RenderContext render,
+				double scaleMargin = 0.5, double modelMargin = 1.0 ) ;
+
+		// バッファを消去
+		public native void clearBuffer() ;
+
+		// デバイスリソースを解放
+		public native void releaseAllDeviceResources() ;
+
+		// バッファのメモリブロックサイズ設定
+		public native void setBufferUnitSize( ulong bytes ) ;
+
+		// メッシュ外接球取得
+		public native double getCircumscribedSphere
+				( Vector3* vCenter /* 中心座標を受け取る Vector3 */ ) ;
+
+		// メッシュ外接直方体取得
+		public native boolean getCircumscribedParallelepiped
+			( Vector3* vMin /* 最小値を受け取る Vector3 */,
+				Vector3* vMax /* 最大値を受け取る Vector3 */ ) ;
+
+		// 総ポリゴン数集計
+		public native ulong countOfTotalPolygons() const ;
+
+		// 総頂点数集計
+		public native ulong countOfTotalVertices() const ;
+
+		// マルチインスタンス描画モード設定
+		// <desc>マルチインスタンス描画モードで VertexBuffer を描画すると
+		//  addInstanceVariant で設定されたインスタンスが描画されます。</desc>
+		public native boolean enableMultiInstancingMode( boolean enable ) ;
+
+		// マルチインスタンス描画モード判定
+		public native boolean isMultiInstancingMode() const ;
+
+		// インスタンス数取得
+		public native ulong getInstancingCount() const ;
+
+		// インスタンス取得
+		public native ulong getInstancingEntries
+			( VertexVariantBuffer[] vvbs /* インスタンスを受け取る配列 */,
+				Matrix4* pmatInstance /* インスタンスの行列を受け取る Matrix4 配列 */,
+				ColorMulAdd* pcolorInstance /* インスタンスの色を受け取る ColorMulAdd 配列 */,
+				ulong iFirst /* 受け取る先頭のインスタンスの指標 */,
+				ulong nCount /* 受け取るインスタンス情報の数 */ ) const ;
+
+		// インスタンス全消去
+		public native boolean clearAllInstance() ;
+
+		// インスタンス追加設定
+		public native boolean addInstanceVariant
+			( VertexVariantBuffer vvb /* 追加する VertexVariantBuffer */,
+				const Matrix4* matInstance /* インスタンスの行列 */,
+				const ColorMulAdd* colorInstance /* インスタンスの色 */ ) ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 光源
+	//////////////////////////////////////////////////////////////////////////
+
+	struct	LightEntry
+	{
+		enum using LightType<uint32>
+		{
+			// 光源タイプ：環境光
+			typeAmbient			= 0x00000001,
+			// 光源タイプ：無限遠光源
+			typeVector			= 0x00000002,
+			// 光源タイプ：点光源
+			typePoint			= 0x00000004,
+			// 光源タイプ：点光源（スポットライト）
+			typeSpot			= 0x00000006,
+			// 光源タイプ：面境界擬似フォッグ
+			typeFog				= 0x00000008,
+			// 光源タイプ：環境光乗算
+			typeAmbientMul		= 0x00000009,
+			// 光源タイプ番号マスク
+			typeMask			= 0x000000FF,
+			// シャドウマッピング有効フラグ
+			flagShadowMapping	= 0x80000000,
+		}
+
+		// 光源タイプ
+		LightType	typeLight ;
+		// 光源色 (RGB)
+		ARGB8		rgbColor = { 0xff, 0xff, 0xff } ;
+		// 光源輝度
+		float		fpBrightness = 1.0f ;
+		// 点光源減衰力 (1/r^x)
+		float		fpAttenuationPower = 1.0f ;
+		// 光源位置 (※ w 要素は使用しない)
+		Vector4		vecPosition ;
+		// 光源ベクトル (※ w 要素は使用しない)
+		Vector4		vecDirection ;
+		// 範囲角 cosθ
+		float		fpAngle = 0.0f ;
+		// ぼかし範囲 Δcosθ
+		// ぼかし開始角＝acos(fpGradation+fpAngle)
+		float		fpGradation = 0.0f ;
+		// 予約領域
+		uint32[2]	nReserved2 ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// シャドウマップ情報
+	//////////////////////////////////////////////////////////////////////////
+
+	struct	ShadowMapInfo
+	{
+		// 投影原点
+		Vector4	vLight ;
+		// 光線ベクトル
+		Vector4	vRay ;
+		// シャドウマップ画像原点座標
+		Vector4	vTarget ;
+		// シャドウマップのｘ基底ベクトル
+		Vector4	vAxisX ;
+		// シャドウマップのｙ基底ベクトル
+		Vector4	vAxisY ;
+		// z 演算誤差固定比率（1/4096 等）
+		float	fpFixErrorGap ;
+		// 角度に応じた z 演算誤差比率（1/512 等）
+		float	fpVarErrorGap ;
+		// 透視変換用パラメータ
+		float	zPersScreen ;
+		float	zPersScale ;
+		// シャドウマッピングの手前ｚ
+		float	zPersNear ;
+		// シャドウマッピングの奥ｚ
+		float	zPersFar ;
+		// 予約領域
+		uint32[4]	nReserved ;
+
+		// パラメータ設定
+		public native boolean setShadowMappingInfo
+			( RenderContext renderShadowMap,
+				const LightEntry* lightShadowMap,
+				const Vector3d* vCameraTarget,
+				const Size* sizeDepthMap,
+				double zScreen,
+				double zDistance, double zScale = 1.0,
+				double zNear = 100.0, double zFar = 10000.0,
+				double zErrorPrec = -12.0, double zErrorSubPrec = -10.0,
+				double degAngleVarX = 0.0, double degAngleVarY = 0.0 ) ;
+		// カメラ行列取得
+		public native void getCameraMatrix( Matrix3d* matCamera ) const ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// レンダリング・コンテキスト
+	//////////////////////////////////////////////////////////////////////////
+
+	class	RenderContext	extends PaintContext
+							implements RenderBuffer
+	{
+		// ステレオ立体視の視点
+		enum using StereoViewIndex
+		{
+			// ステレオ立体視の視点：自動（デフォルト）
+			stereoViewAuto = -1,
+			// ステレオ立体視の視点：右
+			stereoViewRight	= 0,
+			// ステレオ立体視の視点：左
+			stereoViewLeft	= 1,
+		}
+
+		// バッファ複製フラグ
+		enum using CopyBufferFlag<uint>
+		{
+			// バッファ複製フラグ：画像
+			copyBufferColor	= 0x0001,
+			// バッファ複製フラグ：ｚバッファ
+			copyBufferDepth	= 0x0002,
+		}
+
+		public abstract RenderContext() ;
+
+		// バッファ複製
+		// <desc>attachTargetImage で設定された画像を複製します。</desc>
+		public native boolean copyBufferFrom
+			( RenderContext renderSrc /* 複製元のレンダリング・コンテキスト */,
+				CopyBufferFlag flags = 0 /* バッファ複製フラグ */,
+				int xDst = 0 /* 複製先左上ｘ座標 */,
+				int yDst = 0 /* 複製先左上ｙ座標 */,
+				const ImageRect* pSrcRect = null /* 複製元矩形 */ ) ;
+
+		// マルチターゲット（2つ目以降）描画先設定
+		public native boolean attachMultiTargetImages( Image[] targets ) ;
+
+		// マルチターゲット（2つ目以降）取得
+		public native Image[] getMultiTargetImages() const ;
+
+		// 投影スクリーン座標設定
+		// <desc>vScreen.z != 0 の時の、座標 (x, y, z) の投影座標 (x', y'):<br/>
+		// x' = x * vScreen.z * zScale / z / fpPixelAspect + vScreen.x<br/>
+		// y' = y * vScreen.z * zScale / z + vScreen.y<br/>
+		// <br/>
+		// vScreen.z == 0 の時の、座標 (x, y, z) の投影座標 (x', y'):<br/>
+		// x' = x * zScale / fpPixelAspect + vScreen.x<br/>
+		// y' = y * zScale + vScreen.y</desc>
+		public native boolean setProjectionScreen
+			( const Vector3* vScreen /* スクリーン中心ｘｙ座標とｚ位置 */,
+				double zScale = 1.0 /* 投影スケール */,
+				double fpPixelAspect = 1.0 /* アスペクト比 */ ) ;
+
+		// 投影スクリーン座標取得
+		// <desc>※投影式については setProjectionScreen 参照</desc>
+		public native boolean getProjectionScreen
+			( Vector3* vScreen /* スクリーン中心ｘｙ座標とｚ位置を受け取る Vector3 */,
+				double* zScale /* 投影スケールを受け取る double 変数 */,
+				double* fpPixelAspect /* アスペクト比を受け取る double 変数 */ ) const ;
+
+		// カメラ設定
+		// <desc>カメラによる座標変換は matCamera * x - posCamera<br/>
+		// posCamera := matCamera * 視点座標</desc>
+		public native void setCamera
+			( const Matrix3d* matCamera /* カメラ回転行列 */,
+					const Vector3d* posCamera /* カメラ平行移動 */ ) ;
+
+		// 注視点と視点指定、上ベクトルによるカメラの設定
+		public native void setCameraAngleVector
+			( const Vector3d* posTarget /* 注視点座標 */,
+					const Vector3d* posView /* 視点座標 */,
+					const Vector3d* vAngleTop /* 上方向ベクトル */ ) ;
+
+		// カメラ取得
+		public native void getCamera
+			( Matrix3d* matCamera /* 回転行列を受け取る Matrix3d */,
+				Vector3d* posCamera /* カメラ平行移動成分を受け取る Vector3d */ ) const ;
+
+		// 球（ローカル座標）が視界に収まるか判定する
+		public native boolean isSphereIntoView
+			( const Vector3d* vPos /* 判定する球の中心座標 */,
+				double radius /* 判定する球の半径 */ ) const ;
+
+		// ステレオ立体視視差設定
+		public native void setParallax
+			( double xParallax, double zFocusRate, double xScreenDelta ) ;
+
+		// ステレオ立体視視差取得
+		public native double getParallax() const ;
+
+		// ｚクリップ範囲を設定
+		public native void setZClipRange( double zMin, double zMax ) ;
+
+		// 光源を設定
+		public native void setLightEntries
+			( const LightEntry* pLights, ulong countLight ) ;
+
+		// シャドウマップを設定
+		public native void setShadowMap
+			( uint32 idLight,
+				Image shadowMapDepth,
+				const ShadowMapInfo* infShadowMap,
+				Image shadowMapColor = null ) ;
+
+		// 大域疑似フォッグを設定
+		public native void setFog
+			( uint32 rgbFog, double zFogNear, double zFogFar ) ;
+
+		// 大域疑似フォッグを有効化
+		public native void enableFog( boolean fFog ) ;
+
+		// 選択中の立体視用バッファ取得
+		public native StereoViewIndex currentParallaxView() ;
+
+		// 立体視用バッファ選択
+		public native boolean selectParallaxView
+			( StereoViewIndex sviView /* 選択するステレオ立体視の視点 */ ) ;
+
+		// 3D レンダリング用バッファ・インターフェース開始
+		public native boolean begin3DRenderer( ulong flags = 0 ) ;
+
+		// 3D レンダリング用バッファ・インターフェース終了
+		public native boolean end3DRenderer( ulong flags = 0 ) ;
+
+		// ハードウェア描画オブジェクト取得
+		public native RenderDevice getRenderDeviceObject( ulong flags = 0 ) ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// ソフトウェア・レンダリング・デバイス
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SoftwareRenderDevice	extends RenderDevice
+	{
+		// SoftwareRenderDevice 構築
+		public native SoftwareRenderDevice() ;
+
+	}
+
+}
+
+

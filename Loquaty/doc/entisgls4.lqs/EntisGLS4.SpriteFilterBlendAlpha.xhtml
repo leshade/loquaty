@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SpriteFilterBlendAlpha</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SpriteFilterBlendAlpha</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SpriteFilterBlendAlpha ;</div>
+<div class="normal">
+Sprite αチャネル窓マスク描画フィルター<br/>※フィルターパラメータに応じてαチャネル窓をスライドして描画するフィルター<br/>※CPU処理専用<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SpriteFilter.xhtml">EntisGLS4.SpriteFilter</a>
+<div class="indent1"><a href="EntisGLS4.SpriteFilterBlendAlpha.xhtml">EntisGLS4.SpriteFilterBlendAlpha</a>
+</div></div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SpriteFilterBlendAlpha">SpriteFilterBlendAlpha</a><br/>
+	<a href="#virtual_attachAlphaImage">attachAlphaImage</a><br/>
+	<a href="#virtual_loadAlphaImage">loadAlphaImage</a><br/>
+	<a href="#virtual_setAlphaParameter">setAlphaParameter</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SpriteFilterBlendAlpha"/>
+<div class="headline">SpriteFilterBlendAlpha</div>
+<div class="usage">public native SpriteFilterBlendAlpha( )</div>
+<div class="normal">
+SpriteFilterBlendAlpha 構築<br/></div>
+<br/>
+
+<a name="virtual_attachAlphaImage"/>
+<div class="headline">attachAlphaImage</div>
+<div class="usage">public native void attachAlphaImage( EntisGLS4.Image image )</div>
+<div class="normal">
+画像を関連付ける<br/></div>
+<br/>
+
+<a name="virtual_loadAlphaImage"/>
+<div class="headline">loadAlphaImage</div>
+<div class="usage">public native boolean loadAlphaImage( String path )</div>
+<div class="normal">
+画像ファイル読み込み<br/></div>
+<br/>
+
+<a name="virtual_setAlphaParameter"/>
+<div class="headline">setAlphaParameter</div>
+<div class="usage">public native void setAlphaParameter( int fxAlphaCoefficient = 0x100 )</div>
+<div class="normal">
+パラメータ設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">fxAlphaCoefficient</div>
+<div class="param_desc">
+x256 された固定小数点でα係数</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

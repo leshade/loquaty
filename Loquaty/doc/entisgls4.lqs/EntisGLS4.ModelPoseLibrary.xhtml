@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ModelPoseLibrary</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ModelPoseLibrary</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class ModelPoseLibrary ;</div>
+<div class="normal">
+モデルのポーズ・ライブラリ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.ModelPoseLibrary.xhtml">EntisGLS4.ModelPoseLibrary</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_ModelPoseLibrary">ModelPoseLibrary</a><br/>
+	<a href="#virtual_addPoseAs">addPoseAs</a><br/>
+	<a href="#virtual_addReferenceLibrary">addReferenceLibrary</a><br/>
+	<a href="#virtual_detachAllReferenceLibraries">detachAllReferenceLibraries</a><br/>
+	<a href="#virtual_detachReferenceLibraryAt">detachReferenceLibraryAt</a><br/>
+	<a href="#virtual_detachReferenceLibraryOf">detachReferenceLibraryOf</a><br/>
+	<a href="#virtual_findPose">findPose</a><br/>
+	<a href="#virtual_getParentLibrary">getParentLibrary</a><br/>
+	<a href="#virtual_getPoseAs">getPoseAs</a><br/>
+	<a href="#virtual_getPoseAt">getPoseAt</a><br/>
+	<a href="#virtual_getPoseCount">getPoseCount</a><br/>
+	<a href="#virtual_getPoseIdentityAt">getPoseIdentityAt</a><br/>
+	<a href="#virtual_getPoseIdentityOf">getPoseIdentityOf</a><br/>
+	<a href="#virtual_getReferenceLibraryAt">getReferenceLibraryAt</a><br/>
+	<a href="#virtual_getReferenceLibraryCount">getReferenceLibraryCount</a><br/>
+	<a href="#virtual_loadLibrary">loadLibrary</a><br/>
+	<a href="#virtual_loadLibraryXML">loadLibraryXML</a><br/>
+	<a href="#virtual_readLibrary">readLibrary</a><br/>
+	<a href="#virtual_removeAllPoses">removeAllPoses</a><br/>
+	<a href="#virtual_removePoseAs">removePoseAs</a><br/>
+	<a href="#virtual_saveLibrary">saveLibrary</a><br/>
+	<a href="#virtual_saveLibraryXML">saveLibraryXML</a><br/>
+	<a href="#virtual_setParentLibrary">setParentLibrary</a><br/>
+	<a href="#virtual_writeLibrary">writeLibrary</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_ModelPoseLibrary"/>
+<div class="headline">ModelPoseLibrary</div>
+<div class="usage">public native ModelPoseLibrary( )</div>
+<div class="normal">
+ModelPoseLibrary 構築<br/></div>
+<br/>
+
+<a name="virtual_addPoseAs"/>
+<div class="headline">addPoseAs</div>
+<div class="usage">public native void addPoseAs( String id, EntisGLS4.ModelPose pose )</div>
+<div class="normal">
+ポーズ追加</div>
+<br/>
+<div class="indent1">
+pose は ModelPoseLibrary で参照を保持しないので呼び出し元で保持しておく必要があります。</div><br/>
+<br/>
+
+<a name="virtual_addReferenceLibrary"/>
+<div class="headline">addReferenceLibrary</div>
+<div class="usage">public native ulong addReferenceLibrary( EntisGLS4.ModelPoseLibrary lib )</div>
+<div class="normal">
+参照ライブラリを追加する<br/></div>
+<br/>
+
+<a name="virtual_detachAllReferenceLibraries"/>
+<div class="headline">detachAllReferenceLibraries</div>
+<div class="usage">public native void detachAllReferenceLibraries( )</div>
+<div class="normal">
+全ての参照ライブラリを解除する<br/></div>
+<br/>
+
+<a name="virtual_detachReferenceLibraryAt"/>
+<div class="headline">detachReferenceLibraryAt</div>
+<div class="usage">public native void detachReferenceLibraryAt( ulong index )</div>
+<div class="normal">
+参照ライブラリを解除する<br/></div>
+<br/>
+
+<a name="virtual_detachReferenceLibraryOf"/>
+<div class="headline">detachReferenceLibraryOf</div>
+<div class="usage">public native void detachReferenceLibraryOf( EntisGLS4.ModelPoseLibrary lib )</div>
+<div class="normal">
+参照ライブラリを解除する<br/></div>
+<br/>
+
+<a name="virtual_findPose"/>
+<div class="headline">findPose</div>
+<div class="usage">public native long findPose( EntisGLS4.ModelPose pose ) const</div>
+<div class="normal">
+ポーズ検索<br/></div>
+<br/>
+
+<a name="virtual_getParentLibrary"/>
+<div class="headline">getParentLibrary</div>
+<div class="usage">public native EntisGLS4.ModelPoseLibrary getParentLibrary( ) const</div>
+<div class="normal">
+親ライブラリを取得する<br/></div>
+<br/>
+
+<a name="virtual_getPoseAs"/>
+<div class="headline">getPoseAs</div>
+<div class="usage">public native EntisGLS4.ModelPose getPoseAs( String id, boolean onlyLocal = false ) const</div>
+<div class="normal">
+ポーズ取得<br/></div>
+<br/>
+
+<a name="virtual_getPoseAt"/>
+<div class="headline">getPoseAt</div>
+<div class="usage">public native EntisGLS4.ModelPose getPoseAt( ulong index ) const</div>
+<div class="normal">
+ポーズ取得<br/></div>
+<br/>
+
+<a name="virtual_getPoseCount"/>
+<div class="headline">getPoseCount</div>
+<div class="usage">public native ulong getPoseCount( ) const</div>
+<div class="normal">
+ポーズ数取得<br/></div>
+<br/>
+
+<a name="virtual_getPoseIdentityAt"/>
+<div class="headline">getPoseIdentityAt</div>
+<div class="usage">public native String getPoseIdentityAt( ulong index ) const</div>
+<div class="normal">
+登録名取得<br/></div>
+<br/>
+
+<a name="virtual_getPoseIdentityOf"/>
+<div class="headline">getPoseIdentityOf</div>
+<div class="usage">public native String getPoseIdentityOf( EntisGLS4.ModelPose pose, boolean onlyLocal = false ) const</div>
+<div class="normal">
+登録名取得<br/></div>
+<br/>
+
+<a name="virtual_getReferenceLibraryAt"/>
+<div class="headline">getReferenceLibraryAt</div>
+<div class="usage">public native EntisGLS4.ModelPoseLibrary getReferenceLibraryAt( ulong index ) const</div>
+<div class="normal">
+参照ライブラリを取得する<br/></div>
+<br/>
+
+<a name="virtual_getReferenceLibraryCount"/>
+<div class="headline">getReferenceLibraryCount</div>
+<div class="usage">public native ulong getReferenceLibraryCount( ) const</div>
+<div class="normal">
+参照ライブラリ数を取得する<br/></div>
+<br/>
+
+<a name="virtual_loadLibrary"/>
+<div class="headline">loadLibrary</div>
+<div class="usage">public native boolean loadLibrary( String file )</div>
+<div class="normal">
+ポーズファイル (.psfx) 読み込み<br/></div>
+<br/>
+
+<a name="virtual_loadLibraryXML"/>
+<div class="headline">loadLibraryXML</div>
+<div class="usage">public native boolean loadLibraryXML( String file )</div>
+<div class="normal">
+ポーズファイル (.xmlpsf) 読み込み<br/></div>
+<br/>
+
+<a name="virtual_readLibrary"/>
+<div class="headline">readLibrary</div>
+<div class="usage">public native boolean readLibrary( File file )</div>
+<div class="normal">
+ポーズファイル (.psfx) 読み込み<br/></div>
+<br/>
+
+<a name="virtual_removeAllPoses"/>
+<div class="headline">removeAllPoses</div>
+<div class="usage">public native void removeAllPoses( )</div>
+<div class="normal">
+全ポーズ削除<br/></div>
+<br/>
+
+<a name="virtual_removePoseAs"/>
+<div class="headline">removePoseAs</div>
+<div class="usage">public native void removePoseAs( String id )</div>
+<div class="normal">
+ポーズ削除<br/></div>
+<br/>
+
+<a name="virtual_saveLibrary"/>
+<div class="headline">saveLibrary</div>
+<div class="usage">public native boolean saveLibrary( String file )</div>
+<div class="normal">
+ポーズファイル (.psfx) 書き出し<br/></div>
+<br/>
+
+<a name="virtual_saveLibraryXML"/>
+<div class="headline">saveLibraryXML</div>
+<div class="usage">public native boolean saveLibraryXML( String file )</div>
+<div class="normal">
+ポーズファイル (.xmlpsf) 書き出し<br/></div>
+<br/>
+
+<a name="virtual_setParentLibrary"/>
+<div class="headline">setParentLibrary</div>
+<div class="usage">public native void setParentLibrary( EntisGLS4.ModelPoseLibrary lib )</div>
+<div class="normal">
+親ライブラリを設定する<br/></div>
+<br/>
+
+<a name="virtual_writeLibrary"/>
+<div class="headline">writeLibrary</div>
+<div class="usage">public native boolean writeLibrary( File file )</div>
+<div class="normal">
+ポーズファイル (.psfx) 書き出し<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,2095 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+	<imports/>
+	<assets>
+		<script_loquaty id="fly_through.lqs" path="" src="scripts\fly_through.lqs"/>
+		<script_loquaty id="game_status.lqs" path="" src="scripts\game_status.lqs"/>
+		<material_lib id="materials.xmlsmt" path="" src="materials.xmlsmt"/>
+		<model id="model_box" path="">
+			<options proc_id="comp_baker">
+				<ref_composition value="Box"/>
+				<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+				<zoom value="1. 1. 1."/>
+				<center value="0. 0. 0."/>
+				<all_items value="false"/>
+				<all_spaces value="false"/>
+				<optimize_bone value="true"/>
+				<without_bone value="false"/>
+				<merge_by_material_id value="true"/>
+				<merge_mesh value="true"/>
+				<merge_by_mesh_id value="true"/>
+				<merge_material value="false"/>
+				<animation_track value="false"/>
+			</options>
+		</model>
+		<model id="model_checkpoint" path="">
+			<options proc_id="comp_baker">
+				<ref_composition value="CheckPoint"/>
+				<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+				<zoom value="1. 1. 1."/>
+				<center value="0. 0. 0."/>
+				<all_items value="false"/>
+				<all_spaces value="false"/>
+				<optimize_bone value="true"/>
+				<without_bone value="false"/>
+				<merge_by_material_id value="true"/>
+				<merge_mesh value="true"/>
+				<merge_by_mesh_id value="true"/>
+				<merge_material value="false"/>
+				<animation_track value="false"/>
+			</options>
+		</model>
+		<model id="model_plane" path="">
+			<options proc_id="comp_baker">
+				<ref_composition value="Plane"/>
+				<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+				<zoom value="1. 1. 1."/>
+				<center value="0. 0. 0."/>
+				<all_items value="false"/>
+				<all_spaces value="false"/>
+				<optimize_bone value="true"/>
+				<without_bone value="false"/>
+				<merge_by_material_id value="true"/>
+				<merge_mesh value="true"/>
+				<merge_by_mesh_id value="true"/>
+				<merge_material value="false"/>
+				<animation_track value="false"/>
+			</options>
+		</model>
+		<image id="perlin_image" path="">
+			<options proc_id="perlin_image">
+				<width value="128"/>
+				<height value="128"/>
+				<depth value="128"/>
+				<random_seek value="3"/>
+				<low_level value="0."/>
+				<high_level value="1."/>
+				<color_map0 value="0. 0. 0."/>
+				<alpha_fill0 value="1."/>
+				<color_map1 value="85. 85. 85."/>
+				<color_pos1 value="0.333333313"/>
+				<color_map2 value="170. 170. 170."/>
+				<color_pos2 value="0.666666627"/>
+				<color_map3 value="255. 255. 255."/>
+				<alpha_fill3 value="1."/>
+			</options>
+		</image>
+		<image id="perlin_image1" path="">
+			<options proc_id="perlin_image">
+				<width value="256"/>
+				<height value="256"/>
+				<depth value="1"/>
+				<random_seek value="2"/>
+				<low_level value="0."/>
+				<high_level value="1."/>
+				<color_map0 value="0. 0. 0."/>
+				<alpha_fill0 value="1."/>
+				<color_map1 value="85. 85. 85."/>
+				<color_pos1 value="0.333333313"/>
+				<color_map2 value="170. 170. 170."/>
+				<color_pos2 value="0.666666627"/>
+				<color_map3 value="255. 255. 255."/>
+				<alpha_fill3 value="1."/>
+			</options>
+		</image>
+		<script_loquaty id="player.lqs" path="" src="scripts\player.lqs"/>
+		<script_loquaty id="ray_march_adjuster.lqs" path=""
+		   src="scripts\ray_march_adjuster.lqs"/>
+		<audio id="se_bomb.mio" path="" src="sounds\se_bomb.mio">
+			<options load="static" volume_line="5"/>
+		</audio>
+		<audio id="se_check.mio" path="" src="sounds\se_check.mio">
+			<options load="static" volume_line="5"/>
+		</audio>
+		<shader_def id="sky_march.shddsc" path="" src="shaders\sky_march.shddsc"/>
+	</assets>
+	<styles/>
+	<compositions>
+		<composition back_color="0" border_color="0" border_thickness_a="0."
+		   border_thickness_b="0." default_camera="camera" enable_fog="false"
+		   fill_back_color="true" fog_color="FFFFFF" fog_far="5000." fog_near="0."
+		   frame_scale="1" frames_per_sec="60" id="AvoidanceFlight"
+		   pars_center_x="640." pars_center_y="360." perspective_far="10000."
+		   perspective_near="1." projection_pixel_aspect="1." projection_zoom="1."
+		   screen_height="720" screen_width="1280" screen_z="834.064208984"
+		   total_frames="120" visible_far_distance="5000."
+		   visible_near_distance="100.">
+			<space id="AvoidanceFlight">
+				<color_mul value="255. 255. 255."/>
+				<color_add value="0. 0. 0."/>
+				<force_toon value="false"/>
+				<force_border value="false"/>
+				<camera_space value="false"/>
+				<layered_refl_map value="default"/>
+				<layered_refr_map value="default"/>
+				<screen_width value="1280"/>
+				<screen_height value="720"/>
+				<field_of_view value="75."/>
+				<orthogonal value="false"/>
+				<pixel_zoom value="1."/>
+				<pixel_aspect value="1."/>
+				<perspective_near_z value="1."/>
+				<perspective_far_z value="10000."/>
+				<frame_total_length value="120"/>
+				<frame_per_sec value="60."/>
+				<default_camera value="camera"/>
+				<use_back_color value="true"/>
+				<back_color value="0. 0. 0."/>
+				<back_alpha value="0."/>
+				<use_fog value="false"/>
+				<fog_color value="255. 255. 255."/>
+				<fog_near_z value="0."/>
+				<fog_far_z value="5000."/>
+				<border_color value="0. 0. 0."/>
+				<border_thickness_a value="0."/>
+				<border_thickness_b value="0."/>
+				<visible_near value="100."/>
+				<visible_far value="5000."/>
+				<controllers/>
+				<children>
+					<dynamic_camera id="camera">
+						<position value="0. -7.5 -29.5"/>
+						<global_space value="false"/>
+						<render_priority value="4"/>
+						<camera_target value="0. 0.5 2."/>
+						<camera_top value="0. -1. 0."/>
+						<camera_hfov value="90."/>
+						<force_camera_fov value="false"/>
+						<camera_left_ear value="-1. 0. 1."/>
+						<camera_right_ear value="1. 0. 1."/>
+						<camera_ear_angle value="180."/>
+						<camera_back_volume value="0."/>
+						<controllers/>
+					</dynamic_camera>
+					<light id="light">
+						<position value="0. 0. 0."/>
+						<visible value="true"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<render_priority value="4"/>
+						<light_type value="vector"/>
+						<light_color value="255. 255. 255."/>
+						<light_brightness value="0.800000012"/>
+						<light_direction value="1. 1. 1."/>
+						<light_shadowmap value="true"/>
+						<shadowmap_width value="2048"/>
+						<shadowmap_height value="2048"/>
+						<shadowmap_pixel_density value="0.100000001"/>
+						<shadowmap_distance value="10."/>
+						<shadowmap_adj_by_camera value="true"/>
+						<shadowmap_camera_std_distance value="10."/>
+						<shadowmap_pers_near value="-500."/>
+						<shadowmap_pers_far value="500."/>
+						<shadowmap_error_precision value="-12."/>
+						<shadowmap_error_sub_precision value="-12."/>
+						<shadowmap_filter_gauss value="0."/>
+						<shadowmap_cascade_count value="1"/>
+						<shadowmap_cascade_ratio value="3."/>
+						<shadowmap_cascade_length value="2."/>
+						<shadowmap_cascade_length_offset value="0."/>
+						<shadowmap_cascade_depth value="1."/>
+						<shadowmap_cascade_distance value="0."/>
+						<controllers/>
+					</light>
+					<light id="ambient">
+						<position value="0. 0. 0."/>
+						<visible value="true"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<render_priority value="4"/>
+						<light_type value="ambient"/>
+						<light_color value="135. 135. 140."/>
+						<light_brightness value="1."/>
+						<controllers/>
+					</light>
+					<model id="player">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="dynamic_item2"/>
+						<render_priority value="4"/>
+						<model value="model_plane"/>
+						<collider_model value=""/>
+						<collider_flag value="3"/>
+						<controllers>
+							<avfl_player id="avfl_player">
+								<m_camera value="camera"/>
+								<m_itemMeshCourse value="course"/>
+								<m_itemBox value="Boxes"/>
+								<m_itemCheckPoint value="CheckPoints"/>
+								<m_itemCheckSE value="sound_Check"/>
+								<m_itemBombSE value="sound_Bomb"/>
+								<m_itemPassing value="Passing"/>
+								<m_itemBomb value="Bomb"/>
+								<m_meshCourse value=""/>
+							</avfl_player>
+						</controllers>
+					</model>
+					<mesh_buffer id="course">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<use_collision value="true"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="dynamic_item2"/>
+						<render_priority value="4"/>
+						<dynamic_mesh value="dynamic"/>
+						<material_count value="2"/>
+						<material value="material_course"/>
+						<mesh_data value="AAIAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="/>
+						<material1 value="material_line"/>
+						<mesh_data1 value="AAIAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="/>
+						<enable_collider value="true"/>
+						<collider_classes value="5"/>
+						<collision_alpha value="255"/>
+						<visible_mask value="15"/>
+						<collider_mask value="15"/>
+						<enable_instancing value="false"/>
+						<instancing value=""/>
+						<instance_rotate value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<instance_zoom value="1. 1. 1."/>
+						<sorting_method value="no_sorting"/>
+						<culling_method value="by_frustum"/>
+						<culling_near_z value="0."/>
+						<culling_far_z value="100000."/>
+						<culling_offset value="20."/>
+						<culling_angle_gap value="5."/>
+						<controllers/>
+					</mesh_buffer>
+					<multi_model id="Boxes">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<use_collision value="true"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="dynamic_item1"/>
+						<render_priority value="4"/>
+						<model value="model_box"/>
+						<collision value=""/>
+						<collider_flag value="5"/>
+						<marker_collision value="collision"/>
+						<dynamic_collision value="false"/>
+						<pose value=""/>
+						<border_settings value="false"/>
+						<border_color value="0. 0. 0."/>
+						<border_thickness_a value="0."/>
+						<border_thickness_b value="0."/>
+						<instancing value="AAEAAAAAAAAEAAAA938AAAAAAAA="/>
+						<instance_rotate value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<instance_zoom value="1. 1. 1."/>
+						<collision_alpha value="255"/>
+						<force_face_method value="no_operation"/>
+						<sorting_method value="no_sorting"/>
+						<culling_method value="no_culling"/>
+						<culling_near_z value="0."/>
+						<culling_far_z value="100000."/>
+						<culling_offset value="0."/>
+						<culling_angle_gap value="0."/>
+						<controllers/>
+					</multi_model>
+					<multi_model id="CheckPoints">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<use_collision value="true"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="dynamic_item3"/>
+						<render_priority value="4"/>
+						<model value="model_checkpoint"/>
+						<collision value=""/>
+						<collider_flag value="256"/>
+						<marker_collision value="collision"/>
+						<dynamic_collision value="false"/>
+						<pose value=""/>
+						<border_settings value="false"/>
+						<border_color value="0. 0. 0."/>
+						<border_thickness_a value="0."/>
+						<border_thickness_b value="0."/>
+						<instancing value="AAEAAAAAAAAEAAAA938AAAAAAAA="/>
+						<instance_rotate value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<instance_zoom value="1. 1. 1."/>
+						<collision_alpha value="255"/>
+						<force_face_method value="no_operation"/>
+						<sorting_method value="no_sorting"/>
+						<culling_method value="by_frustum"/>
+						<culling_near_z value="0."/>
+						<culling_far_z value="100000."/>
+						<culling_offset value="20."/>
+						<culling_angle_gap value="5."/>
+						<controllers/>
+					</multi_model>
+					<sub_composition id="Bomb">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<render_priority value="4"/>
+						<ref_composition value="Bomb"/>
+						<comp_visible value="false"/>
+						<pool_instance value="true"/>
+						<auto_stop value="true"/>
+						<auto_release value="true"/>
+						<controllers/>
+					</sub_composition>
+					<sub_composition id="Passing">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<render_priority value="4"/>
+						<ref_composition value="Passing"/>
+						<comp_visible value="false"/>
+						<pool_instance value="true"/>
+						<auto_stop value="true"/>
+						<auto_release value="true"/>
+						<controllers/>
+					</sub_composition>
+					<sound_item id="sound_Check">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<item_class value="static_item1"/>
+						<render_priority value="4"/>
+						<sound value="se_check.mio"/>
+						<volume value="1."/>
+						<volume_line value="default"/>
+						<loop value="false"/>
+						<play value="false"/>
+						<seek value="0."/>
+						<max_instance value="4"/>
+						<fade_volume value="false"/>
+						<env_volume value="false"/>
+						<attenuation_power value="1."/>
+						<attenuation_distance value="50."/>
+						<directional value="false"/>
+						<controllers/>
+					</sound_item>
+					<sound_item id="sound_Bomb">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<item_class value="static_item1"/>
+						<render_priority value="4"/>
+						<sound value="se_bomb.mio"/>
+						<volume value="1."/>
+						<volume_line value="default"/>
+						<loop value="false"/>
+						<play value="false"/>
+						<seek value="0."/>
+						<max_instance value="4"/>
+						<fade_volume value="false"/>
+						<env_volume value="false"/>
+						<attenuation_power value="1."/>
+						<attenuation_distance value="50."/>
+						<directional value="false"/>
+						<controllers/>
+					</sound_item>
+					<glow_effector id="glow_effector">
+						<visible value="true"/>
+						<camera_space value="false"/>
+						<render_priority value="4"/>
+						<effector_class value="below"/>
+						<effector_priority value="20"/>
+						<glow_source value="emission"/>
+						<glow_gauss value="12."/>
+						<gauss_sampling_scale value="2."/>
+						<glow_brightness value="1."/>
+						<effect_alpha value="1."/>
+						<controllers/>
+					</glow_effector>
+					<mesh_buffer id="sky_sphere">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="true"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="backscape"/>
+						<render_priority value="4"/>
+						<dynamic_mesh value="static"/>
+						<material_count value="1"/>
+						<material value="material_skybox"/>
+						<mesh_data value="AAIAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="/>
+						<enable_collider value="false"/>
+						<collider_classes value="1"/>
+						<collision_alpha value="255"/>
+						<visible_mask value="15"/>
+						<collider_mask value="15"/>
+						<enable_instancing value="false"/>
+						<instancing value=""/>
+						<instance_rotate value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<instance_zoom value="1. 1. 1."/>
+						<sorting_method value="no_sorting"/>
+						<culling_method value="no_culling"/>
+						<culling_near_z value="0."/>
+						<culling_far_z value="10000."/>
+						<culling_offset value="0."/>
+						<culling_angle_gap value="0."/>
+						<controllers>
+							<simple_mesh_builder id="standard_mesh">
+								<shape_type value="sphere"/>
+								<back_face value="true"/>
+								<position value="0. 0. 0."/>
+								<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+								<zoom value="1. 1. 1."/>
+								<radius value="1000."/>
+								<horz_div value="16"/>
+								<vert_div value="16"/>
+								<start_latitude value="0."/>
+								<range_latitude value="360."/>
+								<start_longitude value="0."/>
+								<range_longitude value="180."/>
+								<uv_atlas value=""/>
+								<uv_scale value="1. 1."/>
+								<uv_offset value="0. 0."/>
+								<color_mul value="255. 255. 255."/>
+								<color_add value="0. 0. 0."/>
+								<alpha_master value="1."/>
+								<alpha_center value="1."/>
+								<alpha_top value="1."/>
+								<alpha_bottom value="1."/>
+								<alpha_left value="1."/>
+								<alpha_right value="1."/>
+							</simple_mesh_builder>
+							<avfl_ray_adjuster id="avfl_ray_adjuster"/>
+							<user_shader id="user_shader1">
+								<shader_id value="sky_march.shddsc"/>
+								<target_class value="allways"/>
+								<ufid_u_fpAttenuation value="0.01"/>
+								<ufid_u_fpUnitDistance value="270.973"/>
+								<ufid_u_rgbScattering value="101. 119. 255."/>
+								<ufid_u_fpScattering value="0."/>
+								<ufid_u_rgbBackgroundUp value="0. 73. 196."/>
+								<ufid_u_rgbBackgroundUnder value="0. 47.8125 127.5"/>
+								<ufid_u_fpAirThickness value="1000."/>
+								<ufid_u_texBackScape value=""/>
+								<ufid_u_fpBackScape value="0."/>
+								<ufid_u_fpBackScapeRot value="0."/>
+								<ufid_u_texCloud value="perlin_image"/>
+								<ufid_u_vCloudTexOffset value="0. 0. 0."/>
+								<ufid_u_fpCloudScale value="5187."/>
+								<ufid_u_fpCloudScale2 value="3.8015"/>
+								<ufid_u_yCloudAltitude value="1592."/>
+								<ufid_u_hCloudThickness value="7345."/>
+								<ufid_u_fpCloudLowFade value="0.255"/>
+								<ufid_u_fpCloudTopFade value="0.3"/>
+								<ufid_u_fpDensityBais value="0.57"/>
+								<ufid_u_rgbCloud value="255. 255. 255."/>
+								<ufid_u_rgbCloudShade value="119. 148. 191."/>
+								<ufid_u_fpCloudFade value="30000."/>
+								<ufid_u_vTerrainScale value="4000. 300. 4000."/>
+								<ufid_u_vTerrainOffset value="0. 600. 0."/>
+								<ufid_u_texTerrain value="perlin_image1"/>
+								<ufid_u_rgbTerrainBase value="57. 117. 109."/>
+								<ufid_u_rgbTerrainBase2 value="176. 178. 137."/>
+								<ufid_u_fpTerrainLowBand value="0.04"/>
+								<ufid_u_rgbTerrainBase3 value="66. 93. 144."/>
+								<ufid_u_fpTerrainHighBand value="0.396"/>
+								<ufid_u_fpTerrainFogZ value="100000."/>
+								<ufid_u_fpCloudShadow value="0.617"/>
+								<ufid_u_fpAmbient value="0.201"/>
+								<ufid_u_flagWaterSurface value="true"/>
+								<ufid_u_fpTideLevel value="431."/>
+								<ufid_u_rgbWaterColor value="13. 14. 40."/>
+								<ufid_u_fpWaterReflect value="0.624"/>
+								<ufid_u_vLightDir value="0.259291748 0.854444269 0.450214149"/>
+								<ufid_u_fpBrightness value="1."/>
+								<ufid_u_nRayCloud value="200"/>
+								<ufid_u_nRayTerrain value="100"/>
+								<ufid_u_rgbBackground value="0. 47.8125 127.5"/>
+								<ufid_m_fpCloudScale value="10000."/>
+								<ufid_m_yCloudAltitude value="2000."/>
+								<ufid_m_hCloudThickness value="8000."/>
+								<ufid_m_fpDensityBais value="0.611"/>
+							</user_shader>
+						</controllers>
+					</mesh_buffer>
+				</children>
+				<edit_status bake2model_xflags="2C4" camera_pos_x="0.296014089"
+				   camera_pos_y="-6.269907981" camera_pos_z="-12.759475275"
+				   camera_target_x="-0.508153292" camera_target_y="-2.388601163"
+				   camera_target_z="4.834753628" camera_top_x="0.072579856"
+				   camera_top_y="-0.996938572" camera_topt_z="-0.029080038"
+				   current_frame="0" editor_camera="" end_view_frame="120"
+				   start_view_frame="0" view3d_hidden_edge="1" view3d_mesh_edge="1"
+				   view3d_multisampling="1" view3d_multithreading="1"
+				   view_center_x="-30.545682378" view_center_y="11.327908814"
+				   view_center_z="148.286528544" view_scale="0.421696499"
+				   wireframe_collision="0">
+					<state child="1" ctrl="1" item_id="&lt;root&gt;" tree="1"/>
+					<state child="1" ctrl="1" item_id="camera" tree="1"/>
+					<state child="1" ctrl="1" item_id="course" tree="1"/>
+					<state child="1" ctrl="1" item_id="player" tree="1"/>
+					<state child="1" ctrl="1" item_id="sky_sphere" tree="1"/>
+				</edit_status>
+			</space>
+		</composition>
+		<composition back_color="0" border_color="0" border_thickness_a="0."
+		   border_thickness_b="0." default_camera="" enable_fog="false"
+		   fill_back_color="true" fog_color="0" fog_far="10000." fog_near="0."
+		   frame_scale="1" frames_per_sec="60" id="Bomb" pars_center_x="640."
+		   pars_center_y="360." perspective_far="1000."
+		   perspective_near="0.099999994" projection_pixel_aspect="1."
+		   projection_zoom="1." screen_height="720" screen_width="1280"
+		   screen_z="1108.512573242" total_frames="30" visible_far_distance="5000."
+		   visible_near_distance="100.">
+			<space id="Bomb">
+				<color_mul value="255. 255. 255."/>
+				<color_add value="0. 0. 0."/>
+				<force_toon value="false"/>
+				<force_border value="false"/>
+				<camera_space value="false"/>
+				<layered_refl_map value="default"/>
+				<layered_refr_map value="default"/>
+				<screen_width value="1280"/>
+				<screen_height value="720"/>
+				<field_of_view value="59.999997475"/>
+				<orthogonal value="false"/>
+				<pixel_zoom value="1."/>
+				<pixel_aspect value="1."/>
+				<perspective_near_z value="0.099999994"/>
+				<perspective_far_z value="1000."/>
+				<frame_total_length value="30"/>
+				<frame_per_sec value="60."/>
+				<default_camera value=""/>
+				<use_back_color value="true"/>
+				<back_color value="0. 0. 0."/>
+				<back_alpha value="0."/>
+				<use_fog value="false"/>
+				<fog_color value="0. 0. 0."/>
+				<fog_near_z value="0."/>
+				<fog_far_z value="10000."/>
+				<border_color value="0. 0. 0."/>
+				<border_thickness_a value="0."/>
+				<border_thickness_b value="0."/>
+				<visible_near value="100."/>
+				<visible_far value="5000."/>
+				<controllers/>
+				<children>
+					<space id="@local">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<free_toon value="false"/>
+						<free_border value="false"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<space_ignore value="false"/>
+						<layered_space value="false"/>
+						<layered_priority value="0"/>
+						<layered_param value="0."/>
+						<layered_refl_map value="default"/>
+						<layered_refr_map value="default"/>
+						<layered_field value="false"/>
+						<layered_static_item1 value="false"/>
+						<layered_static_item2 value="false"/>
+						<layered_dynamic_item1 value="false"/>
+						<layered_dynamic_item2 value="false"/>
+						<layered_dynamic_item3 value="false"/>
+						<layered_effect_item value="false"/>
+						<controllers/>
+						<children>
+							<dynamic_camera id="camera">
+								<position value="-8.5 -13. -70.5"/>
+								<global_space value="false"/>
+								<render_priority value="4"/>
+								<camera_target value="0. 0. 0."/>
+								<camera_top value="0. -1. 0."/>
+								<camera_hfov value="90."/>
+								<force_camera_fov value="false"/>
+								<camera_left_ear value="-1. 0. 1."/>
+								<camera_right_ear value="1. 0. 1."/>
+								<camera_ear_angle value="180."/>
+								<camera_back_volume value="0."/>
+								<controllers/>
+							</dynamic_camera>
+							<light id="light">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="vector"/>
+								<light_color value="255. 255. 255."/>
+								<light_brightness value="1."/>
+								<light_direction value="1. 1. 1."/>
+								<light_shadowmap value="true"/>
+								<shadowmap_width value="2048"/>
+								<shadowmap_height value="2048"/>
+								<shadowmap_pixel_density value="0.004882813"/>
+								<shadowmap_distance value="10."/>
+								<shadowmap_adj_by_camera value="true"/>
+								<shadowmap_camera_std_distance value="10."/>
+								<shadowmap_pers_near value="0.099999994"/>
+								<shadowmap_pers_far value="100."/>
+								<shadowmap_error_precision value="-12."/>
+								<shadowmap_error_sub_precision value="-12."/>
+								<shadowmap_filter_gauss value="0."/>
+								<shadowmap_cascade_count value="0"/>
+								<shadowmap_cascade_ratio value="3."/>
+								<shadowmap_cascade_length value="2."/>
+								<shadowmap_cascade_length_offset value="0."/>
+								<shadowmap_cascade_depth value="1."/>
+								<shadowmap_cascade_distance value="0."/>
+								<controllers/>
+							</light>
+							<light id="ambient">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="ambient"/>
+								<light_color value="128. 128. 128."/>
+								<light_brightness value="1."/>
+								<controllers/>
+							</light>
+						</children>
+					</space>
+					<mesh_buffer id="mesh_buffer">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="effect_item"/>
+						<render_priority value="4"/>
+						<dynamic_mesh value="dynamic"/>
+						<material_count value="1"/>
+						<material value="material_light"/>
+						<mesh_data value="AAIAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="/>
+						<enable_collider value="false"/>
+						<collider_classes value="1"/>
+						<collision_alpha value="255"/>
+						<visible_mask value="15"/>
+						<collider_mask value="15"/>
+						<enable_instancing value="false"/>
+						<instancing value=""/>
+						<instance_rotate value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<instance_zoom value="1. 1. 1."/>
+						<sorting_method value="no_sorting"/>
+						<culling_method value="no_culling"/>
+						<culling_near_z value="0."/>
+						<culling_far_z value="10000."/>
+						<culling_offset value="0."/>
+						<culling_angle_gap value="0."/>
+						<controllers>
+							<simple_mesh_builder id="standard_mesh">
+								<shape_type value="sphere"/>
+								<back_face value="false"/>
+								<position value="0. 0. 0."/>
+								<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+								<zoom value="1. 1. 1."/>
+								<radius value="5.">
+									<sequencer interpolation="linear">
+										<default value="5."/>
+										<keyframe flags="" frame="0" in_speed="1." out_speed="1." value="5."/>
+										<keyframe flags="" frame="15" in_speed="1." out_speed="1."
+										   value="15."/>
+									</sequencer>
+								</radius>
+								<horz_div value="16"/>
+								<vert_div value="16"/>
+								<start_latitude value="0."/>
+								<range_latitude value="360."/>
+								<start_longitude value="0."/>
+								<range_longitude value="180."/>
+								<uv_atlas value=""/>
+								<uv_scale value="1. 1."/>
+								<uv_offset value="0. 0."/>
+								<color_mul value="193. 85. 42."/>
+								<color_add value="0. 0. 0."/>
+								<alpha_master value="1.">
+									<sequencer interpolation="linear">
+										<default value="1."/>
+										<keyframe flags="" frame="0" in_speed="1." out_speed="1." value="1."/>
+										<keyframe flags="" frame="15" in_speed="1." out_speed="1."
+										   value="0."/>
+									</sequencer>
+								</alpha_master>
+								<alpha_center value="1."/>
+								<alpha_top value="1."/>
+								<alpha_bottom value="1."/>
+								<alpha_left value="1."/>
+								<alpha_right value="1."/>
+							</simple_mesh_builder>
+							<simple_mesh_builder id="sonic_boom">
+								<shape_type value="parabola"/>
+								<back_face value="false"/>
+								<position value="0. 0. 0."/>
+								<rotation value="0.931416486 0.353358302 -0.087185087 -0.36395512 0.904297619 -0.223119894 -9.060113770332E-14 0.239549007 0.970884274"/>
+								<zoom value="1. 0. 1."/>
+								<radius value="2.">
+									<sequencer interpolation="linear">
+										<default value="2."/>
+										<keyframe flags="" frame="0" in_speed="1." out_speed="1." value="2."/>
+										<keyframe flags="" frame="16" in_speed="1." out_speed="1."
+										   value="40."/>
+									</sequencer>
+								</radius>
+								<horz_div value="16"/>
+								<vert_div value="1"/>
+								<start_latitude value="0."/>
+								<range_latitude value="360."/>
+								<start_longitude value="180."/>
+								<range_longitude value="79.74">
+									<sequencer interpolation="linear">
+										<default value="79.74"/>
+										<keyframe flags="" frame="0" in_speed="1." out_speed="1."
+										   value="79.74"/>
+										<keyframe flags="" frame="16" in_speed="1." out_speed="1."
+										   value="43.56"/>
+									</sequencer>
+								</range_longitude>
+								<uv_atlas value=""/>
+								<uv_scale value="1. 1."/>
+								<uv_offset value="0. 0."/>
+								<color_mul value="153. 117. 28."/>
+								<color_add value="0. 0. 0."/>
+								<alpha_master value="1.">
+									<sequencer interpolation="linear">
+										<default value="1."/>
+										<keyframe flags="" frame="6" in_speed="1." out_speed="1." value="1."/>
+										<keyframe flags="" frame="16" in_speed="1." out_speed="1."
+										   value="0."/>
+									</sequencer>
+								</alpha_master>
+								<alpha_center value="1."/>
+								<alpha_top value="1."/>
+								<alpha_bottom value="0."/>
+								<alpha_left value="1."/>
+								<alpha_right value="1."/>
+							</simple_mesh_builder>
+							<simple_mesh_builder id="sonic_boom1">
+								<shape_type value="parabola"/>
+								<back_face value="false"/>
+								<position value="0. 0. 0."/>
+								<rotation value="0.606837956 -0.256899506 0.752163771 -0.266690019 0.825654607 0.497162854 -0.748748375 -0.502291861 0.43252602"/>
+								<zoom value="1. 0. 1."/>
+								<radius value="2.">
+									<sequencer interpolation="linear">
+										<default value="2."/>
+										<keyframe flags="" frame="3" in_speed="1." out_speed="1." value="3."/>
+										<keyframe flags="" frame="21" in_speed="1." out_speed="1."
+										   value="60."/>
+									</sequencer>
+								</radius>
+								<horz_div value="16"/>
+								<vert_div value="1"/>
+								<start_latitude value="0."/>
+								<range_latitude value="360."/>
+								<start_longitude value="180."/>
+								<range_longitude value="79.74">
+									<sequencer interpolation="linear">
+										<default value="79.74"/>
+										<keyframe flags="" frame="0" in_speed="1." out_speed="1."
+										   value="79.74"/>
+										<keyframe flags="" frame="21" in_speed="1." out_speed="1."
+										   value="43.56"/>
+									</sequencer>
+								</range_longitude>
+								<uv_atlas value=""/>
+								<uv_scale value="1. 1."/>
+								<uv_offset value="0. 0."/>
+								<color_mul value="153. 117. 28."/>
+								<color_add value="0. 0. 0."/>
+								<alpha_master value="1.">
+									<sequencer interpolation="linear">
+										<default value="1."/>
+										<keyframe flags="" frame="2" in_speed="1." out_speed="1." value="0."/>
+										<keyframe flags="" frame="3" in_speed="1." out_speed="1." value="1."/>
+										<keyframe flags="" frame="9" in_speed="1." out_speed="1." value="1."/>
+										<keyframe flags="" frame="21" in_speed="1." out_speed="1."
+										   value="0."/>
+									</sequencer>
+								</alpha_master>
+								<alpha_center value="1."/>
+								<alpha_top value="1."/>
+								<alpha_bottom value="0."/>
+								<alpha_left value="1."/>
+								<alpha_right value="1."/>
+							</simple_mesh_builder>
+							<simple_mesh_builder id="sonic_boom2">
+								<shape_type value="parabola"/>
+								<back_face value="false"/>
+								<position value="0. 0. 0."/>
+								<rotation value="0.366757051 0.924945089 -0.099829097 -0.186598329 -0.031988355 -0.981915378 -0.911411174 0.378752331 0.160861253"/>
+								<zoom value="1. 0. 1."/>
+								<radius value="2.">
+									<sequencer interpolation="linear">
+										<default value="2."/>
+										<keyframe flags="" frame="4" in_speed="1." out_speed="1."
+										   value="2.5"/>
+										<keyframe flags="" frame="30" in_speed="1." out_speed="1."
+										   value="50."/>
+									</sequencer>
+								</radius>
+								<horz_div value="16"/>
+								<vert_div value="1"/>
+								<start_latitude value="0."/>
+								<range_latitude value="360."/>
+								<start_longitude value="180."/>
+								<range_longitude value="79.74">
+									<sequencer interpolation="linear">
+										<default value="79.74"/>
+										<keyframe flags="" frame="0" in_speed="1." out_speed="1."
+										   value="79.74"/>
+										<keyframe flags="" frame="30" in_speed="1." out_speed="1."
+										   value="43.56"/>
+									</sequencer>
+								</range_longitude>
+								<uv_atlas value=""/>
+								<uv_scale value="1. 1."/>
+								<uv_offset value="0. 0."/>
+								<color_mul value="153. 117. 28."/>
+								<color_add value="0. 0. 0."/>
+								<alpha_master value="1.">
+									<sequencer interpolation="linear">
+										<default value="1."/>
+										<keyframe flags="" frame="3" in_speed="1." out_speed="1." value="0."/>
+										<keyframe flags="" frame="4" in_speed="1." out_speed="1." value="1."/>
+										<keyframe flags="" frame="13" in_speed="1." out_speed="1."
+										   value="1."/>
+										<keyframe flags="" frame="30" in_speed="1." out_speed="1."
+										   value="0."/>
+									</sequencer>
+								</alpha_master>
+								<alpha_center value="1."/>
+								<alpha_top value="1."/>
+								<alpha_bottom value="0."/>
+								<alpha_left value="1."/>
+								<alpha_right value="1."/>
+							</simple_mesh_builder>
+						</controllers>
+					</mesh_buffer>
+				</children>
+				<edit_status bake2model_xflags="2C4" camera_pos_x="6.591463659"
+				   camera_pos_y="-23.475981149" camera_pos_z="5.560265102"
+				   camera_target_x="0." camera_target_y="0." camera_target_z="0."
+				   camera_top_x="-0.205137836" camera_top_y="-0.01766666"
+				   camera_topt_z="0.978573634" current_frame="0" editor_camera=""
+				   end_view_frame="30" start_view_frame="0" view3d_hidden_edge="1"
+				   view3d_mesh_edge="1" view3d_multisampling="1" view3d_multithreading="1"
+				   view_center_x="1.518107378" view_center_y="0."
+				   view_center_z="-11.006278493" view_scale="0.237137365"
+				   wireframe_collision="0">
+					<state child="0" ctrl="1" item_id="&lt;root&gt;" tree="1"/>
+					<state child="1" ctrl="1" item_id="@local" tree="1"/>
+					<state child="1" ctrl="1" item_id="mesh_buffer" tree="1"/>
+				</edit_status>
+			</space>
+		</composition>
+		<composition back_color="0" border_color="0" border_thickness_a="0."
+		   border_thickness_b="0." default_camera="" enable_fog="false"
+		   fill_back_color="true" fog_color="0" fog_far="10000." fog_near="0."
+		   frame_scale="1" frames_per_sec="60" id="Box" pars_center_x="640."
+		   pars_center_y="360." perspective_far="1000."
+		   perspective_near="0.099999994" projection_pixel_aspect="1."
+		   projection_zoom="1." screen_height="720" screen_width="1280"
+		   screen_z="1108.512573242" total_frames="120" visible_far_distance="5000."
+		   visible_near_distance="100.">
+			<space id="Box">
+				<color_mul value="255. 255. 255."/>
+				<color_add value="0. 0. 0."/>
+				<force_toon value="false"/>
+				<force_border value="false"/>
+				<camera_space value="false"/>
+				<layered_refl_map value="default"/>
+				<layered_refr_map value="default"/>
+				<screen_width value="1280"/>
+				<screen_height value="720"/>
+				<field_of_view value="59.999997475"/>
+				<orthogonal value="false"/>
+				<pixel_zoom value="1."/>
+				<pixel_aspect value="1."/>
+				<perspective_near_z value="0.099999994"/>
+				<perspective_far_z value="1000."/>
+				<frame_total_length value="120"/>
+				<frame_per_sec value="60."/>
+				<default_camera value=""/>
+				<use_back_color value="true"/>
+				<back_color value="0. 0. 0."/>
+				<back_alpha value="0."/>
+				<use_fog value="false"/>
+				<fog_color value="0. 0. 0."/>
+				<fog_near_z value="0."/>
+				<fog_far_z value="10000."/>
+				<border_color value="0. 0. 0."/>
+				<border_thickness_a value="0."/>
+				<border_thickness_b value="0."/>
+				<visible_near value="100."/>
+				<visible_far value="5000."/>
+				<controllers/>
+				<children>
+					<space id="@local">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<free_toon value="false"/>
+						<free_border value="false"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<space_ignore value="false"/>
+						<layered_space value="false"/>
+						<layered_priority value="0"/>
+						<layered_param value="0."/>
+						<layered_refl_map value="default"/>
+						<layered_refr_map value="default"/>
+						<layered_field value="false"/>
+						<layered_static_item1 value="false"/>
+						<layered_static_item2 value="false"/>
+						<layered_dynamic_item1 value="false"/>
+						<layered_dynamic_item2 value="false"/>
+						<layered_dynamic_item3 value="false"/>
+						<layered_effect_item value="false"/>
+						<controllers/>
+						<children>
+							<dynamic_camera id="camera">
+								<position value="0. 0. -35."/>
+								<global_space value="false"/>
+								<render_priority value="4"/>
+								<camera_target value="0. 0. 0."/>
+								<camera_top value="0. -1. 0."/>
+								<camera_hfov value="90."/>
+								<force_camera_fov value="false"/>
+								<camera_left_ear value="-1. 0. 1."/>
+								<camera_right_ear value="1. 0. 1."/>
+								<camera_ear_angle value="180."/>
+								<camera_back_volume value="0."/>
+								<controllers/>
+							</dynamic_camera>
+							<light id="light">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="vector"/>
+								<light_color value="255. 255. 255."/>
+								<light_brightness value="1."/>
+								<light_direction value="1. 1. 1."/>
+								<light_shadowmap value="true"/>
+								<shadowmap_width value="2048"/>
+								<shadowmap_height value="2048"/>
+								<shadowmap_pixel_density value="0.004882813"/>
+								<shadowmap_distance value="10."/>
+								<shadowmap_adj_by_camera value="true"/>
+								<shadowmap_camera_std_distance value="10."/>
+								<shadowmap_pers_near value="0.099999994"/>
+								<shadowmap_pers_far value="100."/>
+								<shadowmap_error_precision value="-12."/>
+								<shadowmap_error_sub_precision value="-12."/>
+								<shadowmap_filter_gauss value="0."/>
+								<shadowmap_cascade_count value="0"/>
+								<shadowmap_cascade_ratio value="3."/>
+								<shadowmap_cascade_length value="2."/>
+								<shadowmap_cascade_length_offset value="0."/>
+								<shadowmap_cascade_depth value="1."/>
+								<shadowmap_cascade_distance value="0."/>
+								<controllers/>
+							</light>
+							<light id="ambient">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="ambient"/>
+								<light_color value="128. 128. 128."/>
+								<light_brightness value="1."/>
+								<controllers/>
+							</light>
+						</children>
+					</space>
+					<marker id="marker_box">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="9. 9. 9."/>
+						<visible value="true"/>
+						<use_collision value="true"/>
+						<item_class value="static_item1"/>
+						<render_priority value="4"/>
+						<marker_type value="collision"/>
+						<shape_type value="cube"/>
+						<collider_class value="-1"/>
+						<controllers/>
+					</marker>
+					<mesh_editor id="mesh_editor">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="static_item1"/>
+						<render_priority value="4"/>
+						<mesh_editor value="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AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAUAAAAFAAAABQAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAGAAAABgAAAAYAAAAaAAAAAAAAAAIAAAAAAAAAAAAAAAIAAAACAAAAAAAAAAIAAAAEAAAAAAAAAAIAAAAGAAAAAAAAAAkAAAAIAAAAAAAAAAkAAAARAAAAEgAAABoAAAAkAAAALAAAABsAAAAjAAAACQAAABEAAAAAAAAAAgAAAAQAAAAGAAAACAAAAAMAAAAFAAAABwAAAAEAAAAtAAAALwAAADEAAAAzAAAANQAAADAAAAAyAAAANAAAAC4AAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAJAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+						<mesh_primitive_type value="triangle"/>
+						<mesh_edge_method value="all_flat"/>
+						<mesh_edge_by_angle value="true"/>
+						<mesh_edge_angle value="30."/>
+						<mesh_div_ahead value="false"/>
+						<mesh_div_method value="bezier"/>
+						<mesh_div_horz value="1"/>
+						<mesh_div_vert value="1"/>
+						<material0 value="material_box"/>
+						<material1 value=""/>
+						<material2 value=""/>
+						<material3 value=""/>
+						<enable_collider value="false"/>
+						<enable_collider_all value="false"/>
+						<collider_classes value="1"/>
+						<collision_alpha value="255"/>
+						<col_div_horz value="1"/>
+						<col_div_vert value="1"/>
+						<freeze_mesh value="false"/>
+						<enable_bone value="false"/>
+						<bone_ref value=""/>
+						<instancing value="AAEAAAAAAABMAAAA9n8AAAEAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA//////wAAAAA="/>
+						<sort_instance value="false"/>
+						<controllers>
+							<boolean_mesh id="mesh_boolean">
+								<mesh_editor value="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"/>
+								<boolean_type value="gouge_out"/>
+								<each_operation value="false"/>
+								<replace_material value="1"/>
+							</boolean_mesh>
+							<boolean_mesh id="mesh_boolean1">
+								<mesh_editor value="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"/>
+								<boolean_type value="gouge_out"/>
+								<each_operation value="false"/>
+								<replace_material value="1"/>
+							</boolean_mesh>
+							<boolean_mesh id="mesh_boolean2">
+								<mesh_editor value="EAIAAAAAAADgBgAAAAAAAAEAAAAQAAAA0AYAAAAAAAAEAAAA7AAAAAAAAAAUAAAAAAAAANAGAAANAAAAAAAAAAAAAADQAQAAQAEAAAEAAAAAAAAAEAMAAEABAAACAAAAAAAAAFAEAACgAAAAAwAAAAAAAADwBAAAoAAAAAQAAAD4AAAAkAUAAFAAAAAEAAAAFgEAAOAFAABwAAAABAAAADQBAABQBgAAAAAAAAQAAABGAQAAUAYAABQAAAAEAAAAWgEAAGQGAAAUAAAABAAAAHQBAAB4BgAAEAAAAAQAAACIAQAAiAYAAEAAAAAEAAAAogEAAMgGAAAIAAAABAAAALYBAADQBgAAAAAAAHAAYQB0AGMAaAAAAGQAZQBnAGUAbgBlAHIAYQB0AGUAXwBtAGEAcAAAAGQAZQBnAGUAbgBlAHIAYQB0AGUAXwBzAGUAdAAAAGUAZABnAGUAXwBzAGUAdAAAAGYAYQBjAGUAXwBtAGEAcABzAAAAZgBhAGMAZQBfAHMAaABpAGYAdABlAHIAAABtAGUAcwBoAF8AaQBuAGYAbwAAAHAAYQB0AGMAaABfAGgAZQBhAGQAZQByAAAAcwBlAGEAbQBzAF8AcwBlAHQAAAB3AGUAaQBnAGgAdABfAG0AYQBwAHMAAAAAAAgACEFPzcy9dwbhJgAAAAAIAAhBT83MvXcG4SYAAAAACAAIQU/NzL13BuEmAAAAAAgACEFPzcy9dwbhJgAAAAAIAAhBT83MvXcG4SYAAAAA/f8PQWLTg8BDZYfAAAAAAP3/D0Fi04PAQ2WHQAAAAAD9/w9B9dl6QENlh0AAAAAA/f8PQfXZekBDZYfAAAAAAP3/D0Fi04PAQ2WHwAAAAAD9/yNBW/LTwMC728AAAAAA/f8jQVvy08DAu9tAAAAAAP3/I0H3i81AwLvbQAAAAAD9/yNB94vNQMC728AAAAAA/f8jQVvy08DAu9vAAAAAAAAASEFPzcy9p3UlJwAAAAAAAEhBT83Mvad1JScAAAAAAABIQU/NzL2ndSUnAAAAAAAASEFPzcy9p3UlJwAAAAAAAEhBT83Mvad1JScAAAAAePZ/vzWCSrylhkC8AAAAAHj2f781gkq8pYZAvAAAAAB49n+/NYJKvKWGQLwAAAAAePZ/vzWCSrylhkC8AAAAAHj2f781gkq8pYZAvAAAAADWmnq/biEXvoSJEL4AAAAA6Zp6v6MKF75NnxA+AAAAAOiaer+cChc+TJ8QPgAAAADpmnq/ngoXPk6fEL4AAAAA1pp6v24hF76EiRC+AAAAAHWquT2lQjS/nEk0vwAAAAAusrk9mCQ4v81RMD8AAAAAIrK5PZYkOD/PUTA/AAAAABOyuT2WJDg/z1EwvwAAAAB1qrk9pUI0v5xJNL8AAAAAALx/P7XnBr1E1AC9AAAAAAC8fz+15wa9RNQAvQAAAAAAvH8/tecGvUTUAL0AAAAAALx/P7XnBr1E1AC9AAAAAAC8fz+15wa9RNQAvQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAAQAAAAEAAAABAAAAAQAAAAEAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAACAAAAAAAAAAAAAAAAAAAAAgAAAAMAAAADAAAAAwAAAAMAAAADAAAABAAAAA4AAAAAAAAAAgAAAAAAAAAAAAAAAgAAAAIAAAAAAAAABQAAAAQAAAAAAAAABQAAAAkAAAAFAAAACQAAAAoAAAAOAAAADwAAABAAAAARAAAAEgAAABMAAAAAAAAAAQAAAAIAAAADAAAABAAAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAUAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"/>
+								<boolean_type value="gouge_out"/>
+								<each_operation value="false"/>
+								<replace_material value="1"/>
+							</boolean_mesh>
+							<baked_mesh id="baked_mesh">
+								<mesh_editor value="EAIAAAAAAACwYAAAAAAAAAIAAAAgAAAAEFAAADBQAACAEAAAAAAAAAAAAAAAAAAABAAAAOwAAACgAAAAVAEAAOABAACQSAAADQAAAAAAAAAAAAAA4AEAAEAVAAABAAAAAAAAACAXAABAFQAAAgAAAAAAAABgLAAAoAoAAAMAAAAAAAAAADcAAKAKAAAEAAAAAAEAAKBBAABQBQAABAAAAB4BAADwRgAACAAAAAQAAAA8AQAA+EYAAAAAAAAEAAAATgEAAPhGAACgAAAABAAAAGIBAACYRwAAoAAAAAQAAAB8AQAAOEgAABAAAAAEAAAAkAEAAEhIAABAAAAABAAAAKoBAACISAAACAAAAAQAAAC+AQAAkEgAAAAAAABiAG8AbwBsAF8AZABzAHQAMAAAAGQAZQBnAGUAbgBlAHIAYQB0AGUAXwBtAGEAcAAAAGQAZQBnAGUAbgBlAHIAYQB0AGUAXwBzAGUAdAAAAGUAZABnAGUAXwBzAGUAdAAAAGYAYQBjAGUAXwBtAGEAcABzAAAAZgBhAGMAZQBfAHMAaABpAGYAdABlAHIAAABtAGUAcwBoAF8AaQBuAGYAbwAAAHAAYQB0AGMAaABfAGgAZQBhAGQAZQByAAAAcwBlAGEAbQBzAF8AcwBlAHQAAAB3AGUAaQBnAGgAdABfAG0AYQBwAHMAAAAAAAAAAAAAAAAAAAAAAAAAGEEAAAAAAAAAAAAAAAAAABhBAAAAAAAAAABiX/nAAAAYQbGvDEEAAAAAYl/5QAAAGEGxrwxBAAAAAAAAAAAAABhBAAAAAAAAAAAAAAAAAAAYQQAAAAAAAAAAYl/5QAAAGEGxrwxBAAAAALGvDEEAABhBYl/5QAAAAAAAAAAAAAAYQQAAAAAAAAAAAAAAAAAAGEEAAAAAAAAAALGvDEEAABhBYl/5QAAAAACxrwxBAAAYQWJf+cAAAAAAAAAAAAAAGEEAAAAAAAAAAAAAAAAAABhBAAAAAAAAAACxrwxBAAAYQWJf+cAAAAAAYl/5QAAAGEGxrwzBAAAAAAAAAAAAABhBAAAAAAAAAAAAAAAAAAAYQQAAAAAAAAAAYl/5QAAAGEGxrwzBAAAAAGJf+cAAABhBsa8MwQAAAAAAAAAAAAAYQQAAAAAAAAAAAAAAAAAAGEEAAAAAAAAAAGJf+cAAABhBsa8MwQAAAACxrwzBAAAYQWJf+cAAAAAAAAAAAAAAGEEAAAAAAAAAAAAAAAAAABhBAAAAAAAAAACxrwzBAAAYQWJf+cAAAAAAsa8MwQAAGEFiX/lAAAAAAAAAAAAAABhBAAAAAAAAAAAAAAAAAAAYQQAAAAAAAAAAsa8MwQAAGEFiX/lAAAAAAGJf+cAAABhBsa8MQQAAAABiX/nAAAAYQbGvDEEAAAAAYl/5QAAAGEGxrwxBAAAAAAAACMEAAAhBAAAYQQAAAAAAAAhBAAAIQQAAGEEAAAAAYl/5QAAAGEGxrwxBAAAAALGvDEEAABhBYl/5QAAAAAAAAAhBAAAIQQAAGEEAAAAAAAAYQQAACEEAAAhBAAAAALGvDEEAABhBYl/5QAAAAACxrwxBAAAYQWJf+cAAAAAAAAAYQQAACEEAAAhBAAAAAAAAGEEAAAhBAAAIwQAAAACxrwxBAAAYQWJf+cAAAAAAYl/5QAAAGEGxrwzBAAAAAAAAGEEAAAhBAAAIwQAAAAAAAAhBAAAIQQAAGMEAAAAAYl/5QAAAGEGxrwzBAAAAAGJf+cAAABhBsa8MwQAAAAAAAAhBAAAIQQAAGMEAAAAAAAAIwQAACEEAABjBAAAAAGJf+cAAABhBsa8MwQAAAACxrwzBAAAYQWJf+cAAAAAAAAAIwQAACEEAABjBAAAAAAAAGMEAAAhBAAAIwQAAAACxrwzBAAAYQWJf+cAAAAAAsa8MwQAAGEFiX/lAAAAAAAAAGMEAAAhBAAAIwQAAAAAAABjBAAAIQQAACEEAAAAAsa8MwQAAGEFiX/lAAAAAAGJf+cAAABhBsa8MQQAAAAAAABjBAAAIQQAACEEAAAAAAAAIwQAACEEAABhBAAAAAAAACMEAAAhBAAAYQQAAAAAAAAhBAAAIQQAAGEEAAAAAAAAIwQAACMEAABhBAAAAAAAACEEAAAjBAAAYQQAAAAAAAAhBAAAIQQAAGEEAAAAAAAAYQQAACEEAAAhBAAAAAAAACEEAAAjBAAAYQQAAAAAAABhBAAAIwQAACEEAAAAAAAAYQQAACEEAAAhBAAAAAAAAGEEAAAhBAAAIwQAAAAAAABhBAAAIwQAACEEAAAAAAAAYQQAACMEAAAjBAAAAAAAAGEEAAAhBAAAIwQAAAAAAAAhBAAAIQQAAGMEAAAAAAAAYQQAACMEAAAjBAAAAAAAACEEAAAjBAAAYwQAAAAAAAAhBAAAIQQAAGMEAAAAAAAAIwQAACEEAABjBAAAAAAAACEEAAAjBAAAYwQAAAAAAAAjBAAAIwQAAGMEAAAAAAAAIwQAACEEAABjBAAAAAAAAGMEAAAhBAAAIwQAAAAAAAAjBAAAIwQAAGMEAAAAAAAAYwQAACMEAAAjBAAAAAAAAGMEAAAhBAAAIwQAAAAAAABjBAAAIQQAACEEAAAAAAAAYwQAACMEAAAjBAAAAAAAAGMEAAAjBAAAIQQAAAAAAABjBAAAIQQAACEEAAAAAAAAIwQAACEEAABhBAAAAAAAAGMEAAAjBAAAIQQAAAAAAAAjBAAAIwQAAGEEAAAAAAAAIwQAACMEAABhBAAAAAAAACEEAAAjBAAAYQQAAAABiX/nAAAAYwbGvDEEAAAAAYl/5QAAAGMGxrwxBAAAAAAAACEEAAAjBAAAYQQAAAAAAABhBAAAIwQAACEEAAAAAYl/5QAAAGMGxrwxBAAAAALGvDEEAABjBYl/5QAAAAAAAABhBAAAIwQAACEEAAAAAAAAYQQAACMEAAAjBAAAAALGvDEEAABjBYl/5QAAAAACxrwxBAAAYwWJf+cAAAAAAAAAYQQAACMEAAAjBAAAAAAAACEEAAAjBAAAYwQAAAACxrwxBAAAYwWJf+cAAAAAAYl/5QAAAGMGxrwzBAAAAAAAACEEAAAjBAAAYwQAAAAAAAAjBAAAIwQAAGMEAAAAAYl/5QAAAGMGxrwzBAAAAAGJf+cAAABjBsa8MwQAAAAAAAAjBAAAIwQAAGMEAAAAAAAAYwQAACMEAAAjBAAAAAGJf+cAAABjBsa8MwQAAAACxrwzBAAAYwWJf+cAAAAAAAAAYwQAACMEAAAjBAAAAAAAAGMEAAAjBAAAIQQAAAACxrwzBAAAYwWJf+cAAAAAAsa8MwQAAGMFiX/lAAAAAAAAAGMEAAAjBAAAIQQAAAAAAAAjBAAAIwQAAGEEAAAAAsa8MwQAAGMFiX/lAAAAAAGJf+cAAABjBsa8MQQAAAABiX/nAAAAYwbGvDEEAAAAAYl/5QAAAGMGxrwxBAAAAAAAAAAAAABjBAAAAAAAAAAAAAAAAAAAYwQAAAAAAAAAAYl/5QAAAGMGxrwxBAAAAALGvDEEAABjBYl/5QAAAAAAAAAAAAAAYwQAAAAAAAAAAAAAAAAAAGMEAAAAAAAAAALGvDEEAABjBYl/5QAAAAACxrwxBAAAYwWJf+cAAAAAAAAAAAAAAGMEAAAAAAAAAAAAAAAAAABjBAAAAAAAAAACxrwxBAAAYwWJf+cAAAAAAYl/5QAAAGMGxrwzBAAAAAAAAAAAAABjBAAAAAAAAAAAAAAAAAAAYwQAAAAAAAAAAYl/5QAAAGMGxrwzBAAAAAGJf+cAAABjBsa8MwQAAAAAAAAAAAAAYwQAAAAAAAAAAAAAAAAAAGMEAAAAAAAAAAGJf+cAAABjBsa8MwQAAAACxrwzBAAAYwWJf+cAAAAAAAAAAAAAAGMEAAAAAAAAAAAAAAAAAABjBAAAAAAAAAACxrwzBAAAYwWJf+cAAAAAAsa8MwQAAGMFiX/lAAAAAAAAAAAAAABjBAAAAAAAAAAAAAAAAAAAYwQAAAAAAAAAAsa8MwQAAGMFiX/lAAAAAAGJf+cAAABjBsa8MQQAAAAAAAAAAAAAYwQAAAAAAAAAAAAAAAAAAGMEAAAAAAAAAADhGosA4RqLAAAAYwQAAAADABFU+OEaiwAAAGMEAAAAAgiGpQDhGosAAABjBAAAAAIIhqUA4RqLAAAAYwQAAAACCIalAgCsXPgAAGMEAAAAAgiGpQAUTn0AAABjBAAAAAIIhqUAFE59AAAAYwQAAAAAGE59ABhOfQAAAGMEAAAAABhOfQAYTn0AAABjBAAAAAMAEVb4FE59AAAAYwQAAAACCIanABROfQAAAGMEAAAAAgiGpwAUTn0AAABjBAAAAAIIhqcDAkX2+AAAYwQAAAACCIanAOEaiwAAAGMEAAAAAgiGpwDhGosAAABjBAAAAADhGosA4RqLAAAAYwQAAAAAAAAAA0s1MvQgACMEAAAAAAAAAANLNTL0IAAjBAAAAAENlh8DIOYLA/f8PwQAAAABDZYdAyDmCwP3/D8EAAAAAAAAAANLNTL0IAAjBAAAAAAAAAADSzUy9CAAIwQAAAABDZYdAyDmCwP3/D8EAAAAAQ2WHQCgNfkD9/w/BAAAAAAAAAADSzUy9CAAIwQAAAAAAAAAA0s1MvQgACMEAAAAAQ2WHQCgNfkD9/w/BAAAAAENlh8AoDX5A/f8PwQAAAAAAAAAA0s1MvQgACMEAAAAAAAAAANLNTL0IAAjBAAAAAENlh8AoDX5A/f8PwQAAAABDZYfAyDmCwP3/D8EAAAAAQ2WHwMg5gsD9/w/BAAAAAENlh0DIOYLA/f8PwQAAAADAu9vAwVjSwP3/I8EAAAAAwLvbQMFY0sD9/yPBAAAAAENlh0DIOYLA/f8PwQAAAABDZYdAKA1+QP3/D8EAAAAAwLvbQMFY0sD9/yPBAAAAAMC720CRJc9A/f8jwQAAAABDZYdAKA1+QP3/D8EAAAAAQ2WHwCgNfkD9/w/BAAAAAMC720CRJc9A/f8jwQAAAADAu9vAkSXPQP3/I8EAAAAAQ2WHwCgNfkD9/w/BAAAAAENlh8DIOYLA/f8PwQAAAADAu9vAkSXPQP3/I8EAAAAAwLvbwMFY0sD9/yPBAAAAAMC728DBWNLA/f8jwQAAAADAu9tAwVjSwP3/I8EAAAAAAAAAANLNTL0AAEjBAAAAAAAAAADSzUy9AABIwQAAAADAu9tAwVjSwP3/I8EAAAAAwLvbQJElz0D9/yPBAAAAAAAAAADSzUy9AABIwQAAAAAAAAAA0s1MvQAASMEAAAAAwLvbQJElz0D9/yPBAAAAAMC728CRJc9A/f8jwQAAAAAAAAAA0s1MvQAASMEAAAAAAAAAANLNTL0AAEjBAAAAAMC728CRJc9A/f8jwQAAAADAu9vAwVjSwP3/I8EAAAAAAAAAANLNTL0AAEjBAAAAAAAAAADSzUy9AABIwQAAAACCIanAOEaiwAAAGMEAAAAAOEaiwDhGosAAABjBAAAAAMAEVT44RqLAAAAYwQAAAADABFU+OEaiwAAAGMEAAAAAgiGpQDhGosAAABjBAAAAAIIhqUA4RqLAAAAYwQAAAACCIalAgCsXPgAAGMEAAAAAgiGpQIArFz4AABjBAAAAAIIhqUAFE59AAAAYwQAAAACCIalABROfQAAAGMEAAAAABhOfQAYTn0AAABjBAAAAAMAEVb4FE59AAAAYwQAAAADABFW+BROfQAAAGMEAAAAAgiGpwAUTn0AAABjBAAAAAIIhqcAFE59AAAAYwQAAAACCIanAwJF9vgAAGMEAAAAAgiGpwMCRfb4AABjBAAAAAIIhqcA4RqLAAAAYwQAAAAAAABjBOEaiwDhGokAAAAAAAAAYwThGosDABFW+AAAAAAAAGME4RqLAgiGpwAAAAAAAABjBOEaiwIIhqcAAAAAAAAAYwYArFz6CIanAAAAAAAAAGMEFE59AgiGpwAAAAAAAABjBBROfQIIhqcAAAAAAAAAYwQYTn0AGE5/AAAAAAAAAGMEGE59ABhOfwAAAAAAAABjBBROfQMAEVT4AAAAAAAAYwQUTn0CCIalAAAAAAAAAGMEFE59AgiGpQAAAAAAAABjBwJF9voIhqUAAAAAAAAAYwThGosCCIalAAAAAAAAAGME4RqLAgiGpQAAAAAAAABjBOEaiwDhGokAAAAAACAAIwdLNTL1PBBamAAAAAAgACMHSzUy9TwQWpgAAAAD9/w/ByDmCwENlh0AAAAAA/f8Pwcg5gsBDZYfAAAAAAAgACMHSzUy9TwQWpgAAAAAIAAjB0s1MvU8EFqYAAAAA/f8Pwcg5gsBDZYfAAAAAAP3/D8EoDX5AQ2WHwAAAAAAIAAjB0s1MvU8EFqYAAAAACAAIwdLNTL1PBBamAAAAAP3/D8EoDX5AQ2WHwAAAAAD9/w/BKA1+QENlh0AAAAAACAAIwdLNTL1PBBamAAAAAAgACMHSzUy9TwQWpgAAAAD9/w/BKA1+QENlh0AAAAAA/f8Pwcg5gsBDZYdAAAAAAP3/D8HIOYLAQ2WHQAAAAAD9/w/ByDmCwENlh8AAAAAA/f8jwcFY0sDAu9tAAAAAAP3/I8HBWNLAwLvbwAAAAAD9/w/ByDmCwENlh8AAAAAA/f8PwSgNfkBDZYfAAAAAAP3/I8HBWNLAwLvbwAAAAAD9/yPBkSXPQMC728AAAAAA/f8PwSgNfkBDZYfAAAAAAP3/D8EoDX5AQ2WHQAAAAAD9/yPBkSXPQMC728AAAAAA/f8jwZElz0DAu9tAAAAAAP3/D8EoDX5AQ2WHQAAAAAD9/w/ByDmCwENlh0AAAAAA/f8jwZElz0DAu9tAAAAAAP3/I8HBWNLAwLvbQAAAAAD9/yPBwVjSwMC720AAAAAA/f8jwcFY0sDAu9vAAAAAAAAASMHSzUy935xcpgAAAAAAAEjB0s1Mvd+cXKYAAAAA/f8jwcFY0sDAu9vAAAAAAP3/I8GRJc9AwLvbwAAAAAAAAEjB0s1Mvd+cXKYAAAAAAABIwdLNTL3fnFymAAAAAP3/I8GRJc9AwLvbwAAAAAD9/yPBkSXPQMC720AAAAAAAABIwdLNTL3fnFymAAAAAAAASMHSzUy935xcpgAAAAD9/yPBkSXPQMC720AAAAAA/f8jwcFY0sDAu9tAAAAAAAAASMHSzUy935xcpgAAAAAAAEjB0s1Mvd+cXKYAAAAAAAAYwThGosCCIalAAAAAAAAAGME4RqLAOEaiQAAAAAAAABjBOEaiwMAEVb4AAAAAAAAYwThGosDABFW+AAAAAAAAGME4RqLAgiGpwAAAAAAAABjBOEaiwIIhqcAAAAAAAAAYwYArFz6CIanAAAAAAAAAGMGAKxc+giGpwAAAAAAAABjBBROfQIIhqcAAAAAAAAAYwQUTn0CCIanAAAAAAAAAGMEGE59ABhOfwAAAAAAAABjBBROfQMAEVT4AAAAAAAAYwQUTn0DABFU+AAAAAAAAGMEFE59AgiGpQAAAAAAAABjBBROfQIIhqUAAAAAAAAAYwcCRfb6CIalAAAAAAAAAGMHAkX2+giGpQAAAAAAAABjBOEaiwIIhqUAAAAAAAAAYQdLfo8DS36PAAAAAAAAAGEHS36PAwARVPgAAAAAAABhB0t+jwIIhqUAAAAAAAAAYQdLfo8CCIalAAAAAAAAAGEGA8Mc9giGpQAAAAAAAABhBbHmdQIIhqUAAAAAAAAAYQWx5nUCCIalAAAAAAAAAGEFseZ1AbHmdQAAAAAAAABhBbHmdQGx5nUAAAAAAAAAYQWx5nUDABFW+AAAAAAAAGEFseZ1AgiGpwAAAAAAAABhBbHmdQIIhqcAAAAAAAAAYQXBimL6CIanAAAAAAAAAGEHS36PAgiGpwAAAAAAAABhB0t+jwIIhqcAAAAAAAAAYQdLfo8DS36PAAAAAAAAAAAABAIA/AAAAAAAAAAAAAAAAAQCAPwAAAAAAAAAAAAAAAAEAgD8AAAAAAAAAAAAAAAABAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAEAgD8AAAAAAAAAAAAAAAABAIA/AAAAAAAAAAAAAAAAAQCAPwAAAAAAAAAAAAAAAAEAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAQCAPwAAAAAAAAAAAAAAAAEAgD8AAAAAAAAAAAAAAAABAIA/AAAAAAAAAAAAAAAAAQCAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAABAIA/AAAAAAAAAAAAAAAAAQCAPwAAAAAAAAAAAAAAAAEAgD8AAAAAAAAAAAAAAAABAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAA0yQDsTjNEz/sBVE/AAAAANMkA7E4zRM/7AVRPwAAAADTJAOxOM0TP+wFUT8AAAAA0yQDsTjNEz/sBVE/AAAAAAAAAD/xBDU/AAAAPwAAAAAAAAA/8QQ1PwAAAD8AAAAAAAAAP/EENT8AAAA/AAAAAAAAAD/xBDU/AAAAPwAAAADsBVE/OM0TP9MkAzEAAAAA7AVRPzjNEz/TJAMxAAAAAOwFUT84zRM/0yQDMQAAAADsBVE/OM0TP9MkAzEAAAAAAAAAP/EENT8AAAC/AAAAAAAAAD/xBDU/AAAAvwAAAAAAAAA/8QQ1PwAAAL8AAAAAAAAAP/EENT8AAAC/AAAAANMkAzE4zRM/7AVRvwAAAADTJAMxOM0TP+wFUb8AAAAA0yQDMTjNEz/sBVG/AAAAANMkAzE4zRM/7AVRvwAAAAAAAAC/8QQ1PwAAAL8AAAAAAAAAv/EENT8AAAC/AAAAAAAAAL/xBDU/AAAAvwAAAAAAAAC/8QQ1PwAAAL8AAAAA7AVRvzjNEz/TJAOxAAAAAOwFUb84zRM/0yQDsQAAAADsBVG/OM0TP9MkA7EAAAAA7AVRvzjNEz/TJAOxAAAAAAAAAL/xBDU/AAAAPwAAAAAAAAC/8QQ1PwAAAD8AAAAAAAAAv/EENT8AAAA/AAAAAAAAAL/xBDU/AAAAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAA9AQ1PwAAAAD0BDU/AAAAAPQENT8AAAAA9AQ1PwAAAAD0BDU/AAAAAPQENT8AAAAA9AQ1PwAAAAD0BDU/AAAAAAAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAD0BDU/AAAAAPQENb8AAAAA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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/v7+/gAAAAD9/f39AAAAAP39/f0AAAAA/f39/QAAAAD8/Pz8AAAAAP39/f0AAAAA/f39/QAAAAD+/v7+AAAAAP7+/v4AAAAA/f39/QAAAAD8/Pz8AAAAAPz8/PwAAAAA/f39/QAAAAD8/Pz8AAAAAPz8/PwAAAAA/v7+/gAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD+/v7+AAAAAP39/f0AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP39/f0AAAAA/f39/QAAAAD9/f39AAAAAPz8/PwAAAAA/f39/QAAAAD9/f39AAAAAP7+/v4AAAAA/v7+/gAAAAD9/f39AAAAAPz8/PwAAAAA/Pz8/AAAAAD9/f39AAAAAPz8/PwAAAAA/Pz8/AAAAAD+/v7+AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP7+/v4AAAAA/f39/QAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/f39/QAAAAD9/f39AAAAAP39/f0AAAAA/Pz8/AAAAAD8/Pz8AAAAAPz8/PwAAAAA/v7+/gAAAAD+/v7+AAAAAP39/f0AAAAA/f39/QAAAAD9/f39AAAAAPz8/PwAAAAA/Pz8/AAAAAD8/Pz8AAAAAP7+/v4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAABAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAADAAAAAAAAAAMAAAABAAAABAAAAAYAAAAHAAAABAAAAAcAAAAFAAAACAAAAAoAAAALAAAACAAAAAsAAAAJAAAADAAAAA4AAAAPAAAADAAAAA8AAAANAAAAEAAAABIAAAATAAAAEAAAABMAAAARAAAAFAAAABYAAAAXAAAAFAAAABcAAAAVAAAAGAAAABoAAAAbAAAAGAAAABsAAAAZAAAAHAAAAB4AAAAfAAAAHAAAAB8AAAAdAAAAIAAAACIAAAAjAAAAIAAAACMAAAAhAAAAJAAAACYAAAAnAAAAJAAAACcAAAAlAAAAKAAAACoAAAArAAAAKAAAACsAAAApAAAALAAAAC4AAAAvAAAALAAAAC8AAAAtAAAAMAAAADIAAAAzAAAAMAAAADMAAAAxAAAANAAAADYAAAA3AAAANAAAADcAAAA1AAAAOAAAADoAAAA7AAAAOAAAADsAAAA5AAAAPAAAAD4AAAA/AAAAPAAAAD8AAAA9AAAAQAAAAEIAAABDAAAAQAAAAEMAAABBAAAARAAAAEYAAABHAAAARAAAAEcAAABFAAAASwAAAEQBAABKAAAARAEAAEUBAABKAAAARQEAAEYBAABKAAAASgAAAEYBAABIAAAARgEAAEgBAABIAAAASAEAAEkBAABIAAAASAAAAEkBAABLAQAASAAAAEwBAABJAAAATAEAAE0BAABJAAAATQEAAE4BAABJAAAASQAAAE4BAABLAAAATgEAAFABAABLAAAAUAEAAFEBAABLAAAASwAAAFEBAABTAQAATAAAAE4AAABPAAAATAAAAE8AAABNAAAAUwAAAKAAAABSAAAAoAAAAKEAAABSAAAAoQAAAKIAAABSAAAAUgAAAKIAAABQAAAAogAAAKQAAABQAAAApAAAAKUAAABQAAAAUAAAAKUAAACnAAAAUAAAAKgAAABRAAAAqAAAAKkAAABRAAAAqQAAAKoAAABRAAAAUQAAAKoAAABTAAAAqgAAAKwAAABTAAAArAAAAK0AAABTAAAAUwAAAK0AAACvAAAAVAAAAFYAAABXAAAAVAAAAFcAAABVAAAAWwAAAPIAAABaAAAA8gAAAPMAAABaAAAA8wAAAPQAAABaAAAAWgAAAPQAAABYAAAA9AAAAPYAAABYAAAA9gAAAPcAAABYAAAAWAAAAPcAAAD5AAAAWAAAAPoAAABZAAAA+gAAAPsAAABZAAAA+wAAAPwAAABZAAAAWQAAAPwAAABbAAAA/AAAAP4AAABbAAAA/gAAAP8AAABbAAAAWwAAAP8AAAABAQAAXAAAAF4AAABfAAAAXAAAAF8AAABdAAAAYAAAAGIAAABjAAAAYAAAAGMAAABhAAAAZAAAAGYAAABnAAAAZAAAAGcAAABlAAAAaAAAAGoAAABrAAAAaAAAAGsAAABpAAAAbAAAAG4AAABvAAAAbAAAAG8AAABtAAAAcAAAAHIAAABzAAAAcAAAAHMAAABxAAAAdAAAAHYAAAB3AAAAdAAAAHcAAAB1AAAAeAAAAHoAAAB7AAAAeAAAAHsAAAB5AAAA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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP7+/v4AAAAA/f39/QAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAP7+/v4AAAAA/v7+/gAAAAD+/v7+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAACAAAAAAAAAAEAAAADAAAAAAAAAAcAAAAGAAAABAAAAAUAAAAHAAAABAAAAAsAAAAKAAAACAAAAAkAAAALAAAACAAAAA8AAAAOAAAADAAAAA0AAAAPAAAADAAAADEAAAAQAAAAMgAAADEAAAAwAAAAEAAAABEAAAAzAAAAEAAAABEAAAA0AAAAMwAAADYAAAA1AAAAFAAAABUAAAA3AAAAFAAAABUAAAA4AAAANwAAADoAAAAYAAAAOwAAADoAAAA5AAAAGAAAABkAAAA8AAAAGAAAABkAAAA9AAAAPAAAAD8AAAA+AAAAHAAAAB0AAABAAAAAHAAAAB0AAABBAAAAQAAAAAAAAAAAAAAA"/>
+							</baked_mesh>
+						</controllers>
+					</mesh_editor>
+				</children>
+				<edit_status bake2model_xflags="2C4" camera_pos_x="25.754399085"
+				   camera_pos_y="-13.347208762" camera_pos_z="-64.754760599"
+				   camera_target_x="0." camera_target_y="0." camera_target_z="0."
+				   camera_top_x="-0.210500571" camera_top_y="-0.970645473"
+				   camera_topt_z="0.11634808" current_frame="0" editor_camera=""
+				   end_view_frame="120" start_view_frame="0" view3d_hidden_edge="1"
+				   view3d_mesh_edge="1" view3d_multisampling="1" view3d_multithreading="1"
+				   view_center_x="1.110659783" view_center_y="1.441886085"
+				   view_center_z="-0.457391147" view_scale="0.031622776"
+				   wireframe_collision="0">
+					<state child="1" ctrl="1" item_id="&lt;root&gt;" tree="1"/>
+					<state child="1" ctrl="1" item_id="@local" tree="1"/>
+					<state child="1" ctrl="1" item_id="mesh_editor" tree="1"/>
+				</edit_status>
+			</space>
+		</composition>
+		<composition back_color="0" border_color="0" border_thickness_a="0."
+		   border_thickness_b="0." default_camera="" enable_fog="false"
+		   fill_back_color="true" fog_color="0" fog_far="10000." fog_near="0."
+		   frame_scale="1" frames_per_sec="60" id="CheckPoint" pars_center_x="640."
+		   pars_center_y="360." perspective_far="1000."
+		   perspective_near="0.099999994" projection_pixel_aspect="1."
+		   projection_zoom="1." screen_height="720" screen_width="1280"
+		   screen_z="1108.512573242" total_frames="120" visible_far_distance="5000."
+		   visible_near_distance="100.">
+			<space id="CheckPoint">
+				<color_mul value="255. 255. 255."/>
+				<color_add value="0. 0. 0."/>
+				<force_toon value="false"/>
+				<force_border value="false"/>
+				<camera_space value="false"/>
+				<layered_refl_map value="default"/>
+				<layered_refr_map value="default"/>
+				<screen_width value="1280"/>
+				<screen_height value="720"/>
+				<field_of_view value="59.999997475"/>
+				<orthogonal value="false"/>
+				<pixel_zoom value="1."/>
+				<pixel_aspect value="1."/>
+				<perspective_near_z value="0.099999994"/>
+				<perspective_far_z value="1000."/>
+				<frame_total_length value="120"/>
+				<frame_per_sec value="60."/>
+				<default_camera value=""/>
+				<use_back_color value="true"/>
+				<back_color value="0. 0. 0."/>
+				<back_alpha value="0."/>
+				<use_fog value="false"/>
+				<fog_color value="0. 0. 0."/>
+				<fog_near_z value="0."/>
+				<fog_far_z value="10000."/>
+				<border_color value="0. 0. 0."/>
+				<border_thickness_a value="0."/>
+				<border_thickness_b value="0."/>
+				<visible_near value="100."/>
+				<visible_far value="5000."/>
+				<controllers/>
+				<children>
+					<space id="@local">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<free_toon value="false"/>
+						<free_border value="false"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<space_ignore value="false"/>
+						<layered_space value="false"/>
+						<layered_priority value="0"/>
+						<layered_param value="0."/>
+						<layered_refl_map value="default"/>
+						<layered_refr_map value="default"/>
+						<layered_field value="false"/>
+						<layered_static_item1 value="false"/>
+						<layered_static_item2 value="false"/>
+						<layered_dynamic_item1 value="false"/>
+						<layered_dynamic_item2 value="false"/>
+						<layered_dynamic_item3 value="false"/>
+						<layered_effect_item value="false"/>
+						<controllers/>
+						<children>
+							<dynamic_camera id="camera">
+								<position value="0. 0. -31."/>
+								<global_space value="false"/>
+								<render_priority value="4"/>
+								<camera_target value="0. 0. 0."/>
+								<camera_top value="0. -1. 0."/>
+								<camera_hfov value="90."/>
+								<force_camera_fov value="false"/>
+								<camera_left_ear value="-1. 0. 1."/>
+								<camera_right_ear value="1. 0. 1."/>
+								<camera_ear_angle value="180."/>
+								<camera_back_volume value="0."/>
+								<controllers/>
+							</dynamic_camera>
+							<light id="light">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="vector"/>
+								<light_color value="255. 255. 255."/>
+								<light_brightness value="1."/>
+								<light_direction value="1. 1. 1."/>
+								<light_shadowmap value="true"/>
+								<shadowmap_width value="2048"/>
+								<shadowmap_height value="2048"/>
+								<shadowmap_pixel_density value="0.004882813"/>
+								<shadowmap_distance value="10."/>
+								<shadowmap_adj_by_camera value="true"/>
+								<shadowmap_camera_std_distance value="10."/>
+								<shadowmap_pers_near value="0.099999994"/>
+								<shadowmap_pers_far value="100."/>
+								<shadowmap_error_precision value="-12."/>
+								<shadowmap_error_sub_precision value="-12."/>
+								<shadowmap_filter_gauss value="0."/>
+								<shadowmap_cascade_count value="0"/>
+								<shadowmap_cascade_ratio value="3."/>
+								<shadowmap_cascade_length value="2."/>
+								<shadowmap_cascade_length_offset value="0."/>
+								<shadowmap_cascade_depth value="1."/>
+								<shadowmap_cascade_distance value="0."/>
+								<controllers/>
+							</light>
+							<light id="ambient">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="ambient"/>
+								<light_color value="128. 128. 128."/>
+								<light_brightness value="1."/>
+								<controllers/>
+							</light>
+						</children>
+					</space>
+					<marker id="marker_box">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="11. 11. 4."/>
+						<visible value="true"/>
+						<use_collision value="true"/>
+						<item_class value="static_item1"/>
+						<render_priority value="4"/>
+						<marker_type value="collision"/>
+						<shape_type value="cube"/>
+						<collider_class value="-1"/>
+						<controllers/>
+					</marker>
+					<mesh_editor id="mesh_flag">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="static_item1"/>
+						<render_priority value="4"/>
+						<mesh_editor value="EAIAAAAAAABgBAAAAAAAAAEAAAAQAAAAUAQAAAAAAAAEAAAA7AAAAAAAAAAKAAAAAAAAAFAEAAANAAAAAAAAAAAAAADQAQAAoAAAAAEAAAAAAAAAcAIAAKAAAAACAAAAAAAAABADAABQAAAAAwAAAAAAAABgAwAAUAAAAAQAAAD4AAAAsAMAACgAAAAEAAAAFgEAANgDAAAIAAAABAAAADQBAADgAwAAAAAAAAQAAABGAQAA4AMAAAoAAAAEAAAAWgEAAOwDAAAKAAAABAAAAHQBAAD4AwAAEAAAAAQAAACIAQAACAQAAEAAAAAEAAAAogEAAEgEAAAIAAAABAAAALYBAABQBAAAAAAAAHAAYQB0AGMAaAAAAGQAZQBnAGUAbgBlAHIAYQB0AGUAXwBtAGEAcAAAAGQAZQBnAGUAbgBlAHIAYQB0AGUAXwBzAGUAdAAAAGUAZABnAGUAXwBzAGUAdAAAAGYAYQBjAGUAXwBtAGEAcABzAAAAZgBhAGMAZQBfAHMAaABpAGYAdABlAHIAAABtAGUAcwBoAF8AaQBuAGYAbwAAAHAAYQB0AGMAaABfAGgAZQBhAGQAZQByAAAAcwBlAGEAbQBzAF8AcwBlAHQAAAB3AGUAaQBnAGgAdABfAG0AYQBwAHMAAAAAAAAAAL8AANDAAAAAAAAAAAAAAAC/AADQwAAAAAAAAAAAAAAAvwAAkMAAAAAAAAAAAAAAQEAAAJDAAAAAAAAAAAAAAAC/AAAgwAAAAAAAAAAAAAAAAAAAIMAAAAAAAAAAAAAAAL8AALBAAAAAAAAAAAAAAAAAAACwQAAAAAAAAAAAAABgwAAA4EAAAAAAAAAAAAAAQEAAAOBAAAAAAAAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAP////8AAAAA/////wAAAAD/////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAQEBAQEBAQEAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAgAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="/>
+						<mesh_primitive_type value="triangle"/>
+						<mesh_edge_method value="all_smooth"/>
+						<mesh_edge_by_angle value="true"/>
+						<mesh_edge_angle value="30."/>
+						<mesh_div_ahead value="false"/>
+						<mesh_div_method value="bezier"/>
+						<mesh_div_horz value="1"/>
+						<mesh_div_vert value="1"/>
+						<material0 value="material_flag"/>
+						<material1 value=""/>
+						<material2 value=""/>
+						<material3 value=""/>
+						<enable_collider value="false"/>
+						<enable_collider_all value="false"/>
+						<collider_classes value="1"/>
+						<collision_alpha value="255"/>
+						<col_div_horz value="1"/>
+						<col_div_vert value="1"/>
+						<freeze_mesh value="false"/>
+						<enable_bone value="false"/>
+						<bone_ref value=""/>
+						<instancing value="AAEAAAAAAABMAAAA9n8AAAEAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA//////wAAAAA="/>
+						<sort_instance value="false"/>
+						<controllers/>
+					</mesh_editor>
+					<mesh_editor id="mesh_plate">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="static_item1"/>
+						<render_priority value="4"/>
+						<mesh_editor value="EAIAAAAAAABgBgAAAAAAAAEAAAAQAAAAUAYAAAAAAAAEAAAA7AAAAAAAAAASAAAAAAAAAEQGAAANAAAAAAAAAAAAAADQAQAAIAEAAAEAAAAAAAAA8AIAACABAAACAAAAAAAAABAEAACQAAAAAwAAAAAAAACgBAAAkAAAAAQAAAD4AAAAMAUAAEgAAAAEAAAAFgEAAHgFAABMAAAABAAAADQBAADEBQAAAAAAAAQAAABGAQAAxAUAABIAAAAEAAAAWgEAANgFAAASAAAABAAAAHQBAADsBQAAEAAAAAQAAACIAQAA/AUAAEAAAAAEAAAAogEAADwGAAAIAAAABAAAALYBAABEBgAAAAAAAHAAYQB0AGMAaAAAAGQAZQBnAGUAbgBlAHIAYQB0AGUAXwBtAGEAcAAAAGQAZQBnAGUAbgBlAHIAYQB0AGUAXwBzAGUAdAAAAGUAZABnAGUAXwBzAGUAdAAAAGYAYQBjAGUAXwBtAGEAcABzAAAAZgBhAGMAZQBfAHMAaABpAGYAdABlAHIAAABtAGUAcwBoAF8AaQBuAGYAbwAAAHAAYQB0AGMAaABfAGgAZQBhAGQAZQByAAAAcwBlAGEAbQBzAF8AcwBlAHQAAAB3AGUAaQBnAGgAdABfAG0AYQBwAHMAAAAAAAAA8MAAABDBAAAAAAAAAAAAAPBAAAAQwQAAAAAAAAAAAAAQQQAA8MAAAAAAAAAAAAAAEEEAAPBAAAAAAAAAAAAAAPBAAAAQQQAAAAAAAAAAAADwwAAAEEEAAAAAAAAAAAAAEMEAAPBAAAAAAAAAAAAAABDBAADwwAAAAAAAAAAAAADwwAAAEMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAP8AAAAAAIAA/wAAAAAAgAD/AAAAAACAAP8AAAAAAIAA/wAAAAAAgAD/AAAAAACAAP8AAAAAAIAA/wAAAAAAgAD/AAAAAACAAP8AAAAAAIAA/wAAAAAAgAD/AAAAAACAAP8AAAAAAIAA/wAAAAAAgAD/AAAAAACAAP8AAAAAAIAA/wAAAAAAgAD/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAgAAAAIAAAALAAAAAAAAAAIAAAAAAAAAAAAAAAkAAAACAAAAAAAAAAgAAAAJAAAACwAAAA0AAAAPAAAAEQAAAAoAAAAQAAAADgAAAAwAAAABAQEBAQEBAQEBAQEBAQEBAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAJAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="/>
+						<mesh_primitive_type value="triangle"/>
+						<mesh_edge_method value="all_smooth"/>
+						<mesh_edge_by_angle value="true"/>
+						<mesh_edge_angle value="30."/>
+						<mesh_div_ahead value="false"/>
+						<mesh_div_method value="bezier"/>
+						<mesh_div_horz value="1"/>
+						<mesh_div_vert value="1"/>
+						<material0 value="material_half_plate"/>
+						<material1 value=""/>
+						<material2 value=""/>
+						<material3 value=""/>
+						<enable_collider value="false"/>
+						<enable_collider_all value="false"/>
+						<collider_classes value="1"/>
+						<collision_alpha value="255"/>
+						<col_div_horz value="1"/>
+						<col_div_vert value="1"/>
+						<freeze_mesh value="false"/>
+						<enable_bone value="false"/>
+						<bone_ref value=""/>
+						<instancing value="AAEAAAAAAABMAAAA9n8AAAEAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA//////wAAAAA="/>
+						<sort_instance value="false"/>
+						<controllers/>
+					</mesh_editor>
+				</children>
+				<edit_status bake2model_xflags="2C4" camera_pos_x="0." camera_pos_y="0."
+				   camera_pos_z="-100." camera_target_x="0." camera_target_y="0."
+				   camera_target_z="0." camera_top_x="0." camera_top_y="-1."
+				   camera_topt_z="0." current_frame="0" editor_camera="camera"
+				   end_view_frame="120" start_view_frame="0" view3d_hidden_edge="1"
+				   view3d_mesh_edge="1" view3d_multisampling="1" view3d_multithreading="1"
+				   view_center_x="-2.361833513" view_center_y="0.618575444"
+				   view_center_z="0." view_scale="0.056234131" wireframe_collision="0">
+					<state child="1" ctrl="1" item_id="&lt;root&gt;" tree="1"/>
+					<state child="1" ctrl="1" item_id="@local" tree="1"/>
+				</edit_status>
+			</space>
+		</composition>
+		<composition back_color="0" border_color="0" border_thickness_a="0."
+		   border_thickness_b="0." default_camera="" enable_fog="false"
+		   fill_back_color="true" fog_color="0" fog_far="10000." fog_near="0."
+		   frame_scale="1" frames_per_sec="60" id="Passing" pars_center_x="640."
+		   pars_center_y="360." perspective_far="1000."
+		   perspective_near="0.099999994" projection_pixel_aspect="1."
+		   projection_zoom="1." screen_height="720" screen_width="1280"
+		   screen_z="1108.512573242" total_frames="20" visible_far_distance="5000."
+		   visible_near_distance="100.">
+			<space id="Passing">
+				<color_mul value="255. 255. 255."/>
+				<color_add value="0. 0. 0."/>
+				<force_toon value="false"/>
+				<force_border value="false"/>
+				<camera_space value="false"/>
+				<layered_refl_map value="default"/>
+				<layered_refr_map value="default"/>
+				<screen_width value="1280"/>
+				<screen_height value="720"/>
+				<field_of_view value="59.999997475"/>
+				<orthogonal value="false"/>
+				<pixel_zoom value="1."/>
+				<pixel_aspect value="1."/>
+				<perspective_near_z value="0.099999994"/>
+				<perspective_far_z value="1000."/>
+				<frame_total_length value="20"/>
+				<frame_per_sec value="60."/>
+				<default_camera value=""/>
+				<use_back_color value="true"/>
+				<back_color value="0. 0. 0."/>
+				<back_alpha value="0."/>
+				<use_fog value="false"/>
+				<fog_color value="0. 0. 0."/>
+				<fog_near_z value="0."/>
+				<fog_far_z value="10000."/>
+				<border_color value="0. 0. 0."/>
+				<border_thickness_a value="0."/>
+				<border_thickness_b value="0."/>
+				<visible_near value="100."/>
+				<visible_far value="5000."/>
+				<controllers/>
+				<children>
+					<space id="@local">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<free_toon value="false"/>
+						<free_border value="false"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<space_ignore value="false"/>
+						<layered_space value="false"/>
+						<layered_priority value="0"/>
+						<layered_param value="0."/>
+						<layered_refl_map value="default"/>
+						<layered_refr_map value="default"/>
+						<layered_field value="false"/>
+						<layered_static_item1 value="false"/>
+						<layered_static_item2 value="false"/>
+						<layered_dynamic_item1 value="false"/>
+						<layered_dynamic_item2 value="false"/>
+						<layered_dynamic_item3 value="false"/>
+						<layered_effect_item value="false"/>
+						<controllers/>
+						<children>
+							<dynamic_camera id="camera">
+								<position value="0. 0. -110."/>
+								<global_space value="false"/>
+								<render_priority value="4"/>
+								<camera_target value="0. 0. 0."/>
+								<camera_top value="0. -1. 0."/>
+								<camera_hfov value="90."/>
+								<force_camera_fov value="false"/>
+								<camera_left_ear value="-1. 0. 1."/>
+								<camera_right_ear value="1. 0. 1."/>
+								<camera_ear_angle value="180."/>
+								<camera_back_volume value="0."/>
+								<controllers/>
+							</dynamic_camera>
+							<light id="light">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="vector"/>
+								<light_color value="255. 255. 255."/>
+								<light_brightness value="1."/>
+								<light_direction value="1. 1. 1."/>
+								<light_shadowmap value="true"/>
+								<shadowmap_width value="2048"/>
+								<shadowmap_height value="2048"/>
+								<shadowmap_pixel_density value="0.004882813"/>
+								<shadowmap_distance value="10."/>
+								<shadowmap_adj_by_camera value="true"/>
+								<shadowmap_camera_std_distance value="10."/>
+								<shadowmap_pers_near value="0.099999994"/>
+								<shadowmap_pers_far value="100."/>
+								<shadowmap_error_precision value="-12."/>
+								<shadowmap_error_sub_precision value="-12."/>
+								<shadowmap_filter_gauss value="0."/>
+								<shadowmap_cascade_count value="0"/>
+								<shadowmap_cascade_ratio value="3."/>
+								<shadowmap_cascade_length value="2."/>
+								<shadowmap_cascade_length_offset value="0."/>
+								<shadowmap_cascade_depth value="1."/>
+								<shadowmap_cascade_distance value="0."/>
+								<controllers/>
+							</light>
+							<light id="ambient">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="ambient"/>
+								<light_color value="128. 128. 128."/>
+								<light_brightness value="1."/>
+								<controllers/>
+							</light>
+						</children>
+					</space>
+					<model id="static_model">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1.">
+							<sequencer interpolation="linear">
+								<default value="1. 1. 1."/>
+								<keyframe flags="" frame="0" in_speed="1." out_speed="1."
+								   value="1. 1. 1."/>
+								<keyframe flags="" frame="20" in_speed="1." out_speed="1."
+								   value="3.813333333 3.813333333 3.813333333"/>
+							</sequencer>
+						</zoom>
+						<transparency value="0.">
+							<sequencer interpolation="linear">
+								<default value="0."/>
+								<keyframe flags="" frame="0" in_speed="1." out_speed="1." value="0."/>
+								<keyframe flags="" frame="20" in_speed="1." out_speed="1." value="1."/>
+							</sequencer>
+						</transparency>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="effect_item"/>
+						<render_priority value="4"/>
+						<model value="model_checkpoint"/>
+						<collider_model value=""/>
+						<collider_flag value="3"/>
+						<controllers/>
+					</model>
+				</children>
+				<edit_status bake2model_xflags="2C4" camera_pos_x="0." camera_pos_y="0."
+				   camera_pos_z="-100." camera_target_x="0." camera_target_y="0."
+				   camera_target_z="0." camera_top_x="0." camera_top_y="-1."
+				   camera_topt_z="0." current_frame="0" editor_camera="camera"
+				   end_view_frame="20" start_view_frame="0" view3d_hidden_edge="1"
+				   view3d_mesh_edge="1" view3d_multisampling="1" view3d_multithreading="1"
+				   view_center_x="0." view_center_y="0." view_center_z="0."
+				   view_scale="0.562341313" wireframe_collision="0">
+					<state child="1" ctrl="1" item_id="&lt;root&gt;" tree="0"/>
+					<state child="1" ctrl="1" item_id="@local" tree="1"/>
+				</edit_status>
+			</space>
+		</composition>
+		<composition back_color="0" border_color="0" border_thickness_a="0."
+		   border_thickness_b="0." default_camera="" enable_fog="false"
+		   fill_back_color="true" fog_color="0" fog_far="10000." fog_near="0."
+		   frame_scale="1" frames_per_sec="60" id="Plane" pars_center_x="640."
+		   pars_center_y="360." perspective_far="1000."
+		   perspective_near="0.099999994" projection_pixel_aspect="1."
+		   projection_zoom="1." screen_height="720" screen_width="1280"
+		   screen_z="1108.512573242" total_frames="120" visible_far_distance="5000."
+		   visible_near_distance="100.">
+			<space id="Plane">
+				<color_mul value="255. 255. 255."/>
+				<color_add value="0. 0. 0."/>
+				<force_toon value="false"/>
+				<force_border value="false"/>
+				<camera_space value="false"/>
+				<layered_refl_map value="default"/>
+				<layered_refr_map value="default"/>
+				<screen_width value="1280"/>
+				<screen_height value="720"/>
+				<field_of_view value="59.999997475"/>
+				<orthogonal value="false"/>
+				<pixel_zoom value="1."/>
+				<pixel_aspect value="1."/>
+				<perspective_near_z value="0.099999994"/>
+				<perspective_far_z value="1000."/>
+				<frame_total_length value="120"/>
+				<frame_per_sec value="60."/>
+				<default_camera value=""/>
+				<use_back_color value="true"/>
+				<back_color value="0. 0. 0."/>
+				<back_alpha value="0."/>
+				<use_fog value="false"/>
+				<fog_color value="0. 0. 0."/>
+				<fog_near_z value="0."/>
+				<fog_far_z value="10000."/>
+				<border_color value="0. 0. 0."/>
+				<border_thickness_a value="0."/>
+				<border_thickness_b value="0."/>
+				<visible_near value="100."/>
+				<visible_far value="5000."/>
+				<controllers/>
+				<children>
+					<space id="@local">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<force_toon value="false"/>
+						<force_border value="false"/>
+						<free_toon value="false"/>
+						<free_border value="false"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<space_ignore value="false"/>
+						<layered_space value="false"/>
+						<layered_priority value="0"/>
+						<layered_param value="0."/>
+						<layered_refl_map value="default"/>
+						<layered_refr_map value="default"/>
+						<layered_field value="false"/>
+						<layered_static_item1 value="false"/>
+						<layered_static_item2 value="false"/>
+						<layered_dynamic_item1 value="false"/>
+						<layered_dynamic_item2 value="false"/>
+						<layered_dynamic_item3 value="false"/>
+						<layered_effect_item value="false"/>
+						<controllers/>
+						<children>
+							<dynamic_camera id="camera">
+								<position value="0. -6.5 -20.5"/>
+								<global_space value="false"/>
+								<render_priority value="4"/>
+								<camera_target value="0. 0. 0."/>
+								<camera_top value="0. -1. 0."/>
+								<camera_hfov value="90."/>
+								<force_camera_fov value="false"/>
+								<camera_left_ear value="-1. 0. 1."/>
+								<camera_right_ear value="1. 0. 1."/>
+								<camera_ear_angle value="180."/>
+								<camera_back_volume value="0."/>
+								<controllers/>
+							</dynamic_camera>
+							<light id="light">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="vector"/>
+								<light_color value="255. 255. 255."/>
+								<light_brightness value="1."/>
+								<light_direction value="0.832224011 0.548856378 0.07848534"/>
+								<light_shadowmap value="true"/>
+								<shadowmap_width value="2048"/>
+								<shadowmap_height value="2048"/>
+								<shadowmap_pixel_density value="0.004882813"/>
+								<shadowmap_distance value="10."/>
+								<shadowmap_adj_by_camera value="true"/>
+								<shadowmap_camera_std_distance value="10."/>
+								<shadowmap_pers_near value="0.099999994"/>
+								<shadowmap_pers_far value="100."/>
+								<shadowmap_error_precision value="-12."/>
+								<shadowmap_error_sub_precision value="-12."/>
+								<shadowmap_filter_gauss value="0."/>
+								<shadowmap_cascade_count value="0"/>
+								<shadowmap_cascade_ratio value="3."/>
+								<shadowmap_cascade_length value="2."/>
+								<shadowmap_cascade_length_offset value="0."/>
+								<shadowmap_cascade_depth value="1."/>
+								<shadowmap_cascade_distance value="0."/>
+								<controllers/>
+							</light>
+							<light id="ambient">
+								<position value="0. 0. 0."/>
+								<visible value="true"/>
+								<global_space value="false"/>
+								<camera_shift value="false"/>
+								<camera_space value="false"/>
+								<hide_near value="false"/>
+								<hide_far value="false"/>
+								<render_priority value="4"/>
+								<light_type value="ambient"/>
+								<light_color value="128. 128. 128."/>
+								<light_brightness value="1."/>
+								<controllers/>
+							</light>
+						</children>
+					</space>
+					<mesh_editor id="mesh_editor">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="static_item1"/>
+						<render_priority value="4"/>
+						<mesh_editor value="EAIAAAAAAABgFAAAAAAAAAMAAAAgAAAA4AsAAAAMAAAwBAAAMBAAADAEAAAAAAAABAAAAOwAAAAAAAAAJAAAAAAAAADYCwAADQAAAAAAAAAAAAAA0AEAAEACAAABAAAAAAAAABAEAABAAgAAAgAAAAAAAABQBgAAIAEAAAMAAAAAAAAAcAcAACABAAAEAAAA+AAAAJAIAACQAAAABAAAABYBAAAgCQAAWAAAAAQAAAA0AQAAeAkAAAAAAAAEAAAARgEAAHgJAAAkAAAABAAAAFoBAACcCQAAJAAAAAQAAAB0AQAAwAkAABAAAAAEAAAAiAEAANAJAABAAAAABAAAAKIBAAAQCgAAyAEAAAQAAAC2AQAA2AsAAAAAAABwAGEAdABjAGgAAABkAGUAZwBlAG4AZQByAGEAdABlAF8AbQBhAHAAAABkAGUAZwBlAG4AZQByAGEAdABlAF8AcwBlAHQAAABlAGQAZwBlAF8AcwBlAHQAAABmAGEAYwBlAF8AbQBhAHAAcwAAAGYAYQBjAGUAXwBzAGgAaQBmAHQAZQByAAAAbQBlAHMAaABfAGkAbgBmAG8AAABwAGEAdABjAGgAXwBoAGUAYQBkAGUAcgAAAHMAZQBhAG0AcwBfAHMAZQB0AAAAdwBlAGkAZwBoAHQAXwBtAGEAcABzAAAAAACZmZm+NDNTwDIzB0EAAAAAmZmZPjQzU8AyMwdBAAAAAJmZmT6S+zjAMjMHQQAAAACnOA4+kvs4wDIzB0EAAAAAyS8WPmZmJsAxMwdBAAAAAMkvFr5mZibAMTMHQQAAAACnOA6+kvs4wDIzB0EAAAAAmZmZvpL7OMAyMwdBAAAAAJmZmb40M1PAMjMHQQAAAABmZua/NDNTwNDMtEAAAAAAZmbmPzQzU8DQzLRAAAAAAGZm5j+amSnA0My0QAAAAAAAAIA+mpkpwNDMtEAAAAAAAACAPpOZUb/QzLRAAAAAAAAAgL6TmVG/0My0QAAAAAAAAIC+mpkpwNDMtEAAAAAAZmbmv5qZKcDQzLRAAAAAAGZm5r80M1PA0My0QAAAAACNlMa/3mVDwNDMtEAAAAAAjZTGP95lQ8DQzLRAAAAAAI2Uxj8WjTjA0My0QAAAAADn8uI9Fo04wNDMtEAAAAAA5/LiPW1mir/QzLRAAAAAAOfy4r1tZoq/0My0QAAAAADn8uK9Fo04wNDMtEAAAAAAjZTGvxaNOMDQzLRAAAAAAI2Uxr/eZUPA0My0QAAAAAAAAODAzsxMwGRmrsAAAAAAAADgQM7MTMBkZq7AAAAAAAAA4EDOzCzAZGauwAAAAAAAAAA/zswswGRmrsAAAAAAAAAAP5qZqUBkZq7AAAAAAAAAAL+amalAZGauwAAAAAAAAAC/zswswGRmrsAAAAAAAADgwM7MLMBkZq7AAAAAAAAA4MDOzEzAZGauwAAAAAAAAAAAAACAvwAAAAAAAAAAnJAfP/QENb9o9qo+AAAAAOZvHD8c0jA/3/fFPgAAAADMLzY/LKgyP9UPpT0AAAAAFNI0P9u1FT/4OMw+AAAAAG1hNL85NRU/WjrPPgAAAAC6JTa/6HwyP1X1sj0AAAAA5m8cvxzSMD/h98U+AAAAAKqoYb+RYNYyD8fxPgAAAACVBAW/zEHbvpZFPb8AAAAApJbePk2E/L4T5UC/AAAAAPEE5j7O/gE/6yw8vwAAAAAC0dk+qpjVPjiYTb8AAAAAXDkEPyLz2j556j2/AAAAANa0BL+Qi9s+L2g9vwAAAABAgtq+ah7WPl1GTb8AAAAA7wTmvs3+AT/rLDy/AAAAAJUEBb/MQdu+lkU9vwAAAAAuMAO/QwrcvpxRPr8AAAAAA1/gPjTs+b4LOUG/AAAAALOl4D7KN/o+CQxBvwAAAAB3j9Q+dKnUPq80T78AAAAAEYgBP3i74D4tFT6/AAAAABGIAb94u+A+LRU+vwAAAAB3j9S+dKnUPq80T78AAAAAsqXgvso3+j4KDEG/AAAAAC4wA79DCty+nFE+vwAAAAAAAAAARPp/v37SWDwAAAAAwAYiP2B6NL/U16M+AAAAAMDoIT+wVjQ/veqkPgAAAAAU2zQ/MfE0P8dYFT0AAAAAUFkzP/CUGz/qdb8+AAAAAFBZM7/wlBs/6nW/PgAAAAAU2zS/MfE0P8dYFT0AAAAAv+ghv7BWND+96qQ+AAAAAJfOZb8AAAAAp5vhPgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAAAD///8AAAAAAP///wAAAAAA////AAAAAAD///8AAAAAAP///wAAAAAA////AAAAAAD///8AAAAAAP///wAAAAD/pgD/AAAAAP+mAP8AAAAA/6YA/wAAAAD/pgD/AAAAAP+mAP8AAAAA/6YA/wAAAAD/pgD/AAAAAP+mAP8AAAAA/6YA/wAAAAD/wTH/AAAAAP/BMf8AAAAA/8Ex/wAAAAD/wTH/AAAAAP/BMf8AAAAA/8Ex/wAAAAD/wTH/AAAAAP/BMf8AAAAA/8Ex/wAAAAD09P//AAAAAPT0//8AAAAA9PT//wAAAAD09P//AAAAAPT0//8AAAAA9PT//wAAAAD09P//AAAAAPT0//8AAAAA9PT//wAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAEAAAACAAAAAAAAAACAAAAAAAAAAAAAAACAAAAAgAAAAEAAAACAAAABAAAAAEAAAACAAAABgAAABIAAAAaAAAACQAAABEAAAAbAAAAIwAAAAAAAAAIAAAAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAJAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAACAAAAAAAAAAAAAAACAAAAAgAAAAAAAAACAAAABAAAAAAAAAACAAAABgAAAAAAAAACAAAACAAAAAAAAAACAAAA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"/>
+						<mesh_primitive_type value="triangle"/>
+						<mesh_edge_method value="all_flat"/>
+						<mesh_edge_by_angle value="true"/>
+						<mesh_edge_angle value="30."/>
+						<mesh_div_ahead value="false"/>
+						<mesh_div_method value="bezier"/>
+						<mesh_div_horz value="1"/>
+						<mesh_div_vert value="1"/>
+						<material0 value="material_plane"/>
+						<material1 value=""/>
+						<material2 value=""/>
+						<material3 value=""/>
+						<enable_collider value="false"/>
+						<enable_collider_all value="false"/>
+						<collider_classes value="1"/>
+						<collision_alpha value="255"/>
+						<col_div_horz value="1"/>
+						<col_div_vert value="1"/>
+						<freeze_mesh value="false"/>
+						<enable_bone value="false"/>
+						<bone_ref value=""/>
+						<instancing value="AAEAAAAAAABMAAAA9n8AAAEAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIA//////wAAAAA="/>
+						<sort_instance value="false"/>
+						<controllers/>
+					</mesh_editor>
+				</children>
+				<edit_status bake2model_xflags="2C4" camera_pos_x="7.470899193"
+				   camera_pos_y="-12.753934872" camera_pos_z="-24.58795098"
+				   camera_target_x="1.980377781" camera_target_y="-0.847802123"
+				   camera_target_z="3.083662589" camera_top_x="-0.085152254"
+				   camera_top_y="-0.993457501" camera_topt_z="0.076100506"
+				   current_frame="0" editor_camera="" end_view_frame="120"
+				   start_view_frame="0" view3d_hidden_edge="1" view3d_mesh_edge="1"
+				   view3d_multisampling="1" view3d_multithreading="1"
+				   view_center_x="1.449644529" view_center_y="-0.85685111"
+				   view_center_z="-8.160441398" view_scale="0.056234131"
+				   wireframe_collision="0">
+					<state child="1" ctrl="1" item_id="&lt;root&gt;" tree="1"/>
+					<state child="1" ctrl="1" item_id="@local" tree="1"/>
+				</edit_status>
+			</space>
+		</composition>
+		<composition back_color="0" border_color="0" border_thickness_a="0."
+		   border_thickness_b="0." default_camera="camera" enable_fog="false"
+		   fill_back_color="true" fog_color="0" fog_far="10000." fog_near="0."
+		   frame_scale="1" frames_per_sec="60" id="Title" pars_center_x="640."
+		   pars_center_y="360." perspective_far="1000."
+		   perspective_near="0.099999994" projection_pixel_aspect="1."
+		   projection_zoom="1." screen_height="720" screen_width="1280"
+		   screen_z="834.064208984" total_frames="120" visible_far_distance="5000."
+		   visible_near_distance="100.">
+			<space id="Title">
+				<color_mul value="255. 255. 255."/>
+				<color_add value="0. 0. 0."/>
+				<force_toon value="false"/>
+				<force_border value="false"/>
+				<camera_space value="false"/>
+				<layered_refl_map value="default"/>
+				<layered_refr_map value="default"/>
+				<screen_width value="1280"/>
+				<screen_height value="720"/>
+				<field_of_view value="75."/>
+				<orthogonal value="false"/>
+				<pixel_zoom value="1."/>
+				<pixel_aspect value="1."/>
+				<perspective_near_z value="0.099999994"/>
+				<perspective_far_z value="1000."/>
+				<frame_total_length value="120"/>
+				<frame_per_sec value="60."/>
+				<default_camera value="camera"/>
+				<use_back_color value="true"/>
+				<back_color value="0. 0. 0."/>
+				<back_alpha value="0."/>
+				<use_fog value="false"/>
+				<fog_color value="0. 0. 0."/>
+				<fog_near_z value="0."/>
+				<fog_far_z value="10000."/>
+				<border_color value="0. 0. 0."/>
+				<border_thickness_a value="0."/>
+				<border_thickness_b value="0."/>
+				<visible_near value="100."/>
+				<visible_far value="5000."/>
+				<controllers/>
+				<children>
+					<dynamic_camera id="camera">
+						<position value="12. 0. 0."/>
+						<global_space value="false"/>
+						<render_priority value="4"/>
+						<camera_target value="0. 0. 0."/>
+						<camera_top value="0. -1. 0."/>
+						<camera_hfov value="90."/>
+						<force_camera_fov value="false"/>
+						<camera_left_ear value="-1. 0. 1."/>
+						<camera_right_ear value="1. 0. 1."/>
+						<camera_ear_angle value="180."/>
+						<camera_back_volume value="0."/>
+						<controllers>
+							<avfl_fly_through id="avfl_fly_through">
+								<m_vDirection value="-1. 0. 0."/>
+								<m_mpsSpeed value="200."/>
+							</avfl_fly_through>
+						</controllers>
+					</dynamic_camera>
+					<light id="light">
+						<position value="0. 0. 0."/>
+						<visible value="true"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<render_priority value="4"/>
+						<light_type value="vector"/>
+						<light_color value="255. 255. 255."/>
+						<light_brightness value="1."/>
+						<light_direction value="1. 1. 1."/>
+						<light_shadowmap value="true"/>
+						<shadowmap_width value="2048"/>
+						<shadowmap_height value="2048"/>
+						<shadowmap_pixel_density value="0.004882813"/>
+						<shadowmap_distance value="10."/>
+						<shadowmap_adj_by_camera value="true"/>
+						<shadowmap_camera_std_distance value="10."/>
+						<shadowmap_pers_near value="0.099999994"/>
+						<shadowmap_pers_far value="100."/>
+						<shadowmap_error_precision value="-12."/>
+						<shadowmap_error_sub_precision value="-12."/>
+						<shadowmap_filter_gauss value="0."/>
+						<shadowmap_cascade_count value="0"/>
+						<shadowmap_cascade_ratio value="3."/>
+						<shadowmap_cascade_length value="2."/>
+						<shadowmap_cascade_length_offset value="0."/>
+						<shadowmap_cascade_depth value="1."/>
+						<shadowmap_cascade_distance value="0."/>
+						<controllers/>
+					</light>
+					<light id="ambient">
+						<position value="0. 0. 0."/>
+						<visible value="true"/>
+						<global_space value="false"/>
+						<camera_shift value="false"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<render_priority value="4"/>
+						<light_type value="ambient"/>
+						<light_color value="128. 128. 128."/>
+						<light_brightness value="1."/>
+						<controllers/>
+					</light>
+					<mesh_buffer id="sky_sphere">
+						<position value="0. 0. 0."/>
+						<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<zoom value="1. 1. 1."/>
+						<transparency value="0."/>
+						<color_mul value="255. 255. 255."/>
+						<color_add value="0. 0. 0."/>
+						<visible value="true"/>
+						<use_collision value="false"/>
+						<global_space value="false"/>
+						<camera_shift value="true"/>
+						<camera_space value="false"/>
+						<hide_near value="false"/>
+						<hide_far value="false"/>
+						<item_class value="backscape"/>
+						<render_priority value="4"/>
+						<dynamic_mesh value="static"/>
+						<material_count value="1"/>
+						<material value="material_skybox"/>
+						<mesh_data value="AAIAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="/>
+						<enable_collider value="false"/>
+						<collider_classes value="1"/>
+						<collision_alpha value="255"/>
+						<visible_mask value="15"/>
+						<collider_mask value="15"/>
+						<enable_instancing value="false"/>
+						<instancing value=""/>
+						<instance_rotate value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+						<instance_zoom value="1. 1. 1."/>
+						<sorting_method value="no_sorting"/>
+						<culling_method value="no_culling"/>
+						<culling_near_z value="0."/>
+						<culling_far_z value="10000."/>
+						<culling_offset value="0."/>
+						<culling_angle_gap value="0."/>
+						<controllers>
+							<simple_mesh_builder id="standard_mesh">
+								<shape_type value="sphere"/>
+								<back_face value="true"/>
+								<position value="0. 0. 0."/>
+								<rotation value="1. 0. 0. 0. 1. 0. 0. 0. 1."/>
+								<zoom value="1. 1. 1."/>
+								<radius value="1000."/>
+								<horz_div value="16"/>
+								<vert_div value="16"/>
+								<start_latitude value="0."/>
+								<range_latitude value="360."/>
+								<start_longitude value="0."/>
+								<range_longitude value="180."/>
+								<uv_atlas value=""/>
+								<uv_scale value="1. 1."/>
+								<uv_offset value="0. 0."/>
+								<color_mul value="255. 255. 255."/>
+								<color_add value="0. 0. 0."/>
+								<alpha_master value="1."/>
+								<alpha_center value="1."/>
+								<alpha_top value="1."/>
+								<alpha_bottom value="1."/>
+								<alpha_left value="1."/>
+								<alpha_right value="1."/>
+							</simple_mesh_builder>
+							<avfl_ray_adjuster id="avfl_ray_adjuster"/>
+							<user_shader id="user_shader1">
+								<shader_id value="sky_march.shddsc"/>
+								<target_class value="allways"/>
+								<ufid_u_fpAttenuation value="0.01"/>
+								<ufid_u_fpUnitDistance value="270.973"/>
+								<ufid_u_rgbScattering value="101. 119. 255."/>
+								<ufid_u_fpScattering value="0."/>
+								<ufid_u_rgbBackgroundUp value="0. 73. 196."/>
+								<ufid_u_rgbBackgroundUnder value="0. 47.8125 127.5"/>
+								<ufid_u_fpAirThickness value="1000."/>
+								<ufid_u_texBackScape value=""/>
+								<ufid_u_fpBackScape value="0."/>
+								<ufid_u_fpBackScapeRot value="0."/>
+								<ufid_u_texCloud value="perlin_image"/>
+								<ufid_u_vCloudTexOffset value="0. 0. 0."/>
+								<ufid_u_fpCloudScale value="5187."/>
+								<ufid_u_fpCloudScale2 value="3.8015"/>
+								<ufid_u_yCloudAltitude value="1592."/>
+								<ufid_u_hCloudThickness value="7345."/>
+								<ufid_u_fpCloudLowFade value="0.255"/>
+								<ufid_u_fpCloudTopFade value="0.3"/>
+								<ufid_u_fpDensityBais value="0.57"/>
+								<ufid_u_rgbCloud value="255. 255. 255."/>
+								<ufid_u_rgbCloudShade value="119. 148. 191."/>
+								<ufid_u_fpCloudFade value="30000."/>
+								<ufid_u_vTerrainScale value="4000. 300. 4000."/>
+								<ufid_u_vTerrainOffset value="0. 600. 0."/>
+								<ufid_u_texTerrain value="perlin_image1"/>
+								<ufid_u_rgbTerrainBase value="57. 117. 109."/>
+								<ufid_u_rgbTerrainBase2 value="176. 178. 137."/>
+								<ufid_u_fpTerrainLowBand value="0.04"/>
+								<ufid_u_rgbTerrainBase3 value="66. 93. 144."/>
+								<ufid_u_fpTerrainHighBand value="0.396"/>
+								<ufid_u_fpTerrainFogZ value="100000."/>
+								<ufid_u_fpCloudShadow value="0.617"/>
+								<ufid_u_fpAmbient value="0.201"/>
+								<ufid_u_flagWaterSurface value="true"/>
+								<ufid_u_fpTideLevel value="431."/>
+								<ufid_u_rgbWaterColor value="13. 14. 40."/>
+								<ufid_u_fpWaterReflect value="0.624"/>
+								<ufid_u_vLightDir value="0.259291748 0.854444269 0.450214149"/>
+								<ufid_u_fpBrightness value="1."/>
+								<ufid_u_nRayCloud value="200"/>
+								<ufid_u_nRayTerrain value="100"/>
+								<ufid_u_rgbBackground value="0. 47.8125 127.5"/>
+								<ufid_m_fpCloudScale value="10000."/>
+								<ufid_m_yCloudAltitude value="2000."/>
+								<ufid_m_hCloudThickness value="8000."/>
+								<ufid_m_fpDensityBais value="0.611"/>
+							</user_shader>
+						</controllers>
+					</mesh_buffer>
+				</children>
+				<edit_status bake2model_xflags="2C4" camera_pos_x="0." camera_pos_y="0."
+				   camera_pos_z="-100." camera_target_x="0." camera_target_y="0."
+				   camera_target_z="0." camera_top_x="0." camera_top_y="-1."
+				   camera_topt_z="0." current_frame="0" editor_camera="camera"
+				   end_view_frame="120" start_view_frame="0" view3d_hidden_edge="1"
+				   view3d_mesh_edge="1" view3d_multisampling="1" view3d_multithreading="1"
+				   view_center_x="0." view_center_y="0." view_center_z="0."
+				   view_scale="0.056234131" wireframe_collision="0">
+					<state child="1" ctrl="1" item_id="&lt;root&gt;" tree="1"/>
+					<state child="1" ctrl="1" item_id="camera" tree="1"/>
+					<state child="1" ctrl="1" item_id="sky_sphere" tree="1"/>
+				</edit_status>
+			</space>
+		</composition>
+	</compositions>
+	<edit_status auto_keyframe="1" def_scene_scale="1" grid_unit="1." grip="1"
+	   mesh_grip="1" path_dir="" run_fix_timer="1" user_grid_unit="10."
+	   user_grip="0" uv_grid_unit="1." uv_grip="1" view_mode="xyz_3d" view_uv="0"
+	   vr_floor_level="0" vr_hmd_scale="1." vr_method="nothing"/>
+	<edit_composition_order>
+		<entry id="AvoidanceFlight"/>
+		<entry id="Title"/>
+		<entry id="Plane"/>
+		<entry id="Box"/>
+		<entry id="CheckPoint"/>
+		<entry id="Bomb"/>
+		<entry id="Passing"/>
+	</edit_composition_order>
+</scene>

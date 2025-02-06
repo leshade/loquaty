@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneItemInstanceRef</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneItemInstanceRef</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneItemInstanceRef ;</div>
+<div class="normal">
+アイテム／インスタンス参照<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneItemInstanceRef.xhtml">EntisGLS4.SceneItemInstanceRef</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneItemInstanceRef">SceneItemInstanceRef</a><br/>
+	<a href="#virtual_correctInstance">correctInstance</a><br/>
+	<a href="#virtual_deleteInstance">deleteInstance</a><br/>
+	<a href="#virtual_getInstanceIndex">getInstanceIndex</a><br/>
+	<a href="#virtual_getInstanceMatrix">getInstanceMatrix</a><br/>
+	<a href="#virtual_getRefItem">getRefItem</a><br/>
+	<a href="#virtual_isEmpty">isEmpty</a><br/>
+	<a href="#virtual_isEqual">isEqual</a><br/>
+	<a href="#virtual_isInstance">isInstance</a><br/>
+	<a href="#virtual_releaseRef">releaseRef</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneItemInstanceRef"/>
+<div class="headline">SceneItemInstanceRef</div>
+<div class="usage">public native SceneItemInstanceRef( const EntisGLS4.SceneItemInstanceRef ref )</div>
+<div class="normal">
+SceneItemInstanceRef 複製構築<br/></div>
+<br/>
+<div class="headline">SceneItemInstanceRef</div>
+<div class="usage">public native SceneItemInstanceRef( EntisGLS4.SceneItem item, ulong instance = 0 )</div>
+<div class="normal">
+SceneItemInstanceRef 構築<br/></div>
+<br/>
+
+<a name="virtual_correctInstance"/>
+<div class="headline">correctInstance</div>
+<div class="usage">public native boolean correctInstance( )</div>
+<div class="normal">
+異なるフレームにおいて getInstanceMatrix する前に情報を修正する</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+参照先が有効な場合 true。そうでない場合 false。</div>
+</div>
+<div class="indent1">
+参照先が有効かどうかは isEmpty 関数だけでは必ずしも正確ではありません。<br/>参照先がサブコンポジション内のアイテムの場合、deleteInstance 等で削除されても（オブジェクト・プールの影響で） isEmpty は false を返すかもしれません。</div><br/>
+<br/>
+
+<a name="virtual_deleteInstance"/>
+<div class="headline">deleteInstance</div>
+<div class="usage">public native boolean deleteInstance( )</div>
+<div class="normal">
+参照先インスタンスを削除する</div>
+<br/>
+<div class="indent1">
+アイテムの場合には遅延削除します。サブコンポジション内のアイテムの場合にはサブコンポジション・インスタンスを遅延削除します</div><br/>
+<br/>
+
+<a name="virtual_getInstanceIndex"/>
+<div class="headline">getInstanceIndex</div>
+<div class="usage">public native long getInstanceIndex( ) const</div>
+<div class="normal">
+インスタンス指標取得</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+インスタンス参照の場合、インスタンスの指標。この値は構築時の指標と異なる場合があります（別のインスタンスの挿入／削除等により）。<br/>インスタンス参照でない場合 -1。</div>
+</div>
+<br/>
+
+<a name="virtual_getInstanceMatrix"/>
+<div class="headline">getInstanceMatrix</div>
+<div class="usage">public native boolean getInstanceMatrix( Matrix4* matrix, EntisGLS4.ColorMulAdd* color )</div>
+<div class="normal">
+安全に現在のフレームでのインスタンス行列（ローカル）を取得<br/></div>
+<br/>
+
+<a name="virtual_getRefItem"/>
+<div class="headline">getRefItem</div>
+<div class="usage">public native EntisGLS4.SceneItem getRefItem( ) const</div>
+<div class="normal">
+参照先アイテム取得<br/></div>
+<br/>
+
+<a name="virtual_isEmpty"/>
+<div class="headline">isEmpty</div>
+<div class="usage">public native boolean isEmpty( ) const</div>
+<div class="normal">
+参照先がなくなったか？</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+参照先が削除された場合には true、それ以外の場合には fakse</div>
+</div>
+<div class="indent1">
+参照先が削除されても、サブコンポジションなどでオブジェクトがプールされている場合、削除されたにもかかわらず false を返す可能性があります。<br/>より正確な判定のためには、フレーム毎に correctInstance を呼び出す必要があります。</div><br/>
+<br/>
+
+<a name="virtual_isEqual"/>
+<div class="headline">isEqual</div>
+<div class="usage">public native boolean isEqual( const EntisGLS4.SceneItemInstanceRef ref ) const</div>
+<div class="normal">
+参照先が同一か？<br/></div>
+<br/>
+
+<a name="virtual_isInstance"/>
+<div class="headline">isInstance</div>
+<div class="usage">public native boolean isInstance( ) const</div>
+<div class="normal">
+インスタンス参照か？<br/></div>
+<br/>
+
+<a name="virtual_releaseRef"/>
+<div class="headline">releaseRef</div>
+<div class="usage">public native void releaseRef( )</div>
+<div class="normal">
+参照解放<br/></div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public native EntisGLS4.SceneItemInstanceRef operator :=( const EntisGLS4.SceneItemInstanceRef ref )</div>
+<div class="normal">
+代入<br/></div>
+<br/>
+<br/><br/>
+</body>
+</html>

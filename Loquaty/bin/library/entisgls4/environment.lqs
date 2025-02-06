@@ -1,0 +1,15 @@
+﻿
+namespace	EntisGLS4
+{
+	class	Environment	extends NativeObject
+	{
+		// Environment 構築
+		public native Environment() ;
+
+		// 環境定義ファイル読み込み
+		public native boolean loadEnvironment( String file ) ;
+	}
+
+}
+
+

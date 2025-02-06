@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.VertexBuffer.MeshInfo</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.VertexBuffer.MeshInfo</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class MeshInfo ;</div>
+<div class="normal">
+メッシュ情報<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="EntisGLS4.VertexBuffer.MeshInfo.xhtml">EntisGLS4.VertexBuffer.MeshInfo</a>
+</div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_pMaterial">pMaterial</a><br/>
+	<a href="#member_pvVertex">pvVertex</a><br/>
+	<a href="#member_pvNormal">pvNormal</a><br/>
+	<a href="#member_pvUVMap">pvUVMap</a><br/>
+	<a href="#member_pColor">pColor</a><br/>
+	<a href="#member_pIndexedList">pIndexedList</a><br/>
+	<a href="#member_pfpExAttrElements">pfpExAttrElements</a><br/>
+	<a href="#member_typeMesh">typeMesh</a><br/>
+	<a href="#member_countPrimitive">countPrimitive</a><br/>
+	<a href="#member_countVertex">countVertex</a><br/>
+	<a href="#member_vCenter">vCenter</a><br/>
+	<a href="#member_fpRadius">fpRadius</a><br/>
+	<a href="#member_nExAttrElements">nExAttrElements</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_pMaterial"/>
+<div class="headline">pMaterial</div>
+<div class="usage">public EntisGLS4.Material&#9; pMaterial</div>
+<div class="normal">
+マテリアル<br/></div>
+<br/>
+<a name="member_pvVertex"/>
+<div class="headline">pvVertex</div>
+<div class="usage">public Vector4*&#9; pvVertex</div>
+<div class="normal">
+頂点座標を受け取る Vector4 配列 [nCopyVertices]<br/></div>
+<br/>
+<a name="member_pvNormal"/>
+<div class="headline">pvNormal</div>
+<div class="usage">public Vector4*&#9; pvNormal</div>
+<div class="normal">
+法線を受け取る Vector4 配列 [nCopyVertices]<br/></div>
+<br/>
+<a name="member_pvUVMap"/>
+<div class="headline">pvUVMap</div>
+<div class="usage">public Vector2*&#9; pvUVMap</div>
+<div class="normal">
+UV 座標を受け取る Vector2 配列 [nCopyVertices]<br/></div>
+<br/>
+<a name="member_pColor"/>
+<div class="headline">pColor</div>
+<div class="usage">public EntisGLS4.ColorMulAdd*&#9; pColor</div>
+<div class="normal">
+頂点色を受け取る ColorMulAdd 配列 [nCopyVertices]<br/></div>
+<br/>
+<a name="member_pIndexedList"/>
+<div class="headline">pIndexedList</div>
+<div class="usage">public uint*&#9; pIndexedList</div>
+<div class="normal">
+頂点インデックスを受け取る uint 配列 [countPrimitive*X]<br/></div>
+<br/>
+<a name="member_pfpExAttrElements"/>
+<div class="headline">pfpExAttrElements</div>
+<div class="usage">public float*&#9; pfpExAttrElements</div>
+<div class="normal">
+拡張属性要素を受け取る float 配列 [nCopyVertices*nExAttrElements]<br/></div>
+<br/>
+<a name="member_typeMesh"/>
+<div class="headline">typeMesh</div>
+<div class="usage">public EntisGLS4.PrimitiveType&#9; typeMesh = 0</div>
+<div class="normal">
+プリミティブ・タイプ<br/></div>
+<br/>
+<a name="member_countPrimitive"/>
+<div class="headline">countPrimitive</div>
+<div class="usage">public uint&#9; countPrimitive = 0</div>
+<div class="normal">
+プリミティブ数<br/></div>
+<br/>
+<a name="member_countVertex"/>
+<div class="headline">countVertex</div>
+<div class="usage">public uint&#9; countVertex = 0</div>
+<div class="normal">
+頂点数<br/></div>
+<br/>
+<a name="member_vCenter"/>
+<div class="headline">vCenter</div>
+<div class="usage">public Vector3&#9; vCenter = {x: 0.,y: 0.,z: 0.}</div>
+<div class="normal">
+中心点座標<br/></div>
+<br/>
+<a name="member_fpRadius"/>
+<div class="headline">fpRadius</div>
+<div class="usage">public float&#9; fpRadius = 0.</div>
+<div class="normal">
+外接球半径<br/></div>
+<br/>
+<a name="member_nExAttrElements"/>
+<div class="headline">nExAttrElements</div>
+<div class="usage">public uint&#9; nExAttrElements = 0</div>
+<div class="normal">
+拡張属性要素数<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

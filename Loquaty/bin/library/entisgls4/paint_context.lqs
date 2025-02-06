@@ -1,0 +1,277 @@
+﻿
+@include "image.lqs"
+
+
+namespace	EntisGLS4
+{
+	//////////////////////////////////////////////////////////////////////////
+	// 描画パラメータ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	PaintParam
+	{
+		enum using PaintFlag<uint>
+		{
+			// 描画フラグ：色加算
+			applyColorAdd	= 0x00800000,
+			// 描画フラグ：色乗算
+			applyColorMul	= 0x00820000,
+			// 描画フラグ：入力画像のαチャネルで RGB チャネルを乗算
+			applyAlphaMul	= 0x00880000,
+			// 描画フラグ：入力画像と色パラメータの RGB が一致するピクセルを透明にする
+			applyColorMask	= 0x00890000,
+			// 描画フラグ：色パラメータ処理フラグマスク
+			applyMask		= 0x00FF0000,
+
+			// 描画フラグ：加算描画
+			functionAdd		= 0x80000000,
+			// 描画フラグ：減算描画
+			functionSub		= 0x81000000,
+			// 描画フラグ：乗算描画
+			functionMul		= 0x82000000,
+			// 描画フラグ：除算描画
+			functionDiv		= 0x83000000,
+			// 描画フラグ：最大値描画
+			functionMax		= 0x84000000,
+			// 描画フラグ：最小値描画
+			functionMin		= 0x85000000,
+			// 描画フラグ：スクリーン描画
+			functionScreen	= 0x86000000,
+			// 描画フラグ：入力複製描画
+			functionMove	= 0x88000000,
+			// 描画フラグ：描画関数マスク
+			functionMask	= 0xFF000000,
+
+			// 描画フラグ：入力画像のαを無視して出力先に上書きする
+			flagNoBlendAlpha		= functionMove,
+			// 描画フラグ：入力画像のαチャネルで RGB チャネルを乗算してから描画する
+			flagNoProductOfAlpha	= applyAlphaMul,
+			// 描画フラグ：ｚ値比較と書き込み
+			flagWithZOrder			= 0x00000002,
+			// 描画フラグ：ｚ値比較
+			flagWithZOrderNoWrite	= 0x00000004,
+			// 描画フラグ：入力画像補完処理
+			flagSmoothStretch		= 0x00000010,
+			// 描画フラグ：入力画像補完処理無効化
+			flagUnsmoothStretch		= 0x00000020,
+			// 描画フラグ：入力座標を固定小数点値（/0x10000）として処理
+			flagFixedPosition		= 0x00000040,
+			// 描画フラグ：描画先形状（多角形）指定
+			flagPolygonShaped		= 0x00000080,
+			// 描画フラグ：遅延描画
+			flagDelayable			= 0x00000100,
+			// 描画フラグ：遅延描画および描画順不問
+			flagOrderNoCare			= 0x00000200,
+		}
+
+		// 描画フラグ
+		public PaintFlag		nFlags ;
+
+		// 描画ｘ座標
+		public int				xPaint ;
+		// 描画ｙ座標
+		public int				yPaint ;
+
+		// 透明度 [0,0x100]
+		public uint				nTransparency ;
+
+		// ｚ値
+		public float			zOrder ;
+
+		// 色パラメータ
+		public uint				rgbColorParam ;
+
+		// アフィン
+		public const Affine*	pAffine ;
+
+		// 多角形頂点
+		public const Vector2*	pVertices ;
+
+		// 頂点数
+		public uint				countVertex ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 描画コンテキスト
+	//////////////////////////////////////////////////////////////////////////
+
+	class	PaintContext	extends NativeObject
+	{
+		// PaintContext 構築
+		public native PaintContext() ;
+
+		// 描画先取得
+		public native Image getTargetImage() const ;
+
+		// 描画先ｚバッファ取得
+		public native Image getTargetZBuffer() const ;
+
+		// 描画有効域取得
+		public native boolean getViewPort
+			( ImageRect* rectView /* 描画有効域を取得する ImageRect 構造体 */ ) const ;
+
+		// 描画先設定
+		public native boolean attachTargetImage
+			( Image image /* 描画先画像 */,
+				Image zbuf = null /* 描画先ｚバッファ */,
+				const ImageRect* pView = null /* 描画先有効域 */ ) ;
+
+		// 描画先解除
+		public native boolean detachTargetImage() ;
+
+		// 描画座標変換・透明度追加
+		public native boolean appendTransformation
+				( const Affine* affine, uint transparency ) ;
+
+		// 描画座標変換・透明度設定
+		public native boolean setTransformation
+				( const Affine* affine, uint transparency ) ;
+
+		// 現在のアフィン変換取得
+		public native boolean currentAffine
+			( Affine* affine /* アフィン行列を受け取る Affine 構造体 */ ) const ;
+
+		// 現在の透明度取得
+		public native uint currentTransparency() const ;
+
+		// 現在の座標変換・透明度効果を保存
+		public native boolean pushTransformation() ;
+
+		// 現在の座標変換・透明度効果を復元
+		public native boolean popTransformation() ;
+
+		// 座標変換・透明度効果をリセット
+		public native boolean resetTransformation() ;
+
+		// デフォルトの描画フラグ設定
+		public native void setPaintFlags( ulong nFlags ) ;
+
+		// デフォルトの描画フラグ取得
+		public native ulong getPaintFlags() const ;
+
+		enum using ClearTargetFlag<uint>
+		{
+			// クリア・ターゲット・フラグ：画像
+			clearTargetColor	= 0x0001,
+			// クリア・ターゲット・フラグ：ｚバッファ
+			clearTargetZBuffer	= 0x0002,
+		}
+
+		// 描画先クリア
+		public native boolean fillClearTarget
+			( uint argb = 0xff000000 /* 画像クリア色 */,
+				ClearTargetFlag flags = 0 /* クリア・ターゲット・フラグの組み合わせ。
+											0 の場合はすべての出力先 */ ) ;
+
+		// 矩形塗りつぶし描画
+		public native boolean fillRectangle
+			( int x /* 左上ｘ座標 */, int y /* 左上ｙ座標 */,
+				int width /* 矩形の幅 */, int height /* 矩形高さ */,
+				uint argb /* 描画色 (ARGB8 のパックト形式) */,
+				double z = 0.0 /* ｚ値 */,
+				uint flags = 0 /* 描画フラグ (PaintParam.flag～, PaintParam.function～, PaintParam.apply～) */ ) ;
+
+		// 多角形塗りつぶし描画
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean fillPolygon
+			( const Vector2* vertices /* 頂点座標配列 [count] */,
+				uint count /* 頂点数 */,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// 画像描画
+		public native boolean drawImage
+			( const PaintParam param,
+				Image pSrcImage, const ImageRect* pSrcClip = null ) ;
+
+		// 画像メッシュ描画
+		// <desc>画像を格子状メッシュに沿って変形描画します。<br/>
+		// pDstMesh, pSrcMesh は (widthMesh+1)*(heightMesh+1) の配列です。</desc>
+		public native boolean drawMesh
+			( const Vector2* pDstMesh /* 描画先のメッシュ頂点配列 */,
+				const Vector2* pSrcMesh /* 入力画像上のメッシュ頂点配列 */,
+				ulong widthMesh /* 格子メッシュの水平個数 */,
+				ulong heightMesh /* 格子メッシュの水平個数 */,
+				const PaintParam param /* 描画パラメータ */,
+				Image pSrcImage /* 描画画像 */,
+				const ImageRect* pSrcClip = null /* 描画元矩形 */ ) ;
+
+		// 描画の確定
+		public native boolean flush() ;
+
+		// 描画の確定（描画ターゲットのメモリへの反映）
+		public native boolean finish() ;
+
+		// 点描画
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean drawPoints
+			( const Vector2* pPoints, ulong nPoints,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// 直線描画
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean drawThinLine
+			( int x0, int y0, int x1, int y1,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// 連続直線描画
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean drawThinLines
+			( const Vector2* pLines /* 頂点座標配列 [nLines+1] */,
+				ulong nLines /* 線分数 */,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// 楕円輪郭描画
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean drawEllipse
+			( float xCenter, float yCenter,
+				float width, float height,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// 円弧輪郭描画
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean drawArc
+			( float xCenter, float yCenter,
+				float width, float height,
+				float radFirst, float radEnd,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// ベジェ曲線描画
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean drawBezier
+			( const Vector2* pPoints /* 制御点配列 [nPoints] */,
+				ulong nPoints /* 制御点数（3n+4） */,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// 楕円塗りつぶし
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean fillEllipse
+			( float xCenter, float yCenter,
+				float width, float height,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// 円弧塗りつぶし
+		// <desc>※ argb, z, flags については fillRectangle 参照</desc>
+		public native boolean fillArc
+			( float xCenter, float yCenter,
+				float width, float height,
+				float radFirst, float radEnd,
+				uint argb, double z = 0.0, uint flags = 0 ) ;
+
+		// グラデーション解除
+		public native void freeGradation() ;
+
+		// 線形グラデーション設定
+		public native boolean setLinearGradation
+			( float x0, float y0, float x1, float y1,
+					const ARGB8* pGradation, ulong nCount ) ;
+
+		// 環状グラデーション設定
+		public native boolean setRingedGradation
+			( float xCenter, float yCenter, float radAngle,
+				const ARGB8* pGradation, ulong nCount ) ;
+	}
+
+}
+
+

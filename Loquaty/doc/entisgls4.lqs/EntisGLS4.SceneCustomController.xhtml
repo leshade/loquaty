@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneCustomController</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneCustomController</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneCustomController ;</div>
+<div class="normal">
+スクリプト実装 Scene コントローラー<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneController.xhtml">EntisGLS4.SceneController</a>
+<div class="indent1"><a href="EntisGLS4.SceneCustomController.xhtml">EntisGLS4.SceneCustomController</a>
+</div></div></div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SceneCustomController.BehaviorFlag.xhtml">EntisGLS4.SceneCustomController.BehaviorFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_behaviorRenderEvent">behaviorRenderEvent</a><br/>
+	<a href="#static_behaviorCollision">behaviorCollision</a><br/>
+	<a href="#static_behaviorRender">behaviorRender</a><br/>
+	<a href="#static_behaviorRenderContext">behaviorRenderContext</a><br/>
+	<a href="#static_behaviorAlwaysActive">behaviorAlwaysActive</a><br/>
+	<a href="#static_behaviorOnTimer">behaviorOnTimer</a><br/>
+	<a href="#static_behaviorDisabled">behaviorDisabled</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneCustomController">SceneCustomController</a><br/>
+	<a href="#virtual_afterRenderModel">afterRenderModel</a><br/>
+	<a href="#virtual_beforeRenderModel">beforeRenderModel</a><br/>
+	<a href="#virtual_getBehaviorFlags">getBehaviorFlags</a><br/>
+	<a href="#virtual_getRenderEventClasses">getRenderEventClasses</a><br/>
+	<a href="#virtual_modifyBehaviorFlags">modifyBehaviorFlags</a><br/>
+	<a href="#virtual_modifyRenderEventClasses">modifyRenderEventClasses</a><br/>
+	<a href="#virtual_onExtendNotify">onExtendNotify</a><br/>
+	<a href="#virtual_onPrepareToRender">onPrepareToRender</a><br/>
+	<a href="#virtual_onRenderEvent">onRenderEvent</a><br/>
+	<a href="#virtual_onTimer">onTimer</a><br/>
+	<a href="#virtual_onUpdateFrame">onUpdateFrame</a><br/>
+	<a href="#virtual_renderCollision">renderCollision</a><br/>
+	<a href="#virtual_renderModel">renderModel</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_behaviorRenderEvent"/>
+<div class="headline">behaviorRenderEvent</div>
+<div class="usage">public static const EntisGLS4.SceneCustomController.BehaviorFlag&#9; behaviorRenderEvent = 1</div>
+<div class="normal">
+onRenderEvent 呼び出し有効<br/></div>
+<br/>
+<a name="static_behaviorCollision"/>
+<div class="headline">behaviorCollision</div>
+<div class="usage">public static const EntisGLS4.SceneCustomController.BehaviorFlag&#9; behaviorCollision = 2</div>
+<div class="normal">
+renderCollision 呼び出し有効<br/></div>
+<br/>
+<a name="static_behaviorRender"/>
+<div class="headline">behaviorRender</div>
+<div class="usage">public static const EntisGLS4.SceneCustomController.BehaviorFlag&#9; behaviorRender = 4</div>
+<div class="normal">
+renderModel 呼び出し有効<br/></div>
+<br/>
+<a name="static_behaviorRenderContext"/>
+<div class="headline">behaviorRenderContext</div>
+<div class="usage">public static const EntisGLS4.SceneCustomController.BehaviorFlag&#9; behaviorRenderContext = 8</div>
+<div class="normal">
+beforeRenderModel, afterRenderModel 呼び出し有効<br/></div>
+<br/>
+<a name="static_behaviorAlwaysActive"/>
+<div class="headline">behaviorAlwaysActive</div>
+<div class="usage">public static const EntisGLS4.SceneCustomController.BehaviorFlag&#9; behaviorAlwaysActive = 16</div>
+<div class="normal">
+常に onUpdateFrame 呼び出し<br/></div>
+<br/>
+<a name="static_behaviorOnTimer"/>
+<div class="headline">behaviorOnTimer</div>
+<div class="usage">public static const EntisGLS4.SceneCustomController.BehaviorFlag&#9; behaviorOnTimer = 32</div>
+<div class="normal">
+onTimer 呼び出し有効<br/></div>
+<br/>
+<a name="static_behaviorDisabled"/>
+<div class="headline">behaviorDisabled</div>
+<div class="usage">public static const EntisGLS4.SceneCustomController.BehaviorFlag&#9; behaviorDisabled = 0x100</div>
+<div class="normal">
+無効状態<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneCustomController"/>
+<div class="headline">SceneCustomController</div>
+<div class="usage">public native SceneCustomController( String typeId )</div>
+<div class="normal">
+SceneCustomController 構築<br/></div>
+<br/>
+
+<a name="virtual_afterRenderModel"/>
+<div class="headline">afterRenderModel</div>
+<div class="usage">public void afterRenderModel( const EntisGLS4.Scene scene, EntisGLS4.Scene.ItemClass clsItem, EntisGLS4.SceneItem item, EntisGLS4.RenderContext render, ulong flagsExclusion = 0 )</div>
+<div class="normal">
+描画後処理<br/></div>
+<br/>
+
+<a name="virtual_beforeRenderModel"/>
+<div class="headline">beforeRenderModel</div>
+<div class="usage">public void beforeRenderModel( const EntisGLS4.Scene scene, EntisGLS4.Scene.ItemClass clsItem, EntisGLS4.SceneItem item, EntisGLS4.RenderContext render, ulong flagsExclusion = 0 )</div>
+<div class="normal">
+描画前処理<br/></div>
+<br/>
+
+<a name="virtual_getBehaviorFlags"/>
+<div class="headline">getBehaviorFlags</div>
+<div class="usage">public native EntisGLS4.SceneCustomController.BehaviorFlag getBehaviorFlags( ) const</div>
+<div class="normal">
+動作フラグ取得<br/></div>
+<br/>
+
+<a name="virtual_getRenderEventClasses"/>
+<div class="headline">getRenderEventClasses</div>
+<div class="usage">public native uint getRenderEventClasses( ) const</div>
+<div class="normal">
+イベント発生ビットマスク取得<br/></div>
+<br/>
+
+<a name="virtual_modifyBehaviorFlags"/>
+<div class="headline">modifyBehaviorFlags</div>
+<div class="usage">public native EntisGLS4.SceneCustomController.BehaviorFlag modifyBehaviorFlags( EntisGLS4.SceneCustomController.BehaviorFlag addFlags, EntisGLS4.SceneCustomController.BehaviorFlag removeFlags = 0 )</div>
+<div class="normal">
+動作フラグ変更<br/></div>
+<br/>
+
+<a name="virtual_modifyRenderEventClasses"/>
+<div class="headline">modifyRenderEventClasses</div>
+<div class="usage">public native uint modifyRenderEventClasses( uint maskAdd, uint maskRemove = 0 )</div>
+<div class="normal">
+イベント発生ビットマスク変更<br/></div>
+<div class="notes_parameter">
+<div class="param_name">maskAdd</div>
+<div class="param_desc">
+追加する Scene.ItemClass に対応するビットマスク</div>
+<div class="param_name">maskRemove</div>
+<div class="param_desc">
+削除する Scene.ItemClass に対応するビットマスク</div>
+</div>
+<br/>
+
+<a name="virtual_onExtendNotify"/>
+<div class="headline">onExtendNotify</div>
+<div class="usage">public void onExtendNotify( String cmd, String param, const void* pExParam, ulong nExParamBytes )</div>
+<div class="normal">
+拡張的な処理の通知<br/></div>
+<div class="notes_parameter">
+<div class="param_name">cmd</div>
+<div class="param_desc">
+通知コマンド SceneNotifyCommand</div>
+<div class="param_name">param</div>
+<div class="param_desc">
+通知コマンドのパラメータ</div>
+</div>
+<br/>
+
+<a name="virtual_onPrepareToRender"/>
+<div class="headline">onPrepareToRender</div>
+<div class="usage">public void onPrepareToRender( EntisGLS4.RenderDevice device, uint flags = 0 )</div>
+<div class="normal">
+レンダリングの為のデバイスリソース準備<br/></div>
+<br/>
+
+<a name="virtual_onRenderEvent"/>
+<div class="headline">onRenderEvent</div>
+<div class="usage">public void onRenderEvent( EntisGLS4.Scene scene, EntisGLS4.Scene.ItemClass clsItem, EntisGLS4.SceneItem item )</div>
+<div class="normal">
+レンダリングイベント<br/></div>
+<br/>
+
+<a name="virtual_onTimer"/>
+<div class="headline">onTimer</div>
+<div class="usage">public void onTimer( EntisGLS4.Scene scene, EntisGLS4.SceneItem item, uint msecDelta )</div>
+<div class="normal">
+タイマー処理<br/></div>
+<br/>
+
+<a name="virtual_onUpdateFrame"/>
+<div class="headline">onUpdateFrame</div>
+<div class="usage">public void onUpdateFrame( EntisGLS4.SceneItem item, double frame, EntisGLS4.SceneSequencer.SeekMethod seek )</div>
+<div class="normal">
+フレーム（パラメータ）更新後処理<br/></div>
+<br/>
+
+<a name="virtual_renderCollision"/>
+<div class="headline">renderCollision</div>
+<div class="usage">public void renderCollision( const EntisGLS4.Scene scene, EntisGLS4.SceneItem item, EntisGLS4.Collision render )</div>
+<div class="normal">
+当たり判定追加<br/></div>
+<br/>
+
+<a name="virtual_renderModel"/>
+<div class="headline">renderModel</div>
+<div class="usage">public void renderModel( const EntisGLS4.Scene scene, EntisGLS4.Scene.ItemClass clsItem, EntisGLS4.SceneItem item, EntisGLS4.RenderContext render, ulong flagsExclusion = 0 )</div>
+<div class="normal">
+表示モデル追加<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

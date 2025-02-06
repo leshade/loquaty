@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Collision</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Collision</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class Collision ;</div>
+<div class="normal">
+当たり判定バッファ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.RenderBuffer.xhtml">EntisGLS4.RenderBuffer</a>
+<div class="indent1"><a href="EntisGLS4.Collision.xhtml">EntisGLS4.Collision</a>
+</div></div></div></div><br/>
+
+<div class="headline">Implement Classes</div>
+<div class="indent1"><a href="EntisGLS4.Collider.xhtml">EntisGLS4.Collider</a></div>
+<br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.Collision.ColliderClass.xhtml">EntisGLS4.Collision.ColliderClass</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_indexShape">indexShape</a><br/>
+	<a href="#static_indexBarrier">indexBarrier</a><br/>
+	<a href="#static_indexHit">indexHit</a><br/>
+	<a href="#static_indexAttack">indexAttack</a><br/>
+	<a href="#static_indexEvent">indexEvent</a><br/>
+	<a href="#static_indexBone">indexBone</a><br/>
+	<a href="#static_indexPhysics">indexPhysics</a><br/>
+	<a href="#static_indexReserved">indexReserved</a><br/>
+	<a href="#static_indexUser0">indexUser0</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Collision">Collision</a><br/>
+	<a href="#virtual_addColliderObject">addColliderObject</a><br/>
+	<a href="#virtual_addSolidCube">addSolidCube</a><br/>
+	<a href="#virtual_addSolidSphere">addSolidSphere</a><br/>
+	<a href="#virtual_addSolidTubeList">addSolidTubeList</a><br/>
+	<a href="#virtual_attachMeshUserData">attachMeshUserData</a><br/>
+	<a href="#virtual_beginBatchBuild">beginBatchBuild</a><br/>
+	<a href="#virtual_endBatchBuild">endBatchBuild</a><br/>
+	<a href="#virtual_getCurrentThickness">getCurrentThickness</a><br/>
+	<a href="#virtual_getMeshUserData">getMeshUserData</a><br/>
+	<a href="#virtual_getSceneClassesMask">getSceneClassesMask</a><br/>
+	<a href="#virtual_getUserClassesMask">getUserClassesMask</a><br/>
+	<a href="#virtual_setCurrentThickness">setCurrentThickness</a><br/>
+	<a href="#virtual_setSceneClassesMask">setSceneClassesMask</a><br/>
+	<a href="#virtual_setUserClassesMask">setUserClassesMask</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_indexShape"/>
+<div class="headline">indexShape</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexShape = 0</div>
+<br/>
+<a name="static_indexBarrier"/>
+<div class="headline">indexBarrier</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexBarrier = 1</div>
+<br/>
+<a name="static_indexHit"/>
+<div class="headline">indexHit</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexHit = 2</div>
+<br/>
+<a name="static_indexAttack"/>
+<div class="headline">indexAttack</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexAttack = 3</div>
+<br/>
+<a name="static_indexEvent"/>
+<div class="headline">indexEvent</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexEvent = 4</div>
+<br/>
+<a name="static_indexBone"/>
+<div class="headline">indexBone</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexBone = 5</div>
+<br/>
+<a name="static_indexPhysics"/>
+<div class="headline">indexPhysics</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexPhysics = 6</div>
+<br/>
+<a name="static_indexReserved"/>
+<div class="headline">indexReserved</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexReserved = 7</div>
+<br/>
+<a name="static_indexUser0"/>
+<div class="headline">indexUser0</div>
+<div class="usage">public static const EntisGLS4.Collision.ColliderClass&#9; indexUser0 = 8</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Collision"/>
+<div class="headline">Collision</div>
+<div class="usage">public native Collision( )</div>
+<div class="normal">
+Collision 構築関数<br/></div>
+<br/>
+
+<a name="virtual_addColliderObject"/>
+<div class="headline">addColliderObject</div>
+<div class="usage">public native boolean addColliderObject( EntisGLS4.Collider collider, const Matrix4* pmatInstancing = null, uint iInstanceNum = 0 )</div>
+<div class="normal">
+当たり判定オブジェクトを追加する（※座標は RenderBuffer の現在の座標変換に従う）<br/></div>
+<br/>
+
+<a name="virtual_addSolidCube"/>
+<div class="headline">addSolidCube</div>
+<div class="usage">public native boolean addSolidCube( const Vector3d* vPos, const Vector3d* vCubeSize, uint iInstanceNum )</div>
+<div class="normal">
+ソリッド直方体を追加（※座標は RenderBuffer の現在の座標変換に従う）<br/></div>
+<br/>
+
+<a name="virtual_addSolidSphere"/>
+<div class="headline">addSolidSphere</div>
+<div class="usage">public native boolean addSolidSphere( const Vector3d* vPos, float radius, uint iInstanceNum )</div>
+<div class="normal">
+ソリッド球を追加（※座標は RenderBuffer の現在の座標変換に従う）<br/></div>
+<br/>
+
+<a name="virtual_addSolidTubeList"/>
+<div class="headline">addSolidTubeList</div>
+<div class="usage">public native boolean addSolidTubeList( const Vector3* pPoints, uint nPointCount, float radius )</div>
+<div class="normal">
+ソリッド円柱を追加（※座標は RenderBuffer の現在の座標変換に従う）<br/></div>
+<br/>
+
+<a name="virtual_attachMeshUserData"/>
+<div class="headline">attachMeshUserData</div>
+<div class="usage">public native void attachMeshUserData( EntisGLS4.SceneItem userData )</div>
+<div class="normal">
+以降に追加するメッシュに関連付けるユーザーデータを設定<br/></div>
+<br/>
+
+<a name="virtual_beginBatchBuild"/>
+<div class="headline">beginBatchBuild</div>
+<div class="usage">public native void beginBatchBuild( )</div>
+<div class="normal">
+メッシュツリー・一括構築開始宣言（複数回可）</div>
+<br/>
+<div class="indent1">
+endBatchBuild までの間に追加されたメッシュやソリッド当たり判定を逐次処理ではなく、一括処理することによって効率化することを期待できる。</div><br/>
+<br/>
+
+<a name="virtual_endBatchBuild"/>
+<div class="headline">endBatchBuild</div>
+<div class="usage">public native void endBatchBuild( )</div>
+<div class="normal">
+メッシュツリー・一括構築終了（beginBatchBuild と同じ回数呼び出す）<br/></div>
+<br/>
+
+<a name="virtual_getCurrentThickness"/>
+<div class="headline">getCurrentThickness</div>
+<div class="usage">public native float getCurrentThickness( ) const</div>
+<div class="normal">
+（点／球、線分／円柱の）追加判定幅取得<br/></div>
+<br/>
+
+<a name="virtual_getMeshUserData"/>
+<div class="headline">getMeshUserData</div>
+<div class="usage">public native EntisGLS4.SceneItem getMeshUserData( ) const</div>
+<div class="normal">
+以降に追加するメッシュに関連付けるユーザーデータを取得<br/></div>
+<br/>
+
+<a name="virtual_getSceneClassesMask"/>
+<div class="headline">getSceneClassesMask</div>
+<div class="usage">public native uint getSceneClassesMask( ) const</div>
+<div class="normal">
+シーンクラスマスク（※Scene::class～ に対応するビットマスク）取得<br/></div>
+<br/>
+
+<a name="virtual_getUserClassesMask"/>
+<div class="headline">getUserClassesMask</div>
+<div class="usage">public native uint getUserClassesMask( ) const</div>
+<div class="normal">
+ユーザー拡張クラスマスク取得<br/></div>
+<br/>
+
+<a name="virtual_setCurrentThickness"/>
+<div class="headline">setCurrentThickness</div>
+<div class="usage">public native void setCurrentThickness( float thickness )</div>
+<div class="normal">
+（点／球、線分／円柱の）追加判定幅設定<br/></div>
+<br/>
+
+<a name="virtual_setSceneClassesMask"/>
+<div class="headline">setSceneClassesMask</div>
+<div class="usage">public native void setSceneClassesMask( uint maskClasses )</div>
+<div class="normal">
+シーンクラスマスク（※Scene::class～ に対応するビットマスク）設定<br/></div>
+<br/>
+
+<a name="virtual_setUserClassesMask"/>
+<div class="headline">setUserClassesMask</div>
+<div class="usage">public native void setUserClassesMask( uint maskClasses )</div>
+<div class="normal">
+ユーザー拡張クラスマスク設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

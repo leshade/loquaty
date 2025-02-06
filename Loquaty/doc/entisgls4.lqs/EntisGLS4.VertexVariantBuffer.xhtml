@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.VertexVariantBuffer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.VertexVariantBuffer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class VertexVariantBuffer ;</div>
+<div class="normal">
+頂点バリアント・バッファ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.VertexVariantBuffer.xhtml">EntisGLS4.VertexVariantBuffer</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_VertexVariantBuffer">VertexVariantBuffer</a><br/>
+	<a href="#virtual_enableToRenderMesh">enableToRenderMesh</a><br/>
+	<a href="#virtual_getBoneMatrix">getBoneMatrix</a><br/>
+	<a href="#virtual_getMaterialToRenderMesh">getMaterialToRenderMesh</a><br/>
+	<a href="#virtual_getMorphingApplication">getMorphingApplication</a><br/>
+	<a href="#virtual_isEnabledToRenderMesh">isEnabledToRenderMesh</a><br/>
+	<a href="#virtual_setBoneMatrix">setBoneMatrix</a><br/>
+	<a href="#virtual_setMaterialToRenderMesh">setMaterialToRenderMesh</a><br/>
+	<a href="#virtual_setMorphingApplication">setMorphingApplication</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_VertexVariantBuffer"/>
+<div class="headline">VertexVariantBuffer</div>
+<div class="usage">public abstract VertexVariantBuffer( )</div>
+<br/>
+
+<a name="virtual_enableToRenderMesh"/>
+<div class="headline">enableToRenderMesh</div>
+<div class="usage">public native boolean enableToRenderMesh( ulong iFirst = 0, long iEnd = -1, boolean fEnable = true )</div>
+<div class="normal">
+メッシュ表示設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iFirst</div>
+<div class="param_desc">
+表示設定する初めのメッシュ指標</div>
+<div class="param_name">iEnd</div>
+<div class="param_desc">
+表示設定する最後のメッシュ指標（iEnd は含まない）。<br/>
+								-1 の場合は最後のメッシュまで</div>
+<div class="param_name">fEnable</div>
+<div class="param_desc">
+設定する表示状態</div>
+</div>
+<br/>
+
+<a name="virtual_getBoneMatrix"/>
+<div class="headline">getBoneMatrix</div>
+<div class="usage">public native ulong getBoneMatrix( ulong iMesh, ulong nCount, Matrix3* pMatrix, Vector3* pTrans )</div>
+<div class="normal">
+メッシュのボーン行列取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+行列の配列長</div>
+<div class="param_name">pMatrix</div>
+<div class="param_desc">
+受け取る行列配列</div>
+<div class="param_name">pTrans</div>
+<div class="param_desc">
+受け取る平行移動座標配列</div>
+</div>
+<br/>
+
+<a name="virtual_getMaterialToRenderMesh"/>
+<div class="headline">getMaterialToRenderMesh</div>
+<div class="usage">public native EntisGLS4.Material getMaterialToRenderMesh( ulong iMesh ) const</div>
+<div class="normal">
+メッシュマテリアル取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+</div>
+<br/>
+
+<a name="virtual_getMorphingApplication"/>
+<div class="headline">getMorphingApplication</div>
+<div class="usage">public native boolean getMorphingApplication( ulong iMesh, long* pTargetMesh, float* pApplication, ulong iTargetMeshIndex )</div>
+<div class="normal">
+モーフィング設定取得</div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">pTargetMesh</div>
+<div class="param_desc">
+モーフィング・ターゲット指標を受け取る long 変数</div>
+<div class="param_name">pApplication</div>
+<div class="param_desc">
+モーフィング適用度を受け取る float 変数</div>
+<div class="param_name">iTargetMeshIndex</div>
+<div class="param_desc">
+取得するモーフィング要素指標</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+モーフィング要素が存在している場合 true</div>
+</div>
+<br/>
+
+<a name="virtual_isEnabledToRenderMesh"/>
+<div class="headline">isEnabledToRenderMesh</div>
+<div class="usage">public native boolean isEnabledToRenderMesh( ulong iMesh ) const</div>
+<div class="normal">
+メッシュ表示フラグ取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+</div>
+<br/>
+
+<a name="virtual_setBoneMatrix"/>
+<div class="headline">setBoneMatrix</div>
+<div class="usage">public native boolean setBoneMatrix( ulong iMesh, ulong nCount, const Matrix3* pMatrix, const Vector3* pTrans )</div>
+<div class="normal">
+メッシュにボーン行列設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">nCount</div>
+<div class="param_desc">
+行列の配列長</div>
+<div class="param_name">pMatrix</div>
+<div class="param_desc">
+行列配列</div>
+<div class="param_name">pTrans</div>
+<div class="param_desc">
+平行移動要素配列</div>
+</div>
+<br/>
+
+<a name="virtual_setMaterialToRenderMesh"/>
+<div class="headline">setMaterialToRenderMesh</div>
+<div class="usage">public native boolean setMaterialToRenderMesh( ulong iMesh, EntisGLS4.Material material )</div>
+<div class="normal">
+メッシュマテリアル設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">material</div>
+<div class="param_desc">
+設定するマテリアル</div>
+</div>
+<br/>
+
+<a name="virtual_setMorphingApplication"/>
+<div class="headline">setMorphingApplication</div>
+<div class="usage">public native boolean setMorphingApplication( ulong iMesh, const long* pTargetMesh, const float* pApplication, ulong nTargetMeshCount )</div>
+<div class="normal">
+モーフィング設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iMesh</div>
+<div class="param_desc">
+メッシュ指標</div>
+<div class="param_name">pTargetMesh</div>
+<div class="param_desc">
+モーフィング・ターゲット指標配列</div>
+<div class="param_name">pApplication</div>
+<div class="param_desc">
+モーフィング適用度配列</div>
+<div class="param_name">nTargetMeshCount</div>
+<div class="param_desc">
+モーフィング要素数</div>
+</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

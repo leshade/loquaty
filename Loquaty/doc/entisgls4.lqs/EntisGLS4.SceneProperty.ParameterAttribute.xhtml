@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneProperty.ParameterAttribute</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneProperty.ParameterAttribute</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum using ParameterAttribute&lt;uint&gt; ;</div>
+<div class="normal">
+属性フラグ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.ParameterAttribute.xhtml">EntisGLS4.SceneProperty.ParameterAttribute</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_attrConstant">attrConstant</a><br/>
+	<a href="#static_attrNoLocalTransform">attrNoLocalTransform</a><br/>
+	<a href="#static_attrStringEnumeration">attrStringEnumeration</a><br/>
+	<a href="#static_attrUIOnlyEnumeration">attrUIOnlyEnumeration</a><br/>
+	<a href="#static_attrDynamicValidation">attrDynamicValidation</a><br/>
+	<a href="#static_attrFlagSetInteger">attrFlagSetInteger</a><br/>
+	<a href="#static_attrUIScalarSlider">attrUIScalarSlider</a><br/>
+	<a href="#static_attrEditUpdateFrame">attrEditUpdateFrame</a><br/>
+	<a href="#static_attrEditorCommand">attrEditorCommand</a><br/>
+	<a href="#static_attrGlobalTransform">attrGlobalTransform</a><br/>
+	<a href="#static_attrReadOnlyParam">attrReadOnlyParam</a><br/>
+	<a href="#static_attrNoSerializeFlags">attrNoSerializeFlags</a><br/>
+	<a href="#static_attrCategory1">attrCategory1</a><br/>
+	<a href="#static_attrCategory2">attrCategory2</a><br/>
+	<a href="#static_attrCategory3">attrCategory3</a><br/>
+	<a href="#static_attrCategory4">attrCategory4</a><br/>
+	<a href="#static_attrCategory5">attrCategory5</a><br/>
+	<a href="#static_attrCategory6">attrCategory6</a><br/>
+	<a href="#static_attrCategory7">attrCategory7</a><br/>
+	<a href="#static_attrCategoryMask">attrCategoryMask</a><br/>
+	<a href="#static_attrCategoryShift">attrCategoryShift</a><br/>
+	<a href="#static_attrConstant1">attrConstant1</a><br/>
+	<a href="#static_attrConstant2">attrConstant2</a><br/>
+	<a href="#static_attrConstant3">attrConstant3</a><br/>
+	<a href="#static_attrConstant4">attrConstant4</a><br/>
+	<a href="#static_attrConstant5">attrConstant5</a><br/>
+	<a href="#static_attrConstant6">attrConstant6</a><br/>
+	<a href="#static_attrConstant7">attrConstant7</a><br/>
+	<a href="#static_attrAppExtension1">attrAppExtension1</a><br/>
+	<a href="#static_attrAppExtension2">attrAppExtension2</a><br/>
+	<a href="#static_attrAppExtension3">attrAppExtension3</a><br/>
+	<a href="#static_attrAppExtension4">attrAppExtension4</a><br/>
+	<a href="#static_attrAppExtension5">attrAppExtension5</a><br/>
+	<a href="#static_attrAppExtension6">attrAppExtension6</a><br/>
+	<a href="#static_attrAppExtension7">attrAppExtension7</a><br/>
+	<a href="#static_attrAppExtension8">attrAppExtension8</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_attrConstant"/>
+<div class="headline">attrConstant</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrConstant = 1</div>
+<div class="normal">
+属性フラグ：定数的なパラメータ<br/></div>
+<br/>
+<a name="static_attrNoLocalTransform"/>
+<div class="headline">attrNoLocalTransform</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrNoLocalTransform = 2</div>
+<div class="normal">
+属性フラグ：座標／ベクトルは自身のローカル空間ではなく親空間<br/></div>
+<br/>
+<a name="static_attrStringEnumeration"/>
+<div class="headline">attrStringEnumeration</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrStringEnumeration = 4</div>
+<div class="normal">
+属性フラグ：取りうる値（文字列）の列挙可能 (enumerateStringSet)<br/></div>
+<br/>
+<a name="static_attrUIOnlyEnumeration"/>
+<div class="headline">attrUIOnlyEnumeration</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrUIOnlyEnumeration = 8</div>
+<div class="normal">
+属性フラグ： UI では列挙値のみ選択可能<br/></div>
+<br/>
+<a name="static_attrDynamicValidation"/>
+<div class="headline">attrDynamicValidation</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrDynamicValidation = 16</div>
+<div class="normal">
+属性フラグ：値の変化で有効なパラメータ集合が変化する<br/></div>
+<br/>
+<a name="static_attrFlagSetInteger"/>
+<div class="headline">attrFlagSetInteger</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrFlagSetInteger = 32</div>
+<div class="normal">
+属性フラグ：フラグ集合の整数型である<br/></div>
+<br/>
+<a name="static_attrUIScalarSlider"/>
+<div class="headline">attrUIScalarSlider</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrUIScalarSlider = 64</div>
+<div class="normal">
+属性フラグ：指定範囲の値のスライダ操作<br/></div>
+<br/>
+<a name="static_attrEditUpdateFrame"/>
+<div class="headline">attrEditUpdateFrame</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrEditUpdateFrame = 0x80</div>
+<div class="normal">
+属性フラグ：編集を反映するにはフレーム全体の更新が必要<br/></div>
+<br/>
+<a name="static_attrEditorCommand"/>
+<div class="headline">attrEditorCommand</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrEditorCommand = 0x100</div>
+<div class="normal">
+属性フラグ：編集ツール用コマンド<br/></div>
+<br/>
+<a name="static_attrGlobalTransform"/>
+<div class="headline">attrGlobalTransform</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrGlobalTransform = 0x200</div>
+<div class="normal">
+属性フラグ：座標は常にグローバル空間<br/></div>
+<br/>
+<a name="static_attrReadOnlyParam"/>
+<div class="headline">attrReadOnlyParam</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrReadOnlyParam = 0x400</div>
+<div class="normal">
+属性フラグ：読み取り専用・記録対象外<br/></div>
+<br/>
+<a name="static_attrNoSerializeFlags"/>
+<div class="headline">attrNoSerializeFlags</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrNoSerializeFlags = 0x500</div>
+<div class="normal">
+属性フラグ：保存対象外フラグ<br/></div>
+<br/>
+<a name="static_attrCategory1"/>
+<div class="headline">attrCategory1</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategory1 = 0x1000</div>
+<div class="normal">
+属性フラグ：カテゴリ１<br/></div>
+<br/>
+<a name="static_attrCategory2"/>
+<div class="headline">attrCategory2</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategory2 = 0x2000</div>
+<div class="normal">
+属性フラグ：カテゴリ２<br/></div>
+<br/>
+<a name="static_attrCategory3"/>
+<div class="headline">attrCategory3</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategory3 = 0x3000</div>
+<div class="normal">
+属性フラグ：カテゴリ３<br/></div>
+<br/>
+<a name="static_attrCategory4"/>
+<div class="headline">attrCategory4</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategory4 = 0x4000</div>
+<div class="normal">
+属性フラグ：カテゴリ４<br/></div>
+<br/>
+<a name="static_attrCategory5"/>
+<div class="headline">attrCategory5</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategory5 = 0x5000</div>
+<div class="normal">
+属性フラグ：カテゴリ５<br/></div>
+<br/>
+<a name="static_attrCategory6"/>
+<div class="headline">attrCategory6</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategory6 = 0x6000</div>
+<div class="normal">
+属性フラグ：カテゴリ６<br/></div>
+<br/>
+<a name="static_attrCategory7"/>
+<div class="headline">attrCategory7</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategory7 = 0x7000</div>
+<div class="normal">
+属性フラグ：カテゴリ７<br/></div>
+<br/>
+<a name="static_attrCategoryMask"/>
+<div class="headline">attrCategoryMask</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategoryMask = 0xF000</div>
+<div class="normal">
+属性フラグ：カテゴリ値ビットマスク<br/></div>
+<br/>
+<a name="static_attrCategoryShift"/>
+<div class="headline">attrCategoryShift</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrCategoryShift = 12</div>
+<div class="normal">
+属性フラグ：カテゴリ値ビットシフタ<br/></div>
+<br/>
+<a name="static_attrConstant1"/>
+<div class="headline">attrConstant1</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrConstant1 = 0x1001</div>
+<div class="normal">
+属性フラグ：カテゴリ１の定数値<br/></div>
+<br/>
+<a name="static_attrConstant2"/>
+<div class="headline">attrConstant2</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrConstant2 = 0x2001</div>
+<div class="normal">
+属性フラグ：カテゴリ２の定数値<br/></div>
+<br/>
+<a name="static_attrConstant3"/>
+<div class="headline">attrConstant3</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrConstant3 = 0x3001</div>
+<div class="normal">
+属性フラグ：カテゴリ３の定数値<br/></div>
+<br/>
+<a name="static_attrConstant4"/>
+<div class="headline">attrConstant4</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrConstant4 = 0x4001</div>
+<div class="normal">
+属性フラグ：カテゴリ４の定数値<br/></div>
+<br/>
+<a name="static_attrConstant5"/>
+<div class="headline">attrConstant5</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrConstant5 = 0x5001</div>
+<div class="normal">
+属性フラグ：カテゴリ５の定数値<br/></div>
+<br/>
+<a name="static_attrConstant6"/>
+<div class="headline">attrConstant6</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrConstant6 = 0x6001</div>
+<div class="normal">
+属性フラグ：カテゴリ６の定数値<br/></div>
+<br/>
+<a name="static_attrConstant7"/>
+<div class="headline">attrConstant7</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrConstant7 = 0x7001</div>
+<div class="normal">
+属性フラグ：カテゴリ７の定数値<br/></div>
+<br/>
+<a name="static_attrAppExtension1"/>
+<div class="headline">attrAppExtension1</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrAppExtension1 = 0x1000000</div>
+<div class="normal">
+属性フラグ：アプリ拡張１<br/></div>
+<br/>
+<a name="static_attrAppExtension2"/>
+<div class="headline">attrAppExtension2</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrAppExtension2 = 0x2000000</div>
+<div class="normal">
+属性フラグ：アプリ拡張２<br/></div>
+<br/>
+<a name="static_attrAppExtension3"/>
+<div class="headline">attrAppExtension3</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrAppExtension3 = 0x4000000</div>
+<div class="normal">
+属性フラグ：アプリ拡張３<br/></div>
+<br/>
+<a name="static_attrAppExtension4"/>
+<div class="headline">attrAppExtension4</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrAppExtension4 = 0x8000000</div>
+<div class="normal">
+属性フラグ：アプリ拡張４<br/></div>
+<br/>
+<a name="static_attrAppExtension5"/>
+<div class="headline">attrAppExtension5</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrAppExtension5 = 0x10000000</div>
+<div class="normal">
+属性フラグ：アプリ拡張５<br/></div>
+<br/>
+<a name="static_attrAppExtension6"/>
+<div class="headline">attrAppExtension6</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrAppExtension6 = 0x20000000</div>
+<div class="normal">
+属性フラグ：アプリ拡張６<br/></div>
+<br/>
+<a name="static_attrAppExtension7"/>
+<div class="headline">attrAppExtension7</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrAppExtension7 = 0x40000000</div>
+<div class="normal">
+属性フラグ：アプリ拡張７<br/></div>
+<br/>
+<a name="static_attrAppExtension8"/>
+<div class="headline">attrAppExtension8</div>
+<div class="usage">public static const EntisGLS4.SceneProperty.ParameterAttribute&#9; attrAppExtension8 = 0x80000000</div>
+<div class="normal">
+属性フラグ：アプリ拡張８<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

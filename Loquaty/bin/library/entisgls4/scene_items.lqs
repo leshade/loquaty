@@ -1,0 +1,1406 @@
+﻿
+namespace	EntisGLS4
+{
+	class	SceneItem ;
+	class	SceneComposition ;
+	class	SceneComposer ;
+	class	SceneManager ;
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene アイテム・パラメータ・インターフェース
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneParameter	extends NativeObject
+	{
+		public abstract SceneParameter() ;
+
+		// Matrix3d パラメータ値取得
+		public native const Matrix3d* getMatrixParameter( ulong iParam ) const ;
+		// Vector3d パラメータ値取得
+		public native const Vector3d* getVectorParameter( ulong iParam ) const ;
+		// double パラメータ値取得
+		public native double getScalarParameter( ulong iParam ) const ;
+		// int32 パラメータ値取得
+		public native int32 getIntegerParameter( ulong iParam ) const ;
+		// boolean パラメータ値取得
+		public native boolean getBooleanParameter( ulong iParam ) const ;
+		// String パラメータ値取得
+		public native String getCommandParameter( ulong iParam ) const ;
+		// Vector2d パラメータ値取得
+		public native const Vector2d* getVector2dParameter( ulong iParam ) const ;
+		// Vector4d パラメータ値取得
+		public native const Vector4d* getVector4dParameter( ulong iParam ) const ;
+		// Matrix4d パラメータ値取得
+		public native const Matrix4d* getMatrix4dParameter( ulong iParam ) const ;
+		// バイナリ・パラメータ値取得
+		public native ulong getBinaryParameter
+				( void* pDst, ulong nBufBytes, ulong iParam ) const ;
+
+		// Matrix3d パラメータ値設定
+		public native void setMatrixParameter( ulong iParam, const Matrix3d* mat ) ;
+		// Vector3d パラメータ値設定
+		public native void setVectorParameter( ulong iParam, const Vector3d* vec ) ;
+		// double パラメータ値設定
+		public native void setScalarParameter( ulong iParam, double s ) ;
+		// int32 パラメータ値設定
+		public native void setIntegerParameter( ulong iParam, int32 n ) ;
+		// boolean パラメータ値設定
+		public native void setBooleanParameter( ulong iParam, boolean b ) ;
+		// String パラメータ値設定
+		public native void setCommandParameter( ulong iParam, String cmd ) ;
+		// Vector2d パラメータ値設定
+		public native void setVector2dParameter( ulong iParam, const Vector2d* vec ) ;
+		// Vector4d パラメータ値設定
+		public native void setVector4dParameter( ulong iParam, const Vector4d* vec ) ;
+		// Matrix4d パラメータ値設定
+		public native void setMatrix4dParameter( ulong iParam, const Matrix4d* mat ) ;
+		// バイナリ・パラメータ値設定
+		public native ulong setBinaryParameter
+				( ulong iParam, const void* pSrc, ulong nBufBytes ) ;
+
+		// パラメータ値域列挙
+		public native boolean enumerateStringSet( ulong iParam, String[] strSet ) ;
+
+		// Vector3d -> ARGB8 変換
+		public static native uint32 colorFromVector( const Vector3d* vec ) ;
+		// ARGB8 -> Vector3d 変換
+		public static native const Vector3d* vectorFromColor( uint rgb ) ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene アイテム・タイムライン
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneSequencer	extends SceneParameter
+	{
+		// フレーム補完方法
+		enum using InterpolateMethod<int>
+		{
+			// シグナル（キーフレームで実行）
+			methodSignal,
+
+			// 補完無し（直線のキーフレーム値）
+			methodSelector,
+
+			// 線形補完
+			methodLinear,
+
+			// 三次スプライン補完
+			methodSpline,
+
+			// 三次ベジェ曲線
+			methodBezier,
+		}
+
+		// キーフレーム・フラグ
+		enum using KeyFrameFlag<uint32>
+		{
+			// キーフレーム・フラグ：コーナー（補完非連続制御点）
+			keyframeCorner	= 0x0001,
+		}
+
+		// キーフレーム・パラメータ
+		struct	KeyFrameParam
+		{
+			// フレーム番号
+			int32	iFrame ;
+			// キーフレーム・フラグ
+			KeyFrameFlag	nFlags ;
+			// 入る速度比
+			float	speedIn ;
+			// 出る速度比
+			float	speedOut ;
+		} ;
+
+		// シーク方法
+		enum using SeekMethod<int>
+		{
+			// シーク方法：ストリーミング（通常）
+			seekStream,
+			// シーク方法：Pause 時
+			seekStreamPaused,
+			// シーク方法：フレームジャンプ時（ストリーミング中）
+			seekJump,
+			// シーク方法：フレームジャンプ時（リセット動作）
+			seekJumpReset,
+		}
+
+		// 補完方法取得
+		public native InterpolateMethod getInterpolateMethod() const ;
+
+		// キーフレーム範囲取得
+		public native boolean getKeyFrameRange
+			( int32* iFirst /* 初めのフレーム番号を受け取る int32 */,
+				int32* iEnd /* 最後のフレーム番号を受け取る int32 */ ) const ;
+		// キーフレームパラメータ取得
+		public native boolean getKeyFrameParameter
+				( ulong index /* キーフレーム・インデックス（フレーム番号ではない） */,
+					KeyFrameParam* kfp /* キーフレーム情報を受け取る KeyFrameParam */ ) const ;
+		// キーフレームパラメータ設定
+		public native boolean setKeyFrameParameter
+				( ulong index /* キーフレーム・インデックス（フレーム番号ではない） */,
+					const KeyFrameParam* kfp /* 設定するキーフレーム情報 */ ) ;
+		// キーフレーム個数取得
+		public native ulong getKeyFrameCount() const ;
+		// キーフレーム挿入
+		public native void insertKeyFrame
+				( ulong index /* キーフレーム・インデックス（フレーム番号ではない） */,
+					const KeyFrameParam* kfp /* 挿入するキーフレーム情報 */ ) ;
+		// キーフレーム削除
+		public native void removeKeyFrame
+				( ulong index /* キーフレーム・インデックス（フレーム番号ではない） */ ) ;
+		// キーフレームから各フレームの値を計算する
+		public native void updateAllFrameValues() ;
+		// キーフレーム順を正規化する（後ろのキーフレームが前に来ないように）
+		public native boolean normalizeKeyFrameOrder() ;
+		// キーフレームの順番を入れ替える
+		public native void swapKeyFrame( ulong index1, ulong index2 ) ;
+		// キーフレーム挿入指標検索
+		public native ulong orderKeyFrameIndex( int32 iFrame ) const ;
+		// キーフレーム検索
+		public native long findKeyFrame( int32 iFrame ) const ;
+		// 区間取得
+		// <return>区間の初めのキーフレーム・インデックス</return>
+		public native ulong getKeyFrameProgress
+			( double* t /* キーフレームで挟まれた区間内の割合[0,1]を受け取る double */,
+				int32 iFrame /* フレーム番号 */ ) const ;
+
+		// Matrix3d 補完フレーム・パラメータ値取得
+		public native const Matrix3d* getFrameMatrix( double frame /* フレーム番号 */ ) ;
+		// Vector3d 補完フレーム・パラメータ値取得
+		public native const Vector3d* getFrameVector( double frame /* フレーム番号 */ ) ;
+		// double 補完フレーム・パラメータ値取得
+		public native double getFrameScalar( double frame /* フレーム番号 */ ) ;
+		// int32 フレーム・パラメータ値取得
+		public native int32 getFrameInteger( double frame /* フレーム番号 */ ) ;
+		// boolean フレーム・パラメータ値取得
+		public native boolean getFrameBoolean( double frame /* フレーム番号 */ ) ;
+		// String フレーム・パラメータ値取得
+		public native String getFrameCommand
+			( double frame /* フレーム番号 */,
+				SeekMethod seek /* シーク方法 */ ) ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene アイテム・プロパティ・インターフェース
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneProperty	extends SceneParameter
+	{
+		// パラメータ型
+		enum using ParameterType<int>
+		{
+			// パラメータ型：無効値
+			typeInvalid		= -1,
+			// パラメータ型：3x3 行列 (Matrix3d)
+			typeMatrix,
+			// パラメータ型：座標 (Vector3d)
+			typePosition,
+			// パラメータ型：方向ベクトル (Vector3d)
+			typeDirection,
+			// パラメータ型：拡大率 (Vector3d)
+			typeZoom,
+			// パラメータ型：回転行列 (Matrix3d)
+			typeRotation,
+			// パラメータ型：色 (Vector3d)
+			typeColor,
+			// パラメータ型：スカラ値 (double)
+			typeScalar,
+			// パラメータ型：整数値 (int32)
+			typeInteger,
+			// パラメータ型：フラグ (boolean)
+			typeBoolean,
+			// パラメータ型：セレクタ (String)
+			typeSelector,
+			// パラメータ型：コマンド (String)
+			typeCommand,
+			// パラメータ型：ポーズ (String)
+			typePose,
+			// パラメータ型：バイナリ
+			typeBinary,
+			// パラメータ型： 4x4 行列 (Matrix4d)
+			typeMatrix4,
+			// パラメータ型：4Dベクトル (Vector4d)
+			typeVector4,
+			// パラメータ型：2Dベクトル (Vector2d)
+			typeVector2,
+		}
+
+		// 属性フラグ
+		enum using ParameterAttribute<uint32>
+		{
+			// 属性フラグ：定数的なパラメータ
+			attrConstant			= 0x0001,
+			// 属性フラグ：座標／ベクトルは自身のローカル空間ではなく親空間
+			attrNoLocalTransform	= 0x0002,
+			// 属性フラグ：取りうる値（文字列）の列挙可能 (enumerateStringSet)
+			attrStringEnumeration	= 0x0004,
+			// 属性フラグ： UI では列挙値のみ選択可能
+			attrUIOnlyEnumeration	= 0x0008,
+			// 属性フラグ：値の変化で有効なパラメータ集合が変化する
+			attrDynamicValidation	= 0x0010,
+			// 属性フラグ：フラグ集合の整数型である
+			attrFlagSetInteger		= 0x0020,
+			// 属性フラグ：指定範囲の値のスライダ操作
+			attrUIScalarSlider		= 0x0040,
+			// 属性フラグ：編集を反映するにはフレーム全体の更新が必要
+			attrEditUpdateFrame		= 0x0080,
+			// 属性フラグ：編集ツール用コマンド
+			attrEditorCommand		= 0x0100,
+			// 属性フラグ：座標は常にグローバル空間
+			attrGlobalTransform		= 0x0200,
+			// 属性フラグ：読み取り専用・記録対象外
+			attrReadOnlyParam		= 0x0400,
+			// 属性フラグ：保存対象外フラグ
+			attrNoSerializeFlags	= attrEditorCommand | attrReadOnlyParam,
+			// 属性フラグ：カテゴリ１
+			attrCategory1			= 0x1000,
+			// 属性フラグ：カテゴリ２
+			attrCategory2			= 0x2000,
+			// 属性フラグ：カテゴリ３
+			attrCategory3			= 0x3000,
+			// 属性フラグ：カテゴリ４
+			attrCategory4			= 0x4000,
+			// 属性フラグ：カテゴリ５
+			attrCategory5			= 0x5000,
+			// 属性フラグ：カテゴリ６
+			attrCategory6			= 0x6000,
+			// 属性フラグ：カテゴリ７
+			attrCategory7			= 0x7000,
+			// 属性フラグ：カテゴリ値ビットマスク
+			attrCategoryMask		= 0xF000,
+			// 属性フラグ：カテゴリ値ビットシフタ
+			attrCategoryShift		= 12,
+			// 属性フラグ：カテゴリ１の定数値
+			attrConstant1			= attrConstant | attrCategory1,
+			// 属性フラグ：カテゴリ２の定数値
+			attrConstant2			= attrConstant | attrCategory2,
+			// 属性フラグ：カテゴリ３の定数値
+			attrConstant3			= attrConstant | attrCategory3,
+			// 属性フラグ：カテゴリ４の定数値
+			attrConstant4			= attrConstant | attrCategory4,
+			// 属性フラグ：カテゴリ５の定数値
+			attrConstant5			= attrConstant | attrCategory5,
+			// 属性フラグ：カテゴリ６の定数値
+			attrConstant6			= attrConstant | attrCategory6,
+			// 属性フラグ：カテゴリ７の定数値
+			attrConstant7			= attrConstant | attrCategory7,
+			// 属性フラグ：アプリ拡張１
+			attrAppExtension1		= 0x01000000,
+			// 属性フラグ：アプリ拡張２
+			attrAppExtension2		= 0x02000000,
+			// 属性フラグ：アプリ拡張３
+			attrAppExtension3		= 0x04000000,
+			// 属性フラグ：アプリ拡張４
+			attrAppExtension4		= 0x08000000,
+			// 属性フラグ：アプリ拡張５
+			attrAppExtension5		= 0x10000000,
+			// 属性フラグ：アプリ拡張６
+			attrAppExtension6		= 0x20000000,
+			// 属性フラグ：アプリ拡張７
+			attrAppExtension7		= 0x40000000,
+			// 属性フラグ：アプリ拡張８
+			attrAppExtension8		= 0x80000000,
+		}
+
+		// アイテムID取得
+		public native String getItemIdentity() const ;
+		// アイテムID設定
+		public native void setItemIdentity( String id ) ;
+		// パラメータ総数取得
+		public native ulong getParameterCount() const ;
+		// パラメータID取得
+		public native String getParameterID( ulong iParam ) const ;
+		// パラメータ表示名取得
+		public native String getParameterFriendlyName( ulong iParam ) const ;
+		// パラメータ説明取得
+		public native String getParameterDescription( ulong iParam ) const ;
+		// パラメータ指標検索
+		public native long findParameterID( String id ) const ;
+		// パラメータ型取得
+		public native ParameterType
+					getParameterType( ulong iParam ) const ;
+		// パラメータ属性取得
+		public native ParameterAttribute
+					getParameterAttributes( ulong iParam ) const ;
+		// パラメータ有効範囲取得
+		public native boolean getParameterScalarRange
+			( ulong iParam, double* pMin, double* pMax ) const ;
+		// パラメーター有効性
+		public native boolean isParameterValidation( ulong iParam ) const ;
+		// パラメータカテゴリ名取得
+		public native String getParameterCategoryName( ulong iCategory ) const ;
+		// パラメータ・シーケンサ取得
+		public native SceneSequencer getParameterSequencer( ulong iParam ) const ;
+		// パラメータ・シーケンサ取得／生成
+		public native SceneSequencer createParameterSequencer( ulong iParam ) ;
+		// パラメータ・シーケンサ削除
+		public native void removeParameterSequencer( ulong iParam ) ;
+		// ポーズライブラリ取得
+		public native ModelPoseLibrary getPoseLibraryChain() ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// onExtendNotify コマンド
+	//////////////////////////////////////////////////////////////////////////
+
+	enum	SceneNotifyCommand<String>
+	{
+		InitializeItem	= "InitializeItem",
+		FinishItem		= "FinishItem",
+		StartItem		= "StartItem",
+		StopItem		= "StopItem",
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene アイテム・コントローラー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneController	extends SceneProperty
+	{
+		// このコントローラーを所有しているアイテムを取得する
+		public native SceneItem getOwnerItem() const ;
+
+		// エディット・モードか？
+		public native boolean isEditMode() const ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneItem	extends SceneProperty
+	{
+		// パラメータID
+		enum using ParameterID<String>
+		{
+			// パラメータID：位置
+			paramPosition	= "position",
+			// パラメータID：回転
+			paramRotation	= "rotation",
+			// パラメータID：拡大
+			paramZoom		= "zoom",
+			// パラメータID：透明度 [0,1]
+			paramTransparency	= "transparency",
+			// パラメータID：色乗算効果
+			paramColorMul	= "color_mul",
+			// パラメータID：色加算効果
+			paramColorAdd	= "color_add",
+			// パラメータID：表示状態
+			paramVisible	= "visible",
+			// パラメータID：トゥーン・シェーディング
+			paramForceToon	= "force_toon",
+			// パラメータID：輪郭線描画
+			paramForceBorder	= "force_border",
+			// パラメータID：トゥーン・シェーディング無効化
+			paramFreeToon	= "free_toon",
+			// パラメータID：輪郭線描画無効化
+			paramFreeBorder	= "free_border",
+			// パラメータID：当たり判定有効化
+			paramUseCollision	= "use_collision",
+			// パラメータID：親空間を無視して常に大域空間
+			paramGlobalSpace	= "global_space",
+			// パラメータID：親空間を無視して常にカメラ位置に対して平行移動
+			paramCameraShift	= "camera_shift",
+			// パラメータID：親空間を無視して常にカメラの姿勢に対して追従
+			paramCameraSpace	= "camera_space",
+			// パラメータID：カメラから近い場合に非表示
+			paramHideNear	= "hide_near",
+			// パラメータID：カメラから遠い場合に非表示
+			paramHideFar	= "hide_far",
+		}
+
+		// アイテムの回転取得
+		public native const Matrix3d* getItemRotation() const ;
+		// アイテムの回転設定
+		public native void setItemRotation( const Matrix3d* matRot ) ;
+		// アイテムの拡大率取得
+		public native const Vector3d* getItemZoom() const ;
+		// アイテムの拡大率設定
+		public native void setItemZoom( const Vector3d* vZoom ) ;
+		// アイテムの位置（ローカル座標）取得
+		public native const Vector3d* getItemPosition() const ;
+		// アイテムの透明度 [0,256] 取得
+		public native uint getItemTransparency() const ;
+		// アイテムの色効果取得
+		public native const ColorMulAdd* getItemColorEffect() const ;
+		// アイテムの表示フラグ取得
+		public native boolean getVisibleParameter() const ;
+		// アイテムの表示フラグ設定
+		public native void setVisibleParameter( boolean visible ) ;
+		// アイテムの行列（ローカル変換）設定
+		public native void setItemMatrix( const Matrix3d* matrix ) ;
+		// アイテムの位置（ローカル座標）設定
+		public native void setItemPositioin( const Vector3d* vPos ) ;
+
+		// 親アイテム取得
+		public native SceneItem getParentSpaceItem() const ;
+		// コンポジション取得
+		public native SceneComposition getComposition() const ;
+		// コンポーザー取得
+		public native SceneComposer getComposer() const ;
+		// コンポーザー・マネージャー取得
+		public native SceneManager getManager() const ;
+		// シーン取得
+		public native Scene getScene() const ;
+		// アイテム取得
+		public native SceneItem getSceneItemAs( String id ) const ;
+
+		// アイテム空間変換行列（アイテム自身を含まないグローバル変換）を計算
+		public native void getItemLinkTransformation
+						( Matrix3d* matLink, Vector3d* vLinkPos ) const ;
+		// 空間行列取得
+		public native void getGlobalTransformation
+						( Matrix3d* matGlobal, Vector3d* vGlobalPos ) const ;
+		// 空間色効果取得（乗算色α要素に不透明度取得）
+		public native void getGlobalColorEffect( ColorMulAdd* clrEffect ) const ;
+		// 子アイテム数取得
+		public native ulong getChildItemCount() const ;
+		// 子アイテム取得
+		public native SceneItem getChildItemAt( ulong index ) const ;
+		// 子アイテム検索
+		public native long findChildItem( SceneItem item ) const ;
+
+		// コントローラー数取得
+		public native ulong getControllerCount() const ;
+		// コントローラー指標検索
+		public native long findControllerID( String id ) const ;
+		// コントローラー指標検索
+		public native long findController( SceneController ctrl ) const ;
+		// コントローラー取得
+		public native SceneController getControllerAt( ulong index ) const ;
+		// コントローラー取得
+		public native SceneController getControllerAs( String id ) const ;
+		// コントローラー削除
+		public native boolean removeControllerAt( ulong index ) ;
+		// コントローラー削除
+		public native boolean removeControllerAs( String id ) ;
+
+		// エディット・モードか？
+		public native boolean isEditMode() const ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene 空間アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneSpace	extends SceneItem
+	{
+		// パラメータID
+		enum using ParameterID<String>
+		{
+			// パラメータID：一切の処理を無効化
+			paramIgnore		= "space_ignore",
+			// パラメータID：レイヤード空間
+			paramSetLayerSace	= "layered_space",
+			// パラメータID：レイヤー描画優先度
+			paramLayeredPriority	= "layered_priority",
+			// パラメータID：レイヤード描画パラメータ（デフォルトでは透明度として処理）[0,1]
+			paramLayeredParam	= "layered_param",
+			// パラメータID：レイヤード描画に使用する反射反映用環境マップ
+			paramLayeredReflMap	= "layered_refl_map",
+			// パラメータID：レイヤード描画に使用する屈折反映用環境マップ
+			paramLayeredRefrMap	= "layered_refr_map",
+			// パラメータID：field クラスの子アイテムをレイヤード描画の対象にする
+			paramLayeredField	= "layered_field",
+			// パラメータID：static_item1 クラスの子アイテムをレイヤード描画の対象にする
+			paramLayeredStaticItem1	= "layered_static_item1",
+			// パラメータID：static_item2 クラスの子アイテムをレイヤード描画の対象にする
+			paramLayeredStaticItem2	= "layered_static_item2",
+			// パラメータID：dynamic_item1 クラスの子アイテムをレイヤード描画の対象にする
+			paramLayeredDynamicItem1	= "layered_dynamic_item1",
+			// パラメータID：dynamic_item2 クラスの子アイテムをレイヤード描画の対象にする
+			paramLayeredDynamicItem2	= "layered_dynamic_item2",
+			// パラメータID：dynamic_item3 クラスの子アイテムをレイヤード描画の対象にする
+			paramLayeredDynamicItem3	= "layered_dynamic_item3",
+			// パラメータID：effect_item クラスの子アイテムをレイヤード描画の対象にする
+			paramLayeredEffectItem	= "layered_effect_item",
+		}
+
+		// SceneSpace 構築
+		public native SceneSpace() ;
+
+		// 子アイテムを追加する
+		// <desc>※ item の参照を SceneSpace が保持しないので
+		// removeChild で削除するまでの間、呼び出し元で保持して
+		// おかなければなりません</desc>
+		public native boolean addChild( SceneItem item ) ;
+		// 子アイテムを削除する
+		public native boolean removeChild( SceneItem item ) ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene コンポジション・アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneComposition	extends SceneSpace
+	{
+		// 表示設定を適用
+		public native void applySceneParameters
+					( Scene scene, const Size* sizeView ) const ;
+		// レンダリングの為のデバイスリソース準備（Scene に追加する前用）
+		public native void prepareToRender
+					( RenderDevice device, Scene scene, uint32 flags = 0 ) ;
+
+		// 初期化処理通知（CmdInitializeItem 通知）
+		public native void initializeItems( Scene scene = null ) ;
+		// コンポジションの再生開始（Timer駆動）（CmdStartItem 通知あり）
+		public native void playComposition() ;
+		// コンポジションの停止（CmdStopItem 通知あり）
+		public native void stopCompositoin() ;
+		// コンポジションの再生開始（Timer駆動）（CmdStartItem 通知なし）
+		public native void restartComposition() ;
+		// コンポジションの停止（CmdStopItem 通知なし）
+		public native void pauseCompositoin() ;
+		// コンポジションの終了（CmdFinishItem 通知あり）
+		public native void finishComposition() ;
+		// コンポジションの再生中か？
+		public native boolean isPlayingComposition() const ;
+		// コンポジションの一時停止中か？
+		public native boolean isPausedComposition() const ;
+		// コンポジション終了か？
+		public native boolean isCompositionFinished() const ;
+
+		// 再生中フレーム番号取得
+		public native double getCurrentPlayingFrame() const ;
+		// ジャンプ先フレーム設定
+		public native void postTimelineFrame( double frame ) ;
+
+		// アイテムの子アイテムを削除する
+		public native boolean removeSpaceChild
+					( SceneItem space, SceneItem item ) ;
+		// 遅延削除リストに追加
+		public native void postDelayRemoveItem
+					( SceneItem space, SceneItem item ) ;
+
+		// ユーザー・コンテナ・オブジェクトを取得する
+		public native Object getUserObject() const ;
+		// ユーザー・コンテナ・オブジェクトを設定する
+		public native void setUserObject( Object obj ) ;
+
+		// エディット・モードか？
+		public native boolean isEditMode() const ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene アイテム共通基底
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneCommon	extends SceneItem
+	{
+		// パラメータID
+		enum using ParameterID<String>
+		{
+			// パラメータID：アイテム・クラス
+			paramItemClass		= "item_class",
+			// パラメータID：アイテム優先度
+			paramItemPriority	= "render_priority",
+		}
+
+		// アイテム・クラス取得
+		public native Scene.ItemClass getItemClass() const ;
+		// アイテム・クラス設定
+		public native void setItemClass( Scene.ItemClass cls ) ;
+		// 描画優先度 [0,15] 取得
+		public native uint getRenderPriority() const ;
+		// 描画優先度 [0,15] 設定
+		public native void setRenderPriority( uint priority ) ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene カメラ・アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneCamera	extends SceneCommon
+	{
+		// SceneCamera 構築
+		public native SceneCamera() ;
+
+		// カメラ視点（ローカル）座標取得
+		public native const Vector3d* getCameraPosition() const ;
+		// カメラ視点（ローカル）座標設定
+		public native void setCameraPosition( const Vector3d* vPos ) ;
+		// カメラ注視点（ローカル）座標取得
+		public native const Vector3d* getCameraTarget() const ;
+		// カメラ注視点（ローカル）座標設定
+		public native void setCameraTarget( const Vector3d* vTarget ) ;
+		// カメラ天頂方向（ローカル）ベクトル取得
+		public native const Vector3d* getCameraTop() const ;
+		// カメラ天頂方向（ローカル）ベクトル設定
+		public native void setCameraTop( const Vector3d* vTop ) ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene 光源アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneLight	extends SceneCommon
+	{
+		enum using LightTypeIndex
+		{
+			typeLightAmbient,
+			typeLightAmbientMul,
+			typeLightVector,
+			typeLightPoint,
+			typeLightSpot,
+			typeLightFog,
+			typeLightCount,
+		}
+
+		enum using ShadowMapFlag<uint32>
+		{
+			// シャドウマッピングのカメラ距離を指定する
+			shadowPersDistance		= 0x0001,
+			// シャドウマッピングのカメラ距離をシーンのカメラ距離に比率で連動する
+			shadowAdjustByCamera	= 0x0002,
+		}
+
+		// シャドウマッピング用パラメータ
+		struct	ShadowMapParam
+		{
+			// ShadowMapFlag
+			uint32	nFlags ;
+			// シャドウマッピング・バッファサイズ
+			Size	sizeMapping ;
+			// ピクセル密度
+			float	fpPixelDensity = 1.0f ;
+			// 視野角の接線（シャドウマッピング用カメラ位置計算用）
+			float	tanAngleOfView = 1.0f ;
+			// カメラ距離 (nFlags & shadowPersDistance の時)
+			float	zPersDistance ;
+			// カメラ基準距離 (nFlags & shadowAdjustByCamera の時)
+			// ※シーンのカメラの注視点－視点距離との比でシャドウマッピングのカメラ距離を補正する
+			float	zCameraStdDistance ;
+			// 視錐台の手前距離
+			float	zPersNear ;
+			// 視錐台の奥の距離
+			float	zPersFar ;
+			// ｚ比較の許容誤差率 2^x
+			float	zErrorPrecision = -12.0f ;
+			// ｚ比較の許容誤差率（傾きに対して） 2^x
+			float	zErrorSubPrecision = -12.0f ;
+			// ガウスフィルタ係数
+			float	fpFilterGauss = 2.0f ;
+			// 追加階層数
+			uint32	nCascadeMaxCount = 0 ;
+			// 追加階層のピクセル密度比率
+			float	zCascadeDensityStep = 3.0f ;
+			// 追加階層のカメラ注視点距離比率
+			float	zCascadeTargetLengthStep = 2.0f ;
+			// 追加階層のカメラ注視点加算距離
+			float	zCascadeTargetLengthOffset = 20.0f ;
+			// 追加階層のカメラ距離と視錐台ｚ範囲の係数
+			float	zCascadeDepthStep = 1.0f ;
+			// 追加階層のカメラ距離の加算
+			float	zCascadeDistanceOffsetStep = 0.0f ;
+		}
+
+		// SceneLight 構築
+		public native SceneLight() ;
+
+		// 光源タイプ取得
+		public native LightTypeIndex getLightType() const ;
+		// 光源タイプ設定
+		public native void setLightType( LightTypeIndex type ) ;
+		// 光源色取得
+		public native const ARGB8* getLightColor() const ;
+		// 光源色設定
+		public native void setLightColor( const ARGB8* rgbColor ) ;
+		// 輝度取得
+		public native double getLightBrightness() const ;
+		// 輝度設定
+		public native void setLightBrightness( double brightness ) ;
+		// 点光源減衰取得
+		// <desc>a : 減衰力, r : 距離, 減衰率（倍率）: 1/pow(r,a)
+		public native double getAttenuationPower( void ) const ;
+		// 点光源減衰設定
+		public native void setAttenuationPower( double attenuation ) ;
+		// 光源位置取得
+		public native const Vector3d* getLightPosition() const ;
+		// 光源位置設定
+		public native void setLightPosition( const Vector3d* vPos ) ;
+		// 光源向き取得
+		public native const Vector3d* getLightDirection() const ;
+		// 光源向き設定
+		public native void setLightDirection( const Vector3d* vDir ) ;
+		// スポットライト範囲角 [deg] 取得
+		public native double getLightAngle() const ;
+		// スポットライト範囲角 [deg] 設定
+		public native void setLightAngle( double degAngle ) ;
+		// スポットライトぼかし角 [deg] 取得
+		public native double getLightGradation( void ) const ;
+		// スポットライトぼかし角 [deg] 設定
+		public native void setLightGradation( double degGradation ) ;
+		// シャドウマッピング有効取得
+		public native boolean IsEnabledShadowMapping() const ;
+		// シャドウマッピング有効設定
+		public native void enableShadowMapping( boolean shadowmap ) ;
+		// シャドウマッピングパラメータ取得
+		public native void getShadowMappingParam( ShadowMapParam* param ) const ;
+		// シャドウマッピングパラメータ設定
+		public native void setShadowMappingParam( const ShadowMapParam* param ) ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene サウンド・アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneSoundItem	extends SceneCommon
+	{
+		// 音源インスタンス・フラグ
+		enum using InstanceFlag<uint32>
+		{
+			// 再生完了時にインスタンス破棄
+			instanceAutoDeleteOnEnd		= 0x0001,
+			// 参照アイテム削除時にインスタンス破棄
+			instanceAutoDeleteWithItem	= 0x0002,
+		}
+
+		// 音源インスタンス
+		class	Instance	extends NativeObject
+		{
+		}
+
+		// SceneSoundItem 構築
+		public native SceneSoundItem() ;
+
+		// インスタンス生成
+		public native Instance createInstance
+			( InstanceFlag nFlags = 0 /* インスタンス・フラグ */,
+				double fpSubVolume = 1.0 /* 音量 */,
+				SceneItem refItem = null /* 参照（追従）アイテム */,
+				const Matrix3d* matrix = null /* 変換行列（参照アイテムのローカル／(refItem==null) の時はグローバル） */,
+				const Vector3d* pos = null /* 音源座標（参照アイテムのローカル／(refItem==null) の時はグローバル） */ ) ;
+		// インスタンス削除
+		public native void removeInstance( Instance instance ) ;
+		// 再生開始
+		public native void playInstance( Instance instance ) ;
+		// インスタンスが存在するか？
+		public native boolean isValidInstance( Instance instance ) const ;
+		// インスタンス座標変更
+		public native void setInstancePosition
+			( Instance instance, const Vector3d* vPos ) const ;
+		// インスタンス再生時間と再生中か照会
+		public native boolean getPlayingTimeOfInstance
+			( double* secPlaying, Instance instance ) const ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene 動的モデル・アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneDynamicModel	extends SceneCommon
+	{
+		// SceneDynamicModel 構築
+		public native SceneDynamicModel() ;
+
+		// 表示モデル設定
+		public native void attachModelRef( ModelBuffer model ) ;
+		// 表示モデル設定
+		public native void setModelID( String modelId ) ;
+		// 表示モデル取得
+		public native String getModelID() const ;
+		// 衝突判定モデル設定
+		public native void attachCollisionModel( VertexBuffer model ) ;
+		// 衝突判定モデル設定
+		public native void setCollisionID( String modelId ) ;
+		// 衝突判定モデル取得
+		public native String getCollisionID() const ;
+		// 動的な衝突判定モデルか？
+		public native boolean isDynamicCollision() const ;
+		// 動的な衝突判定モデルに設定
+		public native void setDynamicCollisionFlag( boolean flagDynamic ) ;
+		// バリアント描画ターゲット設定
+		public native void setVariantDrawTaregt( String targetItemId ) ;
+		// バリアント描画ターゲット取得
+		public native String getVariantDrawTarget() const ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// インスタンシング・インターフェース
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneInstancingItem	extends NativeObject
+	{
+		public abstract SceneInstancingItem() ;
+
+		// インスタンスの共通回転取得
+		public native const Quaterniond* getBaseRotation() const ;
+		// インスタンスの共通回転設定
+		public native void setBaseRotation( const Quaterniond* rot ) ;
+		// インスタンスの共通拡大率取得
+		public native const Vector3d* getBaseZoom() const ;
+		// インスタンスの共通拡大率設定
+		public native void setBaseZoom( const Vector3d* zoom ) ;
+
+		// （現フレームだけの）一時インスタンスを追加する
+		//（Scene.classPreRender イベント中に呼び出す）
+		public native void addTemporaryInstances
+			( const Matrix4* matrixes,
+				const ColorMulAdd* colors,
+				ulong count, SceneItem itemFrom ) ;
+
+		// 静インスタンス数取得
+		public native ulong getStaticInstanceCount() const ;
+		// 静インスタンス取得
+		public native boolean getStaticInstanceAt
+			( ulong index, Matrix4* matrix, ColorMulAdd* color ) const ;
+		// 静インスタンス挿入
+		public native void insertStaticInstanceAt
+			( ulong index, const Matrix4* matrix, const ColorMulAdd* color ) ;
+		// 静インスタンス削除
+		public native void removeStaticInstanceAt( ulong index ) ;
+
+		// インスタンス排他処理権取得
+		// <desc>※この関数は長時間停止し得ますが、その間 Task の
+		// 非同期実行状態として離脱することはできません。</desc>
+		public native void lockInstancing() ;
+		// インスタンス排他処理権解放
+		// <desc>lockInstancing 関数と対になるように同じ回数呼び出す必要があります。</desc>
+		public native void unlockInstancing() ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// アイテム／インスタンス参照
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneItemInstanceRef	extends NativeObject
+	{
+		// SceneItemInstanceRef 複製構築
+		public native SceneItemInstanceRef( const SceneItemInstanceRef ref ) ;
+		// SceneItemInstanceRef 構築
+		public native SceneItemInstanceRef( SceneItem item, ulong instance = 0 ) ;
+
+		// 代入
+		public native SceneItemInstanceRef
+						operator := ( const SceneItemInstanceRef ref ) ;
+
+		// 参照先がなくなったか？
+		// <return>参照先が削除された場合には true、それ以外の場合には fakse</return>
+		// <desc>参照先が削除されても、サブコンポジションなどでオブジェクトがプールされている場合、
+		// 削除されたにもかかわらず false を返す可能性があります。<br/>
+		// より正確な判定のためには、フレーム毎に correctInstance を呼び出す必要があります。</desc>
+		public native boolean isEmpty() const ;
+		// 参照先が同一か？
+		public native boolean isEqual( const SceneItemInstanceRef ref ) const ;
+		// 参照解放
+		public native void releaseRef() ;
+		// 参照先アイテム取得
+		public native SceneItem getRefItem() const ;
+		// インスタンス参照か？
+		public native boolean isInstance() const ;
+		// インスタンス指標取得
+		// <return>インスタンス参照の場合、インスタンスの指標。
+		// この値は構築時の指標と異なる場合があります
+		// （別のインスタンスの挿入／削除等により）。<br/>
+		// インスタンス参照でない場合 -1。</return>
+		public native long getInstanceIndex() const ;
+		// 異なるフレームにおいて getInstanceMatrix する前に情報を修正する
+		// <return>参照先が有効な場合 true。そうでない場合 false。</return>
+		// <desc>参照先が有効かどうかは isEmpty 関数だけでは必ずしも正確ではありません。<br/>
+		// 参照先がサブコンポジション内のアイテムの場合、deleteInstance 等で
+		// 削除されても（オブジェクト・プールの影響で） isEmpty は false を返すかもしれません。</desc>
+		public native boolean correctInstance() ;
+		// 安全に現在のフレームでのインスタンス行列（ローカル）を取得
+		public native boolean getInstanceMatrix( Matrix4* matrix, ColorMulAdd* color ) ;
+		// 参照先インスタンスを削除する
+		// <desc>アイテムの場合には遅延削除します。サブコンポジション内の
+		// アイテムの場合にはサブコンポジション・インスタンスを遅延削除します</desc>
+		public native boolean deleteInstance() ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene 複数描画モデル・アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneMultiModel	extends SceneDynamicModel
+							implements SceneInstancingItem
+	{
+		// SceneMultiModel 構築
+		public native SceneMultiModel() ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene メッシュ・バッファ・アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneMeshBuffer	extends SceneCommon
+							implements SceneInstancingItem
+	{
+		// SceneMeshBuffer 構築
+		public native SceneMeshBuffer() ;
+
+		// 描画のためのメッシュバッファを取得する
+		//（Scene.classPreRender イベント中に呼び出す）
+		// <desc>※この関数はスレッド排他的に動作するため長時間停止し得ますが、
+		// その間 Task の非同期実行状態として離脱することはできません。</desc>
+		public native VertexBuffer[] lockMeshBuffer() ;
+
+		// lockMeshBuffer で取得したメッシュバッファの排他処理を解放する
+		public native void unlockMeshBuffer() ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene サブコンポジション・アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneSubComposition	extends SceneCommon
+							implements SceneInstancingItem
+	{
+		// SceneSubComposition 構築
+		public native SceneSubComposition() ;
+
+		// インスタンス生成
+		public native SceneComposition createInstance( Object objUser = null ) ;
+		// インスタンス削除
+		public native void releaseInstance( SceneComposition comp ) ;
+		// インスタンス遅延削除
+		public native void delayReleaseInstance( SceneComposition comp ) ;
+		// インスタンスが有効か？
+		public native boolean isValidInstance( SceneComposition comp ) const ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// スクリプト実装 Scene アイテム
+	//////////////////////////////////////////////////////////////////////////
+	/*
+	 <desc>
+	 シーン・コンポジションのアイテムとして機能し、
+	 また GUI エディタ上のインターフェースを提供します。<br/>
+	 <br/>
+	 public なメンバ変数が以下の型の場合、xml 形式のコメントで
+	 GUI インターフェースを設定できます。<br/>
+	 <blockquote>
+	  boolean, int, uint, double, ARGB8(RGB要素のみ), Vector3, Vector3d,<br/>
+	  Matrix3, Matrix3d, Quaternion, Quaterniond, Vector2, Vector2d,<br/>
+	  Vector4, Vector4d, Matrix4, Matrix4d,<br/>
+	  String, Image, AudioPlayer, ModelBuffer, ModelPose, SceneItem
+	 </blockquote>
+	 <br/>
+	 以下のタグでより詳細に設定できます。<br/>
+	 <blockquote>
+	   <dl><dt>&lt;name&gt; タグ</dt><dd>表示項目名（必須）</dd></dl>
+	   <dl><dt>&lt;id&gt; タグ</dt><dd>保存時のパラメータ ID。省略時には変数名がそのまま ID となります。<br/>
+			（※ SceneItem.ParameterID や SceneCommon.ParameterID 列挙子と同じ名前は正常に機能しません）</dd></dl>
+	   <dl><dt>&lt;desc&gt; タグ</dt><dd>詳細説明</dd></dl>
+	   <dl><dt>&lt;sub_type&gt; タグ</dt><dd>GUI 上の型指定
+		（省略した場合には対応するデフォルトの型が適用されます）<br/>
+	     matrix, position, direction, zoom, rotation, color, scalar,<br/>
+	     integer, boolean, selector, command, pose, matrix4, vector4, vector2</dd></dl>
+	   <dl><dt>&lt;range&gt; タグ</dt><dd>scalar 値域指定。 min=最小値, max 最大値</dd></dl>
+	   <dl><dt>&lt;selector&gt; タグ</dt><dd>GUI 上でドロップダウンリスト形式で入力。<br/>
+	       int, String で使用可。<br/>
+	       Image, AudioPlayer, ModelBuffer, ModelPose は自動的にドロップダウンリストになるため必要ありません。</dd></dl>
+	   <dl><dt>&lt;selector&gt;&lt;enum&gt; タグ</dt><dd>ドロップダウンリストの位置項目。 name=表示名, num=選択時の数値, str=選択時の文字列</dd></dl>
+	 <br/>
+	 </blockquote>
+	*/
+	// <div class="code_quote">
+	// // 例<br/>
+	// class ExampleItem extends SceneCustomItem<br/>
+	// {<br/>
+	// &nbsp; &nbsp; /*<br/>
+	// &nbsp; &nbsp; &lt;name&gt;色&lt;/name&gt;<br/>
+	// &nbsp; &nbsp;  &lt;selector&gt;<br/>
+	// &nbsp; &nbsp;  &nbsp; &nbsp; &lt;enum name="黒" num="0"/&gt;<br/>
+	// &nbsp; &nbsp;  &nbsp; &nbsp; &lt;enum name="青" num="1"/&gt;<br/>
+	// &nbsp; &nbsp;  &nbsp; &nbsp; &lt;enum name="赤" num="2"/&gt;<br/>
+	// &nbsp; &nbsp;  &nbsp; &nbsp; &lt;enum name="緑" num="3"/&gt;<br/>
+	// &nbsp; &nbsp;  &lt;/selector&gt;<br/>
+	// &nbsp; &nbsp; */<br/>
+	// &nbsp; &nbsp; public int m_type ;<br/>
+	// <br/>
+	// &nbsp; &nbsp; // &lt;name&gt;向き&lt;/name&gt;<br/>
+	// &nbsp; &nbsp; // &lt;sub_type&gt;direction&lt;/sub_type&gt;<br/>
+	// &nbsp; &nbsp; public Vector3d m_direction ;<br/>
+	// <br/>
+	// &nbsp; &nbsp; // &lt;name&gt;速度&lt;/name&gt;<br/>
+	// &nbsp; &nbsp; // &lt;range min="0" max="100"/&gt;<br/>
+	// &nbsp; &nbsp; public double m_velocity ;<br/>
+	// <br/>
+	// &nbsp; &nbsp; // エディタで入力しない変数<br/>
+	// &nbsp; &nbsp; public int m_noname ;<br/>
+	// <br/>
+	// &nbsp; &nbsp; // &lt;name&gt;エディタで入力しない変数&lt;/name&gt;<br/>
+	// &nbsp; &nbsp; protected int m_invisible ;<br/>
+	// }
+	// </div>
+	// </desc>
+
+	class	SceneCustomItem	extends SceneCommon
+	{
+		// SceneCustomItem 構築
+		public native SceneCustomItem( String typeId ) ;
+
+		// 拡張的な処理の通知
+		public void onExtendNotify
+			( String cmd /* 通知コマンド SceneNotifyCommand */,
+				String param /* 通知コマンドのパラメータ */,
+				const void* pExParam, ulong nExParamBytes )
+		{
+		}
+
+		// タイマー処理
+		public void onTimer( Scene scene, uint32 msecDelta )
+		{
+		}
+
+		// フレーム更新後処理
+		public void onUpdateFrame
+			( double frame, SceneSequencer.SeekMethod seek )
+		{
+		}
+
+		// レンダリングの為のデバイスリソース準備
+		public void onPrepareToRender
+			( RenderDevice device, uint32 flags = 0 )
+		{
+		}
+
+		// レンダリング前後処理（全視点共通）
+		public void onItemRenderEvent
+			( Scene scene, Scene.ItemClass clsItem )
+		{
+		}
+
+		// 当たり判定追加
+		public void onItemRenderCollision
+			( const Scene scene, Collision render )
+		{
+		}
+
+		// 表示モデル追加
+		public void onItemRenderModel
+			( const Scene scene,
+				RenderContext render, uint64 flagsExclusion = 0 )
+		{
+		}
+
+		// 描画前処理
+		public void beforeItemRenderModel
+			( const Scene scene,
+				RenderContext render, uint64 flagsExclusion = 0 )
+		{
+		}
+
+		// 描画後処理
+		public void afterItemRenderModel
+			( const Scene scene,
+				RenderContext render, uint64 flagsExclusion = 0 )
+		{
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// スクリプト実装 Scene コントローラー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneCustomController	extends SceneController
+	{
+		enum using BehaviorFlag<uint32>
+		{
+			// onRenderEvent 呼び出し有効
+			behaviorRenderEvent		= 0x00000001,
+			// renderCollision 呼び出し有効
+			behaviorCollision		= 0x00000002,
+			// renderModel 呼び出し有効
+			behaviorRender			= 0x00000004,
+			// beforeRenderModel, afterRenderModel 呼び出し有効
+			behaviorRenderContext	= 0x00000008,
+			// 常に onUpdateFrame 呼び出し
+			behaviorAlwaysActive	= 0x00000010,
+			// onTimer 呼び出し有効
+			behaviorOnTimer			= 0x00000020,
+			// 無効状態
+			behaviorDisabled		= 0x00000100,
+		}
+
+		// SceneCustomController 構築
+		public native SceneCustomController( String typeId ) ;
+
+		// 動作フラグ取得
+		public native BehaviorFlag getBehaviorFlags() const ;
+		// 動作フラグ変更
+		public native BehaviorFlag modifyBehaviorFlags
+			( BehaviorFlag addFlags, BehaviorFlag removeFlags = 0 ) ;
+		// イベント発生ビットマスク取得
+		public native uint32 getRenderEventClasses( void ) const ;
+		// イベント発生ビットマスク変更
+		public native uint32 modifyRenderEventClasses
+			( uint32 maskAdd /* 追加する Scene.ItemClass に対応するビットマスク */,
+				uint32 maskRemove = 0 /* 削除する Scene.ItemClass に対応するビットマスク */ ) ;
+
+		// 拡張的な処理の通知
+		public void onExtendNotify
+			( String cmd /* 通知コマンド SceneNotifyCommand */,
+				String param /* 通知コマンドのパラメータ */,
+				const void* pExParam, ulong nExParamBytes )
+		{
+		}
+
+		// タイマー処理
+		public void onTimer
+			( Scene scene, SceneItem item, uint32 msecDelta )
+		{
+		}
+
+		// フレーム（パラメータ）更新後処理
+		public void onUpdateFrame
+			( SceneItem item, double frame, SceneSequencer.SeekMethod seek )
+		{
+		}
+
+		// レンダリングの為のデバイスリソース準備
+		public void onPrepareToRender
+			( RenderDevice device, uint32 flags = 0 )
+		{
+		}
+
+		// レンダリングイベント
+		public void onRenderEvent
+			( Scene scene, Scene.ItemClass clsItem, SceneItem item )
+		{
+		}
+
+		// 当たり判定追加
+		public void renderCollision
+			( const Scene scene, SceneItem item, Collision render )
+		{
+		}
+
+		// 表示モデル追加
+		public void renderModel
+			( const Scene scene,
+				Scene.ItemClass clsItem, SceneItem item,
+				RenderContext render, uint64 flagsExclusion = 0 )
+		{
+		}
+
+		// 描画前処理
+		public void beforeRenderModel
+			( const Scene scene,
+				Scene.ItemClass clsItem, SceneItem item,
+				RenderContext render, uint64 flagsExclusion = 0 )
+		{
+		}
+
+		// 描画後処理
+		public void afterRenderModel
+			( const Scene scene,
+				Scene.ItemClass clsItem, SceneItem item,
+				RenderContext render, uint64 flagsExclusion = 0 )
+		{
+		}
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// スクリプト実装 Scene ポーズ制御コントローラー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	ScenePoseController	extends SceneCustomController
+	{
+		// ScenePoseController 構築
+		public native ScenePoseController( String typeId ) ;
+
+		// モデル・ポーズ適用
+		public void onPoseTrack
+			( SceneDynamicModel item, ModelBuffer model )
+		{
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// スクリプト実装 Scene メッシュ生成コントローラー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneMeshController	extends SceneCustomController
+	{
+		// SceneMeshController 構築
+		public native SceneMeshController( String typeId ) ;
+
+		// メッシュ追加処理（全視点・ビュー共通処理）
+		public void addMesh
+			( Scene scene, SceneItem item, VertexBuffer[] vbs )
+		{
+		}
+
+		// フレーム描画前処理（全視点・ビュー共通処理）
+		public void updateMesh
+			( Scene scene, SceneItem item, VertexBuffer[] vbs )
+		{
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene コンポーザー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneComposer	extends NativeObject
+	{
+		// SceneComposer 構築
+		public native SceneComposer( SceneManager manager ) ;
+
+		// コンポーザーファイル読み込み
+		public native boolean loadComposeFile( String file ) ;
+
+		// モデル・リソースを取得する
+		public native ModelBuffer getAssetModelAs( String id ) const ;
+
+		// オーディオ・リソースを取得する
+		public native AudioPlayer getAssetAudioAs( String id ) const ;
+
+		// 画像ライブラリを取得する
+		public native TextureLibrary getTextureLibrary() const ;
+
+		// マテリアル・ライブラリを取得する
+		public native MaterialLibrary getMaterialLibrary() const ;
+
+		// ポーズ・ライブラリを取得する
+		public native ModelPoseLibrary getModelPoseLibrary() const ;
+
+		// コントローラーを新規作成してアイテムに追加する
+		public native SceneController createController
+				( SceneItem item, ulong index, String typeId, String ctrlId ) ;
+
+		// アイテムを新規作成して子アイテムとして追加する
+		public native SceneItem createItemeChildOf
+				( SceneItem space, String typeId, String itemId ) ;
+
+		// コンポジションを作成する
+		public native SceneComposition createComposition
+				( String compId, Object objInstance = null ) ;
+
+		// ログメッセージ出力
+		public native void outputLog( String msg ) ;
+
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Scene マネージャー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneManager	extends NativeObject
+	{
+		// SceneManager 構築
+		public native SceneManager() ;
+
+		// 現在のスレッドに設定されているインスタンスを取得
+		// <return>SceneComposer でスクリプトをインクルードしている間、
+		// そのインクルード元の SceneManager。</return>
+		public static native SceneManager getCurrent() ;
+
+		// シーン情報
+		class	Context
+		{
+			public SceneComposer	composer ;
+			public WindowSprite		window ;
+			public SceneSprite		scene ;
+			public VirtualInput		input ;
+		}
+
+		// シーン開始時処理
+		// <desc>コンポジション内のスクリプトは SceneManager の外とは別の
+		// 仮想マシン空間で実行されるため、情報のやり取りは制限されます。<br/>
+		// SceneManager を Loquaty スクリプトで生成した場合には
+		// 生成元の仮想マシンから派生されるため、クラスの staic メンバや
+		// グローバル変数を参照することはできますが C++ から生成された場合には
+		// その限りではありません。<br/>
+		// より一般的にはシーン情報を startScene で設定し、
+		// コンポジション内では getSceneInfo で取得したシーン情報を
+		// 使用します。</desc>
+		public native void startScene( Context context /* シーン情報 */ ) ;
+
+		// シーン終了時処理
+		public native void endScene() ;
+
+		// シーン情報取得
+		// <return>シーン情報を格納した Context</return>
+		// <desc>エディタ上や startScene が呼び出されていないと
+		// シーン情報は取得できないことに注意してください。</desc>
+		public native Context getSceneInfo() const ;
+
+		// ローカル Loquaty 仮想マシンを取得
+		// <desc>SceneComposer でインクルードされたスクリプトの
+		// グローバル変数や class の static な変数へは直接アクセスすることは
+		// できません。<br/>
+		// あらかじめ呼び出し元のスクリプトでインクルードしておくか、
+		// より一般的には Loquaty.compilerAs～ 関数でローカル仮想マシン内の
+		// 値を取得／操作する関数を生成します。</desc>
+		public native Loquaty getLoquaty() const ;
+
+		// アイテムクラスを登録
+		public native void setItemClass
+			( String typeId /* 登録するアイテム・タイプ ID */,
+				Class cls /* SceneItem 派生クラス */ ) ;
+
+		// コントローラークラスを登録
+		public native void setControllerClass
+			( String typeId /* 登録するコントローラー・タイプ ID */,
+				Class cls /* SceneController 派生クラス */ ) ;
+
+		// プラグイン項目の種類
+		enum using PluginDescriptorType<int>
+		{
+			pluginTypeNull			= 0,
+			pluginTypeItem			= 1,
+			pluginTypeController	= 2,
+			pluginTypeProcRsrc		= 3,
+		}
+
+		// プラグイン項目のメニュー表示状態
+		enum using PluginMenuState<uint>
+		{
+			menuDisabled	= 0x0001,
+			menuChecked		= 0x0002,
+		} ;
+
+		// エディタの環境設定
+		struct	EditorEnvironment
+		{
+			double	fpSceneScale ;		// {1.0 | 100.0}
+		}
+
+		// エディタのプラグインに追加する
+		public native void addPluginMenu
+			( PluginDescriptorType type,
+				String menuPath, String typeId,
+				Function<SceneProperty(const EditorEnvironment*)> fncCreateItem,
+				Function<PluginMenuState(SceneItem)> fncOnUpdateMenu = null ) ;
+
+	}
+
+
+}
+
+

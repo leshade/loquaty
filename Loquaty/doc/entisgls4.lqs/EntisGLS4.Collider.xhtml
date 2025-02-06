@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Collider</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Collider</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class Collider ;</div>
+<div class="normal">
+当たり判定インターフェース<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Collider.xhtml">EntisGLS4.Collider</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.Collider.HitInfo.xhtml">EntisGLS4.Collider.HitInfo</a></div>
+<div class="indent2"><a href="EntisGLS4.Collider.Result.xhtml">EntisGLS4.Collider.Result</a></div>
+<br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Collider">Collider</a><br/>
+	<a href="#virtual_isHitAgainstSphere">isHitAgainstSphere</a><br/>
+	<a href="#virtual_isSegmentCrossing">isSegmentCrossing</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Collider"/>
+<div class="headline">Collider</div>
+<div class="usage">public abstract Collider( )</div>
+<br/>
+
+<a name="virtual_isHitAgainstSphere"/>
+<div class="headline">isHitAgainstSphere</div>
+<div class="usage">public native boolean isHitAgainstSphere( const Vector3d* vPos, float radius, EntisGLS4.Collider.Result[] hitRes, uint resMax = 1, ulong maskColliders = -1, ulong maskClasses = -1 ) const</div>
+<div class="normal">
+球との交差判定<br/></div>
+<br/>
+
+<a name="virtual_isSegmentCrossing"/>
+<div class="headline">isSegmentCrossing</div>
+<div class="usage">public native boolean isSegmentCrossing( const Vector3d* vPos0, const Vector3d* vPos1, float errorGap, EntisGLS4.Collider.Result hitRes, ulong maskColliders = -1, ulong maskClasses = -1 ) const</div>
+<div class="normal">
+線分との交差判定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

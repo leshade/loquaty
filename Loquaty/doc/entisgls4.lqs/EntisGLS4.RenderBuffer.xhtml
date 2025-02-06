@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.RenderBuffer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.RenderBuffer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class RenderBuffer ;</div>
+<div class="normal">
+レンダーバッファ<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.RenderBuffer.xhtml">EntisGLS4.RenderBuffer</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.RenderBuffer.AddRenderFlag.xhtml">EntisGLS4.RenderBuffer.AddRenderFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.RenderBuffer.EnvMappingParam.xhtml">EntisGLS4.RenderBuffer.EnvMappingParam</a></div>
+<div class="indent2"><a href="EntisGLS4.RenderBuffer.EnvironmentMappingType.xhtml">EntisGLS4.RenderBuffer.EnvironmentMappingType</a></div>
+<div class="indent2"><a href="EntisGLS4.RenderBuffer.FeatureType.xhtml">EntisGLS4.RenderBuffer.FeatureType</a></div>
+<div class="indent2"><a href="EntisGLS4.RenderBuffer.OffsetBorderParam.xhtml">EntisGLS4.RenderBuffer.OffsetBorderParam</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_renderFenceOrder">renderFenceOrder</a><br/>
+	<a href="#static_renderUncombinable">renderUncombinable</a><br/>
+	<a href="#static_featureSRGB">featureSRGB</a><br/>
+	<a href="#static_featureEnvMap">featureEnvMap</a><br/>
+	<a href="#static_featureOffsetBorder">featureOffsetBorder</a><br/>
+	<a href="#static_featureFaceCulling">featureFaceCulling</a><br/>
+	<a href="#static_featureDepthMask">featureDepthMask</a><br/>
+	<a href="#static_featureBlendOperation">featureBlendOperation</a><br/>
+	<a href="#static_featureOrderPriority">featureOrderPriority</a><br/>
+	<a href="#static_featurePointSize">featurePointSize</a><br/>
+	<a href="#static_featureLineWidth">featureLineWidth</a><br/>
+	<a href="#static_envMappingHemisphere">envMappingHemisphere</a><br/>
+	<a href="#static_envMappingSphere">envMappingSphere</a><br/>
+	<a href="#static_envMappingCube">envMappingCube</a><br/>
+	<a href="#static_envMappingViewport">envMappingViewport</a><br/>
+	<a href="#static_envMappingRefraction">envMappingRefraction</a><br/>
+	<a href="#static_envMappingViewportDepth">envMappingViewportDepth</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_RenderBuffer">RenderBuffer</a><br/>
+	<a href="#virtual_addIndexedPrimitive">addIndexedPrimitive</a><br/>
+	<a href="#virtual_addVertexBuffer">addVertexBuffer</a><br/>
+	<a href="#virtual_appendMatrixTransformation">appendMatrixTransformation</a><br/>
+	<a href="#virtual_attachCustomShader">attachCustomShader</a><br/>
+	<a href="#virtual_flush">flush</a><br/>
+	<a href="#virtual_getCustomShader">getCustomShader</a><br/>
+	<a href="#virtual_getOptionalFeature">getOptionalFeature</a><br/>
+	<a href="#virtual_getShadingFlag">getShadingFlag</a><br/>
+	<a href="#virtual_popTransformation">popTransformation</a><br/>
+	<a href="#virtual_pushTransformation">pushTransformation</a><br/>
+	<a href="#virtual_resetCustomShaderUniform">resetCustomShaderUniform</a><br/>
+	<a href="#virtual_resetTransformation">resetTransformation</a><br/>
+	<a href="#virtual_setCustomShaderUniform">setCustomShaderUniform</a><br/>
+	<a href="#virtual_setCustomShaderUniformFloat">setCustomShaderUniformFloat</a><br/>
+	<a href="#virtual_setCustomShaderUniformImage">setCustomShaderUniformImage</a><br/>
+	<a href="#virtual_setCustomShaderUniformInt">setCustomShaderUniformInt</a><br/>
+	<a href="#virtual_setCustomShaderUniformMatrix3">setCustomShaderUniformMatrix3</a><br/>
+	<a href="#virtual_setCustomShaderUniformMatrix4">setCustomShaderUniformMatrix4</a><br/>
+	<a href="#virtual_setCustomShaderUniformTexture">setCustomShaderUniformTexture</a><br/>
+	<a href="#virtual_setCustomShaderUniformVector2">setCustomShaderUniformVector2</a><br/>
+	<a href="#virtual_setCustomShaderUniformVector3">setCustomShaderUniformVector3</a><br/>
+	<a href="#virtual_setCustomShaderUniformVector4">setCustomShaderUniformVector4</a><br/>
+	<a href="#virtual_setMatrixTransformation">setMatrixTransformation</a><br/>
+	<a href="#virtual_setOptionalFeature">setOptionalFeature</a><br/>
+	<a href="#virtual_setShadingFlag">setShadingFlag</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_renderFenceOrder"/>
+<div class="headline">renderFenceOrder</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.AddRenderFlag&#9; renderFenceOrder = 1</div>
+<div class="normal">
+レンダリング・フラグ：描画順序をフェンスする<br/></div>
+<br/>
+<a name="static_renderUncombinable"/>
+<div class="headline">renderUncombinable</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.AddRenderFlag&#9; renderUncombinable = 2</div>
+<div class="normal">
+レンダリング・フラグ：addIndexedPrimitive の自動結合を無効化<br/></div>
+<br/>
+<a name="static_featureSRGB"/>
+<div class="headline">featureSRGB</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureSRGB = 0</div>
+<div class="normal">
+機能番号 : sRGB 色空間 : param1 = {true|false}, param2 = null (&amp;int32_t to get)<br/></div>
+<br/>
+<a name="static_featureEnvMap"/>
+<div class="headline">featureEnvMap</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureEnvMap = 1</div>
+<div class="normal">
+機能番号 : 大域環境マッピング : param1 = {0|envMappingRefraction|envMappingViewportDepth}, param3 = EnvMappingParam<br/></div>
+<br/>
+<a name="static_featureOffsetBorder"/>
+<div class="headline">featureOffsetBorder</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureOffsetBorder = 2</div>
+<div class="normal">
+機能番号 : 輪郭線 : param1 = 0, param2 = OffsetBorderParam<br/></div>
+<br/>
+<a name="static_featureFaceCulling"/>
+<div class="headline">featureFaceCulling</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureFaceCulling = 3</div>
+<div class="normal">
+機能番号 : カリング・オーバーライド : param1 = FaceCullingOperation, param2 = null (int32 to get)<br/></div>
+<br/>
+<a name="static_featureDepthMask"/>
+<div class="headline">featureDepthMask</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureDepthMask = 4</div>
+<div class="normal">
+機能番号 : 深度マスク・オーバーライド : param1 = DepthMaskOperation, param2 = null (int32 to get)<br/></div>
+<br/>
+<a name="static_featureBlendOperation"/>
+<div class="headline">featureBlendOperation</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureBlendOperation = 5</div>
+<div class="normal">
+機能番号 : 描画関数・オーバーライド : param1 = BlendOperation, param2 = null (int32 to get)<br/></div>
+<br/>
+<a name="static_featureOrderPriority"/>
+<div class="headline">featureOrderPriority</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureOrderPriority = 7</div>
+<div class="normal">
+機能番号 : 描画優先度（小さいほど先に描画される）: param1 = priority(0～15), param2 = null (int32 to get)<br/></div>
+<br/>
+<a name="static_featurePointSize"/>
+<div class="headline">featurePointSize</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featurePointSize = 8</div>
+<div class="normal">
+機能番号 : 点描画サイズ（ピクセル単位） ; param1 = 0, param2 = float*<br/></div>
+<br/>
+<a name="static_featureLineWidth"/>
+<div class="headline">featureLineWidth</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.FeatureType&#9; featureLineWidth = 9</div>
+<div class="normal">
+機能番号 : 線描画幅（ピクセル単位） : param1 = 0, param2 = float*<br/></div>
+<br/>
+<a name="static_envMappingHemisphere"/>
+<div class="headline">envMappingHemisphere</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.EnvironmentMappingType&#9; envMappingHemisphere = 0</div>
+<div class="normal">
+環境マッピング：半球（xz平面y軸投影）<br/></div>
+<br/>
+<a name="static_envMappingSphere"/>
+<div class="headline">envMappingSphere</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.EnvironmentMappingType&#9; envMappingSphere = 1</div>
+<div class="normal">
+環境マッピング：球（xz平面y軸投影／上半分北半球／下半分南半球）<br/></div>
+<br/>
+<a name="static_envMappingCube"/>
+<div class="headline">envMappingCube</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.EnvironmentMappingType&#9; envMappingCube = 2</div>
+<div class="normal">
+環境マッピング：キューブマッピング<br/></div>
+<br/>
+<a name="static_envMappingViewport"/>
+<div class="headline">envMappingViewport</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.EnvironmentMappingType&#9; envMappingViewport = 3</div>
+<div class="normal">
+環境マッピング：ビューポート（前段レンダリングターゲット）<br/></div>
+<br/>
+<a name="static_envMappingRefraction"/>
+<div class="headline">envMappingRefraction</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.EnvironmentMappingType&#9; envMappingRefraction = 0x100</div>
+<div class="normal">
+環境マッピング：屈折反映ターゲット・フラグ<br/></div>
+<br/>
+<a name="static_envMappingViewportDepth"/>
+<div class="headline">envMappingViewportDepth</div>
+<div class="usage">public static const EntisGLS4.RenderBuffer.EnvironmentMappingType&#9; envMappingViewportDepth = 0x200</div>
+<div class="normal">
+環境マッピング：ビューポート深度・フラグ<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_RenderBuffer"/>
+<div class="headline">RenderBuffer</div>
+<div class="usage">public abstract RenderBuffer( )</div>
+<br/>
+
+<a name="virtual_addIndexedPrimitive"/>
+<div class="headline">addIndexedPrimitive</div>
+<div class="usage">public native boolean addIndexedPrimitive( EntisGLS4.Material material, EntisGLS4.RenderBuffer.AddRenderFlag flags, EntisGLS4.PrimitiveType typePrimitive, uint countIndex, uint countVertex, const Vector4* pvVertex, const Vector4* pvNormal, const Vector2* pvUVMap, const EntisGLS4.ColorMulAdd* pColor, const uint* pIndexedList )</div>
+<div class="normal">
+プリミティブをレンダリングバッファに追加<br/></div>
+<div class="notes_parameter">
+<div class="param_name">material</div>
+<div class="param_desc">
+マテリアル</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+レンダリング・フラグ (EntisGLS4.RenderBuffer.render～)</div>
+<div class="param_name">typePrimitive</div>
+<div class="param_desc">
+プリミティブ・タイプ</div>
+<div class="param_name">countIndex</div>
+<div class="param_desc">
+インデックス配列長</div>
+<div class="param_name">countVertex</div>
+<div class="param_desc">
+頂点配列長</div>
+<div class="param_name">pvVertex</div>
+<div class="param_desc">
+頂点配列（w 要素は無視される）</div>
+<div class="param_name">pvNormal</div>
+<div class="param_desc">
+法線配列（w 要素は無視される）</div>
+<div class="param_name">pvUVMap</div>
+<div class="param_desc">
+UV 座標配列（無い場合は null）</div>
+<div class="param_name">pColor</div>
+<div class="param_desc">
+頂点色配列（無い場合は null）</div>
+<div class="param_name">pIndexedList</div>
+<div class="param_desc">
+インデックス配列（無い場合は null）</div>
+</div>
+<br/>
+
+<a name="virtual_addVertexBuffer"/>
+<div class="headline">addVertexBuffer</div>
+<div class="usage">public native boolean addVertexBuffer( EntisGLS4.RenderBuffer.AddRenderFlag flags, EntisGLS4.VertexBuffer vb, uint iFirst = 0, int iEnd = -1, uint nInstancing = 0, const Matrix4* pmatInstancing = null, const EntisGLS4.ColorMulAdd* pColorInstancing = null )</div>
+<div class="normal">
+頂点バッファの内容を描画<br/></div>
+<div class="notes_parameter">
+<div class="param_name">flags</div>
+<div class="param_desc">
+レンダリング・フラグ (EntisGLS4.RenderBuffer.render～)</div>
+<div class="param_name">vb</div>
+<div class="param_desc">
+描画する頂点バッファ</div>
+<div class="param_name">iFirst</div>
+<div class="param_desc">
+vb 内の描画するメッシュのインデックス</div>
+<div class="param_name">iEnd</div>
+<div class="param_desc">
+vb 内の描画するメッシュ数</div>
+<div class="param_name">nInstancing</div>
+<div class="param_desc">
+描画インスタンス数</div>
+<div class="param_name">pmatInstancing</div>
+<div class="param_desc">
+各インスタンスの Matrix4 配列</div>
+<div class="param_name">pColorInstancing</div>
+<div class="param_desc">
+各インスタンスの ColorMulAdd 配列</div>
+</div>
+<br/>
+
+<a name="virtual_appendMatrixTransformation"/>
+<div class="headline">appendMatrixTransformation</div>
+<div class="usage">public native boolean appendMatrixTransformation( const Matrix3d* mat, const Vector3d* pos, const EntisGLS4.ColorMulAdd* cmadd = null, uint transparency = 0 )</div>
+<div class="normal">
+座標変換・色効果・透明度を追加<br/></div>
+<br/>
+
+<a name="virtual_attachCustomShader"/>
+<div class="headline">attachCustomShader</div>
+<div class="usage">public native boolean attachCustomShader( EntisGLS4.CustomShader shader )</div>
+<div class="normal">
+カスタムシェーダー設定<br/></div>
+<br/>
+
+<a name="virtual_flush"/>
+<div class="headline">flush</div>
+<div class="usage">public native boolean flush( )</div>
+<div class="normal">
+描画の確定<br/></div>
+<br/>
+
+<a name="virtual_getCustomShader"/>
+<div class="headline">getCustomShader</div>
+<div class="usage">public native EntisGLS4.CustomShader getCustomShader( )</div>
+<div class="normal">
+カスタムシェーダー取得<br/></div>
+<br/>
+
+<a name="virtual_getOptionalFeature"/>
+<div class="headline">getOptionalFeature</div>
+<div class="usage">public native boolean getOptionalFeature( EntisGLS4.RenderBuffer.FeatureType feature, int param1, void* param2, ulong sizeOfParam2, Object param3 = null ) const</div>
+<div class="normal">
+オプショナル機能取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">feature</div>
+<div class="param_desc">
+機能番号 EntisGLS4.RenderBuffer.feature～</div>
+<div class="param_name">param1</div>
+<div class="param_desc">
+パラメータ１</div>
+<div class="param_name">param2</div>
+<div class="param_desc">
+パラメータ２</div>
+<div class="param_name">sizeOfParam2</div>
+<div class="param_desc">
+param2 のバイト数単位のサイズ</div>
+<div class="param_name">param3</div>
+<div class="param_desc">
+パラメータ３</div>
+</div>
+<br/>
+
+<a name="virtual_getShadingFlag"/>
+<div class="headline">getShadingFlag</div>
+<div class="usage">public native ulong getShadingFlag( ) const</div>
+<div class="normal">
+シェーディング・フラグ取得<br/></div>
+<br/>
+
+<a name="virtual_popTransformation"/>
+<div class="headline">popTransformation</div>
+<div class="usage">public native boolean popTransformation( )</div>
+<div class="normal">
+座標変換・色効果・透明度を復元する</div>
+<br/>
+<div class="indent1">
+座標変換・色効果・透明度のほか、シェーダー設定、オプショナル機能設定も復元されます。</div><br/>
+<br/>
+
+<a name="virtual_pushTransformation"/>
+<div class="headline">pushTransformation</div>
+<div class="usage">public native boolean pushTransformation( )</div>
+<div class="normal">
+座標変換・色効果・透明度を保存する</div>
+<br/>
+<div class="indent1">
+座標変換・色効果・透明度のほか、シェーダー設定、オプショナル機能設定も保存されます。</div><br/>
+<br/>
+
+<a name="virtual_resetCustomShaderUniform"/>
+<div class="headline">resetCustomShaderUniform</div>
+<div class="usage">public native boolean resetCustomShaderUniform( )</div>
+<div class="normal">
+カスタムシェーダーパラメータ初期化<br/></div>
+<br/>
+
+<a name="virtual_resetTransformation"/>
+<div class="headline">resetTransformation</div>
+<div class="usage">public native boolean resetTransformation( )</div>
+<div class="normal">
+座標変換・色効果・透明度を初期化する<br/></div>
+<br/>
+
+<a name="virtual_setCustomShaderUniform"/>
+<div class="headline">setCustomShaderUniform</div>
+<div class="usage">public native boolean setCustomShaderUniform( String id, EntisGLS4.CustomShader.UniformType type, const void* data, uint count )</div>
+<div class="normal">
+カスタムシェーダーパラメータ設定<br/></div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformFloat"/>
+<div class="headline">setCustomShaderUniformFloat</div>
+<div class="usage">public boolean setCustomShaderUniformFloat( String id, const float* data, uint count = 1 )</div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformImage"/>
+<div class="headline">setCustomShaderUniformImage</div>
+<div class="usage">public native boolean setCustomShaderUniformImage( String id, int type, EntisGLS4.Image image )</div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformInt"/>
+<div class="headline">setCustomShaderUniformInt</div>
+<div class="usage">public boolean setCustomShaderUniformInt( String id, const int* data, uint count = 1 )</div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformMatrix3"/>
+<div class="headline">setCustomShaderUniformMatrix3</div>
+<div class="usage">public boolean setCustomShaderUniformMatrix3( String id, const Matrix3* data, uint count = 1 )</div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformMatrix4"/>
+<div class="headline">setCustomShaderUniformMatrix4</div>
+<div class="usage">public boolean setCustomShaderUniformMatrix4( String id, const Matrix4* data, uint count = 1 )</div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformTexture"/>
+<div class="headline">setCustomShaderUniformTexture</div>
+<div class="usage">public boolean setCustomShaderUniformTexture( String id, EntisGLS4.Image image )</div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformVector2"/>
+<div class="headline">setCustomShaderUniformVector2</div>
+<div class="usage">public boolean setCustomShaderUniformVector2( String id, const Vector2* data, uint count = 1 )</div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformVector3"/>
+<div class="headline">setCustomShaderUniformVector3</div>
+<div class="usage">public boolean setCustomShaderUniformVector3( String id, const Vector3* data, uint count = 1 )</div>
+<br/>
+
+<a name="virtual_setCustomShaderUniformVector4"/>
+<div class="headline">setCustomShaderUniformVector4</div>
+<div class="usage">public boolean setCustomShaderUniformVector4( String id, const Vector4* data, uint count = 1 )</div>
+<br/>
+
+<a name="virtual_setMatrixTransformation"/>
+<div class="headline">setMatrixTransformation</div>
+<div class="usage">public native boolean setMatrixTransformation( const Matrix3d* mat, const Vector3d* pos, const EntisGLS4.ColorMulAdd* cmadd = null, uint transparency = 0 )</div>
+<div class="normal">
+座標変換・色効果・透明度を設定<br/></div>
+<br/>
+
+<a name="virtual_setOptionalFeature"/>
+<div class="headline">setOptionalFeature</div>
+<div class="usage">public native boolean setOptionalFeature( EntisGLS4.RenderBuffer.FeatureType feature, int param1, const void* param2, ulong sizeOfParam2, Object param3 = null )</div>
+<div class="normal">
+オプショナル機能設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">feature</div>
+<div class="param_desc">
+機能番号 EntisGLS4.RenderBuffer.feature～</div>
+<div class="param_name">param1</div>
+<div class="param_desc">
+パラメータ１</div>
+<div class="param_name">param2</div>
+<div class="param_desc">
+パラメータ２</div>
+<div class="param_name">sizeOfParam2</div>
+<div class="param_desc">
+param2 のバイト数単位のサイズ</div>
+<div class="param_name">param3</div>
+<div class="param_desc">
+パラメータ３</div>
+</div>
+<br/>
+
+<a name="virtual_setShadingFlag"/>
+<div class="headline">setShadingFlag</div>
+<div class="usage">public native void setShadingFlag( ulong flags )</div>
+<div class="normal">
+シェーディング・フラグ設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

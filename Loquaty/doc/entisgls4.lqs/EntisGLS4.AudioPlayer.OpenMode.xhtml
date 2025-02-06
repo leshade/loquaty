@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.AudioPlayer.OpenMode</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.AudioPlayer.OpenMode</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum OpenMode&lt;ulong&gt; ;</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.AudioPlayer.OpenMode.xhtml">EntisGLS4.AudioPlayer.OpenMode</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_Auto">Auto</a><br/>
+	<a href="#static_Static">Static</a><br/>
+	<a href="#static_AutoStatic">AutoStatic</a><br/>
+	<a href="#static_DynamicOnMemory">DynamicOnMemory</a><br/>
+	<a href="#static_DynamicRead">DynamicRead</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_Auto"/>
+<div class="headline">Auto</div>
+<div class="usage">public static const EntisGLS4.AudioPlayer.OpenMode&#9; Auto = 0</div>
+<div class="normal">
+オープンフラグ：自動判定<br/></div>
+<br/>
+<a name="static_Static"/>
+<div class="headline">Static</div>
+<div class="usage">public static const EntisGLS4.AudioPlayer.OpenMode&#9; Static = 1</div>
+<div class="normal">
+オープンフラグ：PCM に変換してメモリ上に保持する<br/></div>
+<br/>
+<a name="static_AutoStatic"/>
+<div class="headline">AutoStatic</div>
+<div class="usage">public static const EntisGLS4.AudioPlayer.OpenMode&#9; AutoStatic = 2</div>
+<div class="normal">
+オープンフラグ：長さに応じて Static にするか DynamicOnMemory にするか自動判定する<br/></div>
+<br/>
+<a name="static_DynamicOnMemory"/>
+<div class="headline">DynamicOnMemory</div>
+<div class="usage">public static const EntisGLS4.AudioPlayer.OpenMode&#9; DynamicOnMemory = 3</div>
+<div class="normal">
+オープンフラグ：メモリ上に読み込み、デコード処理は逐次行う<br/></div>
+<br/>
+<a name="static_DynamicRead"/>
+<div class="headline">DynamicRead</div>
+<div class="usage">public static const EntisGLS4.AudioPlayer.OpenMode&#9; DynamicRead = 4</div>
+<div class="normal">
+オープンフラグ：ファイルからの読み込みも、デコード処理も逐次行う<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

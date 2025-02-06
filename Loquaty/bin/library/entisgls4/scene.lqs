@@ -1,0 +1,191 @@
+﻿
+namespace	EntisGLS4
+{
+	class	SceneItem ;
+	class	SceneCamera ;
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 3D シーン
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Scene	extends Collider
+	{
+		// アイテム種別／描画順
+		enum using ItemClass<uint>
+		{
+			// アイテム種別／描画順：カメラ
+			classCamera,
+			// アイテム種別／描画順：光源
+			classLight,
+			// アイテム種別／描画順：レンダリング実行前処理１（全視点共通）
+			classPreRender,
+			// アイテム種別／描画順：レンダリング実行前処理２（全視点共通）
+			classPreRender2,
+			// アイテム種別／描画順：フレーム前レンダリング処理（全視点共通）
+			classPreRenderFrame,
+			// アイテム種別／描画順：フレーム描画開始（視点毎）
+			classBeginFrame,
+			// アイテム種別／描画順：背景（背景球／ボックスなど）
+			classBackscape,
+			// アイテム種別／描画順：背景
+			classScape,
+			// アイテム種別／描画順：フィールド
+			classField,
+			// アイテム種別／描画順：固定アイテム
+			classStaticItem1,
+			// アイテム種別／描画順：固定アイテム
+			classStaticItem2,
+			// アイテム種別／描画順：動的アイテム
+			classDynamicItem1,
+			// アイテム種別／描画順：動的アイテム
+			classDynamicItem2,
+			// アイテム種別／描画順：動的アイテム
+			classDynamicItem3,
+			// アイテム種別／描画順：効果アイテム
+			classEffectItem,
+			// アイテム種別／描画順：レイヤード空間アイテム（※これ以降はシャドウマッピング等に反映されない）
+			classLayeredSpace,
+			// アイテム種別／描画順：レイヤード効果アイテム
+			classLayeredItem1,
+			// アイテム種別／描画順：レイヤード効果アイテム
+			classLayeredItem2,
+			// アイテム種別／描画順：効果
+			classEffect1,
+			// アイテム種別／描画順：効果（後）
+			classEffect2,
+			// アイテム種別／描画順：効果（最終）
+			classEffect3,
+			// アイテム種別／描画順：フレーム描画終了（視点毎）
+			classEndFrame,
+			// アイテム種別／描画順：種別クラス数
+			classCount,
+			// アイテム種別／描画順：最初の描画対象クラス
+			classFirstRenderClass	= classBackscape,
+			// アイテム種別／描画順：最後の描画対象クラス
+			classLastRenderClass	= classEffect3,
+
+			// アイテム種別／描画順：最初のシャドウマップ描画対象クラス
+			classFirstRenderShadowmapClass	= classField,
+			// アイテム種別／描画順：最後のシャドウマップ描画対象クラス
+			classLastRenderShadowmapClass	= classEffect2,
+		}
+
+		// レンダリング・ステージ
+		enum using	RenderingStage<int>
+		{
+			// メインのレンダリング
+			renderingMain,
+			// シャドウマッピングのレンダリング
+			renderingShadow,
+			// 環境マッピングのレンダリング
+			renderingEnvironment,
+			// その他のマルチパスのレンダリング
+			renderingMultiPass0,
+		}
+
+		// 透視変換情報
+		struct	ProjectionParam
+		{
+			Vector3		vScreen = { 640, 360, 1280 } ;
+			float		fpZoom = 1.0f ;
+			float		fpPixelAspect = 1.0f ;
+			float		zNear = 0.01f ;
+			float		zFar = 10000.0f ;
+		}
+
+		// 大域疑似フォッグ
+		struct	FogParam
+		{
+			ARGB8	rgbFog = { 0, 0, 0, 0 } ;
+			double	zNear = 0.0 ;
+			double	zFar = 10000.0 ;
+		}
+
+		// 視差情報
+		struct	ParallaxParam
+		{
+			Matrix3d	matPosture ;
+			Vector3d	vParallax ;
+			Vector3		vScreenDelta ;
+			float		fpAspectDelta ;
+		}
+
+		public abstract Scene() ;
+
+		// 透視変換設定取得
+		public native const ProjectionParam* getProjection() const ;
+		// 透視変換設定
+		public native void setProjection( const ProjectionParam* projParam ) ;
+		// 視差設定
+		public native void setParallax
+			( double xParallax,
+				double zFocusRate = 1.0, double xScreenDelta = 0.0 ) ;
+		// 視差取得
+		public native boolean getParallax
+			( double* xParallax, double* zFocusRate, double* xScreenDelta ) const ;
+		// 視差設定
+		public native void setParallaxParam
+			( const ParallaxParam* ppRight, const ParallaxParam* ppLeft ) ;
+		// 視差取得
+		public native boolean getParallaxParam
+			( ParallaxParam* ppRight, ParallaxParam* ppLeft ) const ;
+		// デフォルト・シェーディング方式取得（EntisGLS4.shadingMethod～）
+		public native ulong getShadingMethod() const ;
+		// デフォルト・シェーディング方式設定（EntisGLS4.shadingMethod～）
+		public native void setShadingMethod( ulong typeShading ) ;
+		// 背景色取得
+		public native boolean getBackColor( ARGB8* rgbaBack ) const ;
+		// 背景色設定
+		public native void setBackColor
+			( const ARGB8* rgbaBack, boolean fillBack = true ) ;
+		// 有効表示距離（手前）取得
+		public native double getVisibleNearDistance() const ;
+		// 有効表示距離（奥）取得
+		public native double getVisibleFarDistance() const ;
+		// 有効表示距離設定
+		public native void setVisibleDistance( double zNear, double zFar ) ;
+		// 大域疑似フォッグ取得
+		public native boolean getGlobalFog( FogParam* fogParam ) const ;
+		// 大域疑似フォッグ設定
+		public native void setGlobalFog
+			( const FogParam* fogParam, boolean flagFog = true ) ;
+		// 大域疑似フォッグ有効／無効設定
+		public native void enableGlobalFog( boolean flagFog ) ;
+
+		// シーンアイテム追加
+		// <desc>※ item の参照を Scene が保持しないので
+		// detachSceneItem で削除するまでの間、呼び出し元で保持して
+		// おかなければなりません</desc>
+		public native void addSceneItem( SceneItem item ) ;
+		// シーンアイテム削除
+		public native void detachSceneItem( SceneItem item ) ;
+		// メインカメラ設定
+		public native void setMainCamera( SceneCamera camera ) ;
+		// メインカメラ取得
+		public native SceneCamera getMainCamera() const ;
+
+		// 現在のレンダリング・ステージ取得
+		public native ItemClass getCurrentRenderingStage() const ;
+		// 現在のレンダリング・フェーズ取得
+		public native ItemClass getCurrentRenderingPhase() const ;
+
+		// 更新フラグを設定する
+		public native void postSceneUpdate() ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 3D シーン表示 Sprite
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneSprite	extends Sprite	implements Scene
+	{
+		// SceneSprite 構築
+		public native SceneSprite() ;
+
+	}
+
+
+}
+

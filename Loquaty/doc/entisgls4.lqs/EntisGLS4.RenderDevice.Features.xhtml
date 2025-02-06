@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.RenderDevice.Features</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.RenderDevice.Features</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct Features<br/>
+{<br/>
+&nbsp; &nbsp; uint[4]&nbsp; &nbsp; flagsFeatures ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxTextureSize ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; max3DTextureSize ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxCubeTextureSize ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxMultiTextureUnits ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxVSTexturesUnits ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxCombinedTextureUnits ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxVertexAttributes ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxVertexVaryings ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxVertexUniforms ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxFragmentUniforms ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; maxMutiRenderTarget ;<br/>
+&nbsp; &nbsp; uint[19]&nbsp; &nbsp; nReserved ;<br/>
+}</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.RenderDevice.Features.xhtml">EntisGLS4.RenderDevice.Features</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_flagsFeatures">flagsFeatures</a><br/>
+	<a href="#member_maxTextureSize">maxTextureSize</a><br/>
+	<a href="#member_max3DTextureSize">max3DTextureSize</a><br/>
+	<a href="#member_maxCubeTextureSize">maxCubeTextureSize</a><br/>
+	<a href="#member_maxMultiTextureUnits">maxMultiTextureUnits</a><br/>
+	<a href="#member_maxVSTexturesUnits">maxVSTexturesUnits</a><br/>
+	<a href="#member_maxCombinedTextureUnits">maxCombinedTextureUnits</a><br/>
+	<a href="#member_maxVertexAttributes">maxVertexAttributes</a><br/>
+	<a href="#member_maxVertexVaryings">maxVertexVaryings</a><br/>
+	<a href="#member_maxVertexUniforms">maxVertexUniforms</a><br/>
+	<a href="#member_maxFragmentUniforms">maxFragmentUniforms</a><br/>
+	<a href="#member_maxMutiRenderTarget">maxMutiRenderTarget</a><br/>
+	<a href="#member_nReserved">nReserved</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_flagsFeatures"/>
+<div class="headline">flagsFeatures</div>
+<div class="usage">public uint[4]&#9; flagsFeatures = [0, 0, 0, 0]</div>
+<div class="normal">
+機能フラグ<br/></div>
+<br/>
+<a name="member_maxTextureSize"/>
+<div class="headline">maxTextureSize</div>
+<div class="usage">public uint&#9; maxTextureSize = 0</div>
+<div class="normal">
+最大テクスチャサイズ<br/></div>
+<br/>
+<a name="member_max3DTextureSize"/>
+<div class="headline">max3DTextureSize</div>
+<div class="usage">public uint&#9; max3DTextureSize = 0</div>
+<div class="normal">
+最大３Ｄテクスチャサイズ<br/></div>
+<br/>
+<a name="member_maxCubeTextureSize"/>
+<div class="headline">maxCubeTextureSize</div>
+<div class="usage">public uint&#9; maxCubeTextureSize = 0</div>
+<div class="normal">
+最大キューブマップ・テクスチャサイズ<br/></div>
+<br/>
+<a name="member_maxMultiTextureUnits"/>
+<div class="headline">maxMultiTextureUnits</div>
+<div class="usage">public uint&#9; maxMultiTextureUnits = 0</div>
+<div class="normal">
+最大マルチテクスチャ（Fragment Shader）<br/></div>
+<br/>
+<a name="member_maxVSTexturesUnits"/>
+<div class="headline">maxVSTexturesUnits</div>
+<div class="usage">public uint&#9; maxVSTexturesUnits = 0</div>
+<div class="normal">
+最大マルチテクスチャ（Vertex Shader）<br/></div>
+<br/>
+<a name="member_maxCombinedTextureUnits"/>
+<div class="headline">maxCombinedTextureUnits</div>
+<div class="usage">public uint&#9; maxCombinedTextureUnits = 0</div>
+<div class="normal">
+最大マルチテクスチャ（全ての合計）<br/></div>
+<br/>
+<a name="member_maxVertexAttributes"/>
+<div class="headline">maxVertexAttributes</div>
+<div class="usage">public uint&#9; maxVertexAttributes = 0</div>
+<div class="normal">
+GLSL 最大 attribute 数 [vec4]<br/></div>
+<br/>
+<a name="member_maxVertexVaryings"/>
+<div class="headline">maxVertexVaryings</div>
+<div class="usage">public uint&#9; maxVertexVaryings = 0</div>
+<div class="normal">
+GLSL 最大 varying 数 [vec4]<br/></div>
+<br/>
+<a name="member_maxVertexUniforms"/>
+<div class="headline">maxVertexUniforms</div>
+<div class="usage">public uint&#9; maxVertexUniforms = 0</div>
+<div class="normal">
+GLSL 最大 uniform 数 [vec4]<br/></div>
+<br/>
+<a name="member_maxFragmentUniforms"/>
+<div class="headline">maxFragmentUniforms</div>
+<div class="usage">public uint&#9; maxFragmentUniforms = 0</div>
+<br/>
+<a name="member_maxMutiRenderTarget"/>
+<div class="headline">maxMutiRenderTarget</div>
+<div class="usage">public uint&#9; maxMutiRenderTarget = 0</div>
+<div class="normal">
+最大 Draw Buffer 数<br/></div>
+<br/>
+<a name="member_nReserved"/>
+<div class="headline">nReserved</div>
+<div class="usage">public uint[19]&#9; nReserved = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]</div>
+<div class="normal">
+予約領域<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

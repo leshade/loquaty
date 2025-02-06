@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.Material</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.Material</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class Material ;</div>
+<div class="normal">
+マテリアル<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Material.xhtml">EntisGLS4.Material</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.Material.TextureType.xhtml">EntisGLS4.Material.TextureType</a></div>
+<br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_Material">Material</a><br/>
+	<a href="#virtual_backAttr">backAttr</a><br/>
+	<a href="#virtual_enableBackAttr">enableBackAttr</a><br/>
+	<a href="#virtual_faceAttr">faceAttr</a><br/>
+	<a href="#virtual_findBackTextureTypeOf">findBackTextureTypeOf</a><br/>
+	<a href="#virtual_findTextureTypeOf">findTextureTypeOf</a><br/>
+	<a href="#virtual_getBackTexture">getBackTexture</a><br/>
+	<a href="#virtual_getBackTextureApply">getBackTextureApply</a><br/>
+	<a href="#virtual_getBackTextureParam">getBackTextureParam</a><br/>
+	<a href="#virtual_getBackTextureType">getBackTextureType</a><br/>
+	<a href="#virtual_getTexture">getTexture</a><br/>
+	<a href="#virtual_getTextureApply">getTextureApply</a><br/>
+	<a href="#virtual_getTextureParam">getTextureParam</a><br/>
+	<a href="#virtual_getTextureType">getTextureType</a><br/>
+	<a href="#virtual_isEnabledBackAttr">isEnabledBackAttr</a><br/>
+	<a href="#virtual_setBackTexture">setBackTexture</a><br/>
+	<a href="#virtual_setTexture">setTexture</a><br/>
+	<a href="#virtual_updateBuffer">updateBuffer</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_Material"/>
+<div class="headline">Material</div>
+<div class="usage">public native Material( )</div>
+<div class="normal">
+Material 構築<br/></div>
+<br/>
+
+<a name="virtual_backAttr"/>
+<div class="headline">backAttr</div>
+<div class="usage">public native EntisGLS4.SurfaceAttribute* backAttr( ) const</div>
+<div class="normal">
+背面属性取得</div>
+<br/>
+<div class="indent1">
+返された SurfaceAttribute 構造体を書き換えると背面属性を変更できますが、変更した値を確実にデバイスに反映させるために updateBuffer 関数を呼び出してください。</div><br/>
+<br/>
+
+<a name="virtual_enableBackAttr"/>
+<div class="headline">enableBackAttr</div>
+<div class="usage">public native void enableBackAttr( boolean enableBack )</div>
+<div class="normal">
+背面属性を有効／無効化<br/></div>
+<br/>
+
+<a name="virtual_faceAttr"/>
+<div class="headline">faceAttr</div>
+<div class="usage">public native EntisGLS4.SurfaceAttribute* faceAttr( ) const</div>
+<div class="normal">
+表面属性取得</div>
+<br/>
+<div class="indent1">
+返された SurfaceAttribute 構造体を書き換えると表面属性を変更できますが、変更した値を確実にデバイスに反映させるために updateBuffer 関数を呼び出してください。</div><br/>
+<br/>
+
+<a name="virtual_findBackTextureTypeOf"/>
+<div class="headline">findBackTextureTypeOf</div>
+<div class="usage">public native int findBackTextureTypeOf( EntisGLS4.Material.TextureType type ) const</div>
+<div class="normal">
+背面テクスチャ検索<br/></div>
+<br/>
+
+<a name="virtual_findTextureTypeOf"/>
+<div class="headline">findTextureTypeOf</div>
+<div class="usage">public native int findTextureTypeOf( EntisGLS4.Material.TextureType type ) const</div>
+<div class="normal">
+テクスチャ検索<br/></div>
+<br/>
+
+<a name="virtual_getBackTexture"/>
+<div class="headline">getBackTexture</div>
+<div class="usage">public native EntisGLS4.Image getBackTexture( int index ) const</div>
+<div class="normal">
+背面テクスチャ取得<br/></div>
+<br/>
+
+<a name="virtual_getBackTextureApply"/>
+<div class="headline">getBackTextureApply</div>
+<div class="usage">public native float getBackTextureApply( int index ) const</div>
+<div class="normal">
+背面テクスチャ適用度取得<br/></div>
+<br/>
+
+<a name="virtual_getBackTextureParam"/>
+<div class="headline">getBackTextureParam</div>
+<div class="usage">public native float getBackTextureParam( int index ) const</div>
+<div class="normal">
+背面テクスチャ・パラメータ取得<br/></div>
+<br/>
+
+<a name="virtual_getBackTextureType"/>
+<div class="headline">getBackTextureType</div>
+<div class="usage">public native uint getBackTextureType( int index ) const</div>
+<div class="normal">
+背面テクスチャ・タイプ取得 (EntisGLS4.Material.texture～)<br/></div>
+<br/>
+
+<a name="virtual_getTexture"/>
+<div class="headline">getTexture</div>
+<div class="usage">public native EntisGLS4.Image getTexture( int index ) const</div>
+<div class="normal">
+テクスチャ取得<br/></div>
+<br/>
+
+<a name="virtual_getTextureApply"/>
+<div class="headline">getTextureApply</div>
+<div class="usage">public native float getTextureApply( int index ) const</div>
+<div class="normal">
+テクスチャ適用度取得<br/></div>
+<br/>
+
+<a name="virtual_getTextureParam"/>
+<div class="headline">getTextureParam</div>
+<div class="usage">public native float getTextureParam( int index ) const</div>
+<div class="normal">
+テクスチャ・パラメータ取得<br/></div>
+<br/>
+
+<a name="virtual_getTextureType"/>
+<div class="headline">getTextureType</div>
+<div class="usage">public native uint getTextureType( int index ) const</div>
+<div class="normal">
+テクスチャ・タイプ取得 (EntisGLS4.Material.texture～)<br/></div>
+<br/>
+
+<a name="virtual_isEnabledBackAttr"/>
+<div class="headline">isEnabledBackAttr</div>
+<div class="usage">public native boolean isEnabledBackAttr( ) const</div>
+<div class="normal">
+背面属性は有効か？<br/></div>
+<br/>
+
+<a name="virtual_setBackTexture"/>
+<div class="headline">setBackTexture</div>
+<div class="usage">public native void setBackTexture( EntisGLS4.Image image, int index = 0, EntisGLS4.Material.TextureType type = 0, float apply = 1., float param = 0. )</div>
+<div class="normal">
+背面テクスチャ設定<br/></div>
+<br/>
+
+<a name="virtual_setTexture"/>
+<div class="headline">setTexture</div>
+<div class="usage">public native void setTexture( EntisGLS4.Image image, int index = 0, EntisGLS4.Material.TextureType type = 0, float apply = 1., float param = 0. )</div>
+<div class="normal">
+テクスチャ設定<br/></div>
+<br/>
+
+<a name="virtual_updateBuffer"/>
+<div class="headline">updateBuffer</div>
+<div class="usage">public native void updateBuffer( )</div>
+<div class="normal">
+マテリアル更新<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

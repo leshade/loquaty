@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneManager</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneManager</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneManager ;</div>
+<div class="normal">
+Scene マネージャー<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneManager.xhtml">EntisGLS4.SceneManager</a>
+</div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SceneManager.Context.xhtml">EntisGLS4.SceneManager.Context</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneManager.EditorEnvironment.xhtml">EntisGLS4.SceneManager.EditorEnvironment</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneManager.PluginDescriptorType.xhtml">EntisGLS4.SceneManager.PluginDescriptorType</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneManager.PluginMenuState.xhtml">EntisGLS4.SceneManager.PluginMenuState</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_pluginTypeNull">pluginTypeNull</a><br/>
+	<a href="#static_pluginTypeItem">pluginTypeItem</a><br/>
+	<a href="#static_pluginTypeController">pluginTypeController</a><br/>
+	<a href="#static_pluginTypeProcRsrc">pluginTypeProcRsrc</a><br/>
+	<a href="#static_menuDisabled">menuDisabled</a><br/>
+	<a href="#static_menuChecked">menuChecked</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_getCurrent">getCurrent</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneManager">SceneManager</a><br/>
+	<a href="#virtual_addPluginMenu">addPluginMenu</a><br/>
+	<a href="#virtual_endScene">endScene</a><br/>
+	<a href="#virtual_getLoquaty">getLoquaty</a><br/>
+	<a href="#virtual_getSceneInfo">getSceneInfo</a><br/>
+	<a href="#virtual_setControllerClass">setControllerClass</a><br/>
+	<a href="#virtual_setItemClass">setItemClass</a><br/>
+	<a href="#virtual_startScene">startScene</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_pluginTypeNull"/>
+<div class="headline">pluginTypeNull</div>
+<div class="usage">public static const EntisGLS4.SceneManager.PluginDescriptorType&#9; pluginTypeNull = 0</div>
+<br/>
+<a name="static_pluginTypeItem"/>
+<div class="headline">pluginTypeItem</div>
+<div class="usage">public static const EntisGLS4.SceneManager.PluginDescriptorType&#9; pluginTypeItem = 1</div>
+<br/>
+<a name="static_pluginTypeController"/>
+<div class="headline">pluginTypeController</div>
+<div class="usage">public static const EntisGLS4.SceneManager.PluginDescriptorType&#9; pluginTypeController = 2</div>
+<br/>
+<a name="static_pluginTypeProcRsrc"/>
+<div class="headline">pluginTypeProcRsrc</div>
+<div class="usage">public static const EntisGLS4.SceneManager.PluginDescriptorType&#9; pluginTypeProcRsrc = 3</div>
+<br/>
+<a name="static_menuDisabled"/>
+<div class="headline">menuDisabled</div>
+<div class="usage">public static const EntisGLS4.SceneManager.PluginMenuState&#9; menuDisabled = 1</div>
+<br/>
+<a name="static_menuChecked"/>
+<div class="headline">menuChecked</div>
+<div class="usage">public static const EntisGLS4.SceneManager.PluginMenuState&#9; menuChecked = 2</div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_getCurrent"/>
+<div class="headline">getCurrent</div>
+<div class="usage">public static native EntisGLS4.SceneManager getCurrent( )</div>
+<div class="normal">
+現在のスレッドに設定されているインスタンスを取得</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+SceneComposer でスクリプトをインクルードしている間、そのインクルード元の SceneManager。</div>
+</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneManager"/>
+<div class="headline">SceneManager</div>
+<div class="usage">public native SceneManager( )</div>
+<div class="normal">
+SceneManager 構築<br/></div>
+<br/>
+
+<a name="virtual_addPluginMenu"/>
+<div class="headline">addPluginMenu</div>
+<div class="usage">public native void addPluginMenu( EntisGLS4.SceneManager.PluginDescriptorType type, String menuPath, String typeId, Function&lt;EntisGLS4.SceneProperty(const EntisGLS4.SceneManager.EditorEnvironment*)&gt; fncCreateItem, Function&lt;EntisGLS4.SceneManager.PluginMenuState(EntisGLS4.SceneItem)&gt; fncOnUpdateMenu = null )</div>
+<div class="normal">
+エディタのプラグインに追加する<br/></div>
+<br/>
+
+<a name="virtual_endScene"/>
+<div class="headline">endScene</div>
+<div class="usage">public native void endScene( )</div>
+<div class="normal">
+シーン終了時処理<br/></div>
+<br/>
+
+<a name="virtual_getLoquaty"/>
+<div class="headline">getLoquaty</div>
+<div class="usage">public native Loquaty getLoquaty( ) const</div>
+<div class="normal">
+ローカル Loquaty 仮想マシンを取得</div>
+<br/>
+<div class="indent1">
+SceneComposer でインクルードされたスクリプトのグローバル変数や class の static な変数へは直接アクセスすることはできません。<br/>あらかじめ呼び出し元のスクリプトでインクルードしておくか、より一般的には Loquaty.compilerAs～ 関数でローカル仮想マシン内の値を取得／操作する関数を生成します。</div><br/>
+<br/>
+
+<a name="virtual_getSceneInfo"/>
+<div class="headline">getSceneInfo</div>
+<div class="usage">public native EntisGLS4.SceneManager.Context getSceneInfo( ) const</div>
+<div class="normal">
+シーン情報取得</div>
+<div class="notes_parameter">
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+シーン情報を格納した Context</div>
+</div>
+<div class="indent1">
+エディタ上や startScene が呼び出されていないとシーン情報は取得できないことに注意してください。</div><br/>
+<br/>
+
+<a name="virtual_setControllerClass"/>
+<div class="headline">setControllerClass</div>
+<div class="usage">public native void setControllerClass( String typeId, Class cls )</div>
+<div class="normal">
+コントローラークラスを登録<br/></div>
+<div class="notes_parameter">
+<div class="param_name">typeId</div>
+<div class="param_desc">
+登録するコントローラー・タイプ ID</div>
+<div class="param_name">cls</div>
+<div class="param_desc">
+SceneController 派生クラス</div>
+</div>
+<br/>
+
+<a name="virtual_setItemClass"/>
+<div class="headline">setItemClass</div>
+<div class="usage">public native void setItemClass( String typeId, Class cls )</div>
+<div class="normal">
+アイテムクラスを登録<br/></div>
+<div class="notes_parameter">
+<div class="param_name">typeId</div>
+<div class="param_desc">
+登録するアイテム・タイプ ID</div>
+<div class="param_name">cls</div>
+<div class="param_desc">
+SceneItem 派生クラス</div>
+</div>
+<br/>
+
+<a name="virtual_startScene"/>
+<div class="headline">startScene</div>
+<div class="usage">public native void startScene( EntisGLS4.SceneManager.Context context )</div>
+<div class="normal">
+シーン開始時処理</div>
+<div class="notes_parameter">
+<div class="param_name">context</div>
+<div class="param_desc">
+シーン情報</div>
+</div>
+<div class="indent1">
+コンポジション内のスクリプトは SceneManager の外とは別の仮想マシン空間で実行されるため、情報のやり取りは制限されます。<br/>SceneManager を Loquaty スクリプトで生成した場合には生成元の仮想マシンから派生されるため、クラスの staic メンバやグローバル変数を参照することはできますが C++ から生成された場合にはその限りではありません。<br/>より一般的にはシーン情報を startScene で設定し、コンポジション内では getSceneInfo で取得したシーン情報を使用します。</div><br/>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

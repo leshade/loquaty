@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneInstancingItem</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneInstancingItem</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneInstancingItem ;</div>
+<div class="normal">
+インスタンシング・インターフェース<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneInstancingItem.xhtml">EntisGLS4.SceneInstancingItem</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneInstancingItem">SceneInstancingItem</a><br/>
+	<a href="#virtual_addTemporaryInstances">addTemporaryInstances</a><br/>
+	<a href="#virtual_getBaseRotation">getBaseRotation</a><br/>
+	<a href="#virtual_getBaseZoom">getBaseZoom</a><br/>
+	<a href="#virtual_getStaticInstanceAt">getStaticInstanceAt</a><br/>
+	<a href="#virtual_getStaticInstanceCount">getStaticInstanceCount</a><br/>
+	<a href="#virtual_insertStaticInstanceAt">insertStaticInstanceAt</a><br/>
+	<a href="#virtual_lockInstancing">lockInstancing</a><br/>
+	<a href="#virtual_removeStaticInstanceAt">removeStaticInstanceAt</a><br/>
+	<a href="#virtual_setBaseRotation">setBaseRotation</a><br/>
+	<a href="#virtual_setBaseZoom">setBaseZoom</a><br/>
+	<a href="#virtual_unlockInstancing">unlockInstancing</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneInstancingItem"/>
+<div class="headline">SceneInstancingItem</div>
+<div class="usage">public abstract SceneInstancingItem( )</div>
+<br/>
+
+<a name="virtual_addTemporaryInstances"/>
+<div class="headline">addTemporaryInstances</div>
+<div class="usage">public native void addTemporaryInstances( const Matrix4* matrixes, const EntisGLS4.ColorMulAdd* colors, ulong count, EntisGLS4.SceneItem itemFrom )</div>
+<div class="normal">
+（現フレームだけの）一時インスタンスを追加する<br/>（Scene.classPreRender イベント中に呼び出す）<br/></div>
+<br/>
+
+<a name="virtual_getBaseRotation"/>
+<div class="headline">getBaseRotation</div>
+<div class="usage">public native const Quaterniond* getBaseRotation( ) const</div>
+<div class="normal">
+インスタンスの共通回転取得<br/></div>
+<br/>
+
+<a name="virtual_getBaseZoom"/>
+<div class="headline">getBaseZoom</div>
+<div class="usage">public native const Vector3d* getBaseZoom( ) const</div>
+<div class="normal">
+インスタンスの共通拡大率取得<br/></div>
+<br/>
+
+<a name="virtual_getStaticInstanceAt"/>
+<div class="headline">getStaticInstanceAt</div>
+<div class="usage">public native boolean getStaticInstanceAt( ulong index, Matrix4* matrix, EntisGLS4.ColorMulAdd* color ) const</div>
+<div class="normal">
+静インスタンス取得<br/></div>
+<br/>
+
+<a name="virtual_getStaticInstanceCount"/>
+<div class="headline">getStaticInstanceCount</div>
+<div class="usage">public native ulong getStaticInstanceCount( ) const</div>
+<div class="normal">
+静インスタンス数取得<br/></div>
+<br/>
+
+<a name="virtual_insertStaticInstanceAt"/>
+<div class="headline">insertStaticInstanceAt</div>
+<div class="usage">public native void insertStaticInstanceAt( ulong index, const Matrix4* matrix, const EntisGLS4.ColorMulAdd* color )</div>
+<div class="normal">
+静インスタンス挿入<br/></div>
+<br/>
+
+<a name="virtual_lockInstancing"/>
+<div class="headline">lockInstancing</div>
+<div class="usage">public native void lockInstancing( )</div>
+<div class="normal">
+インスタンス排他処理権取得</div>
+<br/>
+<div class="indent1">
+※この関数は長時間停止し得ますが、その間 Task の非同期実行状態として離脱することはできません。</div><br/>
+<br/>
+
+<a name="virtual_removeStaticInstanceAt"/>
+<div class="headline">removeStaticInstanceAt</div>
+<div class="usage">public native void removeStaticInstanceAt( ulong index )</div>
+<div class="normal">
+静インスタンス削除<br/></div>
+<br/>
+
+<a name="virtual_setBaseRotation"/>
+<div class="headline">setBaseRotation</div>
+<div class="usage">public native void setBaseRotation( const Quaterniond* rot )</div>
+<div class="normal">
+インスタンスの共通回転設定<br/></div>
+<br/>
+
+<a name="virtual_setBaseZoom"/>
+<div class="headline">setBaseZoom</div>
+<div class="usage">public native void setBaseZoom( const Vector3d* zoom )</div>
+<div class="normal">
+インスタンスの共通拡大率設定<br/></div>
+<br/>
+
+<a name="virtual_unlockInstancing"/>
+<div class="headline">unlockInstancing</div>
+<div class="usage">public native void unlockInstancing( )</div>
+<div class="normal">
+インスタンス排他処理権解放</div>
+<br/>
+<div class="indent1">
+lockInstancing 関数と対になるように同じ回数呼び出す必要があります。</div><br/>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

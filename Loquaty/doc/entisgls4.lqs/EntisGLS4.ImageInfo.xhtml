@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.ImageInfo</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.ImageInfo</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct ImageInfo<br/>
+{<br/>
+&nbsp; &nbsp; EntisGLS4.ImageFormatFlag&nbsp; &nbsp; format ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; depth ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; width ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; height ;<br/>
+&nbsp; &nbsp; Point&nbsp; &nbsp; ptOrigin ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; colorClip ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; pitchPixel ;<br/>
+&nbsp; &nbsp; int&nbsp; &nbsp; pitchLine ;<br/>
+&nbsp; &nbsp; uint&nbsp; &nbsp; reserved ;<br/>
+}</div>
+<div class="normal">
+画像データ情報<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.ImageInfo.xhtml">EntisGLS4.ImageInfo</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_format">format</a><br/>
+	<a href="#member_depth">depth</a><br/>
+	<a href="#member_width">width</a><br/>
+	<a href="#member_height">height</a><br/>
+	<a href="#member_ptOrigin">ptOrigin</a><br/>
+	<a href="#member_colorClip">colorClip</a><br/>
+	<a href="#member_pitchPixel">pitchPixel</a><br/>
+	<a href="#member_pitchLine">pitchLine</a><br/>
+	<a href="#member_reserved">reserved</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_format"/>
+<div class="headline">format</div>
+<div class="usage">public EntisGLS4.ImageFormatFlag&#9; format = 0</div>
+<div class="normal">
+画像フォーマット<br/></div>
+<br/>
+<a name="member_depth"/>
+<div class="headline">depth</div>
+<div class="usage">public uint&#9; depth = 0</div>
+<div class="normal">
+ビット深度 [bits/pixel]<br/></div>
+<br/>
+<a name="member_width"/>
+<div class="headline">width</div>
+<div class="usage">public uint&#9; width = 0</div>
+<div class="normal">
+画像幅 [pixels]<br/></div>
+<br/>
+<a name="member_height"/>
+<div class="headline">height</div>
+<div class="usage">public uint&#9; height = 0</div>
+<div class="normal">
+画像高 [pixels]<br/></div>
+<br/>
+<a name="member_ptOrigin"/>
+<div class="headline">ptOrigin</div>
+<div class="usage">public Point&#9; ptOrigin = {x: 0,y: 0}</div>
+<div class="normal">
+画像描画の際の原点座標<br/>（描画先の座標と画像内の ptOrigin が一致するように）<br/></div>
+<br/>
+<a name="member_colorClip"/>
+<div class="headline">colorClip</div>
+<div class="usage">public uint&#9; colorClip = 0</div>
+<div class="normal">
+透明色<br/></div>
+<br/>
+<a name="member_pitchPixel"/>
+<div class="headline">pitchPixel</div>
+<div class="usage">public int&#9; pitchPixel = 0</div>
+<div class="normal">
+画像バッファのピクセルピッチ [bytes]<br/></div>
+<br/>
+<a name="member_pitchLine"/>
+<div class="headline">pitchLine</div>
+<div class="usage">public int&#9; pitchLine = 0</div>
+<div class="normal">
+画像バッファのラインピッチ [bytes]<br/></div>
+<br/>
+<a name="member_reserved"/>
+<div class="headline">reserved</div>
+<div class="usage">public uint&#9; reserved = 0</div>
+<div class="normal">
+予約領域（ゼロパディング）<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

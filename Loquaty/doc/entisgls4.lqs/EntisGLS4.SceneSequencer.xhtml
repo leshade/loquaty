@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneSequencer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneSequencer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneSequencer ;</div>
+<div class="normal">
+Scene アイテム・タイムライン<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneSequencer.xhtml">EntisGLS4.SceneSequencer</a>
+</div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SceneSequencer.InterpolateMethod.xhtml">EntisGLS4.SceneSequencer.InterpolateMethod</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneSequencer.KeyFrameFlag.xhtml">EntisGLS4.SceneSequencer.KeyFrameFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneSequencer.KeyFrameParam.xhtml">EntisGLS4.SceneSequencer.KeyFrameParam</a></div>
+<div class="indent2"><a href="EntisGLS4.SceneSequencer.SeekMethod.xhtml">EntisGLS4.SceneSequencer.SeekMethod</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_methodSignal">methodSignal</a><br/>
+	<a href="#static_methodSelector">methodSelector</a><br/>
+	<a href="#static_methodLinear">methodLinear</a><br/>
+	<a href="#static_methodSpline">methodSpline</a><br/>
+	<a href="#static_methodBezier">methodBezier</a><br/>
+	<a href="#static_keyframeCorner">keyframeCorner</a><br/>
+	<a href="#static_seekStream">seekStream</a><br/>
+	<a href="#static_seekStreamPaused">seekStreamPaused</a><br/>
+	<a href="#static_seekJump">seekJump</a><br/>
+	<a href="#static_seekJumpReset">seekJumpReset</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_findKeyFrame">findKeyFrame</a><br/>
+	<a href="#virtual_getFrameBoolean">getFrameBoolean</a><br/>
+	<a href="#virtual_getFrameCommand">getFrameCommand</a><br/>
+	<a href="#virtual_getFrameInteger">getFrameInteger</a><br/>
+	<a href="#virtual_getFrameMatrix">getFrameMatrix</a><br/>
+	<a href="#virtual_getFrameScalar">getFrameScalar</a><br/>
+	<a href="#virtual_getFrameVector">getFrameVector</a><br/>
+	<a href="#virtual_getInterpolateMethod">getInterpolateMethod</a><br/>
+	<a href="#virtual_getKeyFrameCount">getKeyFrameCount</a><br/>
+	<a href="#virtual_getKeyFrameParameter">getKeyFrameParameter</a><br/>
+	<a href="#virtual_getKeyFrameProgress">getKeyFrameProgress</a><br/>
+	<a href="#virtual_getKeyFrameRange">getKeyFrameRange</a><br/>
+	<a href="#virtual_insertKeyFrame">insertKeyFrame</a><br/>
+	<a href="#virtual_normalizeKeyFrameOrder">normalizeKeyFrameOrder</a><br/>
+	<a href="#virtual_orderKeyFrameIndex">orderKeyFrameIndex</a><br/>
+	<a href="#virtual_removeKeyFrame">removeKeyFrame</a><br/>
+	<a href="#virtual_setKeyFrameParameter">setKeyFrameParameter</a><br/>
+	<a href="#virtual_swapKeyFrame">swapKeyFrame</a><br/>
+	<a href="#virtual_updateAllFrameValues">updateAllFrameValues</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_methodSignal"/>
+<div class="headline">methodSignal</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.InterpolateMethod&#9; methodSignal = 0</div>
+<div class="normal">
+シグナル（キーフレームで実行）<br/></div>
+<br/>
+<a name="static_methodSelector"/>
+<div class="headline">methodSelector</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.InterpolateMethod&#9; methodSelector = 1</div>
+<div class="normal">
+補完無し（直線のキーフレーム値）<br/></div>
+<br/>
+<a name="static_methodLinear"/>
+<div class="headline">methodLinear</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.InterpolateMethod&#9; methodLinear = 2</div>
+<div class="normal">
+線形補完<br/></div>
+<br/>
+<a name="static_methodSpline"/>
+<div class="headline">methodSpline</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.InterpolateMethod&#9; methodSpline = 3</div>
+<div class="normal">
+三次スプライン補完<br/></div>
+<br/>
+<a name="static_methodBezier"/>
+<div class="headline">methodBezier</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.InterpolateMethod&#9; methodBezier = 4</div>
+<div class="normal">
+三次ベジェ曲線<br/></div>
+<br/>
+<a name="static_keyframeCorner"/>
+<div class="headline">keyframeCorner</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.KeyFrameFlag&#9; keyframeCorner = 1</div>
+<div class="normal">
+キーフレーム・フラグ：コーナー（補完非連続制御点）<br/></div>
+<br/>
+<a name="static_seekStream"/>
+<div class="headline">seekStream</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.SeekMethod&#9; seekStream = 0</div>
+<div class="normal">
+シーク方法：ストリーミング（通常）<br/></div>
+<br/>
+<a name="static_seekStreamPaused"/>
+<div class="headline">seekStreamPaused</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.SeekMethod&#9; seekStreamPaused = 1</div>
+<div class="normal">
+シーク方法：Pause 時<br/></div>
+<br/>
+<a name="static_seekJump"/>
+<div class="headline">seekJump</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.SeekMethod&#9; seekJump = 2</div>
+<div class="normal">
+シーク方法：フレームジャンプ時（ストリーミング中）<br/></div>
+<br/>
+<a name="static_seekJumpReset"/>
+<div class="headline">seekJumpReset</div>
+<div class="usage">public static const EntisGLS4.SceneSequencer.SeekMethod&#9; seekJumpReset = 3</div>
+<div class="normal">
+シーク方法：フレームジャンプ時（リセット動作）<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_findKeyFrame"/>
+<div class="headline">findKeyFrame</div>
+<div class="usage">public native long findKeyFrame( int iFrame ) const</div>
+<div class="normal">
+キーフレーム検索<br/></div>
+<br/>
+
+<a name="virtual_getFrameBoolean"/>
+<div class="headline">getFrameBoolean</div>
+<div class="usage">public native boolean getFrameBoolean( double frame )</div>
+<div class="normal">
+boolean フレーム・パラメータ値取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">frame</div>
+<div class="param_desc">
+フレーム番号</div>
+</div>
+<br/>
+
+<a name="virtual_getFrameCommand"/>
+<div class="headline">getFrameCommand</div>
+<div class="usage">public native String getFrameCommand( double frame, EntisGLS4.SceneSequencer.SeekMethod seek )</div>
+<div class="normal">
+String フレーム・パラメータ値取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">frame</div>
+<div class="param_desc">
+フレーム番号</div>
+<div class="param_name">seek</div>
+<div class="param_desc">
+シーク方法</div>
+</div>
+<br/>
+
+<a name="virtual_getFrameInteger"/>
+<div class="headline">getFrameInteger</div>
+<div class="usage">public native int getFrameInteger( double frame )</div>
+<div class="normal">
+int32 フレーム・パラメータ値取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">frame</div>
+<div class="param_desc">
+フレーム番号</div>
+</div>
+<br/>
+
+<a name="virtual_getFrameMatrix"/>
+<div class="headline">getFrameMatrix</div>
+<div class="usage">public native const Matrix3d* getFrameMatrix( double frame )</div>
+<div class="normal">
+Matrix3d 補完フレーム・パラメータ値取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">frame</div>
+<div class="param_desc">
+フレーム番号</div>
+</div>
+<br/>
+
+<a name="virtual_getFrameScalar"/>
+<div class="headline">getFrameScalar</div>
+<div class="usage">public native double getFrameScalar( double frame )</div>
+<div class="normal">
+double 補完フレーム・パラメータ値取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">frame</div>
+<div class="param_desc">
+フレーム番号</div>
+</div>
+<br/>
+
+<a name="virtual_getFrameVector"/>
+<div class="headline">getFrameVector</div>
+<div class="usage">public native const Vector3d* getFrameVector( double frame )</div>
+<div class="normal">
+Vector3d 補完フレーム・パラメータ値取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">frame</div>
+<div class="param_desc">
+フレーム番号</div>
+</div>
+<br/>
+
+<a name="virtual_getInterpolateMethod"/>
+<div class="headline">getInterpolateMethod</div>
+<div class="usage">public native EntisGLS4.SceneSequencer.InterpolateMethod getInterpolateMethod( ) const</div>
+<div class="normal">
+補完方法取得<br/></div>
+<br/>
+
+<a name="virtual_getKeyFrameCount"/>
+<div class="headline">getKeyFrameCount</div>
+<div class="usage">public native ulong getKeyFrameCount( ) const</div>
+<div class="normal">
+キーフレーム個数取得<br/></div>
+<br/>
+
+<a name="virtual_getKeyFrameParameter"/>
+<div class="headline">getKeyFrameParameter</div>
+<div class="usage">public native boolean getKeyFrameParameter( ulong index, EntisGLS4.SceneSequencer.KeyFrameParam* kfp ) const</div>
+<div class="normal">
+キーフレームパラメータ取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+キーフレーム・インデックス（フレーム番号ではない）</div>
+<div class="param_name">kfp</div>
+<div class="param_desc">
+キーフレーム情報を受け取る KeyFrameParam</div>
+</div>
+<br/>
+
+<a name="virtual_getKeyFrameProgress"/>
+<div class="headline">getKeyFrameProgress</div>
+<div class="usage">public native ulong getKeyFrameProgress( double* t, int iFrame ) const</div>
+<div class="normal">
+区間取得</div>
+<div class="notes_parameter">
+<div class="param_name">t</div>
+<div class="param_desc">
+キーフレームで挟まれた区間内の割合[0,1]を受け取る double</div>
+<div class="param_name">iFrame</div>
+<div class="param_desc">
+フレーム番号</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+区間の初めのキーフレーム・インデックス</div>
+</div>
+<br/>
+
+<a name="virtual_getKeyFrameRange"/>
+<div class="headline">getKeyFrameRange</div>
+<div class="usage">public native boolean getKeyFrameRange( int* iFirst, int* iEnd ) const</div>
+<div class="normal">
+キーフレーム範囲取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iFirst</div>
+<div class="param_desc">
+初めのフレーム番号を受け取る int32</div>
+<div class="param_name">iEnd</div>
+<div class="param_desc">
+最後のフレーム番号を受け取る int32</div>
+</div>
+<br/>
+
+<a name="virtual_insertKeyFrame"/>
+<div class="headline">insertKeyFrame</div>
+<div class="usage">public native void insertKeyFrame( ulong index, const EntisGLS4.SceneSequencer.KeyFrameParam* kfp )</div>
+<div class="normal">
+キーフレーム挿入<br/></div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+キーフレーム・インデックス（フレーム番号ではない）</div>
+<div class="param_name">kfp</div>
+<div class="param_desc">
+挿入するキーフレーム情報</div>
+</div>
+<br/>
+
+<a name="virtual_normalizeKeyFrameOrder"/>
+<div class="headline">normalizeKeyFrameOrder</div>
+<div class="usage">public native boolean normalizeKeyFrameOrder( )</div>
+<div class="normal">
+キーフレーム順を正規化する（後ろのキーフレームが前に来ないように）<br/></div>
+<br/>
+
+<a name="virtual_orderKeyFrameIndex"/>
+<div class="headline">orderKeyFrameIndex</div>
+<div class="usage">public native ulong orderKeyFrameIndex( int iFrame ) const</div>
+<div class="normal">
+キーフレーム挿入指標検索<br/></div>
+<br/>
+
+<a name="virtual_removeKeyFrame"/>
+<div class="headline">removeKeyFrame</div>
+<div class="usage">public native void removeKeyFrame( ulong index )</div>
+<div class="normal">
+キーフレーム削除<br/></div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+キーフレーム・インデックス（フレーム番号ではない）</div>
+</div>
+<br/>
+
+<a name="virtual_setKeyFrameParameter"/>
+<div class="headline">setKeyFrameParameter</div>
+<div class="usage">public native boolean setKeyFrameParameter( ulong index, const EntisGLS4.SceneSequencer.KeyFrameParam* kfp )</div>
+<div class="normal">
+キーフレームパラメータ設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">index</div>
+<div class="param_desc">
+キーフレーム・インデックス（フレーム番号ではない）</div>
+<div class="param_name">kfp</div>
+<div class="param_desc">
+設定するキーフレーム情報</div>
+</div>
+<br/>
+
+<a name="virtual_swapKeyFrame"/>
+<div class="headline">swapKeyFrame</div>
+<div class="usage">public native void swapKeyFrame( ulong index1, ulong index2 )</div>
+<div class="normal">
+キーフレームの順番を入れ替える<br/></div>
+<br/>
+
+<a name="virtual_updateAllFrameValues"/>
+<div class="headline">updateAllFrameValues</div>
+<div class="usage">public native void updateAllFrameValues( )</div>
+<div class="normal">
+キーフレームから各フレームの値を計算する<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.RenderDevice.ProcedurePriority</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.RenderDevice.ProcedurePriority</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum using ProcedurePriority&lt;int&gt; ;</div>
+<div class="normal">
+優先度<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.RenderDevice.ProcedurePriority.xhtml">EntisGLS4.RenderDevice.ProcedurePriority</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_procedureAsync">procedureAsync</a><br/>
+	<a href="#static_procedureSync">procedureSync</a><br/>
+	<a href="#static_procedureDelayable">procedureDelayable</a><br/>
+	<a href="#static_procedureLater">procedureLater</a><br/>
+	<a href="#static_procedureNoRender">procedureNoRender</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_procedureAsync"/>
+<div class="headline">procedureAsync</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureAsync = 0</div>
+<div class="normal">
+優先度：非同期実行<br/></div>
+<br/>
+<a name="static_procedureSync"/>
+<div class="headline">procedureSync</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureSync = 1</div>
+<div class="normal">
+優先度：同期実行<br/></div>
+<br/>
+<a name="static_procedureDelayable"/>
+<div class="headline">procedureDelayable</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureDelayable = 2</div>
+<div class="normal">
+優先度：非同期実行（優先度低・画面描画優先）<br/></div>
+<br/>
+<a name="static_procedureLater"/>
+<div class="headline">procedureLater</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureLater = 3</div>
+<div class="normal">
+優先度：非同期実行（即座に実行しない）<br/></div>
+<br/>
+<a name="static_procedureNoRender"/>
+<div class="headline">procedureNoRender</div>
+<div class="usage">public static const EntisGLS4.RenderDevice.ProcedurePriority&#9; procedureNoRender = 4</div>
+<div class="normal">
+優先度：非レンダリングスレッドでレンダリング非同期実行（呼び出しは非同期／同期か不問・確実に同期を取る責任は呼び出し側にある）<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

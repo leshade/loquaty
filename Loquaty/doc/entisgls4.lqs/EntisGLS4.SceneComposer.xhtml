@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneComposer</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneComposer</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneComposer ;</div>
+<div class="normal">
+Scene コンポーザー<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneComposer.xhtml">EntisGLS4.SceneComposer</a>
+</div></div></div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneComposer">SceneComposer</a><br/>
+	<a href="#virtual_createComposition">createComposition</a><br/>
+	<a href="#virtual_createController">createController</a><br/>
+	<a href="#virtual_createItemeChildOf">createItemeChildOf</a><br/>
+	<a href="#virtual_getAssetAudioAs">getAssetAudioAs</a><br/>
+	<a href="#virtual_getAssetModelAs">getAssetModelAs</a><br/>
+	<a href="#virtual_getMaterialLibrary">getMaterialLibrary</a><br/>
+	<a href="#virtual_getModelPoseLibrary">getModelPoseLibrary</a><br/>
+	<a href="#virtual_getTextureLibrary">getTextureLibrary</a><br/>
+	<a href="#virtual_loadComposeFile">loadComposeFile</a><br/>
+	<a href="#virtual_outputLog">outputLog</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneComposer"/>
+<div class="headline">SceneComposer</div>
+<div class="usage">public native SceneComposer( EntisGLS4.SceneManager manager )</div>
+<div class="normal">
+SceneComposer 構築<br/></div>
+<br/>
+
+<a name="virtual_createComposition"/>
+<div class="headline">createComposition</div>
+<div class="usage">public native EntisGLS4.SceneComposition createComposition( String compId, Object objInstance = null )</div>
+<div class="normal">
+コンポジションを作成する<br/></div>
+<br/>
+
+<a name="virtual_createController"/>
+<div class="headline">createController</div>
+<div class="usage">public native EntisGLS4.SceneController createController( EntisGLS4.SceneItem item, ulong index, String typeId, String ctrlId )</div>
+<div class="normal">
+コントローラーを新規作成してアイテムに追加する<br/></div>
+<br/>
+
+<a name="virtual_createItemeChildOf"/>
+<div class="headline">createItemeChildOf</div>
+<div class="usage">public native EntisGLS4.SceneItem createItemeChildOf( EntisGLS4.SceneItem space, String typeId, String itemId )</div>
+<div class="normal">
+アイテムを新規作成して子アイテムとして追加する<br/></div>
+<br/>
+
+<a name="virtual_getAssetAudioAs"/>
+<div class="headline">getAssetAudioAs</div>
+<div class="usage">public native EntisGLS4.AudioPlayer getAssetAudioAs( String id ) const</div>
+<div class="normal">
+オーディオ・リソースを取得する<br/></div>
+<br/>
+
+<a name="virtual_getAssetModelAs"/>
+<div class="headline">getAssetModelAs</div>
+<div class="usage">public native EntisGLS4.ModelBuffer getAssetModelAs( String id ) const</div>
+<div class="normal">
+モデル・リソースを取得する<br/></div>
+<br/>
+
+<a name="virtual_getMaterialLibrary"/>
+<div class="headline">getMaterialLibrary</div>
+<div class="usage">public native EntisGLS4.MaterialLibrary getMaterialLibrary( ) const</div>
+<div class="normal">
+マテリアル・ライブラリを取得する<br/></div>
+<br/>
+
+<a name="virtual_getModelPoseLibrary"/>
+<div class="headline">getModelPoseLibrary</div>
+<div class="usage">public native EntisGLS4.ModelPoseLibrary getModelPoseLibrary( ) const</div>
+<div class="normal">
+ポーズ・ライブラリを取得する<br/></div>
+<br/>
+
+<a name="virtual_getTextureLibrary"/>
+<div class="headline">getTextureLibrary</div>
+<div class="usage">public native EntisGLS4.TextureLibrary getTextureLibrary( ) const</div>
+<div class="normal">
+画像ライブラリを取得する<br/></div>
+<br/>
+
+<a name="virtual_loadComposeFile"/>
+<div class="headline">loadComposeFile</div>
+<div class="usage">public native boolean loadComposeFile( String file )</div>
+<div class="normal">
+コンポーザーファイル読み込み<br/></div>
+<br/>
+
+<a name="virtual_outputLog"/>
+<div class="headline">outputLog</div>
+<div class="usage">public native void outputLog( String msg )</div>
+<div class="normal">
+ログメッセージ出力<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

@@ -1,0 +1,580 @@
+﻿
+@include "elementary.lqs"
+@include "color_comp.lqs"
+
+
+namespace	EntisGLS4
+{
+	// ステレオ立体視・視点インデックス
+	enum using StereoImageIndex
+	{
+		// ステレオ立体視画像
+		stereoImageBoth		= -1,
+
+		// ステレオ立体視画像の右目画像／又は通常のモノ画像
+		stereoImageRight	= 0,
+
+		// ステレオ立体視画像の左目画像
+		stereoImageLeft		= 1,
+	}
+
+	// 画像フォーマットフラグ
+	enum using ImageFormatFlag<uint>
+	{
+		// デフォルト・フォーマット
+		formatImageDefaultRGBA			= 0,
+
+		// RGB フォーマット (B:G:R)
+		formatImageRGB					= 0x00000001,
+
+		// グレイスケール
+		formatImageGray					= 0x00000002,
+
+		// RGB フォーマット (R:G:B)
+		formatImageBGR					= 0x00000003,
+
+		// YUV フォーマット (Y:U:V)
+		formatImageYUV					= 0x00000004,
+
+		// YUYV フォーマット
+		formatImageYUYV					= 0x00000104,
+
+		// YUV2 フォーマット
+		formatImageYUV2					= 0x00000204,
+
+		// YVYU フォーマット
+		formatImageYVYU					= 0x00000304,
+
+		// UYVY フォーマット
+		formatImageUYVY					= 0x00000404,
+
+		// IYU1 フォーマット
+		formatImageIYU1					= 0x00000504,
+
+		// IYU2 フォーマット
+		formatImageIYU2					= 0x00000604,
+
+		// HSB フォーマット (B:S:H)
+		formatImageHSB					= 0x00000006,
+
+		// ｚバッファ
+		formatImageZ					= 0x00002005,
+
+		// 深度バッファ
+		formatImageDepth				= 0x00012005,
+
+		// ARGB フォーマット (B:G:R:A)
+		formatImageARGB					= 0x04000001,
+
+		// ABGR フォーマット (R:G:B:A)
+		formatImageABGR					= 0x04000003,
+
+		// Float BGR フォーマット (R:G:B)
+		formatImageFloatBGR				= 0x00004003,
+
+		// Float ABGR フォーマット (R:G:B:A)
+		formatImageFloatABGR			= 0x04004003,
+
+		// Float RGBA フォーマット (R:G:B:A)
+		formatImageFloatRGBA			= 0x04004003,
+
+		// S3TC DXT1 RGB フォーマット
+		formatImageRGB_S3TC_DXT1		= 0x00001103,
+
+		// S3TC DXT1 RGBA フォーマット
+		formatImageRGBA_S3TC_DXT1		= 0x04001103,
+
+		// 色空間種別マスク
+		formatImageColorSpaceMask		= 0x000000FF,
+
+		// フォーマットマスク
+		formatImageTypeMask				= 0x0000FFFF,
+
+		// S3TC フォーマットフラグ
+		formatImageFlagS3TC				= 0x00001000,
+
+		// Float フォーマットフラグ
+		formatImageFlagFloat			= 0x00004000,
+
+		// 深度画像フラグ
+		formatImageFlagDepth			= 0x00010000,
+
+		// パレット付き画像フラグ
+		formatImageFlagPalette			= 0x01000000,
+
+		// 透明色を使用するフラグ
+		formatImageFlagClipping			= 0x02000000,
+
+		// αチャネルを含むフラグ
+		formatImageFlagAlpha			= 0x04000000,
+
+		// RGB チャネルはαチャネル非積算フラグ
+		formatImageFlagNoProductOfAlpha	= 0x08000000,
+
+		// ステレオ立体視での side-by-side 形式フラグ
+		formatImageFlagSideBySide		= 0x10000000,
+	}
+
+
+	
+	//////////////////////////////////////////////////////////////////////////
+	// 画像データ情報
+	//////////////////////////////////////////////////////////////////////////
+
+	struct	ImageInfo
+	{
+		// 画像フォーマット
+		ImageFormatFlag		format ;
+
+		// ビット深度 [bits/pixel]
+		uint32		depth ;
+
+		// 画像幅 [pixels]
+		uint32		width ;
+
+		// 画像高 [pixels]
+		uint32		height ;
+	
+		// 画像描画の際の原点座標
+		// （描画先の座標と画像内の ptOrigin が一致するように）
+		Point		ptOrigin ;
+
+		// 透明色
+		uint32		colorClip ;
+
+		// 画像バッファのピクセルピッチ [bytes]
+		int32		pitchPixel ;
+
+		// 画像バッファのラインピッチ [bytes]
+		int32		pitchLine ;
+
+		// 予約領域（ゼロパディング）
+		uint32		reserved ;
+	}
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 画像オブジェクト
+	// <desc>Image オブジェクトは１枚、又は複数の画像を保持しますが
+	// selectFrame によって選択されている１枚の画像として扱われます。<br/>
+	// selectFrame による作用が問題になる場合には newReference 関数で
+	// 特定のフレームだけの Image オブジェクトを取得します。</desc>
+	//////////////////////////////////////////////////////////////////////////
+
+	class	Image	extends NativeObject
+	{
+		// CubeMap のフレーム番号
+		enum using CubeMapFrameIndex<uint>
+		{
+			// CubeMap のフレーム番号 : Left
+			cubemapNegativeX,
+			// CubeMap のフレーム番号 : Down
+			cubemapPositiveY,
+			// CubeMap のフレーム番号 : Front
+			cubemapNegativeZ,
+			// CubeMap のフレーム番号 : Right
+			cubemapPositiveX,
+			// CubeMap のフレーム番号 : Up
+			cubemapNegativeY,
+			// CubeMap のフレーム番号 : Back
+			cubemapPositiveZ,
+		}
+
+		// バッファフラグ
+		enum using BufferTypeFlag<ulong>
+		{
+			// バッファフラグ：書き出し不可ヒント（未使用）
+			bufferNoWritable		= 0x00000001,
+			// バッファフラグ：読み出し不可ヒント（未使用）
+			bufferNoReadable		= 0x00000002,
+			// バッファフラグ：VRAM 上のサイズは２の累乗に限らない
+			bufferNonPowerOf2		= 0x00000008,
+			// バッファフラグ：テクスチャソース使用ヒント（未使用）
+			bufferForTexture		= 0x00000010,
+			// バッファフラグ：VRAM 上ではミップマップ化
+			bufferForMipmapTexture	= 0x00000020,
+			// バッファフラグ：レンダリング対象ヒント（未使用）
+			bufferForRenderTarget	= 0x00000040,
+			// バッファフラグ：キューブマッピング用
+			bufferCubeMapTexture	= 0x00000080,
+			// バッファフラグ：レンダリング専用バッファ
+			bufferDeviceRenderBuffer= 0x00000200,
+			// バッファフラグ：マルチサンプリング（レンダリング対象）
+			bufferMultisample		= 0x00000400,
+			// バッファフラグ：可能なら VRAM 上は圧縮形式
+			bufferCompressedTexture	= 0x00000800,
+			// バッファフラグ：圧縮フォーマット・ビットマスク
+			bufferCompressionFormatMask	= 0x7F000000,
+			// バッファフラグ：圧縮フォーマット・ビットシフタ
+			bufferCompressionFormatShifter	= 24,
+			// バッファフラグ：VRAM 上では 3D テクスチャ
+			bufferTexture3D			= 0x00001000,
+			// バッファフラグ：VRAM 上では テクスチャ配列 ※bufferTexture3D との組み合わせは未対応
+			bufferTextureArray		= 0x00002000,
+			// バッファフラグ：デフォルトで補完無効
+			bufferSampleNoSmooth	= 0x00010000,
+			// バッファフラグ：デフォルトでタイリング (WRAP)
+			bufferSampleTiling		= 0x00020000,
+			// バッファフラグ：RAM 上にバッファ保持
+			bufferOnMemory			= 0x00000000,
+			// バッファフラグ：VRAM 上のみ
+			bufferOnDeviceOnly		= 0x00000100,
+			// バッファフラグ：描画先にのみ使えるフラグ集合
+			bufferRenderNonTextureFlags	= bufferDeviceRenderBuffer | bufferMultisample,
+		}
+
+		// 画像オブジェクト構築
+		public native Image() ;
+
+		// フレーム数取得
+		public native ulong getFrameCount() const ;
+
+		// アニメーション・総フレーム数取得
+		public native ulong getSequenceLength() const ;
+
+		// アニメーション・フレーム・シーケンス取得
+		public native ulong getSequenceTable
+						( uint32* pSeq /* フレーム番号を受け取る配列 */,
+								ulong nCount /* フレーム配列長 */ ) const ;
+
+		// アニメーション全長（時間）取得 [msec]
+		public native ulong getTotalTime() const ;
+
+		// 時間からフレーム番号へ変換
+		public native ulong frameFromMilliSec( ulong msec ) const ;
+
+		// フレーム選択
+		public native boolean selectFrame
+			( ulong iFrame, StereoImageIndex iSide = stereoImageRight ) ;
+
+		// 選択中フレーム取得
+		public native ulong getSelectedFrame
+			( int* pSide = null /* ステレオ立体視画像の場合、視点を受け取る int 変数 */ ) const ;
+
+		// 画像情報取得
+		public native boolean getImageInfo
+			( ImageInfo* imginf /* 画像情報を受け取る ImageInfo 構造体 */ ) const ;
+
+		// 画像サイズ取得
+		public native Size* getImageSize() const ;
+
+		// 画像幅取得
+		public native uint32 getImageWidth() const ;
+
+		// 画像高取得
+		public native uint32 getImageHeight() const ;
+
+		// 画像フォーマット取得
+		public native ImageFormatFlag getImageFormat() const ;
+
+		// パレット・テーブル取得
+		public native uint getPaletteTable
+			( ARGB8* pPalette /* パレットテーブルを格納した ARGB8 配列 */,
+							uint nCount /* パレット配列長 */ ) ;
+
+		// lockBuffer バッファ取得方法
+		enum using LockBufferMethod
+		{
+			// lockBuffer 読み取りモード
+			lockRead		= 1,
+			// lockBuffer 書き込みモード
+			lockWrite		= 2,
+			// lockBuffer 読み書きモード
+			lockReadWrite	= 3,
+		}
+
+		// 画像バッファ取得
+		// <return>画像配列へのポインタ</return>
+		// <desc>この関数が返すポインタを使い終えたら unlockBuffer 関数を呼び出してください。
+		// この関数で取得されるポインタは簡易実装優先のため、
+		// メモリ範囲は保護されますが unlockBuffer 関数以降
+		// （あるいは画像が解放されて以降）は定義されない領域を
+		// 参照することになるかもしれません。</desc>
+		public native uint8* lockBuffer
+			( ImageInfo* imginf /* 画像情報を受け取る ImageInfo 構造体 */,
+				LockBufferMethod flags = lockReadWrite /* lockBuffer モード */,
+				const ImageRect* pRect = null /* バッファポインタを取得する矩形 */ ) ;
+
+		// <summary>lockBuffer で取得したバッファへ書き込んだ更新を
+		//  unlockBuffer の前に反映させたい場合に呼び出す</summary>
+		public native boolean flushBuffer
+			( LockBufferMethod flags = lockReadWrite /* lockBuffer モード */ ) ;
+
+		// lockBuffer で取得したバッファを解放する
+		public native boolean unlockBuffer
+			( LockBufferMethod flags = lockReadWrite /* lockBuffer モード */ ) ;
+
+		// 画像バッファへの参照生成
+		public native Image newReference
+			( const ImageRect * pClip = null /* 参照領域矩形 */,
+				long iFrame = -1 /* フレーム番号。-1 の時は現在選択中のフレーム */,
+				int iSide = stereoImageRight /* ステレオ立体視画像の場合の視点 */ ) ;
+
+		// 画像のテクスチャのための正規化
+		public native boolean normalizeToTexture( uint32 nFlags = 0 ) ;
+
+		// 画像をミップマップテクスチャのための正規化
+		public native boolean normalizeToMipmapTexture( uint32 nFlags = 0 ) ;
+
+		// レンダリング・ターゲットのための正規化
+		public native boolean normalizeToRenderTarget( uint32 nFlags = 0 ) ;
+
+		// テクスチャのための正規化フラグを除去する
+		public native boolean denormalizeForTexture( uint32 nFlags ) ;
+
+		// 画像バッファ生成
+		public native boolean createImage
+			( uint width, uint height,
+				ImageFormatFlag format = formatImageDefaultRGBA,
+				uint depth = 32,
+				BufferTypeFlag nFlags = bufferOnMemory,
+				ulong countFrame = 1, ulong msecLong = 0 ) ;
+
+		// 保有リソース解放
+		public native void releaseBuffer() ;
+
+		// バッファフラグ取得
+		public native BufferTypeFlag getBufferFlags() ;
+
+		// パレット・テーブル設定
+		public native uint setPaletteTable
+			( const ARGB8 * pPalette /* 設定するパレットテーブルを格納した ARGB8 配列 */,
+				uint nCount /* パレットテーブル配列長 */ ) ;
+
+		// アニメーション・フレーム・シーケンス・テーブルの設定
+		public native void setSequenceTable
+			( const uint* pSeq /* 設定するフレーム番号配列 */,
+				ulong nCount /* フレーム番号配列長 */ ) ;
+
+		// 中心座標情報設定
+		public native void setImageOrigin( int x, int y ) ;
+
+		// アニメーション全長時間設定
+		public native void setAnimationDuration( long msecDuration ) ;
+
+		enum using NormalizeFormatFlag<uint>
+		{
+			// フォーマット正規化フラグ：アニメーション画像を1枚にまとめる
+			formatMergeAnimation	= 0x00000001,
+			// フォーマット正規化フラグ：サイズ変更（縮小）
+			formatCastSize			= 0x00000002,
+			// フォーマット正規化フラグ：サイズ変更（縮小）
+			formatCastSizeBottom	= 0x00000004,
+			// フォーマット正規化フラグ：データはそのままフォーマット情報のみ変更
+			formatStraightPixel		= 0x00000010,
+			// フォーマット正規化フラグ：減色処理時にディザリングしない
+			formatNoDithering		= 0x00010000,
+		}
+
+		// 画像フォーマットを要求されるものに正規化
+		// <desc>画像読み込み後などに、処理できるフォーマットに変換するために
+		// 呼び出します。0 を指定したパラメータは変換されず維持されます。</desc>
+		public native boolean normalizeFormat
+			( ImageFormatFlag format = 0 /* 画像フォーマットフラグ */,
+				uint depth = 0 /* ピクセル辺りのビット数 */,
+				NormalizeFormatFlag nFlags = 0 /* フォーマット正規化フラグ */,
+				uint width = 0, uint height = 0 ) ;
+
+		// NormalizeFormat で結合されたアニメーション画像への参照を生成
+		public native Image newAnimationReference
+			( ImageRect* pFrameRects /* アトラス化された矩形を受け取る ImageRect 配列 */,
+				ulong nRectsCount /* pFrameRects の配列長 */ ) ;
+
+		// アトラス化された画像の参照矩形を取得
+		public native boolean getReferenceRectOfAtlas
+			( ImageRect* rect /* アトラス化された画像内の矩形を受け取る ImageRect */,
+				long iFrame = -1 /* フレーム番号。-1 の時は現在のフレーム */ ) const ;
+
+		// アトラス化処理フラグ
+		enum BuildAtlasFlag<uint>
+		{
+			// アトラス化処理フラグ：２の累乗サイズ
+			ExpandPOT	= 0x0001,
+		}
+
+		// アトラス化処理パラメータ
+		struct	BuildAtlasParam
+		{
+			BuildAtlasFlag	nFlags = 0 ;
+			uint32	nMargin = 1 ;
+			Size	sizeAtlasMin = { 16, 16 } ;
+			Size	sizeAtlasMax = { 2048, 2048 } ;
+		}
+
+		// 画像のアトラス化処理
+		public static native Image buildAtlas
+			( Image[] images /* アトラス化する画像配列 */,
+				const BuildAtlasParam* param /* アトラス化するパラメータ */,
+				ulong* pUsedCount = null /* 実際にアトラス化された画像枚数を受け取る ulong 変数 */,
+				ulong* pUsedIndices = null /* 実際にアトラス化された画像インデックス(images)を受け取る ulong 配列 */ ) ;
+
+		// 画像読み込み
+		public native boolean loadImage
+			( String strFilePath,
+				String strMIME = null, uint nLimitFrames = 0 ) ;
+
+		// 画像読み込み
+		public native boolean readImage
+			( File file, String strMIME = null, uint nLimitFrames = 0 ) ;
+
+		enum	EncoderOptionFlag<uint>
+		{
+			// エンコーダー・オプション・フラグ：品質指定
+			Quality	= 0x0001,
+		}
+
+		// エンコーダー・オプション
+		struct	EncoderOptions
+		{
+			// エンコーダー・オプション・フラグ
+			EncoderOptionFlag	flags ;
+
+			// エンコード品質 [0,256] 0:lowest, 256:best quality
+			uint32	quality ;
+		} ;
+
+		// 画像書き出し
+		public native boolean saveImage
+			( String strFilePath, String strMIME = null,
+				const EncoderOptions* pOpt = null ) ;
+
+		// 画像書き出し
+		public native boolean writeImage
+			( File file, String strMIME,
+				const EncoderOptions* pOpt = null ) ;
+
+		// ピクセル取得
+		public native boolean getPixelARGB
+			( ARGB8* argb /* ピクセル情報を ARGB 形式で受け取る変数 */,
+				int xPos /* ｘ座標 */, int yPos /* ｙ座標 */ ) ;
+
+		// 画像フィル
+		public native boolean fillImage
+			( uint packedPixel /* ピクセルを埋める値 */,
+				const ImageRect* pRect = null /* ピクセルを埋める矩形 */ ) ;
+
+		// 画像複製
+		public native boolean copyImage
+			( Image pSrcImage,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// 画像描画
+		public native boolean blendImage
+			( Image pSrcImage,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// 画像描画（逆順／pSrcImage の上に this を描画した結果を得る）
+		public native boolean blendBackImage
+			( Image pSrcImage,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// 画像描画（全チャネル加算）
+		public native boolean blendAddImage
+			( Image pSrcImage,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// 画像描画（全チャネル乗算）
+		public native boolean blendMulImage
+			( Image pSrcImage,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// 半透明描画
+		public native boolean halfBlendImage
+			( Image pSrcImage,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// フォーマット変換
+		public native boolean convertImage
+			( Image pSrcImage,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// 背景色合成
+		public native boolean blendImageBackgroundColor( uint packedBackColor ) ;
+
+		// RGB をαチャネルで積算
+		public native boolean multiplyImageRGBAlpha() ;
+
+		// チャネル転送
+		public native boolean putImageChannelTo
+			( int iDstChannel,
+				Image pSrcImage,
+				int iSrcChannel,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// packedColorMul と pSrcImage の ARGB 各チャネルの積和値を任意チャネルに出力
+		public native boolean putImageMAddChannelTo
+			( int iDstChannel,
+				Image pSrcImage,
+				uint packedColorMul,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// αチャネルを一次関数を伴って積算合成
+		public native boolean blendWithAlphaChannel
+			( Image pAlphaImage,
+				int32 fxAlphaCoefficient = 0x100,
+				int32 fxAlphaIntercept = 0,
+				int xDst = 0, int yDst = 0,
+				const ImageRect* pSrcRect = null ) ;
+
+		// トーンカーブ適用
+		public native boolean applyToneFilter
+			( const uint8* pRedTone, const uint8* pGreenTone,
+				const uint8* pBlueTone, const uint8 * pAlphaTone,
+				const ImageRect* pDstRect = null ) ;
+
+		// 輝度トーンカーブ生成 : (1 - x) * v [v > 0], x * (v + 1) [v < 0]
+		public static native void makeBrightnessTone
+			( uint8* pTone /* トーンカーブを受け取る uint8[0x100] 配列 */, float v ) ;
+
+		// 積算トーンカーブ生成 : x * v
+		public static native void makeMultipleTone
+			( uint8* pTone /* トーンカーブを受け取る uint8[0x100] 配列 */, float v ) ;
+
+		// 加算トーンカーブ生成 : x + v
+		public static native void makeAdditionalTone
+			( uint8* pTone /* トーンカーブを受け取る uint8[0x100] 配列 */, float v ) ;
+
+		// 積算トーンカーブ生成 : (x - 0.5) * v + 0.5
+		public static native void makeOffsetMultipleTone
+			( uint8* pTone /* トーンカーブを受け取る uint8[0x100] 配列 */, float v ) ;
+
+		// ガンマカーブ生成 : x ^ (1 / v)
+		public static native void makeGammaTone
+			( uint8* pTone /* トーンカーブを受け取る uint8[0x100] 配列 */, float v ) ;
+
+		// 1/2 縮小
+		public native boolean enlargeHalfImage( Image pSrcImage ) ;
+
+		// 90度単位回転（反時計回り）
+		public native boolean orthogonalRotate
+			( Image pSrcImage, int degRotateAngle ) ;
+
+		// グレイスケールを ARGB に拡張変換する
+		public native boolean createColorImageFromGrayscale
+			( Image pGrayscale, uint packedColor ) ;
+
+		// 多角形（凹形状可能）グレイスケール画像生成
+		public native boolean createFilledPolygonShape
+			( Vector2* vMakedOffset /* 生成された画像のオフセット座標を受け取る Vector2 */,
+				const Vector2* pVertices /* 頂点座標配列 */,
+				uint nCount /* 頂点数 */, float fpUnit = 1.0f /* vMakedOffset の座標単位 */ ) ;
+
+		// ベジェ曲線閉鎖領域グレイスケール画像生成
+		public native boolean createFilledBezierShape
+			( Vector2* vMakedOffset /* 生成された画像のオフセット座標を受け取る Vector2 */,
+				const Vector2* pVertices /* 制御点座標配列 */,
+				uint nCount /* 制御点数 */, float fpUnit = 1.0f /* vMakedOffset の座標単位 */ ) ;
+	}
+}
+
+

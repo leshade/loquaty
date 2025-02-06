@@ -1,0 +1,574 @@
+
+@import "entisgls4.dll"
+@include "entisgls4.lqs"
+@include "resources/scripts/game_status.lqs"
+
+using namespace EntisGLS4 ;
+
+
+int main( String[] arg )
+{
+	AvoidanceFlightApp	app = AvoidanceFlightApp() ;
+	return	app.run( arg ) ;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+// ゲーム・アプリケーション・クラス
+//////////////////////////////////////////////////////////////////////////////
+
+class	AvoidanceFlightApp
+{
+	// 画面サイズ
+	public static const uint	ScreenWidth		= 1280 ;
+	public static const uint	ScreenHeight	= 720 ;
+
+	// Sprite 表示優先度
+	enum using SpritePrioriy<int>
+	{
+		priorityText	= 50,
+		priorityScene	= 100,
+	}
+
+	// EntisGLS4 環境設定
+	Environment				m_env ;
+
+	// ウィンドウ
+	WindowSprite			m_window ;
+
+	// シーン表示用
+	SceneSprite				m_scene ;
+
+	// 入力
+	VirtualInput			m_input ;
+
+	// シーンマネージャ
+	SceneManager			m_manager ;
+
+	// コンポーザー
+	SceneComposer			m_composer ;
+
+	// 再生中のコンポジション
+	SceneComposition		m_comp ;
+
+	// 表示中の Sprite
+	Sprite[]				m_sprites ;
+
+	// Score 表示
+	TextSprite				m_textScore ;
+	TextSprite				m_textHiScore ;
+	TextSprite				m_textLevel ;
+
+	// 自前のコマンドキュー
+	VirtualInput.Command[]	m_commands ;
+
+	// ゲームステータス
+	GameStatus				m_status ;
+
+
+	public AvoidanceFlightApp()
+	{
+		m_sprites = new Sprite[] ;
+		m_commands = new VirtualInput.Command[] ;
+		m_status = GameStatus() ;
+	}
+
+	// メイン関数
+	public int run( String[] arg )
+	{
+		// 環境設定読み込み
+		m_env = Environment() ;
+		m_env.loadEnvironment( "resources\\environment.xml" ) ;
+
+		// ウィンドウ作成
+		m_window = WindowSprite() ;
+		m_window.setOptionalFlags
+			( m_window.getOptionalFlags()
+				| Window.flagAllowClose
+				| Window.flagAllowMinimize
+				| Window.flagAllowMaximize
+				| Window.flagVariableWindowSize ) ;
+		m_window.createDisplay
+			( "Avoidance Flight",
+				Window.modeWindow, ScreenWidth, ScreenHeight ) ;
+
+		// 入力設定（キーボード⇒仮想ゲームパッド割り当て）
+		m_input = VirtualInput() ;
+		m_input.loadFilter( "resources\\input_map.xml" ) ;
+		m_input.attachPostListenerToWindow( m_window ) ;
+
+		// シーン表示用
+		m_scene = SceneSprite() ;
+		m_scene.createBuffer
+			( ScreenWidth, ScreenHeight,
+				formatImageABGR, 32,
+				Image.bufferOnDeviceOnly, true ) ;
+		m_scene.changePriority( priorityScene ) ;
+		m_scene.setShadingMethod( shadingMethodPhong ) ;
+
+		m_window.lock() ;
+		m_window.addChild( m_scene ) ;
+		m_window.unlock() ;
+
+		// シーンファイル（Primrose2）読み込み
+		// ※ゲーム本体の実装は resources\scripts\player.lqs を見よ
+		m_manager = SceneManager() ;
+		m_composer = SceneComposer( m_manager ) ;
+		m_composer.loadComposeFile( "resources\\AvoidanceFlight.xmlprs" ) ;
+
+		// SceneManager 設定
+		SceneManager.Context	ctx = SceneManager.Context() ;
+		ctx.composer = m_composer ;
+		ctx.window = m_window ;
+		ctx.scene = m_scene ;
+		ctx.input = m_input ;
+		m_manager.startScene( ctx ) ;
+
+		// メインフロー・タスク
+		Task	task = Task[this]
+		{
+			main() ;
+		} ;
+
+		// メインループ
+		while ( pumpCommand() )
+		{
+			// メインフローを進める
+			if ( task.proceed( 10 ) )
+			{
+				break ;
+			}
+			Thread.sleep( 1 ) ;
+		}
+
+		// メインフローの（強制）終了
+		if ( !task.isFinished() )
+		{
+			task.throw( null ) ;
+			do
+			{
+				task.proceed( -1 ) ;
+			}
+			while ( !task.isFinished() ) ;
+		}
+		task.finish() ;
+
+		// メインフロータスクでのエラー表示
+		Object	exception = task.getUnhandledException() ;
+		if ( exception != null )
+		{
+			Console.print
+				( "exception on Task: " + exception.toString() + "\n" ) ;
+			if ( exception instanceof Exception )
+			{
+				Exception	e = (Exception) exception ;
+				long	line ;
+				String	src = e.getThrownSource( line ) ;
+				if ( src != null )
+				{
+					Console.print( "at " + src + "(" + line + ")\n" ) ;
+				}
+			}
+		}
+
+		// 表示の後始末
+		finishComposition();
+		clearAllSprites() ;
+		m_manager.endScene() ;
+
+		m_window.lock() ;
+		m_window.removeChild( m_scene ) ;
+		m_window.unlock() ;
+
+		// ウィンドウを閉じて終了
+		m_input.detachPostListenerToWindow( m_window ) ;
+		m_window.closeDisplay() ;
+
+		return	0 ;
+	}
+
+	// メイン・フロー
+	public void main()
+	{
+		forever
+		{
+			doTitle() ;
+			playGame() ;
+		}
+	}
+
+	// タイトル画面
+	public void doTitle()
+	{
+		m_scene.cancelAction() ;
+		m_scene.setTransparency( 0x100 ) ;
+
+		// タイトル画面コンポジション開始
+		startComposition( "Title" ) ;
+		try
+		{
+			// フェードイン
+			showTitleText() ;
+			doFadeinScene( 1000 ) ;
+
+			// A ボタン押下まで待機
+			m_input.flushInputQueue() ;
+			forever
+			{
+				VirtualInput.Event	ev = VirtualInput.Event() ;
+				if ( m_input.getInputEvent( ev ) )
+				{
+					if ( (ev.type == VirtualInput.deviceJoyStick)
+						&& (ev.device == VirtualInput.joyStickXInput1)
+						&& (ev.key == VirtualInput.xinputButtonA) )
+					{
+						// X Input ゲームパッドの 'A' ボタンが押された
+						break ;
+					}
+					if ( (ev.type == VirtualInput.deviceKeyboard)
+						&& (ev.key == 'A') )
+					{
+						// キーボードの 'A' キーが押された
+						break ;
+					}
+				}
+				else
+				{
+					Thread.sleep( 10 ) ;
+				}
+			}
+
+			// フェードアウト
+			doFadeoutScene( 1000 ) ;
+		}
+		finally
+		{
+			finishComposition() ;
+			cleatGameStatusText() ;
+		}
+	}
+
+	// ゲームをプレイする
+	public void playGame()
+	{
+		// 初期設定
+		m_status.m_level = 0 ;
+		m_status.m_past = 0 ;
+		m_status.m_score = 0 ;
+
+		m_scene.cancelAction() ;
+		m_scene.setTransparency( 0 ) ;
+
+		// ゲーム実行コンポジション開始
+		startComposition( "AvoidanceFlight" ) ;
+		try
+		{
+			// ゲームオーバーするまでループ
+			prepareGameStatusText() ;
+			forever
+			{
+				VirtualInput.Command	cmd = peekCommand() ;
+				if ( cmd != null )
+				{
+					if ( cmd.id == CmdGameOver )
+					{
+						// ゲームオーバー
+						break ;
+					}
+					if ( cmd.id == CmdNotifyStatus )
+					{
+						// スコアやレベル表示を更新
+						updateGameStatusText() ;
+					}
+				}
+				else
+				{
+					Thread.sleep( 10 ) ;
+				}
+			}
+
+			// ゲームオーバー表示
+			showGameOver() ;
+			Thread.sleep( 1000 ) ;
+			doFadeoutScene( 1000 ) ;
+			Thread.sleep( 1000 ) ;
+		}
+		finally
+		{
+			finishComposition() ;
+			cleatGameStatusText() ;
+		}
+	}
+
+	// コンポジションを開始する
+	SceneComposition startComposition( String idComp )
+	{
+		RenderDevice	device = m_window.getRenderDevice() ;
+
+		// ゲーム実行用コンポジションを作成して
+		// リソースをデバイスメモリ上に準備する
+		m_comp = m_composer.createComposition( idComp, m_status ) ;
+		m_comp.prepareToRender( device, m_scene ) ;
+		device.waitUntilAsyncAllProcedures() ;
+
+		// シーンにコンポジションを追加して再生を開始する
+		m_window.lock() ;
+		try
+		{
+			m_comp.applySceneParameters( m_scene, m_scene.getImageSize() ) ;
+			m_scene.addSceneItem( m_comp ) ;
+			m_comp.initializeItems( m_scene ) ;
+			m_comp.playComposition() ;
+		}
+		finally
+		{
+			m_window.unlock() ;
+		}
+		return	m_comp ;
+	}
+
+	// コンポジションを終了する
+	void finishComposition()
+	{
+		if ( m_comp != null )
+		{
+			m_window.lock() ;
+			try
+			{
+				m_scene.detachSceneItem( m_comp ) ;
+				m_comp = null ;
+			}
+			finally
+			{
+				m_window.unlock() ;
+			}
+		}
+	}
+
+	// シーン表示フェードイン
+	void doFadeinScene( uint msecDuration )
+	{
+		m_scene.setActionLinearTo( msecDuration, 0 ) ;
+		while ( m_scene.isAction() )
+		{
+			Thread.sleep( 10 ) ;
+		}
+	}
+
+	// シーン表示フェードアウト
+	void doFadeoutScene( uint msecDuration )
+	{
+		m_scene.setActionLinearTo( msecDuration, 0x100 ) ;
+		while ( m_scene.isAction() )
+		{
+			Thread.sleep( 10 ) ;
+		}
+	}
+
+	// タイトル画面テキスト表示設定
+	void showTitleText()
+	{
+		// タイトル・ロゴ
+		TextSprite.TextStyle
+			style = makeTextStyle( 144, 9*144, FontStyle.StandardFont ) ;
+		style.lettering.typeAlignment = TextSprite.Lettering.alignCenter ;
+		style.decoration.nFlags =
+				style.decoration.nFlags
+					| TextSprite.Decoration.flagBorder2
+					| TextSprite.Decoration.flagGradation ;
+		style.decoration.widthBorder ++ ;
+		style.decoration.rgbaBorder := 0xff000000 ;
+		style.decoration.widthBorder2 = 4 ;
+		style.decoration.rgbaBorder2 := 0xffffffff ;
+		style.decoration.nGradationCount = 7 ;
+		style.decoration.nGradationHeight = 144 ;
+		style.decoration.rgbGradation[0] := 0xffffffff ;
+		style.decoration.rgbGradation[1] := 0xffffff80 ;
+		style.decoration.rgbGradation[2] := 0xffff8040 ;
+		style.decoration.rgbGradation[3] := 0xffff0000 ;
+		style.decoration.rgbGradation[4] := 0xffffffff ;
+		style.decoration.rgbGradation[5] := 0xff00ffff ;
+		style.decoration.rgbGradation[6] := 0xff4080ff ;
+
+		TextSprite	title = TextSprite() ;
+		title.setTextStyle( style ) ;
+		title.setPosition( (ScreenWidth - 9*144) / 2, 160 ) ;
+		title.setText( "Avoidance Flight" ) ;
+		title.changePriority( priorityText ) ;
+
+		addSprite( title ) ;
+
+		// "Push 'A' button or 'A' key to Start"
+		TextSprite	text = TextSprite() ;
+		text.setTextStyle( makeTextStyle( 28, 18*28 ) ) ;
+		text.setPosition( (ScreenWidth - 18*28) / 2, 480 ) ;
+		text.setText( "Push \'A\' button or \'A\' key to Start" ) ;
+		text.changePriority( priorityText ) ;
+
+		addSprite( text ) ;
+	}
+
+	// ゲーム画面テキスト表示設定
+	void prepareGameStatusText()
+	{
+		m_textScore = TextSprite() ;
+		m_textScore.setTextStyle( makeTextStyle( 28, 10*28 ) ) ;
+		m_textScore.setPosition( 16, 4 ) ;
+		m_textScore.changePriority( priorityText ) ;
+
+		m_textHiScore = TextSprite() ;
+		m_textHiScore.setTextStyle( makeTextStyle( 28, 12*28 ) ) ;
+		m_textHiScore.setPosition( 480, 4 ) ;
+		m_textHiScore.changePriority( priorityText ) ;
+
+		m_textLevel = TextSprite() ;
+		m_textLevel.setTextStyle( makeTextStyle( 28, 5*28 ) ) ;
+		m_textLevel.setPosition( 1280-5*28, 4 ) ;
+		m_textLevel.changePriority( priorityText ) ;
+
+		updateGameStatusText() ;
+
+		addSprite( m_textScore ) ;
+		addSprite( m_textHiScore ) ;
+		addSprite( m_textLevel ) ;
+	}
+
+	// ゲーム画面テキスト更新
+	void updateGameStatusText()
+	{
+		m_window.lock() ;
+		try
+		{
+			m_textScore.setText
+				( "Score "
+					+ String.integerOf( m_status.m_score, 10 ) ) ;
+			m_textHiScore.setText
+				( "High Score "
+					+ String.integerOf( m_status.m_hiscore, 10 ) ) ;
+			m_textLevel.setText
+				( "Level "
+					+ String.integerOf( m_status.m_level + 1, 2 ) ) ;
+		}
+		finally
+		{
+			m_window.unlock() ;
+		}
+	}
+
+	// ゲームオーバー表示
+	void showGameOver()
+	{
+		TextSprite	text = TextSprite() ;
+		text.setTextStyle( makeTextStyle( 80, 6*80, FontStyle.StandardFont ) ) ;
+		text.setPosition( 440, (ScreenHeight - 80) / 2 - 40 ) ;
+		text.setText( "Game Over" ) ;
+		text.changePriority( priorityText ) ;
+
+		addSprite( text ) ;
+	}
+
+	// 表示 Sprite 追加
+	void addSprite( Sprite sprite )
+	{
+		m_sprites.add( sprite ) ;
+		m_window.lock() ;
+		try
+		{
+			m_scene.addChild( sprite ) ;
+		}
+		finally
+		{
+			m_window.unlock() ;
+		}
+	}
+
+	// ゲーム画面テキスト表示クリア
+	void cleatGameStatusText()
+	{
+		clearAllSprites() ;
+
+		m_textScore = null ;
+		m_textHiScore = null ;
+		m_textLevel = null ;
+	}
+
+	// テキストスタイル生成
+	TextSprite.TextStyle makeTextStyle
+		( uint sizeFont, uint width, String font = FontStyle.FixedPitchFont )
+	{
+		TextSprite.TextStyle	style = TextSprite.TextStyle() ;
+
+		style.font.face = font ;
+		style.font.size = sizeFont ;
+		style.font.styles = FontStyle.flagBold ;
+
+		style.lettering.rectWritable.w = width ;
+		style.lettering.rectWritable.h = sizeFont * 2 ;
+
+		style.decoration.nFlags = TextSprite.Decoration.flagBorder ;
+		style.decoration.rgbaBody := 0xffffffff ;
+		style.decoration.widthBorder = 1 ;
+		style.decoration.rgbaBorder := 0x80000000 ;
+
+		return	style ;
+	}
+
+	// 表示している Sprite をすべて削除する
+	void clearAllSprites()
+	{
+		m_window.lock() ;
+		try
+		{
+			for ( sprite : m_sprites )
+			{
+				m_scene.removeChild( sprite ) ;
+			}
+			m_sprites.clear() ;
+		}
+		finally
+		{
+			m_window.unlock() ;
+		}
+	}
+
+	// コマンドを自前のキューに流す
+	boolean pumpCommand()
+	{
+		VirtualInput.Command	cmd = VirtualInput.Command() ;
+		if ( m_input.getCommand( cmd ) )
+		{
+			if ( cmd.id == SysCommandId.AppExit )
+			{
+				// 終了
+				return	false ;
+			}
+			else
+			{
+				// コマンドをキューに追加
+				synchronized( m_commands )
+				{
+					m_commands.add( cmd ) ;
+				}
+			}
+		}
+		return	true ;
+	}
+
+	// コマンドキューから取り出す
+	VirtualInput.Command peekCommand()
+	{
+		synchronized( m_commands )
+		{
+			if ( sizeof(m_commands) >= 1 )
+			{
+				return	m_commands.remove( 0 ) ;
+			}
+		}
+		return	null ;
+	}
+
+}
+
+
+
+

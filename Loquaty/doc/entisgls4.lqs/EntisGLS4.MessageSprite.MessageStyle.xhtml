@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.MessageSprite.MessageStyle</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.MessageSprite.MessageStyle</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class MessageStyle ;</div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="EntisGLS4.TextSprite.TextStyle.xhtml">EntisGLS4.TextSprite.TextStyle</a>
+<div class="indent1"><a href="EntisGLS4.MessageSprite.RichTextStyle.xhtml">EntisGLS4.MessageSprite.RichTextStyle</a>
+<div class="indent1"><a href="EntisGLS4.MessageSprite.MessageStyle.xhtml">EntisGLS4.MessageSprite.MessageStyle</a>
+</div></div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_font">font</a><br/>
+	<a href="#member_prohibition">prohibition</a><br/>
+	<a href="#member_fontRuby">fontRuby</a><br/>
+	<a href="#member_boxAlign">boxAlign</a><br/>
+	<a href="#member_lettering">lettering</a><br/>
+	<a href="#member_decoration">decoration</a><br/>
+	<a href="#member_decoLink">decoLink</a><br/>
+	<a href="#member_viewAction">viewAction</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_MessageStyle">MessageStyle</a><br/>
+</div><br/>
+
+<div class="headline">Operators</div>
+<div class="indent2">
+	<a href="#operator_smov">operator :=</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_font"/>
+<div class="headline">font</div>
+<div class="usage">public EntisGLS4.FontStyle&#9; font</div>
+<div class="normal">
+フォント<br/></div>
+<br/>
+<a name="member_prohibition"/>
+<div class="headline">prohibition</div>
+<div class="usage">public String&#9; prohibition = ",.!?;:)]，．、。！？；：」】）〕｝〉》』ぁぃぅぇぉっゃゅょァィゥェォッャュョー～"</div>
+<div class="normal">
+レタリング情報（禁則文字）<br/></div>
+<br/>
+<a name="member_fontRuby"/>
+<div class="headline">fontRuby</div>
+<div class="usage">public EntisGLS4.FontStyle&#9; fontRuby</div>
+<div class="normal">
+ルビ表示用フォント<br/></div>
+<br/>
+<a name="member_boxAlign"/>
+<div class="headline">boxAlign</div>
+<div class="usage">public EntisGLS4.TextSprite.TextStyle.BoxAlignment&#9; boxAlign = 0</div>
+<div class="normal">
+ボックス・アライメント<br/></div>
+<br/>
+<a name="member_lettering"/>
+<div class="headline">lettering</div>
+<div class="usage">public EntisGLS4.TextSprite.Lettering&#9; lettering = {ptStartWriting: {x: 0,y: 0},rectWritable: {x: 0,y: 0,w: 0,h: 0},typeAlignment: 0,flagVertical: 0,pitchChar: 0,offsetChar: 0,scalePitch: 0x10000,offsetInHalf: 0,offsetOutHalf: 0,pitchTab: 0,pitchLine: 0,widthIndent: 0,minHyphening: 7,maxProhibition: 3}</div>
+<div class="normal">
+レタリング情報<br/></div>
+<br/>
+<a name="member_decoration"/>
+<div class="headline">decoration</div>
+<div class="usage">public EntisGLS4.TextSprite.Decoration&#9; decoration = {nFlags: 0,rgbaBody: {b: 0,g: 0,r: 0,a: 0},widthBorder: 0,rgbaBorder: {b: 0,g: 0,r: 0,a: 0},rgbaShadow: {b: 0,g: 0,r: 0,a: 0},ptShadow: {x: 0,y: 0},widthBorder2: 0,rgbaBorder2: {b: 0,g: 0,r: 0,a: 0},nGradationCount: 0,nGradationHeight: 0,rgbGradation: [{b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}]}</div>
+<div class="normal">
+文字装飾情報<br/></div>
+<br/>
+<a name="member_decoLink"/>
+<div class="headline">decoLink</div>
+<div class="usage">public EntisGLS4.TextSprite.Decoration[3]&#9; decoLink = [{nFlags: 0,rgbaBody: {b: 0,g: 0,r: 0,a: 0},widthBorder: 0,rgbaBorder: {b: 0,g: 0,r: 0,a: 0},rgbaShadow: {b: 0,g: 0,r: 0,a: 0},ptShadow: {x: 0,y: 0},widthBorder2: 0,rgbaBorder2: {b: 0,g: 0,r: 0,a: 0},nGradationCount: 0,nGradationHeight: 0,rgbGradation: [{b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}]}, {nFlags: 0,rgbaBody: {b: 0,g: 0,r: 0,a: 0},widthBorder: 0,rgbaBorder: {b: 0,g: 0,r: 0,a: 0},rgbaShadow: {b: 0,g: 0,r: 0,a: 0},ptShadow: {x: 0,y: 0},widthBorder2: 0,rgbaBorder2: {b: 0,g: 0,r: 0,a: 0},nGradationCount: 0,nGradationHeight: 0,rgbGradation: [{b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}]}, {nFlags: 0,rgbaBody: {b: 0,g: 0,r: 0,a: 0},widthBorder: 0,rgbaBorder: {b: 0,g: 0,r: 0,a: 0},rgbaShadow: {b: 0,g: 0,r: 0,a: 0},ptShadow: {x: 0,y: 0},widthBorder2: 0,rgbaBorder2: {b: 0,g: 0,r: 0,a: 0},nGradationCount: 0,nGradationHeight: 0,rgbGradation: [{b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}, {b: 0,g: 0,r: 0,a: 0}]}]</div>
+<div class="normal">
+リンク表示用装飾<br/></div>
+<br/>
+<a name="member_viewAction"/>
+<div class="headline">viewAction</div>
+<div class="usage">public EntisGLS4.MessageSprite.ViewActionStyle&#9; viewAction = {msecPerChar: 0,msecFade: 0,vMove: {x: 0.,y: 0.},vZoom: {x: 1.,y: 1.},zRotation: 0.,reserved: 0}</div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_MessageStyle"/>
+<div class="headline">MessageStyle</div>
+<div class="usage">public MessageStyle( const EntisGLS4.MessageSprite.RichTextStyle style )</div>
+<br/>
+
+
+<div class="chapter">Operators</div>
+
+<a name="operator_smov"/>
+<div class="headline">operator :=</div>
+<div class="usage">public EntisGLS4.MessageSprite.MessageStyle operator :=( const EntisGLS4.MessageSprite.MessageStyle style )</div>
+<br/>
+<br/><br/>
+</body>
+</html>

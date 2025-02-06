@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.EditSprite</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.EditSprite</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class EditSprite ;</div>
+<div class="normal">
+テキスト編集 Sprite<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.Sprite.xhtml">EntisGLS4.Sprite</a>
+<div class="indent1"><a href="EntisGLS4.EditSprite.xhtml">EntisGLS4.EditSprite</a>
+</div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.EditSprite.EditStyleFlag.xhtml">EntisGLS4.EditSprite.EditStyleFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.EditSprite.ExitStyle.xhtml">EntisGLS4.EditSprite.ExitStyle</a></div>
+<div class="indent2"><a href="EntisGLS4.EditSprite.FindTextFlag.xhtml">EntisGLS4.EditSprite.FindTextFlag</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_editSingleLine">editSingleLine</a><br/>
+	<a href="#static_editMultiLine">editMultiLine</a><br/>
+	<a href="#static_editMultiLineMask">editMultiLineMask</a><br/>
+	<a href="#static_editLineWrap">editLineWrap</a><br/>
+	<a href="#static_editAcceptReturn">editAcceptReturn</a><br/>
+	<a href="#static_editAcceptTab">editAcceptTab</a><br/>
+	<a href="#static_editAutoIndent">editAutoIndent</a><br/>
+	<a href="#static_editMultiLineTab">editMultiLineTab</a><br/>
+	<a href="#static_editReadOnly">editReadOnly</a><br/>
+	<a href="#static_editDenyAlphabet">editDenyAlphabet</a><br/>
+	<a href="#static_editDenyNumber">editDenyNumber</a><br/>
+	<a href="#static_editDeny8bitChar">editDeny8bitChar</a><br/>
+	<a href="#static_editDenyMBChar">editDenyMBChar</a><br/>
+	<a href="#static_editNumber">editNumber</a><br/>
+	<a href="#static_editPassword">editPassword</a><br/>
+	<a href="#static_editColumnCaret">editColumnCaret</a><br/>
+	<a href="#static_editUnderbarCaret">editUnderbarCaret</a><br/>
+	<a href="#static_editCaretMask">editCaretMask</a><br/>
+	<a href="#static_editFontForIME">editFontForIME</a><br/>
+	<a href="#static_findUp">findUp</a><br/>
+	<a href="#static_findNoCase">findNoCase</a><br/>
+	<a href="#static_findWholeWord">findWholeWord</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_EditSprite">EditSprite</a><br/>
+	<a href="#virtual_canCopyText">canCopyText</a><br/>
+	<a href="#virtual_canCutText">canCutText</a><br/>
+	<a href="#virtual_canPasteText">canPasteText</a><br/>
+	<a href="#virtual_canRedo">canRedo</a><br/>
+	<a href="#virtual_canUndo">canUndo</a><br/>
+	<a href="#virtual_doClear">doClear</a><br/>
+	<a href="#virtual_doCopy">doCopy</a><br/>
+	<a href="#virtual_doCut">doCut</a><br/>
+	<a href="#virtual_doFindText">doFindText</a><br/>
+	<a href="#virtual_doFindTextFrom">doFindTextFrom</a><br/>
+	<a href="#virtual_doPaste">doPaste</a><br/>
+	<a href="#virtual_doReplace">doReplace</a><br/>
+	<a href="#virtual_getCharPosFromIndex">getCharPosFromIndex</a><br/>
+	<a href="#virtual_getCursorIndex">getCursorIndex</a><br/>
+	<a href="#virtual_getEditStyle">getEditStyle</a><br/>
+	<a href="#virtual_getLength">getLength</a><br/>
+	<a href="#virtual_getLineCount">getLineCount</a><br/>
+	<a href="#virtual_getLineFromIndex">getLineFromIndex</a><br/>
+	<a href="#virtual_getLineHeight">getLineHeight</a><br/>
+	<a href="#virtual_getLineIndex">getLineIndex</a><br/>
+	<a href="#virtual_getLineLength">getLineLength</a><br/>
+	<a href="#virtual_getLineText">getLineText</a><br/>
+	<a href="#virtual_getMaxLineWidth">getMaxLineWidth</a><br/>
+	<a href="#virtual_getRangeText">getRangeText</a><br/>
+	<a href="#virtual_getScrollPos">getScrollPos</a><br/>
+	<a href="#virtual_getSel">getSel</a><br/>
+	<a href="#virtual_getSelText">getSelText</a><br/>
+	<a href="#virtual_redo">redo</a><br/>
+	<a href="#virtual_scrollDeltaVertical">scrollDeltaVertical</a><br/>
+	<a href="#virtual_setEditStyle">setEditStyle</a><br/>
+	<a href="#virtual_setScrollPos">setScrollPos</a><br/>
+	<a href="#virtual_setSel">setSel</a><br/>
+	<a href="#virtual_undo">undo</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_editSingleLine"/>
+<div class="headline">editSingleLine</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editSingleLine = 0</div>
+<div class="normal">
+エディット・スタイル・フラグ：１行<br/></div>
+<br/>
+<a name="static_editMultiLine"/>
+<div class="headline">editMultiLine</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editMultiLine = 1</div>
+<div class="normal">
+エディット・スタイル・フラグ：複数行<br/></div>
+<br/>
+<a name="static_editMultiLineMask"/>
+<div class="headline">editMultiLineMask</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editMultiLineMask = 1</div>
+<div class="normal">
+エディット・スタイル・フラグ：複数行／１行・フラグマスク<br/></div>
+<br/>
+<a name="static_editLineWrap"/>
+<div class="headline">editLineWrap</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editLineWrap = 2</div>
+<div class="normal">
+エディット・スタイル・フラグ：行を右端で折り返す<br/></div>
+<br/>
+<a name="static_editAcceptReturn"/>
+<div class="headline">editAcceptReturn</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editAcceptReturn = 16</div>
+<div class="normal">
+エディット・スタイル・フラグ：改行コードの入力許可<br/></div>
+<br/>
+<a name="static_editAcceptTab"/>
+<div class="headline">editAcceptTab</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editAcceptTab = 32</div>
+<div class="normal">
+エディット・スタイル・フラグ：タブコードの入力許可<br/></div>
+<br/>
+<a name="static_editAutoIndent"/>
+<div class="headline">editAutoIndent</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editAutoIndent = 64</div>
+<div class="normal">
+エディット・スタイル・フラグ：自動インデント<br/></div>
+<br/>
+<a name="static_editMultiLineTab"/>
+<div class="headline">editMultiLineTab</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editMultiLineTab = 0x80</div>
+<div class="normal">
+エディット・スタイル・フラグ：複数行選択時のタブは行頭に挿入<br/></div>
+<br/>
+<a name="static_editReadOnly"/>
+<div class="headline">editReadOnly</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editReadOnly = 0x100</div>
+<div class="normal">
+エディット・スタイル・フラグ：読み取り専用<br/></div>
+<br/>
+<a name="static_editDenyAlphabet"/>
+<div class="headline">editDenyAlphabet</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editDenyAlphabet = 0x1000</div>
+<div class="normal">
+エディット・スタイル・フラグ：アルファベット入力禁止<br/></div>
+<br/>
+<a name="static_editDenyNumber"/>
+<div class="headline">editDenyNumber</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editDenyNumber = 0x2000</div>
+<div class="normal">
+エディット・スタイル・フラグ：数字入力禁止<br/></div>
+<br/>
+<a name="static_editDeny8bitChar"/>
+<div class="headline">editDeny8bitChar</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editDeny8bitChar = 0x4000</div>
+<div class="normal">
+エディット・スタイル・フラグ：半角文字入力禁止<br/></div>
+<br/>
+<a name="static_editDenyMBChar"/>
+<div class="headline">editDenyMBChar</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editDenyMBChar = 0x8000</div>
+<div class="normal">
+エディット・スタイル・フラグ：全角文字入力禁止<br/></div>
+<br/>
+<a name="static_editNumber"/>
+<div class="headline">editNumber</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editNumber = 0x10000</div>
+<div class="normal">
+エディット・スタイル・フラグ：数値入力<br/></div>
+<br/>
+<a name="static_editPassword"/>
+<div class="headline">editPassword</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editPassword = 0x20000</div>
+<div class="normal">
+エディット・スタイル・フラグ：パスワード入力<br/></div>
+<br/>
+<a name="static_editColumnCaret"/>
+<div class="headline">editColumnCaret</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editColumnCaret = 0</div>
+<div class="normal">
+エディット・スタイル・フラグ：垂直カレット<br/></div>
+<br/>
+<a name="static_editUnderbarCaret"/>
+<div class="headline">editUnderbarCaret</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editUnderbarCaret = 0x100000</div>
+<div class="normal">
+エディット・スタイル・フラグ：水平カレット<br/></div>
+<br/>
+<a name="static_editCaretMask"/>
+<div class="headline">editCaretMask</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editCaretMask = 0x100000</div>
+<div class="normal">
+エディット・スタイル・フラグ：垂直／水平カレット・フラグマスク<br/></div>
+<br/>
+<a name="static_editFontForIME"/>
+<div class="headline">editFontForIME</div>
+<div class="usage">public static const EntisGLS4.EditSprite.EditStyleFlag&#9; editFontForIME = 0x10000000</div>
+<div class="normal">
+エディット・スタイル・フラグ：IME 入力表示用フォント指定<br/></div>
+<br/>
+<a name="static_findUp"/>
+<div class="headline">findUp</div>
+<div class="usage">public static const EntisGLS4.EditSprite.FindTextFlag&#9; findUp = 1</div>
+<div class="normal">
+文字検索フラグ：後方へ検索<br/></div>
+<br/>
+<a name="static_findNoCase"/>
+<div class="headline">findNoCase</div>
+<div class="usage">public static const EntisGLS4.EditSprite.FindTextFlag&#9; findNoCase = 2</div>
+<div class="normal">
+文字検索フラグ：大文字小文字を区別しない<br/></div>
+<br/>
+<a name="static_findWholeWord"/>
+<div class="headline">findWholeWord</div>
+<div class="usage">public static const EntisGLS4.EditSprite.FindTextFlag&#9; findWholeWord = 4</div>
+<div class="normal">
+文字検索フラグ：単語単位で比較する<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_EditSprite"/>
+<div class="headline">EditSprite</div>
+<div class="usage">public native EditSprite( )</div>
+<div class="normal">
+EditSprite 構築<br/></div>
+<br/>
+
+<a name="virtual_canCopyText"/>
+<div class="headline">canCopyText</div>
+<div class="usage">public native boolean canCopyText( ) const</div>
+<div class="normal">
+文字コピー可能か？<br/></div>
+<br/>
+
+<a name="virtual_canCutText"/>
+<div class="headline">canCutText</div>
+<div class="usage">public native boolean canCutText( ) const</div>
+<div class="normal">
+文字切り取り可能か？<br/></div>
+<br/>
+
+<a name="virtual_canPasteText"/>
+<div class="headline">canPasteText</div>
+<div class="usage">public native boolean canPasteText( ) const</div>
+<div class="normal">
+文字列貼り付け可能か？<br/></div>
+<br/>
+
+<a name="virtual_canRedo"/>
+<div class="headline">canRedo</div>
+<div class="usage">public native boolean canRedo( )</div>
+<div class="normal">
+REDO 可能か？<br/></div>
+<br/>
+
+<a name="virtual_canUndo"/>
+<div class="headline">canUndo</div>
+<div class="usage">public native boolean canUndo( )</div>
+<div class="normal">
+UNDO 可能か？<br/></div>
+<br/>
+
+<a name="virtual_doClear"/>
+<div class="headline">doClear</div>
+<div class="usage">public native void doClear( )</div>
+<div class="normal">
+選択文字列削除<br/></div>
+<br/>
+
+<a name="virtual_doCopy"/>
+<div class="headline">doCopy</div>
+<div class="usage">public native void doCopy( )</div>
+<div class="normal">
+選択文字列コピー<br/></div>
+<br/>
+
+<a name="virtual_doCut"/>
+<div class="headline">doCut</div>
+<div class="usage">public native void doCut( )</div>
+<div class="normal">
+選択文字列切り取り<br/></div>
+<br/>
+
+<a name="virtual_doFindText"/>
+<div class="headline">doFindText</div>
+<div class="usage">public native boolean doFindText( String text, EntisGLS4.EditSprite.FindTextFlag nFlags = 0 )</div>
+<div class="normal">
+文字検索<br/></div>
+<br/>
+
+<a name="virtual_doFindTextFrom"/>
+<div class="headline">doFindTextFrom</div>
+<div class="usage">public native boolean doFindTextFrom( ulong iStartChar, String text, EntisGLS4.EditSprite.FindTextFlag nFlags = 0 )</div>
+<div class="normal">
+文字検索<br/></div>
+<br/>
+
+<a name="virtual_doPaste"/>
+<div class="headline">doPaste</div>
+<div class="usage">public native void doPaste( )</div>
+<div class="normal">
+選択文字列貼りつけ<br/></div>
+<br/>
+
+<a name="virtual_doReplace"/>
+<div class="headline">doReplace</div>
+<div class="usage">public native void doReplace( String text )</div>
+<div class="normal">
+選択文字列置き換え<br/></div>
+<br/>
+
+<a name="virtual_getCharPosFromIndex"/>
+<div class="headline">getCharPosFromIndex</div>
+<div class="usage">public native const Point* getCharPosFromIndex( ulong iChar ) const</div>
+<div class="normal">
+文字指標から座標を計算<br/></div>
+<br/>
+
+<a name="virtual_getCursorIndex"/>
+<div class="headline">getCursorIndex</div>
+<div class="usage">public native ulong getCursorIndex( ) const</div>
+<div class="normal">
+カーソル位置取得<br/></div>
+<br/>
+
+<a name="virtual_getEditStyle"/>
+<div class="headline">getEditStyle</div>
+<div class="usage">public native const EntisGLS4.EditSprite.ExitStyle getEditStyle( ) const</div>
+<div class="normal">
+スタイル取得<br/></div>
+<br/>
+
+<a name="virtual_getLength"/>
+<div class="headline">getLength</div>
+<div class="usage">public native ulong getLength( ) const</div>
+<div class="normal">
+全文字数取得<br/></div>
+<br/>
+
+<a name="virtual_getLineCount"/>
+<div class="headline">getLineCount</div>
+<div class="usage">public native ulong getLineCount( ) const</div>
+<div class="normal">
+行数を取得<br/></div>
+<br/>
+
+<a name="virtual_getLineFromIndex"/>
+<div class="headline">getLineFromIndex</div>
+<div class="usage">public native ulong getLineFromIndex( ulong iChar ) const</div>
+<div class="normal">
+文字指標から行番号(0～)を取得<br/></div>
+<br/>
+
+<a name="virtual_getLineHeight"/>
+<div class="headline">getLineHeight</div>
+<div class="usage">public native ulong getLineHeight( ) const</div>
+<div class="normal">
+行間取得<br/></div>
+<br/>
+
+<a name="virtual_getLineIndex"/>
+<div class="headline">getLineIndex</div>
+<div class="usage">public native ulong getLineIndex( ulong nLine ) const</div>
+<div class="normal">
+行(0～)の先頭の文字指標を取得<br/></div>
+<br/>
+
+<a name="virtual_getLineLength"/>
+<div class="headline">getLineLength</div>
+<div class="usage">public native ulong getLineLength( ulong nLine ) const</div>
+<div class="normal">
+行(0～)の文字数を取得<br/></div>
+<br/>
+
+<a name="virtual_getLineText"/>
+<div class="headline">getLineText</div>
+<div class="usage">public native String getLineText( ulong nLine, ulong iOffset = 0 ) const</div>
+<div class="normal">
+指定行(0～)の文字列を取得<br/></div>
+<br/>
+
+<a name="virtual_getMaxLineWidth"/>
+<div class="headline">getMaxLineWidth</div>
+<div class="usage">public native ulong getMaxLineWidth( ) const</div>
+<div class="normal">
+行の最大幅（ピクセル）を取得<br/></div>
+<br/>
+
+<a name="virtual_getRangeText"/>
+<div class="headline">getRangeText</div>
+<div class="usage">public native String getRangeText( long iFirst, long iEnd ) const</div>
+<div class="normal">
+指定範囲の文字列を取得<br/></div>
+<br/>
+
+<a name="virtual_getScrollPos"/>
+<div class="headline">getScrollPos</div>
+<div class="usage">public native const Point* getScrollPos( ulong* pLineOffset = null ) const</div>
+<div class="normal">
+スクロール位置取得（ピクセル, 行）<br/></div>
+<br/>
+
+<a name="virtual_getSel"/>
+<div class="headline">getSel</div>
+<div class="usage">public native void getSel( ulong* iSelFirst, ulong* iSelEnd ) const</div>
+<div class="normal">
+選択範囲取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">iSelFirst</div>
+<div class="param_desc">
+選択先頭位置を受け取る ulong 変数</div>
+<div class="param_name">iSelEnd</div>
+<div class="param_desc">
+選択終端位置を受け取る ulong 変数</div>
+</div>
+<br/>
+
+<a name="virtual_getSelText"/>
+<div class="headline">getSelText</div>
+<div class="usage">public native String getSelText( ) const</div>
+<div class="normal">
+選択範囲の文字列を取得<br/></div>
+<br/>
+
+<a name="virtual_redo"/>
+<div class="headline">redo</div>
+<div class="usage">public native void redo( )</div>
+<div class="normal">
+REDO 実行<br/></div>
+<br/>
+
+<a name="virtual_scrollDeltaVertical"/>
+<div class="headline">scrollDeltaVertical</div>
+<div class="usage">public native void scrollDeltaVertical( int yDelta )</div>
+<div class="normal">
+垂直相対スクロール<br/></div>
+<br/>
+
+<a name="virtual_setEditStyle"/>
+<div class="headline">setEditStyle</div>
+<div class="usage">public native void setEditStyle( const EntisGLS4.EditSprite.ExitStyle style )</div>
+<div class="normal">
+スタイル設定<br/></div>
+<br/>
+
+<a name="virtual_setScrollPos"/>
+<div class="headline">setScrollPos</div>
+<div class="usage">public native void setScrollPos( int xPos, int yLine, int iLineOffset = 0, int yOffset = 0 )</div>
+<div class="normal">
+スクロール位置設定<br/></div>
+<br/>
+
+<a name="virtual_setSel"/>
+<div class="headline">setSel</div>
+<div class="usage">public native void setSel( long iFirst, long iEnd )</div>
+<div class="normal">
+選択範囲設定<br/></div>
+<br/>
+
+<a name="virtual_undo"/>
+<div class="headline">undo</div>
+<div class="usage">public native void undo( )</div>
+<div class="normal">
+UNDO 実行<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

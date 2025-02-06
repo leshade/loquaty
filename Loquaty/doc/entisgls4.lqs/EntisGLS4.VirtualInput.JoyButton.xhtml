@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.VirtualInput.JoyButton</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.VirtualInput.JoyButton</div>
+
+<div class="headline">Summary</div>
+<div class="usage">enum using JoyButton&lt;int&gt; ;</div>
+<div class="normal">
+ジョイスティック・ボタン番号<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="EntisGLS4.VirtualInput.JoyButton.xhtml">EntisGLS4.VirtualInput.JoyButton</a>
+</div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_joyUp">joyUp</a><br/>
+	<a href="#static_joyDown">joyDown</a><br/>
+	<a href="#static_joyLeft">joyLeft</a><br/>
+	<a href="#static_joyRight">joyRight</a><br/>
+	<a href="#static_joyButton1">joyButton1</a><br/>
+	<a href="#static_joyButton2">joyButton2</a><br/>
+	<a href="#static_joyButton3">joyButton3</a><br/>
+	<a href="#static_joyButton4">joyButton4</a><br/>
+	<a href="#static_joyButton5">joyButton5</a><br/>
+	<a href="#static_joyButton6">joyButton6</a><br/>
+	<a href="#static_joyButton7">joyButton7</a><br/>
+	<a href="#static_joyButton8">joyButton8</a><br/>
+	<a href="#static_joyButtonCount">joyButtonCount</a><br/>
+	<a href="#static_xinputDPadUp">xinputDPadUp</a><br/>
+	<a href="#static_xinputDPadDown">xinputDPadDown</a><br/>
+	<a href="#static_xinputDPadLeft">xinputDPadLeft</a><br/>
+	<a href="#static_xinputDPadRight">xinputDPadRight</a><br/>
+	<a href="#static_xinputStart">xinputStart</a><br/>
+	<a href="#static_xinputBack">xinputBack</a><br/>
+	<a href="#static_xinputLeftThumb">xinputLeftThumb</a><br/>
+	<a href="#static_xinputRightThumb">xinputRightThumb</a><br/>
+	<a href="#static_xinputLeftShoulder">xinputLeftShoulder</a><br/>
+	<a href="#static_xinputRightShoulder">xinputRightShoulder</a><br/>
+	<a href="#static_xinputButtonA">xinputButtonA</a><br/>
+	<a href="#static_xinputButtonB">xinputButtonB</a><br/>
+	<a href="#static_xinputButtonX">xinputButtonX</a><br/>
+	<a href="#static_xinputButtonY">xinputButtonY</a><br/>
+	<a href="#static_xinputLeftTrigger">xinputLeftTrigger</a><br/>
+	<a href="#static_xinputRightTrigger">xinputRightTrigger</a><br/>
+	<a href="#static_androidPadUp">androidPadUp</a><br/>
+	<a href="#static_androidPadDown">androidPadDown</a><br/>
+	<a href="#static_androidPadLeft">androidPadLeft</a><br/>
+	<a href="#static_androidPadRight">androidPadRight</a><br/>
+	<a href="#static_androidButtonA">androidButtonA</a><br/>
+	<a href="#static_androidButtonB">androidButtonB</a><br/>
+	<a href="#static_androidButtonC">androidButtonC</a><br/>
+	<a href="#static_androidButtonX">androidButtonX</a><br/>
+	<a href="#static_androidButtonY">androidButtonY</a><br/>
+	<a href="#static_androidButtonZ">androidButtonZ</a><br/>
+	<a href="#static_androidButtonL1">androidButtonL1</a><br/>
+	<a href="#static_androidButtonR1">androidButtonR1</a><br/>
+	<a href="#static_androidButtonL2">androidButtonL2</a><br/>
+	<a href="#static_androidButtonR2">androidButtonR2</a><br/>
+	<a href="#static_androidButtonStart">androidButtonStart</a><br/>
+	<a href="#static_androidButtonSelect">androidButtonSelect</a><br/>
+	<a href="#static_vrLCtrlUp">vrLCtrlUp</a><br/>
+	<a href="#static_vrLCtrlDown">vrLCtrlDown</a><br/>
+	<a href="#static_vrLCtrlLeft">vrLCtrlLeft</a><br/>
+	<a href="#static_vrLCtrlRight">vrLCtrlRight</a><br/>
+	<a href="#static_vrLCtrlButton1">vrLCtrlButton1</a><br/>
+	<a href="#static_vrLCtrlButton2">vrLCtrlButton2</a><br/>
+	<a href="#static_vrLCtrlButton3">vrLCtrlButton3</a><br/>
+	<a href="#static_vrLCtrlButton4">vrLCtrlButton4</a><br/>
+	<a href="#static_vrRCtrlUp">vrRCtrlUp</a><br/>
+	<a href="#static_vrRCtrlDown">vrRCtrlDown</a><br/>
+	<a href="#static_vrRCtrlLeft">vrRCtrlLeft</a><br/>
+	<a href="#static_vrRCtrlRight">vrRCtrlRight</a><br/>
+	<a href="#static_vrRCtrlButton1">vrRCtrlButton1</a><br/>
+	<a href="#static_vrRCtrlButton2">vrRCtrlButton2</a><br/>
+	<a href="#static_vrRCtrlButton3">vrRCtrlButton3</a><br/>
+	<a href="#static_vrRCtrlButton4">vrRCtrlButton4</a><br/>
+	<a href="#static_vrCtrlSystem">vrCtrlSystem</a><br/>
+	<a href="#static_vrCtrlAppMenu">vrCtrlAppMenu</a><br/>
+	<a href="#static_vrCtrlGrip">vrCtrlGrip</a><br/>
+	<a href="#static_vrLAxis0">vrLAxis0</a><br/>
+	<a href="#static_vrLAxis1">vrLAxis1</a><br/>
+	<a href="#static_vrLAxis2">vrLAxis2</a><br/>
+	<a href="#static_vrLAxis3">vrLAxis3</a><br/>
+	<a href="#static_vrLAxis4">vrLAxis4</a><br/>
+	<a href="#static_vrRAxis0">vrRAxis0</a><br/>
+	<a href="#static_vrRAxis1">vrRAxis1</a><br/>
+	<a href="#static_vrRAxis2">vrRAxis2</a><br/>
+	<a href="#static_vrRAxis3">vrRAxis3</a><br/>
+	<a href="#static_vrRAxis4">vrRAxis4</a><br/>
+	<a href="#static_ovrButtonA">ovrButtonA</a><br/>
+	<a href="#static_ovrButtonB">ovrButtonB</a><br/>
+	<a href="#static_ovrButtonX">ovrButtonX</a><br/>
+	<a href="#static_ovrButtonY">ovrButtonY</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_joyUp"/>
+<div class="headline">joyUp</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyUp = 0</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：DPad Up<br/></div>
+<br/>
+<a name="static_joyDown"/>
+<div class="headline">joyDown</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyDown = 1</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：DPad Down<br/></div>
+<br/>
+<a name="static_joyLeft"/>
+<div class="headline">joyLeft</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyLeft = 2</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：DPad Left<br/></div>
+<br/>
+<a name="static_joyRight"/>
+<div class="headline">joyRight</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyRight = 3</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：DPad Right<br/></div>
+<br/>
+<a name="static_joyButton1"/>
+<div class="headline">joyButton1</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButton1 = 4</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン #1<br/></div>
+<br/>
+<a name="static_joyButton2"/>
+<div class="headline">joyButton2</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButton2 = 5</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン #2<br/></div>
+<br/>
+<a name="static_joyButton3"/>
+<div class="headline">joyButton3</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButton3 = 6</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン #3<br/></div>
+<br/>
+<a name="static_joyButton4"/>
+<div class="headline">joyButton4</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButton4 = 7</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン #4<br/></div>
+<br/>
+<a name="static_joyButton5"/>
+<div class="headline">joyButton5</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButton5 = 8</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン #5<br/></div>
+<br/>
+<a name="static_joyButton6"/>
+<div class="headline">joyButton6</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButton6 = 9</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン #6<br/></div>
+<br/>
+<a name="static_joyButton7"/>
+<div class="headline">joyButton7</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButton7 = 10</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン #7<br/></div>
+<br/>
+<a name="static_joyButton8"/>
+<div class="headline">joyButton8</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButton8 = 11</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン #8<br/></div>
+<br/>
+<a name="static_joyButtonCount"/>
+<div class="headline">joyButtonCount</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; joyButtonCount = 36</div>
+<div class="normal">
+旧 Windows ジョイスティックボタン：ボタン個数<br/></div>
+<br/>
+<a name="static_xinputDPadUp"/>
+<div class="headline">xinputDPadUp</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputDPadUp = 0</div>
+<div class="normal">
+XInput ボタン：DPad Up<br/></div>
+<br/>
+<a name="static_xinputDPadDown"/>
+<div class="headline">xinputDPadDown</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputDPadDown = 1</div>
+<div class="normal">
+XInput ボタン：DPad Down<br/></div>
+<br/>
+<a name="static_xinputDPadLeft"/>
+<div class="headline">xinputDPadLeft</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputDPadLeft = 2</div>
+<div class="normal">
+XInput ボタン：DPad Left<br/></div>
+<br/>
+<a name="static_xinputDPadRight"/>
+<div class="headline">xinputDPadRight</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputDPadRight = 3</div>
+<div class="normal">
+XInput ボタン：DPad Right<br/></div>
+<br/>
+<a name="static_xinputStart"/>
+<div class="headline">xinputStart</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputStart = 4</div>
+<div class="normal">
+XInput ボタン：Start<br/></div>
+<br/>
+<a name="static_xinputBack"/>
+<div class="headline">xinputBack</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputBack = 5</div>
+<div class="normal">
+XInput ボタン：Back<br/></div>
+<br/>
+<a name="static_xinputLeftThumb"/>
+<div class="headline">xinputLeftThumb</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputLeftThumb = 6</div>
+<div class="normal">
+XInput ボタン：左スティック押下<br/></div>
+<br/>
+<a name="static_xinputRightThumb"/>
+<div class="headline">xinputRightThumb</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputRightThumb = 7</div>
+<div class="normal">
+XInput ボタン：右スティック押下<br/></div>
+<br/>
+<a name="static_xinputLeftShoulder"/>
+<div class="headline">xinputLeftShoulder</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputLeftShoulder = 8</div>
+<div class="normal">
+XInput ボタン：左肩ボタン<br/></div>
+<br/>
+<a name="static_xinputRightShoulder"/>
+<div class="headline">xinputRightShoulder</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputRightShoulder = 9</div>
+<div class="normal">
+XInput ボタン：右肩ボタン<br/></div>
+<br/>
+<a name="static_xinputButtonA"/>
+<div class="headline">xinputButtonA</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputButtonA = 12</div>
+<div class="normal">
+XInput ボタン：Ａボタン<br/></div>
+<br/>
+<a name="static_xinputButtonB"/>
+<div class="headline">xinputButtonB</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputButtonB = 13</div>
+<div class="normal">
+XInput ボタン：Ｂボタン<br/></div>
+<br/>
+<a name="static_xinputButtonX"/>
+<div class="headline">xinputButtonX</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputButtonX = 14</div>
+<div class="normal">
+XInput ボタン：Ｘボタン<br/></div>
+<br/>
+<a name="static_xinputButtonY"/>
+<div class="headline">xinputButtonY</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputButtonY = 15</div>
+<div class="normal">
+XInput ボタン：Ｙボタン<br/></div>
+<br/>
+<a name="static_xinputLeftTrigger"/>
+<div class="headline">xinputLeftTrigger</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputLeftTrigger = 16</div>
+<div class="normal">
+XInput ボタン：左トリガーボタン<br/></div>
+<br/>
+<a name="static_xinputRightTrigger"/>
+<div class="headline">xinputRightTrigger</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; xinputRightTrigger = 0x11</div>
+<div class="normal">
+XInput ボタン：右トリガーボタン<br/></div>
+<br/>
+<a name="static_androidPadUp"/>
+<div class="headline">androidPadUp</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidPadUp = 0</div>
+<div class="normal">
+Android GamePad ボタン：DPad Up<br/></div>
+<br/>
+<a name="static_androidPadDown"/>
+<div class="headline">androidPadDown</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidPadDown = 1</div>
+<div class="normal">
+Android GamePad ボタン：DPad Down<br/></div>
+<br/>
+<a name="static_androidPadLeft"/>
+<div class="headline">androidPadLeft</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidPadLeft = 2</div>
+<div class="normal">
+Android GamePad ボタン：DPad Left<br/></div>
+<br/>
+<a name="static_androidPadRight"/>
+<div class="headline">androidPadRight</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidPadRight = 3</div>
+<div class="normal">
+Android GamePad ボタン：DPad Right<br/></div>
+<br/>
+<a name="static_androidButtonA"/>
+<div class="headline">androidButtonA</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonA = 4</div>
+<div class="normal">
+Android GamePad ボタン：Ａ<br/></div>
+<br/>
+<a name="static_androidButtonB"/>
+<div class="headline">androidButtonB</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonB = 5</div>
+<div class="normal">
+Android GamePad ボタン：Ｂ<br/></div>
+<br/>
+<a name="static_androidButtonC"/>
+<div class="headline">androidButtonC</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonC = 6</div>
+<div class="normal">
+Android GamePad ボタン：Ｃ<br/></div>
+<br/>
+<a name="static_androidButtonX"/>
+<div class="headline">androidButtonX</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonX = 7</div>
+<div class="normal">
+Android GamePad ボタン：Ｘ<br/></div>
+<br/>
+<a name="static_androidButtonY"/>
+<div class="headline">androidButtonY</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonY = 8</div>
+<div class="normal">
+Android GamePad ボタン：Ｙ<br/></div>
+<br/>
+<a name="static_androidButtonZ"/>
+<div class="headline">androidButtonZ</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonZ = 9</div>
+<div class="normal">
+Android GamePad ボタン：Ｚ<br/></div>
+<br/>
+<a name="static_androidButtonL1"/>
+<div class="headline">androidButtonL1</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonL1 = 10</div>
+<div class="normal">
+Android GamePad ボタン：Ｌ１<br/></div>
+<br/>
+<a name="static_androidButtonR1"/>
+<div class="headline">androidButtonR1</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonR1 = 11</div>
+<div class="normal">
+Android GamePad ボタン：Ｒ１<br/></div>
+<br/>
+<a name="static_androidButtonL2"/>
+<div class="headline">androidButtonL2</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonL2 = 12</div>
+<div class="normal">
+Android GamePad ボタン：Ｌ２<br/></div>
+<br/>
+<a name="static_androidButtonR2"/>
+<div class="headline">androidButtonR2</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonR2 = 13</div>
+<div class="normal">
+Android GamePad ボタン：Ｒ２<br/></div>
+<br/>
+<a name="static_androidButtonStart"/>
+<div class="headline">androidButtonStart</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonStart = 14</div>
+<div class="normal">
+Android GamePad ボタン：Start<br/></div>
+<br/>
+<a name="static_androidButtonSelect"/>
+<div class="headline">androidButtonSelect</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; androidButtonSelect = 15</div>
+<div class="normal">
+Android GamePad ボタン：Select<br/></div>
+<br/>
+<a name="static_vrLCtrlUp"/>
+<div class="headline">vrLCtrlUp</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLCtrlUp = 0</div>
+<div class="normal">
+VR コントローラー：左 DPad Up<br/></div>
+<br/>
+<a name="static_vrLCtrlDown"/>
+<div class="headline">vrLCtrlDown</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLCtrlDown = 1</div>
+<div class="normal">
+VR コントローラー：左 DPad Down<br/></div>
+<br/>
+<a name="static_vrLCtrlLeft"/>
+<div class="headline">vrLCtrlLeft</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLCtrlLeft = 2</div>
+<div class="normal">
+VR コントローラー：左 DPad Left<br/></div>
+<br/>
+<a name="static_vrLCtrlRight"/>
+<div class="headline">vrLCtrlRight</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLCtrlRight = 3</div>
+<div class="normal">
+VR コントローラー：左 DPad Right<br/></div>
+<br/>
+<a name="static_vrLCtrlButton1"/>
+<div class="headline">vrLCtrlButton1</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLCtrlButton1 = 4</div>
+<div class="normal">
+VR コントローラー：左ボタン１<br/></div>
+<br/>
+<a name="static_vrLCtrlButton2"/>
+<div class="headline">vrLCtrlButton2</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLCtrlButton2 = 5</div>
+<div class="normal">
+VR コントローラー：左ボタン２<br/></div>
+<br/>
+<a name="static_vrLCtrlButton3"/>
+<div class="headline">vrLCtrlButton3</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLCtrlButton3 = 6</div>
+<div class="normal">
+VR コントローラー：左ボタン３<br/></div>
+<br/>
+<a name="static_vrLCtrlButton4"/>
+<div class="headline">vrLCtrlButton4</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLCtrlButton4 = 7</div>
+<div class="normal">
+VR コントローラー：左ボタン４<br/></div>
+<br/>
+<a name="static_vrRCtrlUp"/>
+<div class="headline">vrRCtrlUp</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRCtrlUp = 20</div>
+<div class="normal">
+VR コントローラー：右 DPad Up<br/></div>
+<br/>
+<a name="static_vrRCtrlDown"/>
+<div class="headline">vrRCtrlDown</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRCtrlDown = 21</div>
+<div class="normal">
+VR コントローラー：右 DPad Down<br/></div>
+<br/>
+<a name="static_vrRCtrlLeft"/>
+<div class="headline">vrRCtrlLeft</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRCtrlLeft = 22</div>
+<div class="normal">
+VR コントローラー：右 DPad Left<br/></div>
+<br/>
+<a name="static_vrRCtrlRight"/>
+<div class="headline">vrRCtrlRight</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRCtrlRight = 23</div>
+<div class="normal">
+VR コントローラー：右 DPad Right<br/></div>
+<br/>
+<a name="static_vrRCtrlButton1"/>
+<div class="headline">vrRCtrlButton1</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRCtrlButton1 = 24</div>
+<div class="normal">
+VR コントローラー：右ボタン１<br/></div>
+<br/>
+<a name="static_vrRCtrlButton2"/>
+<div class="headline">vrRCtrlButton2</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRCtrlButton2 = 25</div>
+<div class="normal">
+VR コントローラー：右ボタン２<br/></div>
+<br/>
+<a name="static_vrRCtrlButton3"/>
+<div class="headline">vrRCtrlButton3</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRCtrlButton3 = 26</div>
+<div class="normal">
+VR コントローラー：右ボタン３<br/></div>
+<br/>
+<a name="static_vrRCtrlButton4"/>
+<div class="headline">vrRCtrlButton4</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRCtrlButton4 = 27</div>
+<div class="normal">
+VR コントローラー：右ボタン４<br/></div>
+<br/>
+<a name="static_vrCtrlSystem"/>
+<div class="headline">vrCtrlSystem</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrCtrlSystem = 40</div>
+<div class="normal">
+VR コントローラー：System ボタン<br/></div>
+<br/>
+<a name="static_vrCtrlAppMenu"/>
+<div class="headline">vrCtrlAppMenu</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrCtrlAppMenu = 41</div>
+<div class="normal">
+VR コントローラー：AppMenu ボタン<br/></div>
+<br/>
+<a name="static_vrCtrlGrip"/>
+<div class="headline">vrCtrlGrip</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrCtrlGrip = 42</div>
+<div class="normal">
+VR コントローラー：グリップ<br/></div>
+<br/>
+<a name="static_vrLAxis0"/>
+<div class="headline">vrLAxis0</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLAxis0 = 48</div>
+<div class="normal">
+VR コントローラー：左指１<br/></div>
+<br/>
+<a name="static_vrLAxis1"/>
+<div class="headline">vrLAxis1</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLAxis1 = 49</div>
+<div class="normal">
+VR コントローラー：左指２<br/></div>
+<br/>
+<a name="static_vrLAxis2"/>
+<div class="headline">vrLAxis2</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLAxis2 = 50</div>
+<div class="normal">
+VR コントローラー：左指３<br/></div>
+<br/>
+<a name="static_vrLAxis3"/>
+<div class="headline">vrLAxis3</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLAxis3 = 0x33</div>
+<div class="normal">
+VR コントローラー：左指４<br/></div>
+<br/>
+<a name="static_vrLAxis4"/>
+<div class="headline">vrLAxis4</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrLAxis4 = 52</div>
+<div class="normal">
+VR コントローラー：左指５<br/></div>
+<br/>
+<a name="static_vrRAxis0"/>
+<div class="headline">vrRAxis0</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRAxis0 = 56</div>
+<div class="normal">
+VR コントローラー：右指１<br/></div>
+<br/>
+<a name="static_vrRAxis1"/>
+<div class="headline">vrRAxis1</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRAxis1 = 57</div>
+<div class="normal">
+VR コントローラー：右指２<br/></div>
+<br/>
+<a name="static_vrRAxis2"/>
+<div class="headline">vrRAxis2</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRAxis2 = 58</div>
+<div class="normal">
+VR コントローラー：右指３<br/></div>
+<br/>
+<a name="static_vrRAxis3"/>
+<div class="headline">vrRAxis3</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRAxis3 = 59</div>
+<div class="normal">
+VR コントローラー：右指４<br/></div>
+<br/>
+<a name="static_vrRAxis4"/>
+<div class="headline">vrRAxis4</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; vrRAxis4 = 60</div>
+<div class="normal">
+VR コントローラー：右指５<br/></div>
+<br/>
+<a name="static_ovrButtonA"/>
+<div class="headline">ovrButtonA</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; ovrButtonA = 24</div>
+<div class="normal">
+Oculus Rift コントローラー：Ａボタン<br/></div>
+<br/>
+<a name="static_ovrButtonB"/>
+<div class="headline">ovrButtonB</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; ovrButtonB = 25</div>
+<div class="normal">
+Oculus Rift コントローラー：Ｂボタン<br/></div>
+<br/>
+<a name="static_ovrButtonX"/>
+<div class="headline">ovrButtonX</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; ovrButtonX = 8</div>
+<div class="normal">
+Oculus Rift コントローラー：Ｘボタン<br/></div>
+<br/>
+<a name="static_ovrButtonY"/>
+<div class="headline">ovrButtonY</div>
+<div class="usage">public static const EntisGLS4.VirtualInput.JoyButton&#9; ovrButtonY = 9</div>
+<div class="normal">
+Oculus Rift コントローラー：Ｙボタン<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

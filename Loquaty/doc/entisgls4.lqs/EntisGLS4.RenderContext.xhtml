@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.RenderContext</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.RenderContext</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class RenderContext ;</div>
+<div class="normal">
+レンダリング・コンテキスト<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.PaintContext.xhtml">EntisGLS4.PaintContext</a>
+<div class="indent1"><a href="EntisGLS4.RenderContext.xhtml">EntisGLS4.RenderContext</a>
+</div></div></div></div><br/>
+
+<div class="headline">Implement Classes</div>
+<div class="indent1"><a href="EntisGLS4.RenderBuffer.xhtml">EntisGLS4.RenderBuffer</a></div>
+<br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.RenderContext.CopyBufferFlag.xhtml">EntisGLS4.RenderContext.CopyBufferFlag</a></div>
+<div class="indent2"><a href="EntisGLS4.RenderContext.StereoViewIndex.xhtml">EntisGLS4.RenderContext.StereoViewIndex</a></div>
+<br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_stereoViewAuto">stereoViewAuto</a><br/>
+	<a href="#static_stereoViewRight">stereoViewRight</a><br/>
+	<a href="#static_stereoViewLeft">stereoViewLeft</a><br/>
+	<a href="#static_copyBufferColor">copyBufferColor</a><br/>
+	<a href="#static_copyBufferDepth">copyBufferDepth</a><br/>
+</div><br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_RenderContext">RenderContext</a><br/>
+	<a href="#virtual_attachMultiTargetImages">attachMultiTargetImages</a><br/>
+	<a href="#virtual_begin3DRenderer">begin3DRenderer</a><br/>
+	<a href="#virtual_copyBufferFrom">copyBufferFrom</a><br/>
+	<a href="#virtual_currentParallaxView">currentParallaxView</a><br/>
+	<a href="#virtual_enableFog">enableFog</a><br/>
+	<a href="#virtual_end3DRenderer">end3DRenderer</a><br/>
+	<a href="#virtual_getCamera">getCamera</a><br/>
+	<a href="#virtual_getMultiTargetImages">getMultiTargetImages</a><br/>
+	<a href="#virtual_getParallax">getParallax</a><br/>
+	<a href="#virtual_getProjectionScreen">getProjectionScreen</a><br/>
+	<a href="#virtual_getRenderDeviceObject">getRenderDeviceObject</a><br/>
+	<a href="#virtual_isSphereIntoView">isSphereIntoView</a><br/>
+	<a href="#virtual_selectParallaxView">selectParallaxView</a><br/>
+	<a href="#virtual_setCamera">setCamera</a><br/>
+	<a href="#virtual_setCameraAngleVector">setCameraAngleVector</a><br/>
+	<a href="#virtual_setFog">setFog</a><br/>
+	<a href="#virtual_setLightEntries">setLightEntries</a><br/>
+	<a href="#virtual_setParallax">setParallax</a><br/>
+	<a href="#virtual_setProjectionScreen">setProjectionScreen</a><br/>
+	<a href="#virtual_setShadowMap">setShadowMap</a><br/>
+	<a href="#virtual_setZClipRange">setZClipRange</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_stereoViewAuto"/>
+<div class="headline">stereoViewAuto</div>
+<div class="usage">public static const EntisGLS4.RenderContext.StereoViewIndex&#9; stereoViewAuto = -1</div>
+<div class="normal">
+ステレオ立体視の視点：自動（デフォルト）<br/></div>
+<br/>
+<a name="static_stereoViewRight"/>
+<div class="headline">stereoViewRight</div>
+<div class="usage">public static const EntisGLS4.RenderContext.StereoViewIndex&#9; stereoViewRight = 0</div>
+<div class="normal">
+ステレオ立体視の視点：右<br/></div>
+<br/>
+<a name="static_stereoViewLeft"/>
+<div class="headline">stereoViewLeft</div>
+<div class="usage">public static const EntisGLS4.RenderContext.StereoViewIndex&#9; stereoViewLeft = 1</div>
+<div class="normal">
+ステレオ立体視の視点：左<br/></div>
+<br/>
+<a name="static_copyBufferColor"/>
+<div class="headline">copyBufferColor</div>
+<div class="usage">public static const EntisGLS4.RenderContext.CopyBufferFlag&#9; copyBufferColor = 1</div>
+<div class="normal">
+バッファ複製フラグ：画像<br/></div>
+<br/>
+<a name="static_copyBufferDepth"/>
+<div class="headline">copyBufferDepth</div>
+<div class="usage">public static const EntisGLS4.RenderContext.CopyBufferFlag&#9; copyBufferDepth = 2</div>
+<div class="normal">
+バッファ複製フラグ：ｚバッファ<br/></div>
+<br/>
+
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_RenderContext"/>
+<div class="headline">RenderContext</div>
+<div class="usage">public abstract RenderContext( )</div>
+<br/>
+
+<a name="virtual_attachMultiTargetImages"/>
+<div class="headline">attachMultiTargetImages</div>
+<div class="usage">public native boolean attachMultiTargetImages( EntisGLS4.Image[] targets )</div>
+<div class="normal">
+マルチターゲット（2つ目以降）描画先設定<br/></div>
+<br/>
+
+<a name="virtual_begin3DRenderer"/>
+<div class="headline">begin3DRenderer</div>
+<div class="usage">public native boolean begin3DRenderer( ulong flags = 0 )</div>
+<div class="normal">
+3D レンダリング用バッファ・インターフェース開始<br/></div>
+<br/>
+
+<a name="virtual_copyBufferFrom"/>
+<div class="headline">copyBufferFrom</div>
+<div class="usage">public native boolean copyBufferFrom( EntisGLS4.RenderContext renderSrc, EntisGLS4.RenderContext.CopyBufferFlag flags = 0, int xDst = 0, int yDst = 0, const ImageRect* pSrcRect = null )</div>
+<div class="normal">
+バッファ複製</div>
+<div class="notes_parameter">
+<div class="param_name">renderSrc</div>
+<div class="param_desc">
+複製元のレンダリング・コンテキスト</div>
+<div class="param_name">flags</div>
+<div class="param_desc">
+バッファ複製フラグ</div>
+<div class="param_name">xDst</div>
+<div class="param_desc">
+複製先左上ｘ座標</div>
+<div class="param_name">yDst</div>
+<div class="param_desc">
+複製先左上ｙ座標</div>
+<div class="param_name">pSrcRect</div>
+<div class="param_desc">
+複製元矩形</div>
+</div>
+<div class="indent1">
+attachTargetImage で設定された画像を複製します。</div><br/>
+<br/>
+
+<a name="virtual_currentParallaxView"/>
+<div class="headline">currentParallaxView</div>
+<div class="usage">public native EntisGLS4.RenderContext.StereoViewIndex currentParallaxView( )</div>
+<div class="normal">
+選択中の立体視用バッファ取得<br/></div>
+<br/>
+
+<a name="virtual_enableFog"/>
+<div class="headline">enableFog</div>
+<div class="usage">public native void enableFog( boolean fFog )</div>
+<div class="normal">
+大域疑似フォッグを有効化<br/></div>
+<br/>
+
+<a name="virtual_end3DRenderer"/>
+<div class="headline">end3DRenderer</div>
+<div class="usage">public native boolean end3DRenderer( ulong flags = 0 )</div>
+<div class="normal">
+3D レンダリング用バッファ・インターフェース終了<br/></div>
+<br/>
+
+<a name="virtual_getCamera"/>
+<div class="headline">getCamera</div>
+<div class="usage">public native void getCamera( Matrix3d* matCamera, Vector3d* posCamera ) const</div>
+<div class="normal">
+カメラ取得<br/></div>
+<div class="notes_parameter">
+<div class="param_name">matCamera</div>
+<div class="param_desc">
+回転行列を受け取る Matrix3d</div>
+<div class="param_name">posCamera</div>
+<div class="param_desc">
+カメラ平行移動成分を受け取る Vector3d</div>
+</div>
+<br/>
+
+<a name="virtual_getMultiTargetImages"/>
+<div class="headline">getMultiTargetImages</div>
+<div class="usage">public native EntisGLS4.Image[] getMultiTargetImages( ) const</div>
+<div class="normal">
+マルチターゲット（2つ目以降）取得<br/></div>
+<br/>
+
+<a name="virtual_getParallax"/>
+<div class="headline">getParallax</div>
+<div class="usage">public native double getParallax( ) const</div>
+<div class="normal">
+ステレオ立体視視差取得<br/></div>
+<br/>
+
+<a name="virtual_getProjectionScreen"/>
+<div class="headline">getProjectionScreen</div>
+<div class="usage">public native boolean getProjectionScreen( Vector3* vScreen, double* zScale, double* fpPixelAspect ) const</div>
+<div class="normal">
+投影スクリーン座標取得</div>
+<div class="notes_parameter">
+<div class="param_name">vScreen</div>
+<div class="param_desc">
+スクリーン中心ｘｙ座標とｚ位置を受け取る Vector3</div>
+<div class="param_name">zScale</div>
+<div class="param_desc">
+投影スケールを受け取る double 変数</div>
+<div class="param_name">fpPixelAspect</div>
+<div class="param_desc">
+アスペクト比を受け取る double 変数</div>
+</div>
+<div class="indent1">
+※投影式については setProjectionScreen 参照</div><br/>
+<br/>
+
+<a name="virtual_getRenderDeviceObject"/>
+<div class="headline">getRenderDeviceObject</div>
+<div class="usage">public native EntisGLS4.RenderDevice getRenderDeviceObject( ulong flags = 0 )</div>
+<div class="normal">
+ハードウェア描画オブジェクト取得<br/></div>
+<br/>
+
+<a name="virtual_isSphereIntoView"/>
+<div class="headline">isSphereIntoView</div>
+<div class="usage">public native boolean isSphereIntoView( const Vector3d* vPos, double radius ) const</div>
+<div class="normal">
+球（ローカル座標）が視界に収まるか判定する<br/></div>
+<div class="notes_parameter">
+<div class="param_name">vPos</div>
+<div class="param_desc">
+判定する球の中心座標</div>
+<div class="param_name">radius</div>
+<div class="param_desc">
+判定する球の半径</div>
+</div>
+<br/>
+
+<a name="virtual_selectParallaxView"/>
+<div class="headline">selectParallaxView</div>
+<div class="usage">public native boolean selectParallaxView( EntisGLS4.RenderContext.StereoViewIndex sviView )</div>
+<div class="normal">
+立体視用バッファ選択<br/></div>
+<div class="notes_parameter">
+<div class="param_name">sviView</div>
+<div class="param_desc">
+選択するステレオ立体視の視点</div>
+</div>
+<br/>
+
+<a name="virtual_setCamera"/>
+<div class="headline">setCamera</div>
+<div class="usage">public native void setCamera( const Matrix3d* matCamera, const Vector3d* posCamera )</div>
+<div class="normal">
+カメラ設定</div>
+<div class="notes_parameter">
+<div class="param_name">matCamera</div>
+<div class="param_desc">
+カメラ回転行列</div>
+<div class="param_name">posCamera</div>
+<div class="param_desc">
+カメラ平行移動</div>
+</div>
+<div class="indent1">
+カメラによる座標変換は matCamera * x - posCamera<br/>posCamera := matCamera * 視点座標</div><br/>
+<br/>
+
+<a name="virtual_setCameraAngleVector"/>
+<div class="headline">setCameraAngleVector</div>
+<div class="usage">public native void setCameraAngleVector( const Vector3d* posTarget, const Vector3d* posView, const Vector3d* vAngleTop )</div>
+<div class="normal">
+注視点と視点指定、上ベクトルによるカメラの設定<br/></div>
+<div class="notes_parameter">
+<div class="param_name">posTarget</div>
+<div class="param_desc">
+注視点座標</div>
+<div class="param_name">posView</div>
+<div class="param_desc">
+視点座標</div>
+<div class="param_name">vAngleTop</div>
+<div class="param_desc">
+上方向ベクトル</div>
+</div>
+<br/>
+
+<a name="virtual_setFog"/>
+<div class="headline">setFog</div>
+<div class="usage">public native void setFog( uint rgbFog, double zFogNear, double zFogFar )</div>
+<div class="normal">
+大域疑似フォッグを設定<br/></div>
+<br/>
+
+<a name="virtual_setLightEntries"/>
+<div class="headline">setLightEntries</div>
+<div class="usage">public native void setLightEntries( const EntisGLS4.LightEntry* pLights, ulong countLight )</div>
+<div class="normal">
+光源を設定<br/></div>
+<br/>
+
+<a name="virtual_setParallax"/>
+<div class="headline">setParallax</div>
+<div class="usage">public native void setParallax( double xParallax, double zFocusRate, double xScreenDelta )</div>
+<div class="normal">
+ステレオ立体視視差設定<br/></div>
+<br/>
+
+<a name="virtual_setProjectionScreen"/>
+<div class="headline">setProjectionScreen</div>
+<div class="usage">public native boolean setProjectionScreen( const Vector3* vScreen, double zScale = 1., double fpPixelAspect = 1. )</div>
+<div class="normal">
+投影スクリーン座標設定</div>
+<div class="notes_parameter">
+<div class="param_name">vScreen</div>
+<div class="param_desc">
+スクリーン中心ｘｙ座標とｚ位置</div>
+<div class="param_name">zScale</div>
+<div class="param_desc">
+投影スケール</div>
+<div class="param_name">fpPixelAspect</div>
+<div class="param_desc">
+アスペクト比</div>
+</div>
+<div class="indent1">
+vScreen.z != 0 の時の、座標 (x, y, z) の投影座標 (x', y'):<br/>x' = x * vScreen.z * zScale / z / fpPixelAspect + vScreen.x<br/>y' = y * vScreen.z * zScale / z + vScreen.y<br/><br/>vScreen.z == 0 の時の、座標 (x, y, z) の投影座標 (x', y'):<br/>x' = x * zScale / fpPixelAspect + vScreen.x<br/>y' = y * zScale + vScreen.y</div><br/>
+<br/>
+
+<a name="virtual_setShadowMap"/>
+<div class="headline">setShadowMap</div>
+<div class="usage">public native void setShadowMap( uint idLight, EntisGLS4.Image shadowMapDepth, const EntisGLS4.ShadowMapInfo* infShadowMap, EntisGLS4.Image shadowMapColor = null )</div>
+<div class="normal">
+シャドウマップを設定<br/></div>
+<br/>
+
+<a name="virtual_setZClipRange"/>
+<div class="headline">setZClipRange</div>
+<div class="usage">public native void setZClipRange( double zMin, double zMax )</div>
+<div class="normal">
+ｚクリップ範囲を設定<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

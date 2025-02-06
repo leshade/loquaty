@@ -241,7 +241,7 @@ void LoquatyApp::PrintLogo( void )
 {
 	static const char	szLogo[] =
 		"Loquaty vestion %s\n"
-		"Copyright (c) Leshade Entis.\n\n" ;
+		"Copyright (c) Leshade Entis (理影).\n\n" ;
 
 	printf( szLogo, VersionString ) ;
 }

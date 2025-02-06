@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.VirtualInput.JoyStickState</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.VirtualInput.JoyStickState</div>
+
+<div class="headline">Summary</div>
+<div class="usage">struct JoyStickState<br/>
+{<br/>
+&nbsp; &nbsp; Vector4&nbsp; &nbsp; stickPos ;<br/>
+&nbsp; &nbsp; ulong&nbsp; &nbsp; stateButtons ;<br/>
+&nbsp; &nbsp; float[8]&nbsp; &nbsp; triggers ;<br/>
+}</div>
+<div class="normal">
+ジョイスティック状態<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/Structure.xhtml">Structure</a>
+<div class="indent1"><a href="EntisGLS4.VirtualInput.JoyStickState.xhtml">EntisGLS4.VirtualInput.JoyStickState</a>
+</div></div></div><br/>
+
+<div class="headline">Members</div>
+<div class="indent2">
+	<a href="#member_stickPos">stickPos</a><br/>
+	<a href="#member_stateButtons">stateButtons</a><br/>
+	<a href="#member_triggers">triggers</a><br/>
+</div><br/>
+
+<div class="chapter">Members</div>
+<a name="member_stickPos"/>
+<div class="headline">stickPos</div>
+<div class="usage">public Vector4&#9; stickPos = {x: 0.,y: 0.,z: 0.,w: 0.}</div>
+<div class="normal">
+アナログ・スティックの状態：左スティック=(x,y), 右スティック=(z,w)<br/></div>
+<br/>
+<a name="member_stateButtons"/>
+<div class="headline">stateButtons</div>
+<div class="usage">public ulong&#9; stateButtons = 0</div>
+<div class="normal">
+ボタンの押下状態ビットマスク<br/></div>
+<br/>
+<a name="member_triggers"/>
+<div class="headline">triggers</div>
+<div class="usage">public float[8]&#9; triggers = [0., 0., 0., 0., 0., 0., 0., 0.]</div>
+<div class="normal">
+アナログ・トリガーの状態<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>
