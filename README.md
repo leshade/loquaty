@@ -71,7 +71,7 @@ auto [value, exception] =
 
 ### [SimpleGame.lqs](./Loquaty/example/SimpleGame/SimpleGame.lqs)
 
-<video width="640" height="480" src="./Loquaty/example/demo/SimpleGame.mp4"></video>
+![demo](./Loquaty/example/demo/SimpleGame.gif)
 
 
 
