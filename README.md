@@ -67,6 +67,14 @@ auto [value, exception] =
 詳細は `build/LoquatyCLI` (loquaty.exe) や `build/ExamplePlugin` を参照。
 
 
+## サンプル・スクリプト
+
+### [SimpleGame.lqs](./Loquaty/example/SimpleGame/SimpleGame.lqs)
+
+<video width="640" height="480" src="./Loquaty/example/demo/SimpleGame.mp4"></video>
+
+
+
 ## 特徴：軽量スレッド
 
 軽量スレッドは現代では様々な言語で実装された機能です。  
