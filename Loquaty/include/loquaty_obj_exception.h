@@ -11,9 +11,9 @@ namespace	Loquaty
 	class	LExceptionObj	: public LGenericObj
 	{
 	public:
-		LString			m_string ;
-		LCodeBuffer *	m_pCodeBuf ;
-		size_t			m_iThrown ;
+		LString				m_string ;
+		const LCodeBuffer *	m_pCodeBuf ;
+		size_t				m_iThrown ;
 
 	public:
 		LExceptionObj

@@ -1,5 +1,4 @@
 ﻿
-
 #include <loquaty.h>
 
 using namespace	Loquaty ;
@@ -364,11 +363,11 @@ void LLoquatyClass::method_evalConstExpr( LContext& _context )
 // public static void traceLocalVars()
 void LLoquatyClass::method_traceLocalVars( LContext& _context )
 {
-	LCodeBuffer *	pCodeBuf = _context.GetCodeBuffer() ;
+	const LCodeBuffer *	pCodeBuf = _context.GetCodeBuffer() ;
 	if ( pCodeBuf != nullptr )
 	{
 		const LCodeBuffer::DebugSourceInfo*
-			pdsi = pCodeBuf->FindDebufSourceInfo( _context.GetIP() ) ;
+			pdsi = pCodeBuf->FindDebugSourceInfo( _context.GetIP() ) ;
 		LSourceFilePtr	pSource = pCodeBuf->GetSourceFile() ;
 		if ( (pdsi != nullptr)
 			&& (pSource != nullptr)
@@ -391,41 +390,18 @@ void LLoquatyClass::method_traceLocalVars( LContext& _context )
 			{
 				const size_t	iLoc = iter->second ;
 				LLocalVarPtr	pVar = dlvi.m_varInfo->GetLocalVarAt( iLoc ) ;
-				if ( pVar != nullptr )
+				if ( pVar == nullptr )
 				{
-					LString	strName = iter->first ;
-					printf( "%s: %s: ",
-							strName.ToString().c_str(),
-							pVar->GetType().GetTypeName().ToString().c_str() ) ;
-					//
-					std::shared_ptr<LStackBuffer>	pStack = _context.Stack() ;
-					if ( pStack->fp() + iLoc < pStack->GetLength() )
-					{
-						LValue::Primitive
-								val = pStack->GetAt( pStack->fp() + iLoc ) ;
-						LString	strExpr ;
-						if ( pVar->GetType().IsPrimitive() )
-						{
-							if ( pVar->GetType().IsBoolean() )
-							{
-								strExpr = (val.boolValue ? L"true" : L"false") ;
-							}
-							else if ( pVar->GetType().IsInteger() )
-							{
-								LPointerObj::ExprIntAsString( strExpr, val.longValue ) ;
-							}
-							else
-							{
-								strExpr.SetNumberOf( val.dblValue ) ;
-							}
-						}
-						else
-						{
-							strExpr = LObject::ToExpression( val.pObject ) ;
-						}
-						puts( strExpr.ToString().c_str() ) ;
-					}
+					continue ;
 				}
+				LString	strName = iter->first ;
+				printf( "%s: %s: ",
+						strName.ToString().c_str(),
+						pVar->GetType().GetTypeName().ToString().c_str() ) ;
+				//
+				LValue	valLoc = LDebugger::GetLocalVar( _context, pVar, iLoc ) ;
+				LString	strExpr = LDebugger::ToExpression( valLoc ) ;
+				puts( strExpr.ToString().c_str() ) ;
 			}
 		}
 	}

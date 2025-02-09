@@ -12,7 +12,7 @@ namespace	Loquaty
 	{
 	public:
 		// 命令疑似コード表記；
-		// sp, ap, fp, xp, yp : 各種スタック参照ポインタ（スタック指標）
+		// sp, ap, dp, fp, xp, yp : 各種スタック参照ポインタ（スタック指標）
 		// ip		  : 命令ポインタ
 		// imm        : 32bit 符号あり整数即値
 		// sop1, sop2 : 命令オペランド（st への指標 8bit 即値）
@@ -34,7 +34,7 @@ namespace	Loquaty
 		// pop()      : sp-=1, st[sp]
 		// addref(x)  : LObject::AddRef((LObject*)x)
 		// free(x)    : LObject::ReleaseRef((LObject*)x)
-		// freefor(x) : while(yp>=x){ obj:=st[yp], yp:=st[yp+1], free(obj) }
+		// freefor(x) : while(yp>=x){ obj:=st[yp], yp:=st[yp+1], free(obj) }, dp:=min(dp,x)
 		// searchxp() : while(xp!=-1&&xp[0]==-1){ xp:=xp[4] }, if(xp==-1){ unhandled_exception(); }
 		// cast(cls,x): ((LObject*)x)->CastClassTo(cls)
 		// alloc(p,n) : ((LPointerObj*)p)->SetPointer( new LArrayBufStorage(n), 0, n )
@@ -186,15 +186,15 @@ namespace	Loquaty
 		enum	InstructionCode
 		{
 			codeNoOperation,
-			codeEnterFunc,			// push(fp), fp:=sp, sp+=imm   ; ※拡張された領域は 0 クリアされる
-			codeLeaveFunc,			// freefor(fp), sp:=fp, fp:=pop()
+			codeEnterFunc,			// push(dp), push(fp), fp:=sp, dp:=sp, sp+=imm   ; ※拡張された領域は 0 クリアされる
+			codeLeaveFunc,			// freefor(fp), sp:=fp, fp:=pop(), dp:=pop()
 			codeEnterTry,			// push(code_buf), push(fp), push(xp), xp:=sp-5
 			codeCallFinally,		// see CallFinally
 			codeRetFinally,			// see RetFinally
 			codeLeaveFinally,		// see LeaveFinally
 			codeLeaveTry,			// see LeaveTry
 			codeThrow,				// see Throw
-			codeAllocStack,			// sp+=imm   ; ※拡張された領域は 0 クリアされる
+			codeAllocStack,			// sp+=imm, dp:=sp   ; ※拡張された領域は 0 クリアされる
 			codeFreeStack,			// freefor(sp-imm), sp-=imm
 			codeFreeStackLocal,		// freefor(fp+imop.i), sp:=fp+imop.i
 			codeFreeLocalObj,		// free(fp[imop.i]), fp[imop.i]:=null
@@ -317,6 +317,7 @@ namespace	Loquaty
 		std::vector<PFN_Instruction>	m_instmap ;
 		std::vector<LObjPtr>			m_objPool ;
 
+		LFunctionObj *					m_pFunction ;
 		LSourceFilePtr					m_pSourceFile ;
 		std::vector<DebugSourceInfo>	m_dbgSrcInfos ;
 		std::vector<DebugLocalVarInfo>	m_dbgVarInfos ;
@@ -325,6 +326,11 @@ namespace	Loquaty
 		friend class LContext ;
 
 	public:
+		LCodeBuffer( void )
+			: m_pFunction( nullptr )
+		{
+		}
+
 		// コードバッファ
 		const Word& GetCodeAt( size_t ip ) const
 		{
@@ -361,12 +367,16 @@ namespace	Loquaty
 		}
 
 		// デバッグ情報
+		void AttachFunction( LFunctionObj * pFunc ) ;
+		LFunctionObj * GetFunction( void ) const ;
+
 		void AttachSourceFile( LSourceFilePtr pSourceFile ) ;
 		LSourceFilePtr GetSourceFile( void ) const ;
 
 		void AddDebugSourceInfo
 			( const DebugSourceInfo& dbSrcInf ) ;
-		const DebugSourceInfo* FindDebufSourceInfo( size_t iPos ) const ;
+		const DebugSourceInfo* FindDebugSourceInfo( size_t iCodePos ) const ;
+		const DebugSourceInfo* FindDebugSourceInfoAtSource( size_t iSrcPos ) const ;
 
 		void AddDebugLocalVarInfo
 			( LLocalVarArrayPtr pVar, size_t iFirst, size_t iEnd ) ;

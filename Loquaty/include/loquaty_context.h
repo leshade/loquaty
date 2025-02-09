@@ -44,12 +44,12 @@ namespace	Loquaty
 		struct	ContextState
 		{
 			ExecutionStatus		status ;
-			size_t				sp, ap, fp ;
+			size_t				sp, ap, fp, dp ;
 			ssize_t				xp, yp, ip ;
 			LValue				valReturn ;
 			LObjPtr				thrown ;
 			LObjPtr				exception ;
-			LCodeBuffer *		pCodeBuf ;
+			const LCodeBuffer *	pCodeBuf ;
 			AwaitingFunc		awaiting ;
 		} ;
 
@@ -72,7 +72,7 @@ namespace	Loquaty
 
 	protected:
 		LVirtualMachine&					m_vm ;			// 仮想マシン
-		LCodeBuffer *						m_pCodeBuf ;	// 実行中のコードバッファ
+		const LCodeBuffer *					m_pCodeBuf ;	// 実行中のコードバッファ
 		std::shared_ptr<LStackBuffer>		m_stack ;		// スタック
 		ssize_t								m_ip ;			// コードポインタ
 		LValue::Primitive					m_eximm ;		// 拡張即値
@@ -95,6 +95,8 @@ namespace	Loquaty
 
 		std::recursive_mutex				m_mutexRun ;	// 実行中
 		std::mutex							m_mutexStatus ;	// m_awaiting や m_signal の変更同期
+
+		LDebugger::InstancePtr				m_pDebuggerInstance ;	// デバッガ用インスタンス
 
 	public:
 		LContext( LVirtualMachine& vm, size_t nInitSize = 0x100 ) ;
@@ -270,8 +272,19 @@ namespace	Loquaty
 		// 割り込み信号処理
 		bool ProcessSignal( void ) ;
 
+		// 実行コアループ関数ポインタ
+		typedef void (LContext::*PFUNC_RunCoreLoop)( void ) ;
+		PFUNC_RunCoreLoop	m_pfnRunCoreLoop ;
+
 		// 実行コアループ
-		void RunCoreLoop( void ) ;
+		void RunCoreLoop( void )
+		{
+			(this->*m_pfnRunCoreLoop)() ;
+		}
+		// （非デバッグ）実行コアループ
+		void RunCoreLoopNoDebug( void ) ;
+		// （デバッグ）実行コアループ
+		void RunCoreLoopInDebug( void ) ;
 
 	public:	// オブジェクト生成
 		// 文字列生成
@@ -314,7 +327,7 @@ namespace	Loquaty
 
 	public:
 		// コードバッファ取得
-		LCodeBuffer * GetCodeBuffer( void ) const
+		const LCodeBuffer * GetCodeBuffer( void ) const
 		{
 			return	m_pCodeBuf ;
 		}
@@ -322,6 +335,15 @@ namespace	Loquaty
 		ssize_t GetIP( void ) const
 		{
 			return	m_ip ;
+		}
+
+	public:
+		// デバッガ・インスタンス設定
+		void SetDebuggerInstance( LDebugger::InstancePtr pDebuggerInstance ) ;
+		// デバッガ・インスタンス取得
+		LDebugger::InstancePtr GetDebuggerInstance( void ) const
+		{
+			return	m_pDebuggerInstance ;
 		}
 
 	protected:
@@ -496,6 +518,7 @@ namespace	Loquaty
 		static void store_ptr_double( void * ptr, const LValue::Primitive& val ) ;
 		static void store_ptr_ptr( void * ptr, const LValue::Primitive& val ) ;
 
+		friend class LDebugger ;
 	} ;
 
 }

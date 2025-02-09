@@ -25,6 +25,8 @@ namespace	Loquaty
 		size_t	m_ap ;		// 引数ポインタ
 		size_t	m_fp ;		// フレームポインタ
 							// m_fp[-1]:以前のフレームポインタ
+		size_t	m_dp ;		// フレーム終端ポインタ（安全なデバッグ用）
+
 		ssize_t	m_xp ;		// 構造化例外ポインタ : see LCodeBuffer::ExceptionDesc
 		ssize_t	m_yp ;		// ガベージ処理用ポインタ : see LCodeBuffer::ReleaserDesc
 
@@ -34,7 +36,8 @@ namespace	Loquaty
 		LStackBuffer( size_t nInitSize = 0x100 )
 			: LArrayBufStorage( nInitSize * sizeof(Word) ),
 				m_length(nInitSize), m_ptr(nullptr),
-				m_sp(0), m_ap(0), m_fp(0), m_xp(InvalidPtr), m_yp(InvalidPtr)
+				m_sp(0), m_ap(0), m_fp(0), m_dp(0),
+				m_xp(InvalidPtr), m_yp(InvalidPtr)
 		{
 			m_ptr = reinterpret_cast<Word*>( LArrayBufStorage::data() ) ;
 		}
@@ -170,6 +173,15 @@ namespace	Loquaty
 		void SetFP( size_t index )
 		{
 			m_fp = index ;
+		}
+
+		size_t dp( void ) const
+		{
+			return	m_dp ;
+		}
+		void SetDP( size_t index )
+		{
+			m_dp = index ;
 		}
 
 		// 構造化例外ポインタ

@@ -25,6 +25,7 @@
 #include <loquaty_code_buffer.h>
 #include <loquaty_stack_buffer.h>
 #include <loquaty_function.h>
+#include <loquaty_debugger.h>
 #include <loquaty_context.h>
 
 #include <loquaty_obj_pointer.h>

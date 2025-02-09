@@ -57,15 +57,18 @@ namespace	Loquaty
 		class	DelayImplement	: public LParserSegment
 		{
 		public:
+			LParserSegment		m_psProto ;
 			LPtr<LFunctionObj>	m_pFunc ;
 			LNamespaceList		m_nslLocal ;
 
 		public:
 			DelayImplement
-				( const LParserSegment& ps,
+				( const LParserSegment& psImpl,
+					const LParserSegment& psProto,
 					LPtr<LFunctionObj> pFunc,
 					const LNamespaceList& nslLocal )
-				: LParserSegment( ps ),
+				: LParserSegment( psImpl ),
+					m_psProto( psProto ),
 					m_pFunc( pFunc ),
 					m_nslLocal( nslLocal ) {}
 		} ;

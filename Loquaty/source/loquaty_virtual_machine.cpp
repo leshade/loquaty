@@ -12,7 +12,8 @@ LOQUATY_DLL_DECL
 ( LVirtualMachine *	LVirtualMachine::s_pCurrent = nullptr ) ;
 
 LVirtualMachine::LVirtualMachine( void )
-	: m_refGlobal( false ), m_pFirstThread( nullptr )
+	: m_refGlobal( false ),
+		m_pFirstThread( nullptr ), m_pDebugger( nullptr )
 {
 	assert( classBasicCount == sizeof(m_pBasicClass)/sizeof(m_pBasicClass[0]) ) ;
 	for ( int i = 0; i < classBasicCount; i ++ )
@@ -36,9 +37,9 @@ LVirtualMachine::LVirtualMachine( void )
 
 #if	defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
 	m_producer.AddProducer
-		( std::make_shared<LPluginModuleProducer>( L"plugins" ) ) ;
-	m_producer.AddProducer
 		( std::make_shared<LPluginModuleProducer>( L"" ) ) ;
+	m_producer.AddProducer
+		( std::make_shared<LPluginModuleProducer>( L"plugins" ) ) ;
 #endif
 }
 
@@ -954,6 +955,18 @@ void LVirtualMachine::TerminateAllThreads( void )
 		m_mutexThreads.lock() ;
 	}
 	m_mutexThreads.unlock() ;
+}
+
+// デバッガー設定
+void LVirtualMachine::AttachDebugger( LDebugger * pDebugger )
+{
+	m_pDebugger = pDebugger ;
+}
+
+// デバッガー取得
+LDebugger * LVirtualMachine::GetDebugger( void ) const
+{
+	return	m_pDebugger ;
 }
 
 // ネイティブ関数定義追加

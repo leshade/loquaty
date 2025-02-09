@@ -49,7 +49,7 @@ bool LExceptionObj::GetThrownSourceInfo
 	{
 		LSourceFilePtr	pSource = m_pCodeBuf->GetSourceFile() ;
 		const LCodeBuffer::DebugSourceInfo*
-			pdsi = m_pCodeBuf->FindDebufSourceInfo( m_iThrown ) ;
+			pdsi = m_pCodeBuf->FindDebugSourceInfo( m_iThrown ) ;
 		if ( pdsi != nullptr )
 		{
 			linf = pSource->FindLineContainingIndexAt( pdsi->m_iSrcFirst ) ;

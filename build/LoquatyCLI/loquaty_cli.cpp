@@ -66,6 +66,11 @@ int LoquatyApp::ParseCmdLine( int argc, char* argv[], char* envp[] )
 				m_verb = verbRun ;
 				m_optNologo = true ;
 			}
+			else if ( (strArg == "/d") || (strArg == "/debug") )
+			{
+				m_verb = verbDebug ;
+				m_vm->AttachDebugger( &m_debugger ) ;
+			}
 			else if ( (strArg == "/help") || (strArg == "/?") )
 			{
 				m_verb = verbHelp ;
@@ -201,6 +206,7 @@ int LoquatyApp::Run( void )
 	switch ( m_verb )
 	{
 	case	verbRun:
+	case	verbDebug:
 		nExit = RunMain() ;
 		break ;
 
@@ -255,6 +261,8 @@ void LoquatyApp::PrintHelp( void )
 		"options;\n"
 		"/nologo    : ロゴ表示抑制\n"
 		"/help      : 書式表示 (/?)\n"
+		"/x         : スクリプト実行（デフォルト）\n"
+		"/debug     : デバッグ実行（/d）\n"
 		"/I <include-path>\n"
 		"           : インクルードパスを追加します\n"
 		"            （複数追加する場合は複数の /I で記述）。\n"
@@ -351,6 +359,10 @@ int LoquatyApp::RunMain( void )
 
 	// 引数配列
 	LPtr<LThreadObj>	pThread = new LThreadObj( m_vm->GetThreadClass() ) ;
+	if ( m_verb == verbDebug )
+	{
+		m_debugger.SetStepIn( pThread->Context() ) ;
+	}
 
 	std::vector<LValue>	args ;
 	LPtr<LArrayObj>	pArg =
@@ -510,7 +522,7 @@ int LoquatyApp::DumpFunction( LPtr<LFunctionObj> pFunc )
 		}
 		if ( pdbSrcInf == nullptr )
 		{
-			pdbSrcInf = pCodeBuf->FindDebufSourceInfo( i ) ;
+			pdbSrcInf = pCodeBuf->FindDebugSourceInfo( i ) ;
 			if ( (pdbSrcInf != nullptr)
 				&& (pSourceFile != nullptr) )
 			{

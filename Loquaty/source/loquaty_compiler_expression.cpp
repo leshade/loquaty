@@ -5880,7 +5880,11 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 		LExprValuePtr	xvalNum =
 				std::make_shared<LExprValue>( typeCast, nullptr, false, false ) ;
 		PushExprValueOnStack( xvalNum ) ;
-		AddCode( LCodeBuffer::codeAllocStack, 0, 0, 0, 1 ) ;
+
+		LCodeBuffer::ImmediateOperand	immop ;
+		immop.value.longValue = 0 ;
+		AddCode( LCodeBuffer::codeLoadImm,
+					0, 0, typeCast.GetPrimitive(), 0, &immop ) ;
 
 		// 実行時式での数値への変換
 		xval = ExprMakeOnStack( std::move(xval) ) ;

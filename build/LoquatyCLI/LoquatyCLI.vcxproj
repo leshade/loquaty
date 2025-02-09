@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="loquaty_cli.h" />
+    <ClInclude Include="loquaty_cli_debugger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="loquaty_cli.cpp" />
+    <ClCompile Include="loquaty_cli_debugger.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

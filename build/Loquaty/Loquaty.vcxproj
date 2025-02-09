@@ -64,6 +64,7 @@
     <ClInclude Include="..\..\Loquaty\include\loquaty_compiler.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_context.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_date_time.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_debugger.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_defs.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_enum.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_error.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="..\..\Loquaty\source\loquaty_compiler_statement.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_context.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_date_time.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_debugger.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_enum.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_error.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_file.cpp" />

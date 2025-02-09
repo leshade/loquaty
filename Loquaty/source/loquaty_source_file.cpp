@@ -288,6 +288,28 @@ bool LSourceFile::PassSpaceInLine( void )
 	return	false ;
 }
 
+// デバッグコード情報を追加
+void LSourceFile::AddDebugCodeInfo
+	( const LCodeBuffer * pCode, size_t iFirst, size_t iEnd )
+{
+	m_vecCodeInfos.push_back( DebugCodeInfo( pCode, iFirst, iEnd ) ) ;
+}
+
+// ソースコード位置に対応するコード情報を取得
+const LSourceFile::DebugCodeInfo *
+	LSourceFile::GetDebugCodeInfoAt( size_t index ) const
+{
+	for ( size_t i = 0; i < m_vecCodeInfos.size(); i ++ )
+	{
+		const DebugCodeInfo&	dci = m_vecCodeInfos.at(i) ;
+		if((dci.iSrcFirst <= index) && (index < dci.iSrcEnd))
+		{
+			return	&dci ;
+		}
+	}
+	return	nullptr ;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////////

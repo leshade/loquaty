@@ -1,6 +1,7 @@
 ﻿
 #include <loquaty.h>
 #include <loquaty_lib.h>
+#include "loquaty_cli_debugger.h"
 
 using namespace Loquaty ;
 
@@ -18,6 +19,7 @@ private:
 		verbNo,
 		verbHelp,
 		verbRun,
+		verbDebug,
 		verbDumpFunc,
 		verbMakeDocClass,
 		verbMakeDocPackage,
@@ -38,6 +40,7 @@ private:
 		std::chrono::system_clock::time_point
 								m_tpStart ;
 	LPtr<LVirtualMachine>		m_vm ;
+	LCLIDebugger				m_debugger ;
 	int							m_warnLevel ;
 
 	std::map<LNamespace*,LString>	m_mapDocClass ;

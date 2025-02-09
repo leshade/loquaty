@@ -54,6 +54,16 @@ void LCodeBuffer::InsertCode( size_t iPos, const LCodeBuffer::Word& word )
 }
 
 // デバッグ情報追加
+void LCodeBuffer::AttachFunction( LFunctionObj * pFunc )
+{
+	m_pFunction = pFunc ;
+}
+
+LFunctionObj * LCodeBuffer::GetFunction( void ) const
+{
+	return	m_pFunction ;
+}
+
 void LCodeBuffer::AttachSourceFile( LSourceFilePtr pSourceFile )
 {
 	m_pSourceFile = pSourceFile ;
@@ -71,25 +81,25 @@ void LCodeBuffer::AddDebugSourceInfo
 }
 
 const LCodeBuffer::DebugSourceInfo *
-	LCodeBuffer::FindDebufSourceInfo( size_t iPos ) const
+	LCodeBuffer::FindDebugSourceInfo( size_t iCodePos ) const
 {
 	const DebugSourceInfo *	pbdsiPrev = nullptr ;
 	const DebugSourceInfo *	pbdsiNext = nullptr ;
 	for ( size_t i = 0; i < m_dbgSrcInfos.size(); i ++ )
 	{
 		const DebugSourceInfo&	dbsi = m_dbgSrcInfos.at(i) ;
-		if ( (dbsi.m_iCodeFirst <= iPos)
-			&& (iPos < dbsi.m_iCodeEnd) )
+		if ( (dbsi.m_iCodeFirst <= iCodePos)
+			&& (iCodePos < dbsi.m_iCodeEnd) )
 		{
 			return	&dbsi ;
 		}
-		if ( (iPos < dbsi.m_iCodeFirst)
+		if ( (iCodePos < dbsi.m_iCodeFirst)
 			&& ((pbdsiPrev == nullptr)
 				|| (dbsi.m_iCodeFirst < pbdsiPrev->m_iCodeFirst)) )
 		{
 			pbdsiPrev = &dbsi ;
 		}
-		if ( (iPos >= dbsi.m_iCodeEnd)
+		if ( (iCodePos >= dbsi.m_iCodeEnd)
 			&& ((pbdsiNext == nullptr)
 				|| (pbdsiNext->m_iCodeEnd < dbsi.m_iCodeEnd)) )
 		{
@@ -101,6 +111,21 @@ const LCodeBuffer::DebugSourceInfo *
 		return	pbdsiNext ;
 	}
 	return	pbdsiPrev ;
+}
+
+const LCodeBuffer::DebugSourceInfo *
+	LCodeBuffer::FindDebugSourceInfoAtSource( size_t iSrcPos ) const
+{
+	for ( size_t i = 0; i < m_dbgSrcInfos.size(); i ++ )
+	{
+		const DebugSourceInfo&	dbsi = m_dbgSrcInfos.at(i) ;
+		if ( (dbsi.m_iSrcFirst <= iSrcPos)
+			&& (iSrcPos < dbsi.m_iSrcEnd) )
+		{
+			return	&dbsi ;
+		}
+	}
+	return	nullptr ;
 }
 
 void LCodeBuffer::AddDebugLocalVarInfo

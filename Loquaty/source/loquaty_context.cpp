@@ -17,9 +17,15 @@ LContext::LContext( LVirtualMachine& vm, size_t nInitSize )
 		m_ip( LCodeBuffer::InvalidCodePos ),
 		m_eximm( LValue::MakeVoidPtr(nullptr) ),
 		m_interrupt( false ), m_throwing( false ),
-		m_jumped( 0 ), m_signal( interruptNo )
+		m_jumped( 0 ), m_signal( interruptNo ),
+		m_pfnRunCoreLoop( &LContext::RunCoreLoopNoDebug )
 {
 	m_nullThrown = new LExceptionObj( vm.GetExceptionClass(), L"null" ) ;
+
+	if ( vm.GetDebugger() != nullptr )
+	{
+		m_pfnRunCoreLoop = &LContext::RunCoreLoopInDebug ;
+	}
 
 	VERIFY_INSTRUCTION( NoOperation ) ;
 	VERIFY_INSTRUCTION( EnterFunc ) ;
@@ -258,7 +264,7 @@ void LContext::InterruptFunction
 
 	// 戻りアドレスをプッシュ
 	m_stack->Push( LValue::MakeLong( m_ip ) ) ;
-	m_stack->Push( LValue::MakeVoidPtr( m_pCodeBuf ) ) ;
+	m_stack->Push( LValue::MakeVoidPtr( const_cast<LCodeBuffer*>( m_pCodeBuf ) ) ) ;
 
 	// 関数の引数をプッシュする
 	size_t	nArgPushed = PushArgument( pFunc, pArgValues, nArgCount, nullptr ) ;
@@ -417,6 +423,7 @@ void LContext::SaveContextState( LContext::ContextState& state ) const
 	state.sp = m_stack->m_sp ;
 	state.ap = m_stack->m_ap ;
 	state.fp = m_stack->m_fp ;
+	state.dp = m_stack->m_dp ;
 	state.xp = m_stack->m_xp ;
 	state.yp = m_stack->m_yp ;
 	state.ip = m_ip ;
@@ -436,6 +443,7 @@ void LContext::RestoreContextState( const LContext::ContextState& state )
 	m_stack->m_sp = state.sp ;
 	m_stack->m_ap = state.ap ;
 	m_stack->m_fp = state.fp ;
+	m_stack->m_dp = state.dp ;
 	m_stack->m_xp = state.xp ;
 	m_stack->m_yp = state.yp ;
 	m_ip = state.ip ;
@@ -701,8 +709,8 @@ bool LContext::ProcessSignal( void )
 	return	false ;
 }
 
-// 実行コアループ
-void LContext::RunCoreLoop( void )
+// （非デバッグ）実行コアループ
+void LContext::RunCoreLoopNoDebug( void )
 {
 	if ( m_pCodeBuf == nullptr )
 	{
@@ -732,6 +740,51 @@ void LContext::RunCoreLoop( void )
 		assert( (size_t) m_ip < m_pCodeBuf->m_buffer.size() ) ;
 
 		const LCodeBuffer::Word&	word = pCodeBuf[m_ip ++] ;
+		(this->*(s_instruction[word.code]))( word ) ;
+	}
+}
+
+// （デバッグ）実行コアループ
+void LContext::RunCoreLoopInDebug( void )
+{
+	LDebugger *	pDebugger = m_vm.GetDebugger() ;
+	assert( pDebugger != nullptr ) ;
+	if ( pDebugger == nullptr )
+	{
+		RunCoreLoopNoDebug() ;
+		return ;
+	}
+	if ( m_pCodeBuf == nullptr )
+	{
+		micro_instruction_ThrowNullException() ;
+		return ;
+	}
+	const LCodeBuffer::Word *	pCodeBuf = m_pCodeBuf->m_buffer.data() ;
+	if ( pCodeBuf == nullptr )
+	{
+		micro_instruction_ThrowNullException() ;
+		return ;
+	}
+	if ( (size_t) m_ip >= m_pCodeBuf->m_buffer.size() )
+	{
+		micro_instruction_ThrowIndexOutOfBounds() ;
+		return ;
+	}
+
+	m_interrupt = false ;
+	m_throwing = false ;
+	m_jumped = 0 ;
+
+	while ( !m_interrupt )
+	{
+		assert( m_pCodeBuf != nullptr ) ;
+		assert( m_pCodeBuf->m_buffer.data() == pCodeBuf ) ;
+		assert( (size_t) m_ip < m_pCodeBuf->m_buffer.size() ) ;
+
+		const LCodeBuffer::Word&	word = pCodeBuf[m_ip] ;
+		pDebugger->OnCodeInstruction( *this, m_pCodeBuf, m_ip, word ) ;
+
+		m_ip ++ ;
 		(this->*(s_instruction[word.code]))( word ) ;
 	}
 }
@@ -811,6 +864,12 @@ LObject * LContext::new_Object( const wchar_t * pwszClassPath )
 		return	nullptr ;
 	}
 	return	pClass->CreateInstance() ;
+}
+
+// デバッガ・インスタンス設定
+void LContext::SetDebuggerInstance( LDebugger::InstancePtr pDebuggerInstance )
+{
+	m_pDebuggerInstance = pDebuggerInstance ;
 }
 
 
@@ -907,6 +966,7 @@ void LContext::instruction_NoOperation( const LCodeBuffer::Word& word )
 void LContext::instruction_EnterFunc( const LCodeBuffer::Word& word )
 {
 	LStackBuffer *	pStack = m_stack.get() ;
+	pStack->Push( LValue::MakeLong( pStack->m_dp ) ) ;
 	pStack->Push( LValue::MakeLong( pStack->m_fp ) ) ;
 	pStack->m_fp = pStack->m_sp ;
 	pStack->AddPointer( (size_t) word.imm ) ;
@@ -919,13 +979,14 @@ void LContext::instruction_LeaveFunc( const LCodeBuffer::Word& word )
 	micro_instruction_FreeFor( pStack->m_fp ) ;
 	pStack->m_sp = pStack->m_fp ;
 	pStack->m_fp = (size_t) pStack->Pop().longValue ;
+	pStack->m_dp = (size_t) pStack->Pop().longValue ;
 }
 
 // EnterTry
 void LContext::instruction_EnterTry( const LCodeBuffer::Word& word )
 {
 	LStackBuffer *	pStack = m_stack.get() ;
-	pStack->Push( LValue::MakeVoidPtr( m_pCodeBuf ) ) ;
+	pStack->Push( LValue::MakeVoidPtr( const_cast<LCodeBuffer*>( m_pCodeBuf ) ) ) ;
 	pStack->Push( LValue::MakeLong( pStack->m_fp ) ) ;
 	pStack->Push( LValue::MakeLong( pStack->m_xp ) ) ;
 	pStack->m_xp = pStack->m_sp - LCodeBuffer::ExceptDescSize ;
@@ -965,6 +1026,7 @@ void LContext::instruction_Throw( const LCodeBuffer::Word& word )
 void LContext::instruction_AllocStack( const LCodeBuffer::Word& word )
 {
 	m_stack->AddPointer( (size_t) word.imm ) ;
+	m_stack->m_dp = m_stack->m_sp ;
 }
 
 // FreeStack
@@ -1894,6 +1956,7 @@ void LContext::micro_instruction_FreeFor( ssize_t si )
 
 		LObject::ReleaseRef( pObj ) ;
 	}
+	pStack->m_dp = std::min( pStack->m_dp, (size_t) si ) ;
 }
 
 // sp-n の位置までスタック上のオブジェクトを開放
@@ -1927,7 +1990,7 @@ void LContext::micro_instruction_CallFinally( void )
 		pStack->Push( m_valReturn.Value() ) ;
 		pStack->Push( LValue::MakeLong( m_valReturn.GetType().GetPrimitive() ) ) ;
 		pStack->Push( LValue::MakeLong( m_ip ) ) ;
-		pStack->Push( LValue::MakeVoidPtr( m_pCodeBuf ) ) ;
+		pStack->Push( LValue::MakeVoidPtr( const_cast<LCodeBuffer*>( m_pCodeBuf ) ) ) ;
 
 		// finally ハンドラへジャンプ
 		m_pCodeBuf = reinterpret_cast<LCodeBuffer*>( pExceptDesc->codeBuf.pVoidPtr ) ;
@@ -2045,9 +2108,16 @@ void LContext::micro_instruction_VerifyJumped( void )
 void LContext::micro_instruction_Throw( void )
 {
 	LStackBuffer *	pStack = m_stack.get() ;
+	m_thrown = pStack->Pop().pObject ;
+
+	LDebugger *	pDebugger = m_vm.GetDebugger() ;
+	if ( pDebugger != nullptr )
+	{
+		auto	lock = pDebugger->LockDebugBreak() ;
+		m_thrown = pDebugger->OnThrowException( *this, m_thrown ) ;
+	}
 
 	m_throwing = true ;
-	m_thrown = pStack->Pop().pObject ;
 	if ( m_thrown == nullptr )
 	{
 		m_thrown = m_nullThrown ;
@@ -2231,7 +2301,7 @@ void LContext::micro_instruction_Call( LFunctionObj * pFunc )
 
 		// 戻りアドレスをプッシュ
 		m_stack->Push( LValue::MakeLong( m_ip ) ) ;
-		m_stack->Push( LValue::MakeVoidPtr( m_pCodeBuf ) ) ;
+		m_stack->Push( LValue::MakeVoidPtr( const_cast<LCodeBuffer*>( m_pCodeBuf ) ) ) ;
 
 		// 関数アドレスへジャンプ
 		m_pCodeBuf = pFunc->GetCodeBuffer().get() ;

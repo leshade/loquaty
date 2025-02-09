@@ -91,12 +91,12 @@ namespace	Loquaty
 {
 	// バージョン
 	constexpr int			VersionMajor	= 1 ;
-	constexpr int			VersionMinor	= 0 ;
-	constexpr const char *	VersionString	= "1.00" ;
+	constexpr int			VersionMinor	= 1 ;
+	constexpr const char *	VersionString	= "1.01" ;
 
 	// 型
-	typedef	std::size_t	size_t ;
-	typedef	ptrdiff_t	ssize_t ;
+	typedef	std::size_t		size_t ;
+	typedef	ptrdiff_t		ssize_t ;
 
 	// プリミティブ・タイプ
 	typedef	bool			LBoolean ;
@@ -153,6 +153,7 @@ namespace	Loquaty
 	class	LPrototype ;
 	class	LFunctionVariation ;
 	class	LVirtualFuncVector ;
+	class	LDebugger ;
 	class	LContext ;
 	class	LNamespace ;
 	class	LNamespaceList ;

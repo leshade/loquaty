@@ -4625,7 +4625,8 @@ void LCompiler::ParseFunctionImplementation
 	const size_t	iStartImplements = sparsSrc.GetIndex() ;
 	sparsSrc.PassStatementBlock() ;
 
-	LParserSegment	ps( &sparsSrc, iStartImplements, sparsSrc.GetIndex() ) ;
+	LParserSegment	psImpl( &sparsSrc, iStartImplements, sparsSrc.GetIndex() ) ;
+	LParserSegment	psProto( &sparsSrc, m_iSrcStatement, iStartImplements ) ;
 	CodeNestPtr	pNest = m_ctx->m_curNest ;
 	while ( pNest->m_prev != nullptr )	// ソースファイルのルートに遅延実装を設定する
 	{
@@ -4635,7 +4636,7 @@ void LCompiler::ParseFunctionImplementation
 	AddScopeToNamespaceList( nslTemp, pnslLocal ) ;
 
 	pNest->m_vecDelayImplements.push_back
-		( std::make_shared<DelayImplement>( ps, pFunc, nslTemp ) ) ;
+		( std::make_shared<DelayImplement>( psImpl, psProto, pFunc, nslTemp ) ) ;
 
 }
 
@@ -4654,12 +4655,24 @@ void LCompiler::ParseDelayFuncImplement( const LCompiler::DelayImplement& delayI
 	// 関数ブロック開始
 	std::shared_ptr<LCodeBuffer>	codeBuf = std::make_shared<LCodeBuffer>() ;
 	delayImpl.m_pFunc->SetFuncCode( codeBuf, 0 ) ;
-	codeBuf->AttachSourceFile
-		( m_vm.SourceProducer().GetSafeSource( delayImpl.m_pParser ) ) ;
+
+	LSourceFilePtr	pSource =
+		m_vm.SourceProducer().GetSafeSource( delayImpl.m_pParser ) ;
+	codeBuf->AttachFunction( delayImpl.m_pFunc.Ptr() ) ;
+	codeBuf->AttachSourceFile( pSource ) ;
+	pSource->AddDebugCodeInfo
+		( codeBuf.get(), delayImpl.m_iFirst, delayImpl.m_iEnd ) ;
 
 	ContextPtr	ctxFunc =
 		BeginFunctionBlock
 			( delayImpl.m_pFunc->GetPrototype(), codeBuf ) ;
+
+	LCodeBuffer::DebugSourceInfo	dbsiProto ;
+	dbsiProto.m_iSrcFirst = delayImpl.m_psProto.m_iFirst ;
+	dbsiProto.m_iSrcEnd = delayImpl.m_psProto.m_iEnd ;
+	dbsiProto.m_iCodeFirst = 0 ;
+	dbsiProto.m_iCodeEnd = m_ctx->m_codeBuf->m_buffer.size() ;
+	codeBuf->AddDebugSourceInfo( dbsiProto ) ;
 
 	// 構築関数・初期化リスト解釈
 	if ( sparsSrc.HasNextChars( L":" ) == L':' )

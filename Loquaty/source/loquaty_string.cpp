@@ -380,7 +380,7 @@ const LString& LString::SetIntegerOf( LLong val, int prec, int radix )
 	if ( prec <= 0 )
 	{
 		std::int64_t	t = r ;			// 桁あふれ判定用
-		while ( (v >= r) && (v >= t) )
+		while ( (v >= r) && (v >= t) && (col < 20) )
 		{
 			t = r ;
 			r *= radix ;

@@ -50,9 +50,29 @@ namespace	Loquaty
 
 	class	LSourceFile : public LTextFileParser
 	{
+	public:
+		// デバッグ用コード情報
+		struct	DebugCodeInfo
+		{
+			const LCodeBuffer *	pCodeBuf ;		// 対応するコードバッファ
+			size_t				iSrcFirst ;		// ソース上の開始位置（文字指標）
+			size_t				iSrcEnd ;		// 終了位置（この文字指標を含まない）
+
+			DebugCodeInfo
+				( const LCodeBuffer * pCode, size_t iFirst, size_t iEnd )
+					: pCodeBuf( pCode ), iSrcFirst( iFirst ), iSrcEnd( iEnd ) { }
+			DebugCodeInfo( const DebugCodeInfo& src )
+					: pCodeBuf( src.pCodeBuf ),
+						iSrcFirst( src.iSrcFirst ), iSrcEnd( src.iSrcEnd ) { }
+		} ;
+
 	protected:
+		// コメント情報
 		bool		m_hasComment ;
 		LString		m_strComment ;
+
+		// デバッグ用コード情報
+		std::vector<DebugCodeInfo>	m_vecCodeInfos ;
 
 	public:
 		LSourceFile( void )
@@ -86,6 +106,19 @@ namespace	Loquaty
 			m_hasComment = false ;
 			m_strComment = L"" ;
 		}
+
+		// デバッグコード情報を追加
+		void AddDebugCodeInfo
+			( const LCodeBuffer * pCode, size_t iFirst, size_t iEnd ) ;
+		// ソースコード位置に対応するコード情報を取得
+		const DebugCodeInfo * GetDebugCodeInfoAt( size_t index ) const ;
+
+		// デバッグ用コード情報を取得
+		const std::vector<DebugCodeInfo>& GetDebugCodeInfos( void ) const
+		{
+			return	m_vecCodeInfos ;
+		}
+
 	} ;
 
 	typedef	std::shared_ptr<LSourceFile>	LSourceFilePtr ;

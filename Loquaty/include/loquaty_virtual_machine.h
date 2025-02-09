@@ -57,8 +57,11 @@ namespace	Loquaty
 							m_packages ;
 
 		// 実行中のスレッド・リスト
-		LThreadObj *		m_pFirstThread ;
-		std::mutex			m_mutexThreads ;
+		LThreadObj *			m_pFirstThread ;
+		std::mutex				m_mutexThreads ;
+
+		// デバッガー
+		LDebugger *				m_pDebugger ;	
 
 		LOQUATY_DLL_EXPORT
 		static LVirtualMachine *	s_pCurrent ;
@@ -154,6 +157,12 @@ namespace	Loquaty
 		void GetThreadList( std::vector< LPtr<LThreadObj> >& listThreads ) ;
 		// 実行中のスレッドを強制終了する
 		void TerminateAllThreads( void ) ;
+
+	public:
+		// デバッガー設定
+		void AttachDebugger( LDebugger * pDebugger ) ;
+		// デバッガー取得
+		LDebugger * GetDebugger( void ) const ;
 
 	protected:
 		std::map< std::wstring,
