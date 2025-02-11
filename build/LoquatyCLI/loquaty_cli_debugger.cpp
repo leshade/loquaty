@@ -42,6 +42,10 @@ LObjPtr LCLIDebugger::OnThrowException
 // ブレークポイント
 void LCLIDebugger::OnBreakPoint( LContext& context, BreakReason reason )
 {
+	if ( reason == reasonBreakPoint )
+	{
+		OutputTrace( L"stopped at breakpoint.\n\n" ) ;
+	}
 	TraceCurrentCode( context ) ;
 
 	DoDialogue( context ) ;
@@ -375,15 +379,18 @@ void LCLIDebugger::DoCommandVariableList( LContext& context )
 			{
 				continue ;
 			}
-			LString	strName = iter->first ;
-			OutputTrace
-				( (strName + L": "
-					+ pVar->GetType().GetTypeName() + L": ").c_str() ) ;
-			//
 			LValue	valLoc = GetLocalVar( context, pVar, iLoc ) ;
-			LString	strExpr = ToExpression( valLoc ) ;
-			strExpr += L"\n" ;
-			OutputTrace( strExpr.c_str() ) ;
+			if ( !valLoc.IsVoid() )
+			{
+				LString	strName = iter->first ;
+				OutputTrace
+					( (strName + L": "
+						+ pVar->GetType().GetTypeName() + L": ").c_str() ) ;
+				//
+				LString	strExpr = ToExpression( valLoc ) ;
+				strExpr += L"\n" ;
+				OutputTrace( strExpr.c_str() ) ;
+			}
 		}
 	}
 }
@@ -548,7 +555,7 @@ void LCLIDebugger::DoCommandBreakPoint( LContext& context, LStringParser& cmdlin
 			( std::make_shared<BreakPoint>
 				( pdci->pCodeBuf,
 					pdsi->m_iCodeFirst,
-					pdsi->m_iCodeEnd, strCondExpr.c_str() ) ) ;
+					pdsi->m_iCodeFirst, strCondExpr.c_str() ) ) ;
 		OutputTrace( L"Ok.\n" ) ;
 	}
 }
