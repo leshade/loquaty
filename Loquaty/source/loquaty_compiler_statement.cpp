@@ -3212,7 +3212,7 @@ void LCompiler::ParseStatement_return
 			}
 
 			LType::Primitive	type = xval->GetType().GetPrimitive() ;
-			xval =nullptr ;
+			xval = nullptr ;
 
 			const size_t	nFreeCount = CountFreeTempStack() ;
 			PopExprValueOnStacks( nFreeCount ) ;

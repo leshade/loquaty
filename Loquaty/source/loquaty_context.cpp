@@ -970,6 +970,7 @@ void LContext::instruction_EnterFunc( const LCodeBuffer::Word& word )
 	pStack->Push( LValue::MakeLong( pStack->m_fp ) ) ;
 	pStack->m_fp = pStack->m_sp ;
 	pStack->AddPointer( (size_t) word.imm ) ;
+	pStack->m_dp = pStack->m_sp ;
 }
 
 // LeaveFunc

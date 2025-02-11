@@ -317,6 +317,23 @@ namespace	Loquaty
 			m_warningLevel = warnLevel ;
 		}
 
+		// 数式を関数としてコンパイル
+		static LPtr<LFunctionObj>
+			CompileExpressionAsFunc
+				( LVirtualMachine& vm,
+					const wchar_t * pwszExpr,
+					LClass * pThisClass = nullptr,
+					LString * pErrMsg = nullptr,
+					const LType * pRetType = nullptr ) ;
+		// 文を関数としてコンパイル
+		static LPtr<LFunctionObj>
+			CompileStatementsAsFunc
+				( LVirtualMachine& vm,
+					const wchar_t * pwszStatements,
+					const LType& typeRet,
+					LClass * pThisClass = nullptr,
+					LString * pErrMsg = nullptr ) ;
+
 
 		//////////////////////////////////////////////////////////////////////
 		// 数式解釈
@@ -1299,6 +1316,26 @@ namespace	Loquaty
 
 	} ;
 
+
+	//////////////////////////////////////////////////////////////////////////
+	// 出力を受け取るコンパイラ
+	//////////////////////////////////////////////////////////////////////////
+
+	class	LCompilerToReceiveOutput	: public LCompiler
+	{
+	protected:
+		std::function<void(const LString&)>	m_funcOutput ;
+
+	public:
+		LCompilerToReceiveOutput
+			( LVirtualMachine& vm, LStringParser * src,
+				std::function<void(const LString&)>	funcOutput )
+			: LCompiler( vm, src ), m_funcOutput( funcOutput ) { }
+
+		// 文字列出力
+		virtual void PrintString( const LString& str ) ;
+
+	} ;
 }
 
 

@@ -270,6 +270,7 @@ LCompiler::~LCompiler( void )
 //////////////////////////////////////////////////////////////////////////////
 
 // ソースファイルをコンパイルする
+//////////////////////////////////////////////////////////////////////////////
 void LCompiler::DoCompile( LStringParser * pSource )
 {
 	Current				current( *this ) ;
@@ -327,6 +328,124 @@ void LCompiler::IncludeScript( const wchar_t * pwszFileName, LDirectory * pDirPa
 	DoCompile( pSource.get() ) ;
 }
 
+// 数式を関数としてコンパイル
+//////////////////////////////////////////////////////////////////////////////
+LPtr<LFunctionObj>
+	LCompiler::CompileExpressionAsFunc
+		( LVirtualMachine& vm,
+			const wchar_t * pwszExpr,
+			LClass * pThisClass,
+			LString * pErrMsg, const LType * pRetType )
+{
+	LSourceFile							source = pwszExpr ;
+	std::shared_ptr<LPrototype>			proto = std::make_shared<LPrototype>() ;
+	std::shared_ptr<LCodeBuffer>		codeBuf = std::make_shared<LCodeBuffer>() ;
+	std::function<void(const LString&)>	funcOutput = [pErrMsg]( const LString& str )
+	{
+		if ( pErrMsg != nullptr )
+		{
+			*pErrMsg += str ;
+		}
+	} ;
+	proto->SetThisClass( pThisClass ) ;
+
+	// コンパイラ準備
+	LCompilerToReceiveOutput	compiler( vm, &source, funcOutput ) ;
+	LCompiler::Current			current( compiler ) ;
+
+	LCompiler::ContextPtr
+		ctx = compiler.BeginFunctionBlock( proto, codeBuf ) ;
+
+	// 式評価
+	LExprValuePtr	xval = compiler.EvaluateExpression( source ) ;
+	if ( pRetType != nullptr )
+	{
+		xval = compiler.EvalCastTypeTo( std::move(xval), *pRetType ) ;
+		proto->ReturnType() = *pRetType ;
+	}
+	else
+	{
+		proto->ReturnType() = xval->GetType() ;
+	}
+	xval = compiler.ExprMakeOnStack( std::move(xval) ) ;
+
+	if ( compiler.GetErrorCount() > 0 )
+	{
+		return	nullptr ;
+	}
+
+	// 返り値設定
+	const ssize_t	iStack = compiler.GetBackIndexOnStack( xval ) ;
+	assert( iStack >= 0 ) ;
+	if ( xval->IsTypeNeededToRelease() )
+	{
+		compiler.AddCode( LCodeBuffer::codeRefObject, iStack ) ;
+	}
+
+	LType::Primitive	type = xval->GetType().GetPrimitive() ;
+	xval = nullptr ;
+
+	const size_t	nFreeCount = compiler.CountFreeTempStack() ;
+	compiler.PopExprValueOnStacks( nFreeCount ) ;
+
+	compiler.AddCode( LCodeBuffer::codeSetRetValue,
+							iStack, 0, type, nFreeCount ) ;
+
+	// リターン命令
+	compiler.AddCode( LCodeBuffer::codeLeaveFunc ) ;
+	compiler.AddCode( LCodeBuffer::codeReturn, 0, 0, 0, 0 ) ;
+
+	assert( ctx->m_curNest != nullptr ) ;
+	ctx->m_curNest->m_returned = true ;
+	compiler.EndFunctionBlock( ctx ) ;
+
+	// 生成した関数返却
+	LPtr<LFunctionObj>	pFunc =
+			new LFunctionObj( vm.GetFunctionClassAs( proto ), proto ) ;
+	pFunc->SetFuncCode( codeBuf, 0 ) ;
+	return	pFunc ;
+}
+
+// 文を関数としてコンパイル
+LPtr<LFunctionObj>
+	LCompiler::CompileStatementsAsFunc
+		( LVirtualMachine& vm,
+			const wchar_t * pwszStatements,
+			const LType& typeRet,
+			LClass * pThisClass, LString * pErrMsg )
+{
+	LSourceFile							source = pwszStatements ;
+	std::shared_ptr<LPrototype>			proto = std::make_shared<LPrototype>() ;
+	std::shared_ptr<LCodeBuffer>		codeBuf = std::make_shared<LCodeBuffer>() ;
+	std::function<void(const LString&)>	funcOutput = [pErrMsg]( const LString& str )
+	{
+		if ( pErrMsg != nullptr )
+		{
+			*pErrMsg += str ;
+		}
+	} ;
+	proto->ReturnType() = typeRet ;
+	proto->SetThisClass( pThisClass ) ;
+
+	LCompilerToReceiveOutput	compiler( vm, &source, funcOutput ) ;
+	LCompiler::Current			current( compiler ) ;
+
+	LCompiler::ContextPtr
+		ctx = compiler.BeginFunctionBlock( proto, codeBuf ) ;
+
+	compiler.ParseStatementList( source ) ;
+
+	compiler.EndFunctionBlock( ctx ) ;
+	if ( compiler.GetErrorCount() > 0 )
+	{
+		return	nullptr ;
+	}
+
+	LPtr<LFunctionObj>	pFunc =
+			new LFunctionObj( vm.GetFunctionClassAs( proto ), proto ) ;
+	pFunc->SetFuncCode( codeBuf, 0 ) ;
+	return	pFunc ;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -495,4 +614,22 @@ void LCompiler::PrintString( const LString& str )
 	std::string	msg ;
 	LTrace( "%s\n", str.ToString(msg).c_str() ) ;
 }
+
+
+
+//////////////////////////////////////////////////////////////////////////
+// 出力を受け取るコンパイラ
+//////////////////////////////////////////////////////////////////////////
+
+// 文字列出力
+void LCompilerToReceiveOutput::PrintString( const LString& str )
+{
+	LCompiler::PrintString( str ) ;
+
+	if ( m_funcOutput != nullptr )
+	{
+		m_funcOutput( str ) ;
+	}
+}
+
 

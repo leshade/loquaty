@@ -394,14 +394,17 @@ void LLoquatyClass::method_traceLocalVars( LContext& _context )
 				{
 					continue ;
 				}
-				LString	strName = iter->first ;
-				printf( "%s: %s: ",
-						strName.ToString().c_str(),
-						pVar->GetType().GetTypeName().ToString().c_str() ) ;
-				//
 				LValue	valLoc = LDebugger::GetLocalVar( _context, pVar, iLoc ) ;
-				LString	strExpr = LDebugger::ToExpression( valLoc ) ;
-				puts( strExpr.ToString().c_str() ) ;
+				if ( !valLoc.IsVoid() )
+				{
+					LString	strName = iter->first ;
+					printf( "%s: %s: ",
+							strName.ToString().c_str(),
+							pVar->GetType().GetTypeName().ToString().c_str() ) ;
+					//
+					LString	strExpr = LDebugger::ToExpression( valLoc ) ;
+					puts( strExpr.ToString().c_str() ) ;
+				}
 			}
 		}
 	}
