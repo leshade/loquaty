@@ -2,6 +2,7 @@
 
 #include <loquaty.h>
 #include <loquaty_lib.h>
+#include <loquaty_cli_imp_lib.h>
 
 #include <sakuraglx/sakuraglx.h>
 #include <linkgls4.h>

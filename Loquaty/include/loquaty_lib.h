@@ -10,7 +10,6 @@
 			#endif
 		#else
 			#pragma	comment( lib, "win64\\loquaty_imp.lib" )
-			#pragma	comment( lib, "win64\\loquaty_exp.lib" )
 		#endif
 	#else
 		#ifndef	_DLL_IMPORT_LOQUATY
@@ -21,7 +20,6 @@
 			#endif
 		#else
 			#pragma	comment( lib, "win64\\loquaty_imp_db.lib" )
-			#pragma	comment( lib, "win64\\loquaty_exp_db.lib" )
 		#endif
 	#endif
 #elif	defined(_WIN32) || defined(WIN32)
@@ -34,7 +32,6 @@
 			#endif
 		#else
 			#pragma	comment( lib, "win32\\loquaty_imp.lib" )
-			#pragma	comment( lib, "win32\\loquaty_exp.lib" )
 		#endif
 	#else
 		#ifndef	_DLL_IMPORT_LOQUATY
@@ -45,7 +42,6 @@
 			#endif
 		#else
 			#pragma	comment( lib, "win32\\loquaty_imp_db.lib" )
-			#pragma	comment( lib, "win32\\loquaty_exp_db.lib" )
 		#endif
 	#endif
 #endif
