@@ -51,7 +51,7 @@ void LPointerObj::SetPointer
 	m_iBoundEnd = std::min( iOffset + nBounds, m_nBufSize ) ;
 }
 
-// プリミティブ・ロード
+// プリミティブ・ロード（ポインタが無効の場合例外を送出）
 LLong LPointerObj::LoadIntegerAt( size_t iOffset, LType::Primitive type ) const
 {
 	std::uint8_t *	p = GetPointer( iOffset, LType::s_bytesAligned[type] ) ;
@@ -224,7 +224,7 @@ LDouble LPointerObj::LoadDoubleAsDouble( const std::uint8_t * p )
 }
 
 
-// プリミティブ・ストア
+// プリミティブ・ストア（ポインタが無効の場合例外を送出）
 void LPointerObj::StoreIntegerAt
 	( size_t iOffset, LType::Primitive type, LLong val ) const
 {
@@ -251,6 +251,51 @@ void LPointerObj::StoreDoubleAt
 	{
 		LContext::ThrowExceptionError( exceptionPointerOutOfBounds ) ;
 	}
+}
+
+// 実行時の型情報を使って値をストア（例外は送出しない）
+bool LPointerObj::PutInteger( LLong val ) const
+{
+	LPointerClass *	pPtrClass = dynamic_cast<LPointerClass*>( m_pClass ) ;
+	if ( pPtrClass == nullptr )
+	{
+		return	false ;
+	}
+	if ( !pPtrClass->GetBufferType().IsPrimitive() )
+	{
+		return	false ;
+	}
+	const LType&		typeData = pPtrClass->GetBufferType() ;
+	LType::Primitive	type = typeData.GetPrimitive() ;
+	std::uint8_t *		ptr = GetPointer( 0, LType::s_bytesAligned[type] ) ;
+	if ( ptr == nullptr )
+	{
+		return	false ;
+	}
+	(s_pnfStoreAsLong[type])( ptr, val ) ;
+	return	true ;
+}
+
+bool LPointerObj::PutDouble( LDouble val ) const
+{
+	LPointerClass *	pPtrClass = dynamic_cast<LPointerClass*>( m_pClass ) ;
+	if ( pPtrClass == nullptr )
+	{
+		return	false ;
+	}
+	if ( !pPtrClass->GetBufferType().IsPrimitive() )
+	{
+		return	false ;
+	}
+	const LType&		typeData = pPtrClass->GetBufferType() ;
+	LType::Primitive	type = typeData.GetPrimitive() ;
+	std::uint8_t *		ptr = GetPointer( 0, LType::s_bytesAligned[type] ) ;
+	if ( ptr == nullptr )
+	{
+		return	false ;
+	}
+	(s_pnfStoreAsDouble[type])( ptr, val ) ;
+	return	true ;
 }
 
 const LPointerObj::PFN_StorePrimitiveAsLong

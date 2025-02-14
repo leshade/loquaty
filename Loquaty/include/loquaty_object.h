@@ -279,22 +279,22 @@ namespace	Loquaty
 		LPtr( const LPtr<T>& ptr )
 			: m_pObject( ptr.m_pObject )
 		{
-			LObject::AddRef( m_pObject ) ;
+			LObject::AddRef( (LObject*) m_pObject ) ;
 		}
 		~LPtr( void )
 		{
-			LObject::ReleaseRef( m_pObject ) ;
+			LObject::ReleaseRef( (LObject*) m_pObject ) ;
 		}
 		const LPtr<T>& operator = ( const LPtr<T>& ptr )
 		{
-			LObject::AddRef( ptr.m_pObject ) ;
-			LObject::ReleaseRef( m_pObject ) ;
+			LObject::AddRef( (LObject*) ptr.m_pObject ) ;
+			LObject::ReleaseRef( (LObject*) m_pObject ) ;
 			m_pObject = ptr.m_pObject ;
 			return	*this ;
 		}
 		const LPtr<T>& operator = ( T * p )
 		{
-			LObject::ReleaseRef( m_pObject ) ;
+			LObject::ReleaseRef( (LObject*) m_pObject ) ;
 			m_pObject = p ;
 			return	*this ;
 		}
@@ -304,7 +304,7 @@ namespace	Loquaty
 		}
 		T * Get( void ) const
 		{
-			LObject::AddRef( m_pObject ) ;
+			LObject::AddRef( (LObject*) m_pObject ) ;
 			return	m_pObject ;
 		}
 		T * Ptr( void ) const

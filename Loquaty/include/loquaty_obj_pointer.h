@@ -126,15 +126,19 @@ namespace	Loquaty
 			return	((m_iOffset + iOffset) & (nAlign - 1)) == 0 ;
 		}
 
-		// プリミティブ・ロード
+		// プリミティブ・ロード（ポインタが無効の場合例外を送出）
 		LLong LoadIntegerAt( size_t iOffset, LType::Primitive type ) const ;
 		LDouble LoadDoubleAt( size_t iOffset, LType::Primitive type ) const ;
 
-		// プリミティブ・ストア
+		// プリミティブ・ストア（ポインタが無効の場合例外を送出）
 		void StoreIntegerAt
 			( size_t iOffset, LType::Primitive type, LLong val ) const ;
 		void StoreDoubleAt
 			( size_t iOffset, LType::Primitive type, LDouble val ) const ;
+
+		// 実行時の型情報を使って値をストア（例外は送出しない）
+		bool PutInteger( LLong val ) const ;
+		bool PutDouble( LDouble val ) const ;
 
 	public:
 		// プリミティブ・ロード関数

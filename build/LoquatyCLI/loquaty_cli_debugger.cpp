@@ -453,6 +453,12 @@ void LCLIDebugger::DoCommandBreakPoint( LContext& context, LStringParser& cmdlin
 						}
 					}
 				}
+				if ( !bpp->m_exprCond.IsEmpty() )
+				{
+					strBreakPoint += L", if (" ;
+					strBreakPoint += bpp->m_exprCond ;
+					strBreakPoint += L")" ;
+				}
 				strBreakPoint += L"\n" ;
 				OutputTrace( strBreakPoint.c_str() ) ;
 			}

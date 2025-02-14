@@ -2,7 +2,7 @@
 #ifndef	__LOQUATY_DEFS_H__
 #define	__LOQUATY_DEFS_H__	1
 
-#if	defined(_MSC_VER) && defined(_DEBUG)
+#if	!defined(_CRTDBG_MAP_ALLOC) && defined(_MSC_VER) && defined(_DEBUG)
 #define _CRTDBG_MAP_ALLOC
 #endif
 
@@ -30,6 +30,7 @@
 
 #if	defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
 //	#define NOMINMAX
+	#include <SDKDDKVer.h>
 	#include <windows.h>
 	#undef	max
 	#undef	min

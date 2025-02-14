@@ -148,6 +148,50 @@ LString LValue::AsString( void ) const
 	return	LString() ;
 }
 
+// ポインタの参照先やオブジェクトに値を設定
+bool LValue::PutInteger( LLong val )
+{
+	LPointerObj *	pPtr = dynamic_cast<LPointerObj*>( m_pObject.Ptr() ) ;
+	if ( pPtr != nullptr )
+	{
+		return	pPtr->PutInteger( val ) ;
+	}
+	LIntegerObj *	pInt = dynamic_cast<LIntegerObj*>( m_pObject.Ptr() ) ;
+	if ( pInt != nullptr )
+	{
+		pInt->m_value = val ;
+		return	true ;
+	}
+	return	false ;
+}
+
+bool LValue::PutDouble( LDouble val )
+{
+	LPointerObj *	pPtr = dynamic_cast<LPointerObj*>( m_pObject.Ptr() ) ;
+	if ( pPtr != nullptr )
+	{
+		return	pPtr->PutDouble( val ) ;
+	}
+	LDoubleObj *	pDouble = dynamic_cast<LDoubleObj*>( m_pObject.Ptr() ) ;
+	if ( pDouble != nullptr )
+	{
+		pDouble->m_value = val ;
+		return	true ;
+	}
+	return	false ;
+}
+
+bool LValue::PutString( const wchar_t * str )
+{
+	LStringObj *	pStr = dynamic_cast<LStringObj*>( m_pObject.Ptr() ) ;
+	if ( pStr != nullptr )
+	{
+		pStr->m_string = str ;
+		return	true ;
+	}
+	return	false ;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////

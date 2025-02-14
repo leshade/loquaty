@@ -2,15 +2,7 @@
 #if !defined(__LOQUATY_H__)
 #define	__LOQUATY_H__	1
 
-#include <loquaty_defs.h>
-#include <loquaty_string.h>
-
-#include <loquaty_error.h>
-#include <loquaty_reserved_word.h>
-#include <loquaty_operator.h>
-#include <loquaty_type.h>
-#include <loquaty_object.h>
-#include <loquaty_value.h>
+#include <loquaty_stddefs.h>
 
 #include <loquaty_date_time.h>
 #include <loquaty_file.h>
@@ -22,6 +14,7 @@
 
 #include <loquaty_array_buffer.h>
 #include <loquaty_arrangement.h>
+#include <loquaty_expr_value.h>
 #include <loquaty_code_buffer.h>
 #include <loquaty_stack_buffer.h>
 #include <loquaty_function.h>

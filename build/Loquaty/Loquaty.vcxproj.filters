@@ -147,6 +147,12 @@
     <ClInclude Include="..\..\Loquaty\include\loquaty_debugger.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Loquaty\include\loquaty_stddefs.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Loquaty\include\loquaty_expr_value.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Loquaty\source\loquaty_object.cpp">

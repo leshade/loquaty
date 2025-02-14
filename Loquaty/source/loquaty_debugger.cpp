@@ -5,6 +5,49 @@ using namespace	Loquaty ;
 
 
 //////////////////////////////////////////////////////////////////////////////
+// 評価値
+//////////////////////////////////////////////////////////////////////////////
+
+// 値を評価
+LBoolean LEvalValue::AsBoolean( void ) const
+{
+	if ( m_flagRef )
+	{
+		return	LDebugger::EvaluateData(*this).AsBoolean() ;
+	}
+	return	LValue::AsBoolean() ;
+}
+
+LLong LEvalValue::AsInteger( void ) const
+{
+	if ( m_flagRef )
+	{
+		return	LDebugger::EvaluateData(*this).AsInteger() ;
+	}
+	return	LValue::AsInteger() ;
+}
+
+LDouble LEvalValue::AsDouble( void ) const
+{
+	if ( m_flagRef )
+	{
+		return	LDebugger::EvaluateData(*this).AsDouble() ;
+	}
+	return	LValue::AsDouble() ;
+}
+
+LString LEvalValue::AsString( void ) const 
+{
+	if ( m_flagRef )
+	{
+		return	LDebugger::EvaluateData(*this).AsString() ;
+	}
+	return	LValue::AsString() ;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////
 // デバッガ
 //////////////////////////////////////////////////////////////////////////////
 
@@ -242,11 +285,11 @@ LString LDebugger::ToExpression( const LValue& value )
 }
 
 // デバッグ時式を評価
-LValue LDebugger::EvaluateExpr
+LEvalValue LDebugger::EvaluateExpr
 	( LContext& context, LStringParser& sparsExpr,
-		const wchar_t * pwszEscChars, int priority )
+		int flags, const wchar_t * pwszEscChars, int priority )
 {
-	LValue	val ;
+	LEvalValue	val ;
 	if ( !sparsExpr.PassSpace() )
 	{
 		return	val ;
@@ -282,12 +325,13 @@ LValue LDebugger::EvaluateExpr
 								( strLiteral.c_str(), strLiteral.GetLength() ) ;
 			if ( wch == L'\'' )
 			{
-				val = LValue( LType::typeUint32,
-								LValue::MakeUint64( strLiteral.GetAt(0) ) ) ;
+				val = LEvalValue
+						( LValue( LType::typeUint32,
+								LValue::MakeUint64( strLiteral.GetAt(0) ) ) ) ;
 			}
 			else
 			{
-				val = LValue( context.new_String( strLiteral ) ) ;
+				val = LEvalValue( context.new_String( strLiteral ) ) ;
 			}
 			break ;
 		}
@@ -302,7 +346,7 @@ LValue LDebugger::EvaluateExpr
 			if ( opIndex == Symbol::opParenthesis )
 			{
 				// () 括弧
-				val = EvaluateExpr( context, sparsExpr, L")" ) ;
+				val = EvaluateExpr( context, sparsExpr, flags, L")" ) ;
 				sparsExpr.HasNextChars( L")" ) ;
 				break ;
 			}
@@ -311,7 +355,7 @@ LValue LDebugger::EvaluateExpr
 			{
 				// 前置単項演算子
 				val = EvaluateExpr
-					( context, sparsExpr, pwszEscChars,
+					( context, sparsExpr, 0, pwszEscChars,
 						Symbol::s_OperatorDescs[opIndex].priorityUnary ) ;
 				val = EvaluateUnaryOperator( val, opIndex ) ;
 				break ;
@@ -319,39 +363,42 @@ LValue LDebugger::EvaluateExpr
 			else
 			{
 				// エラー
-				return	LValue() ;
+				return	LEvalValue() ;
 			}
 		}
 
 		// 予約語
 		if ( strToken == L"true" )
 		{
-			val = LValue( LType::typeBoolean, LValue::MakeBool( true ) ) ;
+			val = LEvalValue
+					( LValue( LType::typeBoolean, LValue::MakeBool( true ) ) ) ;
 			break ;
 		}
 		else if ( strToken == L"false" )
 		{
-			val = LValue( LType::typeBoolean, LValue::MakeBool( false ) ) ;
+			val = LEvalValue
+					( LValue( LType::typeBoolean, LValue::MakeBool( false ) ) ) ;
 			break ;
 		}
 		else if ( strToken == L"global" )
 		{
-			val = LValue( context.VM().Global() ) ;
+			val = LEvalValue( context.VM().Global() ) ;
 			break ;
 		}
 
 		// ローカル変数
-		val = GetLocalVariableAs( context, strToken.c_str() ) ;
+		val = GetLocalVariableAs( context, strToken.c_str(), flags ) ;
 		if ( !val.IsVoid() )
 		{
 			break ;
 		}
 
 		// this メンバ
-		LValue	valThis = GetLocalVariableAs( context, L"this" ) ;
+		LEvalValue	valThis = GetLocalVariableAs( context, L"this", 0 ) ;
 		if ( !valThis.IsVoid() )
 		{
-			val = GetMemberVariableAs( context, valThis, strToken.c_str() ) ;
+			val = GetMemberVariableAs
+					( context, valThis, strToken.c_str(), flags ) ;
 			if ( !val.IsVoid() )
 			{
 				break ;
@@ -360,7 +407,8 @@ LValue LDebugger::EvaluateExpr
 
 		// global 名前空間
 		val = GetMemberVariableAs
-				( context, LValue( context.VM().Global() ), strToken.c_str() ) ;
+				( context, LValue( context.VM().Global() ),
+										strToken.c_str(), flags ) ;
 	}
 	while ( false ) ;
 
@@ -389,7 +437,7 @@ LValue LDebugger::EvaluateExpr
 								priorityBinary == Symbol::priorityNo) )
 		{
 			// エラー
-			return	LValue() ;
+			return	LEvalValue() ;
 		}
 		if ( Symbol::s_OperatorDescs[opIndex].priorityBinary <= priority )
 		{
@@ -399,24 +447,28 @@ LValue LDebugger::EvaluateExpr
 		if ( opIndex == Symbol::opBracket )
 		{
 			// expr[index] 演算子
-			LValue	valIndex = EvaluateExpr( context, sparsExpr, L"]" ) ;
+			LEvalValue	valIndex = EvaluateExpr( context, sparsExpr, 0, L"]" ) ;
 			sparsExpr.HasNextChars( L"]" ) ;
-			val = EvaluateElementAt( context, val, valIndex ) ;
+			val = EvaluateElementAt( context, val, valIndex, flags ) ;
 		}
 		else if ( opIndex == Symbol::opMemberOf )
 		{
 			// expr.member 演算子
 			LString	strMember ;
 			sparsExpr.NextToken( strMember ) ;
-			val = GetMemberVariableAs( context, val, strMember.c_str() ) ;
+			val = GetMemberVariableAs( context, val, strMember.c_str(), flags ) ;
 		}
 		else
 		{
 			// 二項演算子
-			LValue	valRight =
+			LEvalValue	valRight =
 				EvaluateExpr
-					( context, sparsExpr, pwszEscChars,
+					( context, sparsExpr, 0, pwszEscChars,
 						Symbol::s_OperatorDescs[opIndex].priorityBinary ) ;
+			if ( val.IsReference() )
+			{
+				val = EvaluateData( val ) ;
+			}
 			val = EvaluateBinaryOperator( val, valRight, opIndex ) ;
 		}
 	}
@@ -424,13 +476,13 @@ LValue LDebugger::EvaluateExpr
 }
 
 // デバッグ時ローカル変数
-LValue LDebugger::GetLocalVariableAs
-	( LContext& context, const wchar_t * pwszName )
+LEvalValue LDebugger::GetLocalVariableAs
+	( LContext& context, const wchar_t * pwszName, int flags )
 {
 	const LCodeBuffer *	pCodeBuf = context.GetCodeBuffer() ;
 	if ( pCodeBuf == nullptr )
 	{
-		return	LValue() ;
+		return	LEvalValue() ;
 	}
 	std::vector<LCodeBuffer::DebugLocalVarInfo>	dbgVarInfos ;
 	pCodeBuf->GetDebugLocalVarInfos( dbgVarInfos, context.GetIP() ) ;
@@ -440,16 +492,16 @@ LValue LDebugger::GetLocalVariableAs
 		LLocalVarPtr	pVar = dlvi.m_varInfo->GetLocalVarAs( pwszName ) ;
 		if ( pVar != nullptr )
 		{
-			return	GetLocalVar( context, pVar, pVar->GetLocation() ) ;
+			return	GetLocalVar( context, pVar, pVar->GetLocation(), flags ) ;
 		}
 	}
-	return	LValue() ;
+	return	LEvalValue() ;
 }
 
 // デバッグ時メンバ変数
-LValue LDebugger::GetMemberVariableAs
+LEvalValue LDebugger::GetMemberVariableAs
 	( LContext& context,
-		const LValue& valObj, const wchar_t * pwszName )
+		const LValue& valObj, const wchar_t * pwszName, int flags )
 {
 	if ( valObj.GetType().IsPointer() )
 	{
@@ -458,7 +510,7 @@ LValue LDebugger::GetMemberVariableAs
 				dynamic_cast<LPointerObj*>( valObj.GetObject().Ptr() ) ;
 		if ( pPtrObj == nullptr )
 		{
-			return	LValue() ;
+			return	LEvalValue() ;
 		}
 		LPointerClass *	pPtrClass = valObj.GetType().GetPointerClass() ;
 		assert( pPtrClass != nullptr ) ;
@@ -475,7 +527,7 @@ LValue LDebugger::GetMemberVariableAs
 			LArrangement::Desc	desc ;
 			if ( arrangeBuf.GetDescAs( desc, pwszName ) )
 			{
-				return	GetDataMember( context, pPtrObj, desc ) ;
+				return	GetDataMember( context, pPtrObj, desc, flags ) ;
 			}
 		}
 	}
@@ -484,7 +536,7 @@ LValue LDebugger::GetMemberVariableAs
 		// オブジェクト
 		if ( valObj.GetObject() == nullptr )
 		{
-			return	LValue() ;
+			return	LEvalValue() ;
 		}
 		ssize_t	iElement = valObj.GetObject()->FindElementAs( pwszName ) ;
 		if ( iElement >= 0 )
@@ -501,10 +553,10 @@ LValue LDebugger::GetMemberVariableAs
 					LPtr<LPointerObj>	pPtrMember =
 							new LPointerObj( typeElement.GetClass() ) ;
 					*pPtrMember = *pPtrObj ;
-					return	LValue( pPtrMember ) ;
+					return	LEvalValue( pPtrMember ) ;
 				}
 			}
-			return	LValue( typeElement, pElement ) ;
+			return	LEvalValue( LValue( typeElement, pElement ) ) ;
 		}
 		const LArrangementBuffer&
 				arrangeBuf = valObj.GetType().GetClass()->GetProtoArrangemenet() ;
@@ -515,27 +567,31 @@ LValue LDebugger::GetMemberVariableAs
 			LPtr<LPointerObj>	pPtrObj = valObj.GetObject()->GetBufferPoiner() ;
 			if ( pPtrObj != nullptr )
 			{
-				return	GetDataMember( context, pPtrObj.Ptr(), desc ) ;
+				return	GetDataMember( context, pPtrObj.Ptr(), desc, flags ) ;
 			}
 		}
 	}
-	return	LValue() ;		// エラー
+	return	LEvalValue() ;		// エラー
 }
 
 // デバッグ時データ変数
-LValue LDebugger::GetDataMember
+LEvalValue LDebugger::GetDataMember
 	( LContext& context,
-		LPointerObj * pPtrObj, const LArrangement::Desc& desc )
+		LPointerObj * pPtrObj, const LArrangement::Desc& desc, int flags )
 {
 	LPtr<LPointerObj>	pPtrElement =
 		new LPointerObj( context.VM().GetPointerClassAs( desc.m_type ) ) ;
 	*pPtrElement = *pPtrObj ;
 	*pPtrElement += (ssize_t) desc.m_location ;
-	return	EvaluateData( LValue( pPtrElement ) ) ;
+	if ( flags & evalReference )
+	{
+		return	LEvalValue( pPtrElement, true ) ;
+	}
+	return	EvaluateData( LEvalValue( pPtrElement ) ) ;
 }
 
 // デバッグ時データ型変数評価
-LValue LDebugger::EvaluateData( const LValue& val )
+LEvalValue LDebugger::EvaluateData( const LEvalValue& val )
 {
 	if ( val.GetType().IsPointer() )
 	{
@@ -556,13 +612,15 @@ LValue LDebugger::EvaluateData( const LValue& val )
 				LType::Primitive	type = typeBuf.GetPrimitive() ;
 				if ( typeBuf.IsFloatingPointNumber() )
 				{
-					return	LValue( type, LValue::MakeDouble
-								( (LPointerObj::s_pnfLoadAsDouble[type])( pBuf ) ) ) ;
+					return	LEvalValue
+							( LValue( type, LValue::MakeDouble
+								( (LPointerObj::s_pnfLoadAsDouble[type])( pBuf ) ) ) ) ;
 				}
 				else
 				{
-					return	LValue( type, LValue::MakeLong
-								( (LPointerObj::s_pnfLoadAsLong[type])( pBuf ) ) ) ;
+					return	LEvalValue
+							( LValue( type, LValue::MakeLong
+								( (LPointerObj::s_pnfLoadAsLong[type])( pBuf ) ) ) ) ;
 				}
 			}
 		}
@@ -573,18 +631,20 @@ LValue LDebugger::EvaluateData( const LValue& val )
 			dynamic_cast<LIntegerObj*>( val.GetObject().Ptr() ) ;
 		if ( pIntObj != nullptr )
 		{
-			return	LValue( LType::typeInt64,
-							LValue::MakeLong( pIntObj->m_value ) ) ;
+			return	LEvalValue
+					( LValue( LType::typeInt64,
+							LValue::MakeLong( pIntObj->m_value ) ) ) ;
 		}
 		LDoubleObj *	pFloatObj =
 			dynamic_cast<LDoubleObj*>( val.GetObject().Ptr() ) ;
 		if ( pFloatObj != nullptr )
 		{
-			return	LValue( LType::typeDouble,
-							LValue::MakeDouble( pFloatObj->m_value ) ) ;
+			return	LEvalValue
+					( LValue( LType::typeDouble,
+							LValue::MakeDouble( pFloatObj->m_value ) ) ) ;
 		}
 	}
-	return	val ;
+	return	LEvalValue( (const LValue&) val, false ) ;
 }
 
 // 演算子判定
@@ -602,8 +662,8 @@ Symbol::OperatorIndex
 }
 
 // デバッグ時単項演算子
-LValue LDebugger::EvaluateUnaryOperator
-		( const LValue& value, Symbol::OperatorIndex opIndex )
+LEvalValue LDebugger::EvaluateUnaryOperator
+		( const LEvalValue& value, Symbol::OperatorIndex opIndex )
 {
 	if ( value.GetType().IsPrimitive() )
 	{
@@ -612,8 +672,9 @@ LValue LDebugger::EvaluateUnaryOperator
 			switch ( opIndex )
 			{
 			case	Symbol::opLogicalNot:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( !value.Value().boolValue ) ) ;
+				return	LEvalValue
+						( LValue( LType::typeBoolean,
+								LValue::MakeBool( !value.Value().boolValue ) ) ) ;
 			default:
 				break ;
 			}
@@ -625,14 +686,17 @@ LValue LDebugger::EvaluateUnaryOperator
 			case	Symbol::opAdd:
 				return	value ;
 			case	Symbol::opSub:
-				return	LValue( value.GetType().GetPrimitive(),
-								LValue::MakeLong( - value.Value().longValue ) ) ;
+				return	LEvalValue
+						( LValue( value.GetType().GetPrimitive(),
+								LValue::MakeLong( - value.Value().longValue ) ) ) ;
 			case	Symbol::opBitNot:
-				return	LValue( value.GetType().GetPrimitive(),
-								LValue::MakeLong( ~ value.Value().longValue ) ) ;
+				return	LEvalValue
+						( LValue( value.GetType().GetPrimitive(),
+								LValue::MakeLong( ~ value.Value().longValue ) ) ) ;
 			case	Symbol::opLogicalNot:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( !value.Value().boolValue ) ) ;
+				return	LEvalValue
+						( LValue( LType::typeBoolean,
+								LValue::MakeBool( !value.Value().boolValue ) ) ) ;
 			default:
 				break ;
 			}
@@ -644,8 +708,9 @@ LValue LDebugger::EvaluateUnaryOperator
 			case	Symbol::opAdd:
 				return	value ;
 			case	Symbol::opSub:
-				return	LValue( value.GetType().GetPrimitive(),
-								LValue::MakeDouble( - value.Value().dblValue ) ) ;
+				return	LEvalValue
+						( LValue( value.GetType().GetPrimitive(),
+								LValue::MakeDouble( - value.Value().dblValue ) ) ) ;
 			default:
 				break ;
 			}
@@ -660,9 +725,10 @@ LValue LDebugger::EvaluateUnaryOperator
 		case	Symbol::opMul:
 			return	EvaluateData( value ) ;
 		case	Symbol::opLogicalNot:
-			return	LValue( LType::typeBoolean,
+			return	LEvalValue
+				( LValue( LType::typeBoolean,
 					LValue::MakeBool( !((pPtrObj != nullptr)
-									&& (pPtrObj->GetPointer() != nullptr)) ) ) ;
+									&& (pPtrObj->GetPointer() != nullptr)) ) ) ) ;
 		default:
 			break ;
 		}
@@ -672,28 +738,31 @@ LValue LDebugger::EvaluateUnaryOperator
 		switch ( opIndex )
 		{
 		case	Symbol::opLogicalNot:
-			return	LValue( LType::typeBoolean,
-						LValue::MakeBool( value.GetObject() == nullptr ) ) ;
+			return	LEvalValue
+				( LValue( LType::typeBoolean,
+						LValue::MakeBool( value.GetObject() == nullptr ) ) ) ;
 		default:
 			break ;
 		}
 	}
-	return	LValue() ;		// エラー
+	return	LEvalValue() ;		// エラー
 }
 
 // デバッグ時二項演算子
-LValue LDebugger::EvaluateBinaryOperator
-		( const LValue& valLeft,
-			const LValue& valRight, Symbol::OperatorIndex opIndex )
+LEvalValue LDebugger::EvaluateBinaryOperator
+		( const LEvalValue& valLeft,
+			const LEvalValue& valRight, Symbol::OperatorIndex opIndex )
 {
 	switch ( opIndex )
 	{
 	case	Symbol::opLogicalAnd:
-		return	LValue( LType::typeBoolean,
-					LValue::MakeBool( valLeft.AsBoolean() && valRight.AsBoolean() ) ) ;
+		return	LEvalValue( LValue( LType::typeBoolean,
+					LValue::MakeBool
+						( valLeft.AsBoolean() && valRight.AsBoolean() ) ) ) ;
 	case	Symbol::opLogicalOr:
-		return	LValue( LType::typeBoolean,
-					LValue::MakeBool( valLeft.AsBoolean() || valRight.AsBoolean() ) ) ;
+		return	LEvalValue( LValue( LType::typeBoolean,
+					LValue::MakeBool
+						( valLeft.AsBoolean() || valRight.AsBoolean() ) ) ) ;
 	default:
 		break ;
 	}
@@ -707,12 +776,14 @@ LValue LDebugger::EvaluateBinaryOperator
 			switch ( opIndex )
 			{
 			case	Symbol::opEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( boolLeft == boolRight ) ) ;
+				return	LEvalValue
+						( LValue( LType::typeBoolean,
+								LValue::MakeBool( boolLeft == boolRight ) ) ) ;
 
 			case	Symbol::opNotEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( boolLeft != boolRight ) ) ;
+				return	LEvalValue
+						( LValue( LType::typeBoolean,
+								LValue::MakeBool( boolLeft != boolRight ) ) ) ;
 
 			default:
 				break ;
@@ -726,76 +797,76 @@ LValue LDebugger::EvaluateBinaryOperator
 			switch ( opIndex )
 			{
 			case	Symbol::opAdd:
-				return	LValue( LType::typeInt64,
-								LValue::MakeLong( longLeft + longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeInt64,
+								LValue::MakeLong( longLeft + longRight ) ) ) ;
 
 			case	Symbol::opSub:
-				return	LValue( LType::typeInt64,
-								LValue::MakeLong( longLeft - longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeInt64,
+								LValue::MakeLong( longLeft - longRight ) ) ) ;
 
 			case	Symbol::opMul:
-				return	LValue( LType::typeInt64,
-								LValue::MakeLong( longLeft * longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeInt64,
+								LValue::MakeLong( longLeft * longRight ) ) ) ;
 
 			case	Symbol::opDiv:
 				if ( longRight != 0 )
 				{
-					return	LValue( LType::typeInt64,
-									LValue::MakeLong( longLeft / longRight ) ) ;
+					return	LEvalValue( LValue( LType::typeInt64,
+									LValue::MakeLong( longLeft / longRight ) ) ) ;
 				}
 				break ;
 
 			case	Symbol::opMod:
 				if ( longRight != 0 )
 				{
-					return	LValue( LType::typeInt64,
-									LValue::MakeLong( longLeft % longRight ) ) ;
+					return	LEvalValue( LValue( LType::typeInt64,
+									LValue::MakeLong( longLeft % longRight ) ) ) ;
 				}
 				break ;
 
 			case	Symbol::opBitAnd:
-				return	LValue( LType::typeInt64,
-								LValue::MakeLong( longLeft & longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeInt64,
+								LValue::MakeLong( longLeft & longRight ) ) ) ;
 
 			case	Symbol::opBitOr:
-				return	LValue( LType::typeInt64,
-								LValue::MakeLong( longLeft | longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeInt64,
+								LValue::MakeLong( longLeft | longRight ) ) ) ;
 
 			case	Symbol::opBitXor:
-				return	LValue( LType::typeInt64,
-								LValue::MakeLong( longLeft ^ longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeInt64,
+								LValue::MakeLong( longLeft ^ longRight ) ) ) ;
 
 			case	Symbol::opShiftRight:
-				return	LValue( LType::typeInt64,
-								LValue::MakeLong( longLeft >> longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeInt64,
+								LValue::MakeLong( longLeft >> longRight ) ) ) ;
 
 			case	Symbol::opShiftLeft:
-				return	LValue( LType::typeInt64,
-								LValue::MakeLong( longLeft << longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeInt64,
+								LValue::MakeLong( longLeft << longRight ) ) ) ;
 
 			case	Symbol::opEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( longLeft == longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( longLeft == longRight ) ) ) ;
 
 			case	Symbol::opNotEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( longLeft != longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( longLeft != longRight ) ) ) ;
 
 			case	Symbol::opLessEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( longLeft <= longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( longLeft <= longRight ) ) ) ;
 
 			case	Symbol::opLessThan:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( longLeft < longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( longLeft < longRight ) ) ) ;
 
 			case	Symbol::opGraterEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( longLeft >= longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( longLeft >= longRight ) ) ) ;
 
 			case	Symbol::opGraterThan:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( longLeft > longRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( longLeft > longRight ) ) ) ;
 
 			default:
 				break ;
@@ -808,44 +879,44 @@ LValue LDebugger::EvaluateBinaryOperator
 			switch ( opIndex )
 			{
 			case	Symbol::opAdd:
-				return	LValue( LType::typeDouble,
-								LValue::MakeDouble( dblLeft + dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeDouble,
+								LValue::MakeDouble( dblLeft + dblRight ) ) ) ;
 
 			case	Symbol::opSub:
-				return	LValue( LType::typeDouble,
-								LValue::MakeDouble( dblLeft - dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeDouble,
+								LValue::MakeDouble( dblLeft - dblRight ) ) ) ;
 
 			case	Symbol::opMul:
-				return	LValue( LType::typeDouble,
-								LValue::MakeDouble( dblLeft * dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeDouble,
+								LValue::MakeDouble( dblLeft * dblRight ) ) ) ;
 
 			case	Symbol::opDiv:
-				return	LValue( LType::typeDouble,
-								LValue::MakeDouble( dblLeft / dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeDouble,
+								LValue::MakeDouble( dblLeft / dblRight ) ) ) ;
 
 			case	Symbol::opEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( dblLeft == dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( dblLeft == dblRight ) ) ) ;
 
 			case	Symbol::opNotEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( dblLeft != dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( dblLeft != dblRight ) ) ) ;
 
 			case	Symbol::opLessEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( dblLeft <= dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( dblLeft <= dblRight ) ) ) ;
 
 			case	Symbol::opLessThan:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( dblLeft < dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( dblLeft < dblRight ) ) ) ;
 
 			case	Symbol::opGraterEqual:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( dblLeft >= dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( dblLeft >= dblRight ) ) ) ;
 
 			case	Symbol::opGraterThan:
-				return	LValue( LType::typeBoolean,
-								LValue::MakeBool( dblLeft > dblRight ) ) ;
+				return	LEvalValue( LValue( LType::typeBoolean,
+								LValue::MakeBool( dblLeft > dblRight ) ) ) ;
 
 			default:
 				break ;
@@ -873,7 +944,7 @@ LValue LDebugger::EvaluateBinaryOperator
 				*pPtrObj = *pLeftPtrObj ;
 				*pPtrObj += (ssize_t) (valRight.AsInteger()
 								* (ssize_t) pLeftPtrClass->GetElementStride()) ;
-				return	LValue( pPtrObj ) ;
+				return	LEvalValue( pPtrObj ) ;
 			}
 			return	valLeft ;
 
@@ -884,7 +955,7 @@ LValue LDebugger::EvaluateBinaryOperator
 				*pPtrObj = *pLeftPtrObj ;
 				*pPtrObj -= (ssize_t) (valRight.AsInteger()
 								* (ssize_t) pLeftPtrClass->GetElementStride()) ;
-				return	LValue( pPtrObj ) ;
+				return	LEvalValue( pPtrObj ) ;
 			}
 			return	valLeft ;
 
@@ -896,7 +967,9 @@ LValue LDebugger::EvaluateBinaryOperator
 			pLeftPtr = (pLeftPtrObj != nullptr) ? pLeftPtrObj->GetPointer() : nullptr ;
 			pRightPtr = (pRightPtrObj != nullptr) ? pRightPtrObj->GetPointer() : nullptr ;
 
-			return	LValue( LType::typeBoolean, LValue::MakeBool( pLeftPtr == pRightPtr ) ) ;
+			return	LEvalValue
+						( LValue( LType::typeBoolean,
+							LValue::MakeBool( pLeftPtr == pRightPtr ) ) ) ;
 
 		case	Symbol::opNotEqual:
 		case	Symbol::opNotEqualPtr:
@@ -906,7 +979,9 @@ LValue LDebugger::EvaluateBinaryOperator
 			pLeftPtr = (pLeftPtrObj != nullptr) ? pLeftPtrObj->GetPointer() : nullptr ;
 			pRightPtr = (pRightPtrObj != nullptr) ? pRightPtrObj->GetPointer() : nullptr ;
 
-			return	LValue( LType::typeBoolean, LValue::MakeBool( pLeftPtr != pRightPtr ) ) ;
+			return	LEvalValue
+						( LValue( LType::typeBoolean,
+							LValue::MakeBool( pLeftPtr != pRightPtr ) ) ) ;
 
 		default:
 			break ;
@@ -918,27 +993,29 @@ LValue LDebugger::EvaluateBinaryOperator
 		{
 		case	Symbol::opEqual:
 		case	Symbol::opEqualPtr:
-			return	LValue( LType::typeBoolean,
+			return	LEvalValue
+						( LValue( LType::typeBoolean,
 							LValue::MakeBool( valLeft.GetObject().Ptr()
-											== valRight.GetObject().Ptr() ) ) ;
+											== valRight.GetObject().Ptr() ) ) ) ;
 
 		case	Symbol::opNotEqual:
 		case	Symbol::opNotEqualPtr:
-			return	LValue( LType::typeBoolean,
+			return	LEvalValue
+						( LValue( LType::typeBoolean,
 							LValue::MakeBool( valLeft.GetObject().Ptr()
-											!= valRight.GetObject().Ptr() ) ) ;
+											!= valRight.GetObject().Ptr() ) ) ) ;
 
 		default:
 			break ;
 		}
 	}
-	return	LValue() ;		// エラー
+	return	LEvalValue() ;		// エラー
 }
 
 // デバッグ時要素間接参照
-LValue LDebugger::EvaluateElementAt
-		( LContext& context,
-			const LValue& valLeft, const LValue& valIndex )
+LEvalValue LDebugger::EvaluateElementAt
+	( LContext& context,
+		const LEvalValue& valLeft, const LEvalValue& valIndex, int flags )
 {
 	if ( valLeft.GetType().IsPointer() )
 	{
@@ -947,7 +1024,7 @@ LValue LDebugger::EvaluateElementAt
 				dynamic_cast<LPointerObj*>( valLeft.GetObject().Ptr() ) ;
 		if ( pPtrObj == nullptr )
 		{
-			return	LValue() ;
+			return	LEvalValue() ;
 		}
 		LPointerClass *	pPtrClass = valLeft.GetType().GetPointerClass() ;
 		assert( pPtrClass != nullptr ) ;
@@ -963,7 +1040,11 @@ LValue LDebugger::EvaluateElementAt
 			new LPointerObj( context.VM().GetPointerClassAs( typeElement ) ) ;
 		*pPtrElement += (ssize_t) (valIndex.AsInteger()
 									* (ssize_t) typeElement.GetDataBytes()) ;
-		return	EvaluateData( LValue( pPtrElement ) ) ;
+		if ( flags & evalReference )
+		{
+			return	LEvalValue( pPtrElement, true ) ;
+		}
+		return	EvaluateData( LEvalValue( pPtrElement ) ) ;
 	}
 	else if ( valLeft.GetType().IsObject()
 			&& (valLeft.GetObject() != nullptr) )
@@ -995,34 +1076,54 @@ LValue LDebugger::EvaluateElementAt
 					LPtr<LPointerObj>	pPtrMember =
 							new LPointerObj( typeElement.GetClass() ) ;
 					*pPtrMember = *pPtrObj ;
-					return	LValue( pPtrMember ) ;
+					return	LEvalValue( pPtrMember ) ;
 				}
 			}
-			return	LValue( typeElement, pElement ) ;
+			return	LEvalValue( LValue( typeElement, pElement ) ) ;
 		}
 	}
-	return	LValue() ;		// エラー
+	return	LEvalValue() ;		// エラー
 }
 
 // ローカル変数を取得
-LValue LDebugger::GetLocalVar( LContext& context, LLocalVarPtr pVar, size_t iLoc )
+LEvalValue LDebugger::GetLocalVar
+	( LContext& context, LLocalVarPtr pVar, size_t iLoc, int flags )
 {
 	std::shared_ptr<LStackBuffer>	pStack = context.Stack() ;
 	if ( pStack->fp() + iLoc >= std::min( pStack->sp(), pStack->dp() ) )
 	{
-		return	LValue() ;
+		return	LEvalValue() ;
 	}
 	LValue::Primitive
 			val = pStack->GetAt( pStack->fp() + iLoc ) ;
 	LString	strExpr ;
+	if ( (flags & evalReference) && pVar->GetType().CanArrangeOnBuf() )
+	{
+		// 参照ポインタ
+		LType	typeBuf = pVar->GetType() ;
+		if ( typeBuf.IsDataArray() )
+		{
+			LDataArrayClass *	pArrayClass = typeBuf.GetDataArrayClass() ;
+			assert( pArrayClass != nullptr ) ;
+			typeBuf = pArrayClass->GetElementType() ;
+		}
+		LPtr<LPointerObj>	pPtr =
+			new LPointerObj
+				( context.VM().GetPointerClassAs( typeBuf ),
+					pStack, (pStack->fp() + iLoc) * sizeof(LStackBuffer::Word) ) ;
+		return	LEvalValue( pPtr, true ) ;
+	}
 	if ( pVar->GetType().IsPrimitive() )
 	{
+		// プリミティブ型
 		LType::Primitive	primType = pVar->GetType().GetPrimitive() ;
-		return	LValue( primType, (LContext::s_pfnLoadLocal[primType])( val ) ) ;
+		return	LEvalValue( LValue
+					( primType, (LContext::s_pfnLoadLocal[primType])( val ) ) ) ;
 	}
 	else if ( pVar->GetType().IsPointer()
 			&& (dynamic_cast<LPointerObj*>(val.pObject) != nullptr) )
 	{
+		// ポインタ型
 		LPtr<LPointerObj>	pPtr =
 				new LPointerObj( pVar->GetType().GetClass() ) ;
 		*pPtr = *(dynamic_cast<LPointerObj*>(val.pObject)) ;
@@ -1034,10 +1135,11 @@ LValue LDebugger::GetLocalVar( LContext& context, LLocalVarPtr pVar, size_t iLoc
 				index = pStack->GetAt( pStack->fp() + iLoc + 2 ) ;
 			*pPtr += (ssize_t) index.longValue ;
 		}
-		return	LValue( pPtr ) ;
+		return	LEvalValue( pPtr ) ;
 	}
 	else
 	{
-		return	LValue( LObjPtr( LObject::AddRef( val.pObject ) ) ) ;
+		// それ以外のオブジェクト
+		return	LEvalValue( LObjPtr( LObject::AddRef( val.pObject ) ) ) ;
 	}
 }
