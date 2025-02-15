@@ -145,6 +145,19 @@ namespace	Loquaty
 		bool PutInteger( LLong val ) ;
 		bool PutDouble( LDouble val ) ;
 		bool PutString( const wchar_t * str ) ;
+
+		// 要素取得
+		LValue GetElementAt
+			( LVirtualMachine& vm,
+				size_t index, bool flagRef = false ) const ;
+		LValue GetMemberAs
+			( LVirtualMachine& vm,
+				const wchar_t * name, bool flagRef = false ) const ;
+
+		// ポインタの参照先がプリミティブ型／
+		// ボックス化されたオブジェクトの場合評価する
+		LValue UnboxingData( void ) const ;
+
 	} ;
 
 

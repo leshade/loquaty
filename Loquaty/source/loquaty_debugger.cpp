@@ -13,7 +13,7 @@ LBoolean LEvalValue::AsBoolean( void ) const
 {
 	if ( m_flagRef )
 	{
-		return	LDebugger::EvaluateData(*this).AsBoolean() ;
+		return	UnboxingData().AsBoolean() ;
 	}
 	return	LValue::AsBoolean() ;
 }
@@ -22,7 +22,7 @@ LLong LEvalValue::AsInteger( void ) const
 {
 	if ( m_flagRef )
 	{
-		return	LDebugger::EvaluateData(*this).AsInteger() ;
+		return	UnboxingData().AsInteger() ;
 	}
 	return	LValue::AsInteger() ;
 }
@@ -31,7 +31,7 @@ LDouble LEvalValue::AsDouble( void ) const
 {
 	if ( m_flagRef )
 	{
-		return	LDebugger::EvaluateData(*this).AsDouble() ;
+		return	UnboxingData().AsDouble() ;
 	}
 	return	LValue::AsDouble() ;
 }
@@ -40,7 +40,7 @@ LString LEvalValue::AsString( void ) const
 {
 	if ( m_flagRef )
 	{
-		return	LDebugger::EvaluateData(*this).AsString() ;
+		return	UnboxingData().AsString() ;
 	}
 	return	LValue::AsString() ;
 }
@@ -503,148 +503,21 @@ LEvalValue LDebugger::GetMemberVariableAs
 	( LContext& context,
 		const LValue& valObj, const wchar_t * pwszName, int flags )
 {
-	if ( valObj.GetType().IsPointer() )
-	{
-		// ポインタ
-		LPointerObj *	pPtrObj =
-				dynamic_cast<LPointerObj*>( valObj.GetObject().Ptr() ) ;
-		if ( pPtrObj == nullptr )
-		{
-			return	LEvalValue() ;
-		}
-		LPointerClass *	pPtrClass = valObj.GetType().GetPointerClass() ;
-		assert( pPtrClass != nullptr ) ;
-
-		const LType&	typeBuf = pPtrClass->GetBufferType() ;
-		if ( typeBuf.IsStructure() )
-		{
-			// 構造体ポインタのメンバ
-			LStructureClass *	pStructClass = typeBuf.GetStructureClass() ;
-			assert( pStructClass != nullptr ) ;
-
-			const LArrangementBuffer&
-					arrangeBuf = pStructClass->GetProtoArrangemenet() ;
-			LArrangement::Desc	desc ;
-			if ( arrangeBuf.GetDescAs( desc, pwszName ) )
-			{
-				return	GetDataMember( context, pPtrObj, desc, flags ) ;
-			}
-		}
-	}
-	else if ( valObj.GetType().IsObject() )
-	{
-		// オブジェクト
-		if ( valObj.GetObject() == nullptr )
-		{
-			return	LEvalValue() ;
-		}
-		ssize_t	iElement = valObj.GetObject()->FindElementAs( pwszName ) ;
-		if ( iElement >= 0 )
-		{
-			LType	typeElement = valObj.GetObject()->GetElementTypeAt( (size_t) iElement ) ;
-			LObjPtr	pElement = valObj.GetObject()->GetElementAt( (size_t) iElement ) ;
-			if ( (pElement != nullptr)
-				&& typeElement.IsPointer() )
-			{
-				LPointerObj *	pPtrObj =
-						dynamic_cast<LPointerObj*>( pElement.Ptr() ) ;
-				if ( pPtrObj != nullptr )
-				{
-					LPtr<LPointerObj>	pPtrMember =
-							new LPointerObj( typeElement.GetClass() ) ;
-					*pPtrMember = *pPtrObj ;
-					return	LEvalValue( pPtrMember ) ;
-				}
-			}
-			return	LEvalValue( LValue( typeElement, pElement ) ) ;
-		}
-		const LArrangementBuffer&
-				arrangeBuf = valObj.GetType().GetClass()->GetProtoArrangemenet() ;
-		LArrangement::Desc	desc ;
-		if ( arrangeBuf.GetDescAs( desc, pwszName ) )
-		{
-			// クラスメンバ変数へのポインタ
-			LPtr<LPointerObj>	pPtrObj = valObj.GetObject()->GetBufferPoiner() ;
-			if ( pPtrObj != nullptr )
-			{
-				return	GetDataMember( context, pPtrObj.Ptr(), desc, flags ) ;
-			}
-		}
-	}
-	return	LEvalValue() ;		// エラー
-}
-
-// デバッグ時データ変数
-LEvalValue LDebugger::GetDataMember
-	( LContext& context,
-		LPointerObj * pPtrObj, const LArrangement::Desc& desc, int flags )
-{
-	LPtr<LPointerObj>	pPtrElement =
-		new LPointerObj( context.VM().GetPointerClassAs( desc.m_type ) ) ;
-	*pPtrElement = *pPtrObj ;
-	*pPtrElement += (ssize_t) desc.m_location ;
 	if ( flags & evalReference )
 	{
-		return	LEvalValue( pPtrElement, true ) ;
+		return	LEvalValue
+				( valObj.GetMemberAs( context.VM(), pwszName, true ), true ) ;
 	}
-	return	EvaluateData( LEvalValue( pPtrElement ) ) ;
+	else
+	{
+		return	LEvalValue( valObj.GetMemberAs( context.VM(), pwszName ) ) ;
+	}
 }
 
 // デバッグ時データ型変数評価
 LEvalValue LDebugger::EvaluateData( const LEvalValue& val )
 {
-	if ( val.GetType().IsPointer() )
-	{
-		LPointerClass *	pPtrClass = val.GetType().GetPointerClass() ;
-		assert( pPtrClass != nullptr ) ;
-
-		LPointerObj *	pPtrObj =
-				dynamic_cast<LPointerObj*>( val.GetObject().Ptr() ) ;
-
-		LType	typeBuf = pPtrClass->GetBufferType() ;
-		if ( typeBuf.IsPrimitive() && (pPtrObj != nullptr) )
-		{
-			// プリミティブ型
-			std::uint8_t *	pBuf =
-					pPtrObj->GetPointer( 0, typeBuf.GetDataBytes() ) ;
-			if ( pBuf != nullptr )
-			{
-				LType::Primitive	type = typeBuf.GetPrimitive() ;
-				if ( typeBuf.IsFloatingPointNumber() )
-				{
-					return	LEvalValue
-							( LValue( type, LValue::MakeDouble
-								( (LPointerObj::s_pnfLoadAsDouble[type])( pBuf ) ) ) ) ;
-				}
-				else
-				{
-					return	LEvalValue
-							( LValue( type, LValue::MakeLong
-								( (LPointerObj::s_pnfLoadAsLong[type])( pBuf ) ) ) ) ;
-				}
-			}
-		}
-	}
-	else if ( val.GetType().IsObject() )
-	{
-		LIntegerObj *	pIntObj =
-			dynamic_cast<LIntegerObj*>( val.GetObject().Ptr() ) ;
-		if ( pIntObj != nullptr )
-		{
-			return	LEvalValue
-					( LValue( LType::typeInt64,
-							LValue::MakeLong( pIntObj->m_value ) ) ) ;
-		}
-		LDoubleObj *	pFloatObj =
-			dynamic_cast<LDoubleObj*>( val.GetObject().Ptr() ) ;
-		if ( pFloatObj != nullptr )
-		{
-			return	LEvalValue
-					( LValue( LType::typeDouble,
-							LValue::MakeDouble( pFloatObj->m_value ) ) ) ;
-		}
-	}
-	return	LEvalValue( (const LValue&) val, false ) ;
+	return	LEvalValue( val.UnboxingData(), false ) ;
 }
 
 // 演算子判定
@@ -1017,69 +890,34 @@ LEvalValue LDebugger::EvaluateElementAt
 	( LContext& context,
 		const LEvalValue& valLeft, const LEvalValue& valIndex, int flags )
 {
-	if ( valLeft.GetType().IsPointer() )
+	if ( valIndex.GetType().IsInteger() )
 	{
-		// ポインタ
-		LPointerObj *	pPtrObj =
-				dynamic_cast<LPointerObj*>( valLeft.GetObject().Ptr() ) ;
-		if ( pPtrObj == nullptr )
-		{
-			return	LEvalValue() ;
-		}
-		LPointerClass *	pPtrClass = valLeft.GetType().GetPointerClass() ;
-		assert( pPtrClass != nullptr ) ;
-
-		LType	typeElement = pPtrClass->GetBufferType() ;
-		if ( typeElement.IsDataArray() )
-		{
-			typeElement = typeElement.GetRefElementType() ;
-		}
-		LPtr<LPointerObj>	pPtrElement =
-			new LPointerObj( context.VM().GetPointerClassAs( typeElement ) ) ;
-		*pPtrElement = *pPtrObj ;
-			new LPointerObj( context.VM().GetPointerClassAs( typeElement ) ) ;
-		*pPtrElement += (ssize_t) (valIndex.AsInteger()
-									* (ssize_t) typeElement.GetDataBytes()) ;
 		if ( flags & evalReference )
 		{
-			return	LEvalValue( pPtrElement, true ) ;
+			return	LEvalValue
+					( valLeft.GetElementAt
+						( context.VM(), (size_t) valIndex.AsInteger(), true ), true ) ;
 		}
-		return	EvaluateData( LEvalValue( pPtrElement ) ) ;
+		else
+		{
+			return	LEvalValue
+					( valLeft.GetElementAt
+						( context.VM(), (size_t) valIndex.AsInteger() ) ) ;
+		}
 	}
-	else if ( valLeft.GetType().IsObject()
-			&& (valLeft.GetObject() != nullptr) )
+	else if ( valIndex.GetType().IsString() )
 	{
-		// オブジェクト要素間接参照
-		ssize_t	iElement = -1 ;
-		if ( valIndex.GetType().IsInteger() )
+		if ( flags & evalReference )
 		{
-			iElement = (ssize_t) valIndex.AsInteger() ;
+			return	LEvalValue
+					( valLeft.GetMemberAs
+						( context.VM(), valIndex.AsString().c_str(), true ), true ) ;
 		}
-		else if ( valIndex.GetType().IsString() )
+		else
 		{
-			iElement = valLeft.GetObject()->
-						FindElementAs( valIndex.AsString().c_str() ) ;
-		}
-		if ( iElement >= 0 )
-		{
-			LType	typeElement =
-						valLeft.GetObject()->GetElementTypeAt( (size_t) iElement ) ;
-			LObjPtr	pElement =
-						valLeft.GetObject()->GetElementAt( (size_t) iElement ) ;
-			if ( (pElement != nullptr)
-				&& typeElement.IsPointer() )
-			{
-				LPointerObj *	pPtrObj =
-						dynamic_cast<LPointerObj*>( pElement.Ptr() ) ;
-				if ( pPtrObj != nullptr )
-				{
-					LPtr<LPointerObj>	pPtrMember =
-							new LPointerObj( typeElement.GetClass() ) ;
-					*pPtrMember = *pPtrObj ;
-					return	LEvalValue( pPtrMember ) ;
-				}
-			}
-			return	LEvalValue( LValue( typeElement, pElement ) ) ;
+			return	LEvalValue
+					( valLeft.GetMemberAs
+						( context.VM(), valIndex.AsString().c_str() ) ) ;
 		}
 	}
 	return	LEvalValue() ;		// エラー

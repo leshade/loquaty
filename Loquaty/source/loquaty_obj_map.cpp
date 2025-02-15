@@ -134,18 +134,29 @@ bool LMapObj::AsString( LString& str ) const
 // （式表現に近い）文字列に変換
 bool LMapObj::AsExpression( LString& str, std::uint64_t flags ) const
 {
-	LSpinLock	lockMap( m_mtxMap ) ;
-	LSpinLock	lockArray( m_mtxArray ) ;
+	LSpinLock		lockMap( m_mtxMap ) ;
+	LSpinLock		lockArray( m_mtxArray ) ;
+	LString			strElement ;
 
-	LString	strElement ;
+	const wchar_t *	pwszStarter = L"{ " ;
+	const wchar_t *	pwszCloser = L" }" ;
+	const wchar_t *	pwszDelimiter = L", " ;
+	const wchar_t *	pwszSeparator = L": " ;
+	if ( flags & expressionForJSON )
+	{
+		pwszStarter = L"{" ;
+		pwszCloser = L"}" ;
+		pwszDelimiter = L"," ;
+		pwszSeparator = L":" ;
+	}
 
-	str = L"{ " ;
+	str = pwszStarter ;
 	size_t	nCount = 0 ;
 	for ( auto iter : m_map )
 	{
 		if ( nCount >= 1 )
 		{
-			str += L", " ;
+			str += pwszDelimiter ;
 		}
 		if ( !(flags & expressionForJSON)
 			&& LStringParser::IsValidAsSymbol( iter.first.c_str() ) )
@@ -159,7 +170,7 @@ bool LMapObj::AsExpression( LString& str, std::uint64_t flags ) const
 						( iter.first.c_str(), iter.first.length() ) ;
 			str += L"\"" ;
 		}
-		str += L": " ;
+		str += pwszSeparator ;
 		//
 		LObject *	pObj = nullptr ;
 		if ( iter.second < m_array.size() )
@@ -170,7 +181,7 @@ bool LMapObj::AsExpression( LString& str, std::uint64_t flags ) const
 		//
 		nCount ++ ;
 	}
-	str += L" }" ;
+	str += pwszCloser ;
 	return	true ;
 }
 

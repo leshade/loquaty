@@ -192,6 +192,204 @@ bool LValue::PutString( const wchar_t * str )
 	return	false ;
 }
 
+// 要素取得
+LValue LValue::GetElementAt
+	( LVirtualMachine& vm, size_t index, bool flagRef ) const
+{
+	if ( m_type.IsPointer() )
+	{
+		// ポインタ
+		LPointerObj *	pPtrObj =
+				dynamic_cast<LPointerObj*>( m_pObject.Ptr() ) ;
+		if ( pPtrObj == nullptr )
+		{
+			return	LValue() ;
+		}
+		LPointerClass *	pPtrClass = m_type.GetPointerClass() ;
+		assert( pPtrClass != nullptr ) ;
+
+		LType	typeElement = pPtrClass->GetBufferType() ;
+		if ( typeElement.IsDataArray() )
+		{
+			typeElement = typeElement.GetRefElementType() ;
+		}
+		LPtr<LPointerObj>	pPtrElement =
+			new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ;
+		*pPtrElement = *pPtrObj ;
+		*pPtrElement += (ssize_t) index
+						* (ssize_t) typeElement.GetDataBytes() ;
+		if ( flagRef )
+		{
+			return	LValue( pPtrElement ) ;
+		}
+		return	LValue( pPtrElement ).UnboxingData() ;
+	}
+	else if ( m_type.IsObject() && (m_pObject != nullptr) )
+	{
+		// オブジェクト要素間接参照
+		LType	typeElement = m_pObject->GetElementTypeAt( index ) ;
+		LObjPtr	pElement = m_pObject->GetElementAt( index ) ;
+		if ( (pElement != nullptr) && typeElement.IsPointer() )
+		{
+			LPointerObj *	pPtrObj =
+					dynamic_cast<LPointerObj*>( pElement.Ptr() ) ;
+			if ( pPtrObj != nullptr )
+			{
+				LPtr<LPointerObj>	pPtrMember =
+						new LPointerObj( typeElement.GetClass() ) ;
+				*pPtrMember = *pPtrObj ;
+				return	LValue( pPtrMember ) ;
+			}
+		}
+		return	LValue( typeElement, pElement ) ;
+	}
+	return	LValue() ;		// エラー
+}
+
+LValue LValue::GetMemberAs
+	( LVirtualMachine& vm, const wchar_t * name, bool flagRef ) const
+{
+	if ( m_type.IsPointer() )
+	{
+		// ポインタ
+		LPointerObj *	pPtrObj =
+				dynamic_cast<LPointerObj*>( m_pObject.Ptr() ) ;
+		if ( pPtrObj == nullptr )
+		{
+			return	LValue() ;
+		}
+		LPointerClass *	pPtrClass = m_type.GetPointerClass() ;
+		assert( pPtrClass != nullptr ) ;
+
+		const LType&	typeBuf = pPtrClass->GetBufferType() ;
+		if ( typeBuf.IsStructure() )
+		{
+			// 構造体ポインタのメンバ
+			LStructureClass *	pStructClass = typeBuf.GetStructureClass() ;
+			assert( pStructClass != nullptr ) ;
+
+			const LArrangementBuffer&
+					arrangeBuf = pStructClass->GetProtoArrangemenet() ;
+			LArrangement::Desc	desc ;
+			if ( arrangeBuf.GetDescAs( desc, name ) )
+			{
+				LPtr<LPointerObj>	pPtrMember =
+					new LPointerObj( vm.GetPointerClassAs( desc.m_type ) ) ;
+				*pPtrMember = *pPtrObj ;
+				*pPtrMember += (ssize_t) desc.m_location ;
+				if ( flagRef )
+				{
+					return	LValue( pPtrMember ) ;
+				}
+				return	LValue( pPtrMember ).UnboxingData() ;
+			}
+		}
+	}
+	else if ( m_type.IsObject() )
+	{
+		// オブジェクト
+		if ( m_pObject == nullptr )
+		{
+			return	LValue() ;
+		}
+		ssize_t	iElement = m_pObject->FindElementAs( name ) ;
+		if ( iElement >= 0 )
+		{
+			LType	typeElement = m_pObject->GetElementTypeAt( (size_t) iElement ) ;
+			LObjPtr	pElement = m_pObject->GetElementAt( (size_t) iElement ) ;
+			if ( (pElement != nullptr)
+				&& typeElement.IsPointer() )
+			{
+				LPointerObj *	pPtrObj =
+						dynamic_cast<LPointerObj*>( pElement.Ptr() ) ;
+				if ( pPtrObj != nullptr )
+				{
+					LPtr<LPointerObj>	pPtrMember =
+							new LPointerObj( typeElement.GetClass() ) ;
+					*pPtrMember = *pPtrObj ;
+					return	LValue( pPtrMember ) ;
+				}
+			}
+			return	LValue( typeElement, pElement ) ;
+		}
+		const LArrangementBuffer&
+				arrangeBuf = m_type.GetClass()->GetProtoArrangemenet() ;
+		LArrangement::Desc	desc ;
+		if ( arrangeBuf.GetDescAs( desc, name ) )
+		{
+			// クラスメンバ変数へのポインタ
+			LPtr<LPointerObj>	pPtrObj = m_pObject->GetBufferPoiner() ;
+			if ( pPtrObj != nullptr )
+			{
+				LPtr<LPointerObj>	pPtrMember =
+					new LPointerObj( vm.GetPointerClassAs( desc.m_type ) ) ;
+				*pPtrMember = *pPtrObj ;
+				*pPtrMember += (ssize_t) desc.m_location ;
+				if ( flagRef )
+				{
+					return	LValue( pPtrMember ) ;
+				}
+				return	LValue( pPtrMember ).UnboxingData() ;
+			}
+		}
+	}
+	return	LValue() ;		// エラー
+}
+
+// ポインタの参照先がプリミティブ型／
+// ボックス化されたオブジェクトの場合評価する
+LValue LValue::UnboxingData( void ) const
+{
+	if ( m_type.IsPointer() )
+	{
+		LPointerClass *	pPtrClass = m_type.GetPointerClass() ;
+		assert( pPtrClass != nullptr ) ;
+
+		LPointerObj *	pPtrObj =
+				dynamic_cast<LPointerObj*>( m_pObject.Ptr() ) ;
+
+		LType	typeBuf = pPtrClass->GetBufferType() ;
+		if ( typeBuf.IsPrimitive() && (pPtrObj != nullptr) )
+		{
+			// プリミティブ型
+			std::uint8_t *	pBuf =
+					pPtrObj->GetPointer( 0, typeBuf.GetDataBytes() ) ;
+			if ( pBuf != nullptr )
+			{
+				LType::Primitive	type = typeBuf.GetPrimitive() ;
+				if ( typeBuf.IsFloatingPointNumber() )
+				{
+					return	LValue( type, LValue::MakeDouble
+								( (LPointerObj::s_pnfLoadAsDouble[type])( pBuf ) ) ) ;
+				}
+				else
+				{
+					return	LValue( type, LValue::MakeLong
+								( (LPointerObj::s_pnfLoadAsLong[type])( pBuf ) ) ) ;
+				}
+			}
+		}
+	}
+	else if ( m_type.IsObject() )
+	{
+		LIntegerObj *	pIntObj =
+				dynamic_cast<LIntegerObj*>( m_pObject.Ptr() ) ;
+		if ( pIntObj != nullptr )
+		{
+			return	LValue( LType::typeInt64,
+							LValue::MakeLong( pIntObj->m_value ) ) ;
+		}
+		LDoubleObj *	pFloatObj =
+				dynamic_cast<LDoubleObj*>( m_pObject.Ptr() ) ;
+		if ( pFloatObj != nullptr )
+		{
+			return	LValue( LType::typeDouble,
+							LValue::MakeDouble( pFloatObj->m_value ) ) ;
+		}
+	}
+	return	*this ;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////

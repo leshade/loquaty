@@ -84,18 +84,27 @@ bool LArrayObj::AsString( LString& str ) const
 // （式表現に近い）文字列に変換
 bool LArrayObj::AsExpression( LString& str, std::uint64_t flags ) const
 {
-	LSpinLock	lock( m_mtxArray ) ;
-	LString	strElement ;
-	str = L"[ " ;
+	LSpinLock		lock( m_mtxArray ) ;
+	LString			strElement ;
+	const wchar_t *	pwszStarter = L"[ " ;
+	const wchar_t *	pwszCloser = L" ]" ;
+	const wchar_t *	pwszDelimiter = L", " ;
+	if ( flags & expressionForJSON )
+	{
+		pwszStarter = L"[" ;
+		pwszCloser = L"]" ;
+		pwszDelimiter = L"," ;
+	}
+	str = pwszStarter ;
 	for ( size_t i = 0; i < m_array.size(); i ++ )
 	{
 		if ( i >= 1 )
 		{
-			str += L", " ;
+			str += pwszDelimiter ;
 		}
 		str += ToExpression( m_array.at(i).Ptr(), flags ) ;
 	}
-	str += L" ]" ;
+	str += pwszCloser ;
 	return	true ;
 }
 

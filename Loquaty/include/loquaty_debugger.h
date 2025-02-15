@@ -211,11 +211,6 @@ namespace	Loquaty
 		static LEvalValue GetMemberVariableAs
 			( LContext& context,
 					const LValue& valObj, const wchar_t * pwszName, int flags = 0 ) ;
-		// デバッグ時データ変数
-		static LEvalValue GetDataMember
-			( LContext& context,
-				LPointerObj * pPtrObj,
-				const LArrangement::Desc& desc, int flags = 0 ) ;
 		// デバッグ時データ型変数評価（参照の場合ポインタの先の値を評価する）
 		static LEvalValue EvaluateData( const LEvalValue& val ) ;
 
