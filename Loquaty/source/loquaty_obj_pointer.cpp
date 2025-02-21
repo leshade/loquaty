@@ -298,6 +298,125 @@ bool LPointerObj::PutDouble( LDouble val ) const
 	return	true ;
 }
 
+// クラスのメンバやポインタの参照先の構造体に値を設定
+bool LPointerObj::PutMembers( const LValue& val )
+{
+	LPointerClass *	pPtrClass = dynamic_cast<LPointerClass*>( m_pClass ) ;
+	if ( pPtrClass == nullptr )
+	{
+		return	false ;
+	}
+	return	PutMembers( 0, pPtrClass->GetBufferType(), val ) ;
+}
+
+bool LPointerObj::PutMembers
+		( size_t iOffset, const LType& type, const LValue& val )
+{
+	if ( val.GetType().IsArray() )
+	{
+		// 配列をストア
+		LObjPtr	pSrcObj = val.GetObject() ;
+		if ( pSrcObj == nullptr )
+		{
+			return	false ;
+		}
+		LType	typeElement = type ;
+		if ( type.IsDataArray() )
+		{
+			LDataArrayClass *	pArrayClass = type.GetDataArrayClass() ;
+			assert( pArrayClass != nullptr ) ;
+			typeElement = pArrayClass->GetElementType() ;
+		}
+		bool			flagSucceeded = true ;
+		const size_t	nDataBytes = typeElement.GetDataBytes() ;
+		const size_t	nCount = pSrcObj->GetElementCount() ;
+		for ( size_t i = 0; i < nCount; i ++ )
+		{
+			LObjPtr	pElement = pSrcObj->GetElementAt( i ) ;
+			if ( pElement != nullptr )
+			{
+				if ( !PutMembers
+					( iOffset + i * nDataBytes,
+							typeElement, LValue(pSrcObj) ) )
+				{
+					flagSucceeded = false ;
+				}
+			}
+		}
+		return	flagSucceeded ;
+	}
+	if ( type.IsPrimitive() )
+	{
+		// プリミティブ型にストア
+		LType::Primitive	primType = type.GetPrimitive() ;
+		std::uint8_t *		ptr =
+				GetPointer( iOffset, LType::s_bytesAligned[primType] ) ;
+		if ( ptr == nullptr )
+		{
+			return	false ;
+		}
+		if ( type.IsInteger() )
+		{
+			(s_pnfStoreAsLong[primType])( ptr, val.AsInteger() ) ;
+		}
+		else if ( type.IsFloatingPointNumber() )
+		{
+			(s_pnfStoreAsDouble[primType])( ptr, val.AsDouble() ) ;
+		}
+		else
+		{
+			return	false ;
+		}
+		return	true ;
+	}
+	if ( type.IsStructure() )
+	{
+		// 構造体
+		LStructureClass *	pStructClass = type.GetStructureClass() ;
+		assert( pStructClass != nullptr ) ;
+		const LArrangementBuffer&
+				arrangeBuf = pStructClass->GetProtoArrangemenet() ;
+
+		LObjPtr	pSrcObj = val.GetObject() ;
+		if ( pSrcObj == nullptr )
+		{
+			return	false ;
+		}
+		LString			strName ;
+		bool			flagSucceeded = true ;
+		const size_t	nCount = pSrcObj->GetElementCount() ;
+		for ( size_t i = 0; i < nCount; i ++ )
+		{
+			const wchar_t *	pwszName = pSrcObj->GetElementNameAt( strName, i ) ;
+			if ( pwszName == nullptr )
+			{
+				flagSucceeded = false ;
+				continue ;
+			}
+			LObjPtr	pElement = pSrcObj->GetElementAt( i ) ;
+			if ( pElement == nullptr )
+			{
+				continue ;
+			}
+			LArrangementBuffer::Desc	desc ;
+			if ( !arrangeBuf.GetDescAs( desc, pwszName ) )
+			{
+				flagSucceeded = false ;
+				continue ;
+			}
+			if ( !PutMembers
+				( iOffset + desc.m_location,
+						desc.m_type, LValue(pElement) ) )
+			{
+				flagSucceeded = false ;
+			}
+		}
+		return	flagSucceeded ;
+	}
+	return	false ;
+}
+
+
 const LPointerObj::PFN_StorePrimitiveAsLong
 		LPointerObj::s_pnfStoreAsLong[LType::typePrimitiveCount] =
 {
@@ -516,6 +635,11 @@ bool LPointerObj::AsDouble( LDouble& value ) const
 // 文字列として評価
 bool LPointerObj::AsString( LString& str ) const
 {
+	return	LPointerObj::AsExpression( str ) ;
+}
+
+bool LPointerObj::AsExpression( LString& str, std::uint64_t flags ) const
+{
 	if ( GetPointer() == nullptr )
 	{
 		str = L"null" ;
@@ -566,12 +690,22 @@ bool LPointerObj::AsString( LString& str ) const
 			new LPointerObj
 				( m_pClass->VM().GetPointerClassAs( typeElement ), m_pBuf, m_iOffset ) ;
 
-		str = L"[" ;
+		const wchar_t *	pwszStarter = L"[ " ;
+		const wchar_t *	pwszCloser = L" ]" ;
+		const wchar_t *	pwszDelimiter = L", " ;
+		if ( flags & expressionForJSON )
+		{
+			pwszStarter = L"{" ;
+			pwszCloser = L"}" ;
+			pwszDelimiter = L"," ;
+		}
+
+		str = pwszStarter ;
 		for ( size_t i = 0; i < nCount; i ++ )
 		{
 			if ( i > 0 )
 			{
-				str += L", " ;
+				str += pwszDelimiter ;
 			}
 			LString	strElement ;
 			if ( pNext->AsString( strElement ) )
@@ -580,7 +714,7 @@ bool LPointerObj::AsString( LString& str ) const
 			}
 			*pNext += typeElement.GetDataBytes() ;
 		}
-		str += L"]" ;
+		str += pwszCloser ;
 		return	true ;
 	}
 	if ( typeData.IsStructure() )
@@ -594,18 +728,39 @@ bool LPointerObj::AsString( LString& str ) const
 		std::vector<LString>	names ;
 		arrange.GetOrderedNameList( names ) ;
 
-		str = L"{" ;
+		const wchar_t *	pwszStarter = L"{ " ;
+		const wchar_t *	pwszCloser = L" }" ;
+		const wchar_t *	pwszDelimiter = L", " ;
+		const wchar_t *	pwszSeparator = L": " ;
+		if ( flags & expressionForJSON )
+		{
+			pwszStarter = L"{" ;
+			pwszCloser = L"}" ;
+			pwszDelimiter = L"," ;
+			pwszSeparator = L":" ;
+		}
+		str = pwszStarter ;
 		for ( size_t i = 0; i < names.size(); i ++ )
 		{
 			if ( i > 0 )
 			{
-				str += L"," ;
+				str += pwszDelimiter ;
 			}
 			LArrangement::Desc	desc ;
 			if ( arrange.GetDescAs( desc, names.at(i).c_str() ) )
 			{
-				str += names.at(i) ;
-				str += L": " ;
+				if ( flags & expressionForJSON )
+				{
+					str += L"\"" ;
+					str += LStringParser::EncodeStringLiteral
+								( names.at(i).c_str(), names.at(i).length() ) ;
+					str += L"\"" ;
+				}
+				else
+				{
+					str += names.at(i) ;
+				}
+				str += pwszSeparator ;
 
 				LPtr<LPointerObj>	pElement =
 					new LPointerObj
@@ -618,7 +773,7 @@ bool LPointerObj::AsString( LString& str ) const
 				}
 			}
 		}
-		str += L"}" ;
+		str += pwszCloser ;
 		return	true ;
 	}
 	return	false ;

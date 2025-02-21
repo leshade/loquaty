@@ -49,6 +49,9 @@ namespace	Loquaty
 		virtual void RemoveElementAt( size_t index ) ;
 		virtual void RemoveAll( void ) ;
 
+		// クラスのメンバやポインタの参照先の構造体に値を設定
+		virtual bool PutMembers( const LObjPtr& pObj ) ;
+
 	public:
 		// データの配置情報に基づいてバッファを確保する
 		// （既にバッファを持っている場合、必要に応じて拡張する）

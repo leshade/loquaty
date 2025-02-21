@@ -140,6 +140,10 @@ namespace	Loquaty
 		bool PutInteger( LLong val ) const ;
 		bool PutDouble( LDouble val ) const ;
 
+		// クラスのメンバやポインタの参照先の構造体に値を設定
+		bool PutMembers( const LValue& val ) ;
+		bool PutMembers( size_t iOffset, const LType& type, const LValue& val ) ;
+
 	public:
 		// プリミティブ・ロード関数
 		typedef LLong (*PFN_LoadPrimitiveAsLong)( const std::uint8_t * p ) ;
@@ -245,6 +249,7 @@ namespace	Loquaty
 		virtual bool AsDouble( LDouble& value ) const ;
 		// 文字列として評価
 		virtual bool AsString( LString& str ) const ;
+		virtual bool AsExpression( LString& str, std::uint64_t flags = 0 ) const ;
 		static void ExprIntAsString( LString& str, LLong value ) ;
 		static double EntropyOfNumString( const LString& str ) ;
 

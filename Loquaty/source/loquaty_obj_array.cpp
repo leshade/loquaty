@@ -210,6 +210,25 @@ void LArrayObj::RemoveAll( void )
 	m_array.clear() ;
 }
 
+// クラスのメンバやポインタの参照先の構造体に値を設定
+bool LArrayObj::PutMembers( const LObjPtr& pObj )
+{
+	LArrayClass *	pArrayClass = dynamic_cast<LArrayClass*>( m_pClass ) ;
+	assert( pArrayClass != nullptr ) ;
+	if ( (pArrayClass == nullptr) || (pObj == nullptr) )
+	{
+		return	false ;
+	}
+	LObjPtr		pCastObj = pObj->CastClassTo( pArrayClass ) ;
+	LArrayObj *	pArrayObj = dynamic_cast<LArrayObj*>( pCastObj.Ptr() ) ;
+	if ( pArrayObj == nullptr )
+	{
+		return	false ;
+	}
+	CloneFrom( *pArrayObj ) ;
+	return	true ;
+}
+
 // uint32 length() const
 void LArrayObj::method_length( LContext& _context )
 {

@@ -58,6 +58,9 @@ namespace	Loquaty
 		virtual void RemoveElementAs( const wchar_t * name ) ;
 		virtual void RemoveAll( void ) ;
 
+		// クラスのメンバやポインタの参照先の構造体に値を設定
+		virtual bool PutMembers( const LObjPtr& pObj ) ;
+
 	public:
 		// uint32 size() const
 		static void method_size( LContext& context ) ;

@@ -56,6 +56,9 @@ namespace	Loquaty
 		virtual void RemoveElementAt( size_t index ) ;
 		virtual void RemoveAll( void ) ;
 
+		// クラスのメンバやポインタの参照先の構造体に値を設定
+		virtual bool PutMembers( const LObjPtr& pObj ) ;
+
 		// スピンロック（配列操作保護）
 		const LSpinLockMutex& ArrayMutex( void ) const
 		{

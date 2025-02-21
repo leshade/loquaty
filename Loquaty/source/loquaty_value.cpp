@@ -162,6 +162,16 @@ bool LValue::PutInteger( LLong val )
 		pInt->m_value = val ;
 		return	true ;
 	}
+	if ( m_type.IsInteger() )
+	{
+		m_value.longValue = val ;
+		return	true ;
+	}
+	else if ( m_type.IsFloatingPointNumber() )
+	{
+		m_value.dblValue = (LDouble) val ;
+		return	true ;
+	}
 	return	false ;
 }
 
@@ -178,6 +188,16 @@ bool LValue::PutDouble( LDouble val )
 		pDouble->m_value = val ;
 		return	true ;
 	}
+	if ( m_type.IsInteger() )
+	{
+		m_value.longValue = (LLong) val ;
+		return	true ;
+	}
+	else if ( m_type.IsFloatingPointNumber() )
+	{
+		m_value.dblValue = val ;
+		return	true ;
+	}
 	return	false ;
 }
 
@@ -188,6 +208,49 @@ bool LValue::PutString( const wchar_t * str )
 	{
 		pStr->m_string = str ;
 		return	true ;
+	}
+	return	false ;
+}
+
+// クラスのメンバやポインタの参照先の構造体に値を設定
+// ※AsExpression で文字列化した値を LCompiler::EvaluateConstExpr で
+// 　解釈し PutMembers でリストアすることができる
+bool LValue::PutMembers( const LValue& val )
+{
+	if ( m_type.IsPointer() )
+	{
+		LPointerObj *	pPtrObj = dynamic_cast<LPointerObj*>( m_pObject.Ptr() ) ;
+		if ( pPtrObj != nullptr )
+		{
+			return	pPtrObj->PutMembers( val ) ;
+		}
+	}
+	else if ( m_type.IsObject() )
+	{
+		LArrayObj *	pArrayObj = dynamic_cast<LArrayObj*>( m_pObject.Ptr() ) ;
+		if ( pArrayObj != nullptr )
+		{
+			// array / map / generic object...
+			return	pArrayObj->PutMembers( val.GetObject() ) ;
+		}
+		LStringObj *	pStrObj = dynamic_cast<LStringObj*>( m_pObject.Ptr() ) ;
+		if ( pStrObj != nullptr )
+		{
+			pStrObj->m_string = val.AsString() ;
+			return	true ;
+		}
+		LIntegerObj *	pIntObj = dynamic_cast<LIntegerObj*>( m_pObject.Ptr() ) ;
+		if ( pIntObj != nullptr )
+		{
+			pIntObj->m_value = val.AsInteger() ;
+			return	true ;
+		}
+		LDoubleObj *	pNumObj = dynamic_cast<LDoubleObj*>( m_pObject.Ptr() ) ;
+		if ( pNumObj != nullptr )
+		{
+			pNumObj->m_value = val.AsDouble() ;
+			return	true ;
+		}
 	}
 	return	false ;
 }
@@ -334,6 +397,27 @@ LValue LValue::GetMemberAs
 		}
 	}
 	return	LValue() ;		// エラー
+}
+
+// 要素数取得
+size_t LValue::GetElementCount( void ) const
+{
+	if ( m_type.IsObject() && (m_pObject != nullptr) )
+	{
+		return	m_pObject->GetElementCount() ;
+	}
+	return	0 ;
+}
+
+// 要素名取得
+const wchar_t * LValue::GetElementNameAt
+						( LString& strName, size_t index ) const
+{
+	if ( m_type.IsObject() && (m_pObject != nullptr) )
+	{
+		return	m_pObject->GetElementNameAt( strName, index ) ;
+	}
+	return	nullptr ;
 }
 
 // ポインタの参照先がプリミティブ型／

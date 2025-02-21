@@ -322,6 +322,25 @@ void LMapObj::RemoveAll( void )
 	m_map.clear() ;
 }
 
+// クラスのメンバやポインタの参照先の構造体に値を設定
+bool LMapObj::PutMembers( const LObjPtr& pObj )
+{
+	LMapClass *	pMapClass = dynamic_cast<LMapClass*>( m_pClass ) ;
+	assert( pMapClass != nullptr ) ;
+	if ( (pMapClass == nullptr) || (pObj == nullptr) )
+	{
+		return	false ;
+	}
+	LObjPtr		pCastObj = pObj->CastClassTo( pMapClass ) ;
+	LMapObj *	pMapObj = dynamic_cast<LMapObj*>( pCastObj.Ptr() ) ;
+	if ( pMapObj == nullptr )
+	{
+		return	false ;
+	}
+	CloneFrom( *pMapObj ) ;
+	return	true ;
+}
+
 // int size() const
 void LMapObj::method_size( LContext& _context )
 {

@@ -146,6 +146,11 @@ namespace	Loquaty
 		bool PutDouble( LDouble val ) ;
 		bool PutString( const wchar_t * str ) ;
 
+		// クラスのメンバやポインタの参照先の構造体に値を設定
+		// ※AsExpression で文字列化した値を LCompiler::EvaluateConstExpr で
+		// 　解釈し PutMembers でリストアすることができる
+		bool PutMembers( const LValue& val ) ;
+
 		// 要素取得
 		LValue GetElementAt
 			( LVirtualMachine& vm,
@@ -153,6 +158,11 @@ namespace	Loquaty
 		LValue GetMemberAs
 			( LVirtualMachine& vm,
 				const wchar_t * name, bool flagRef = false ) const ;
+		// 要素数取得
+		size_t GetElementCount( void ) const ;
+		// 要素名取得
+		const wchar_t * GetElementNameAt
+				( LString& strName, size_t index ) const ;
 
 		// ポインタの参照先がプリミティブ型／
 		// ボックス化されたオブジェクトの場合評価する

@@ -109,15 +109,29 @@ bool LGenericObj::AsExpression( LString& str, std::uint64_t flags ) const
 	LSpinLock	lockMap( m_mtxMap ) ;
 	LSpinLock	lockArray( m_mtxArray ) ;
 
+
+	const wchar_t *	pwszStarter = L"{ " ;
+	const wchar_t *	pwszCloser = L" }" ;
+	const wchar_t *	pwszDelimiter = L", " ;
+	const wchar_t *	pwszSeparator = L": " ;
+	if ( flags & expressionForJSON )
+	{
+		pwszStarter = L"{" ;
+		pwszCloser = L"}" ;
+		pwszDelimiter = L"," ;
+		pwszSeparator = L":" ;
+	}
+
+	str = pwszStarter ;
+
+	size_t	nCount = 0 ;
 	LString	strElement ;
 
-	str = L"{ " ;
-	size_t	nCount = 0 ;
 	for ( auto iter : m_map )
 	{
 		if ( nCount ++ >= 1 )
 		{
-			str += L", " ;
+			str += pwszDelimiter ;
 		}
 		if ( !(flags & expressionForJSON)
 			&& LStringParser::IsValidAsSymbol( iter.first.c_str() ) )
@@ -131,7 +145,7 @@ bool LGenericObj::AsExpression( LString& str, std::uint64_t flags ) const
 						( iter.first.c_str(), iter.first.length() ) ;
 			str += L"\"" ;
 		}
-		str += L": " ;
+		str += pwszSeparator ;
 		//
 		LObject *	pObj = nullptr ;
 		if ( iter.second < m_array.size() )
@@ -151,7 +165,7 @@ bool LGenericObj::AsExpression( LString& str, std::uint64_t flags ) const
 	{
 		if ( nCount ++ >= 1 )
 		{
-			str += L", " ;
+			str += pwszDelimiter ;
 		}
 		if ( !(flags & expressionForJSON)
 			&& LStringParser::IsValidAsSymbol( names.at(i).c_str() ) )
@@ -165,7 +179,7 @@ bool LGenericObj::AsExpression( LString& str, std::uint64_t flags ) const
 						( names.at(i).c_str(), names.at(i).length() ) ;
 			str += L"\"" ;
 		}
-		str += L": " ;
+		str += pwszSeparator ;
 
 		LArrangement::Desc	desc ;
 		if ( arrange.GetDescAs( desc, names.at(i).c_str() ) )
@@ -181,7 +195,7 @@ bool LGenericObj::AsExpression( LString& str, std::uint64_t flags ) const
 		}
 	}
 
-	str += L" }" ;
+	str += pwszCloser ;
 	return	true ;
 }
 
@@ -242,6 +256,61 @@ void LGenericObj::RemoveAll( void )
 
 	LSpinLock	lockMap( m_mtxMap ) ;
 	m_types.clear() ;
+}
+
+// クラスのメンバやポインタの参照先の構造体に値を設定
+bool LGenericObj::PutMembers( const LObjPtr& pObj )
+{
+	if ( pObj == nullptr )
+	{
+		return	false ;
+	}
+	assert( m_pClass != nullptr ) ;
+	const LArrangementBuffer&	arrangeBuf = m_pClass->GetProtoArrangemenet() ;
+
+	LArrangement::Desc	desc ;
+	LString				strName ;
+	LType				type ;
+
+	bool	flagFaild = false ;
+	size_t	nCount = pObj->GetElementCount() ;
+	for ( size_t i = 0; i < nCount; i ++ )
+	{
+		const wchar_t *	pwszName = pObj->GetElementNameAt( strName, i ) ;
+		if ( pwszName == nullptr )
+		{
+			flagFaild = true ;
+			continue ;
+		}
+		LObjPtr			pSrcObj = pObj->GetElementAt( i ) ;
+		const ssize_t	iElement = FindElementAs( pwszName ) ;
+		if ( iElement >= 0 )
+		{
+			type = GetElementTypeAt( (size_t) iElement ) ;
+			if ( type.GetClass() != nullptr )
+			{
+				pSrcObj = pSrcObj->CastClassTo( type.GetClass() ) ;
+			}
+			LObject::ReleaseRef( SetElementAt( i, pSrcObj.Get() ) ) ;
+		}
+		else if ( arrangeBuf.GetDescAs( desc, pwszName ) )
+		{
+			LPtr<LPointerObj>	pPtrObj = GetBufferPoiner() ;
+			if ( pPtrObj != nullptr )
+			{
+				if ( !pPtrObj->PutMembers
+						( desc.m_location, desc.m_type, LValue(pSrcObj) ) )
+				{
+					flagFaild = true ;
+				}
+			}
+		}
+		else
+		{
+			flagFaild = true ;
+		}
+	}
+	return	!flagFaild ;
 }
 
 // データの配置情報に基づいてバッファを確保する
