@@ -276,11 +276,14 @@ LValue LValue::GetElementAt
 		{
 			typeElement = typeElement.GetRefElementType() ;
 		}
+		const size_t		nElementBytes = typeElement.GetDataBytes() ;
 		LPtr<LPointerObj>	pPtrElement =
 			new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ;
-		*pPtrElement = *pPtrObj ;
-		*pPtrElement += (ssize_t) index
-						* (ssize_t) typeElement.GetDataBytes() ;
+		pPtrElement->SetPointer
+			( pPtrObj->GetArrayBuffer(),
+				pPtrObj->GetOffset()
+					+ index * nElementBytes,
+				pPtrClass->GetBufferType().GetDataBytes() ) ;
 		if ( flagRef )
 		{
 			return	LValue( pPtrElement ) ;
@@ -336,10 +339,16 @@ LValue LValue::GetMemberAs
 			LArrangement::Desc	desc ;
 			if ( arrangeBuf.GetDescAs( desc, name ) )
 			{
+				LType	typeElement = desc.m_type ;
+				if ( typeElement.IsDataArray() )
+				{
+					typeElement = typeElement.GetRefElementType() ;
+				}
 				LPtr<LPointerObj>	pPtrMember =
-					new LPointerObj( vm.GetPointerClassAs( desc.m_type ) ) ;
-				*pPtrMember = *pPtrObj ;
-				*pPtrMember += (ssize_t) desc.m_location ;
+					new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ;
+				pPtrMember->SetPointer
+					( pPtrObj->GetArrayBuffer(),
+						pPtrObj->GetOffset() + desc.m_location, desc.m_size ) ;
 				if ( flagRef )
 				{
 					return	LValue( pPtrMember ) ;
@@ -384,10 +393,16 @@ LValue LValue::GetMemberAs
 			LPtr<LPointerObj>	pPtrObj = m_pObject->GetBufferPoiner() ;
 			if ( pPtrObj != nullptr )
 			{
+				LType	typeElement = desc.m_type ;
+				if ( typeElement.IsDataArray() )
+				{
+					typeElement = typeElement.GetRefElementType() ;
+				}
 				LPtr<LPointerObj>	pPtrMember =
-					new LPointerObj( vm.GetPointerClassAs( desc.m_type ) ) ;
-				*pPtrMember = *pPtrObj ;
-				*pPtrMember += (ssize_t) desc.m_location ;
+					new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ;
+				pPtrMember->SetPointer
+					( pPtrObj->GetArrayBuffer(),
+						pPtrObj->GetOffset() + desc.m_location, desc.m_size ) ;
 				if ( flagRef )
 				{
 					return	LValue( pPtrMember ) ;

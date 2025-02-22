@@ -107,6 +107,12 @@ namespace	Loquaty
 			return	reinterpret_cast<T*>( GetPointer( 0, sizeof(T) ) ) ;
 		}
 
+		// バッファ取得
+		std::shared_ptr<LArrayBuffer> GetArrayBuffer( void ) const
+		{
+			return	m_pBuf ;
+		}
+
 		// オフセット値取得
 		size_t GetOffset( void ) const
 		{
