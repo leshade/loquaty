@@ -356,7 +356,7 @@ void LStringObj::method_replace( LContext& _context )
 			},
 			[pMapObj]( const LString& key )
 			{
-				LObjPtr	pObj = pMapObj->GetElementAs( key.c_str() ) ;
+				LObjPtr	pObj( pMapObj->GetElementAs( key.c_str() ) ) ;
 				if ( pObj != nullptr )
 				{
 					LString	str ;

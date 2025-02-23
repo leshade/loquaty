@@ -275,7 +275,7 @@ namespace	Loquaty
 		T *	m_pObject ;
 
 	public:
-		LPtr( T * p = nullptr ) : m_pObject( p ) {}
+		explicit LPtr( T * p = nullptr ) : m_pObject( p ) {}
 		LPtr( const LPtr<T>& ptr )
 			: m_pObject( ptr.m_pObject )
 		{

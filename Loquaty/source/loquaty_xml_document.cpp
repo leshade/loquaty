@@ -1345,7 +1345,7 @@ IMPL_LOQUATY_FUNC(XMLDocParser_parseDocument)
 	LQT_FUNC_THIS_NOBJ( LXMLDocParser, pThis ) ;
 
 	LPtr<LNativeObj>
-		pXMLDoc = new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ;
+		pXMLDoc( new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ) ;
 	pXMLDoc->SetNative( pThis->ParseDocument() ) ;
 
 	LQT_RETURN_OBJECT( pXMLDoc ) ;
@@ -1358,7 +1358,7 @@ IMPL_LOQUATY_FUNC(XMLDocParser_parseElement)
 	LQT_FUNC_THIS_NOBJ( LXMLDocParser, pThis ) ;
 
 	LPtr<LNativeObj>
-		pXMLDoc = new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ;
+		pXMLDoc( new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ) ;
 	pXMLDoc->SetNative( pThis->ParseElement() ) ;
 
 	LQT_RETURN_OBJECT( pXMLDoc ) ;
@@ -1771,7 +1771,7 @@ IMPL_LOQUATY_FUNC(XMLDocument_getElementAt)
 		LQT_RETURN_OBJECT( nullptr ) ;
 	}
 	LPtr<LNativeObj>
-		pXMLDoc = new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ;
+		pXMLDoc( new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ) ;
 	pXMLDoc->SetNative( xmlDoc ) ;
 
 	LQT_RETURN_OBJECT( pXMLDoc ) ;
@@ -1791,7 +1791,7 @@ IMPL_LOQUATY_FUNC(XMLDocument_getTagAs)
 		LQT_RETURN_OBJECT( nullptr ) ;
 	}
 	LPtr<LNativeObj>
-		pXMLDoc = new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ;
+		pXMLDoc( new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ) ;
 	pXMLDoc->SetNative( xmlDoc ) ;
 
 	LQT_RETURN_OBJECT( pXMLDoc ) ;
@@ -1866,7 +1866,7 @@ IMPL_LOQUATY_FUNC(XMLDocument_createTagAs)
 	LQT_FUNC_ARG_STRING( tag ) ;
 	LQT_FUNC_ARG_ULONG( first ) ;
 
-	LPtr<LNativeObj>	pXMLDoc = new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ;
+	LPtr<LNativeObj>	pXMLDoc( new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ) ;
 	pXMLDoc->SetNative( pThis->CreateTagAs( tag.c_str(), (size_t) first ) ) ;
 
 	LQT_RETURN_OBJECT( pXMLDoc ) ;
@@ -1902,7 +1902,7 @@ IMPL_LOQUATY_FUNC(XMLDocument_getTagPathAs)
 	LQT_FUNC_THIS_NOBJ( LXMLDocument, pThis ) ;
 	LQT_FUNC_ARG_STRING( tagPath ) ;
 
-	LPtr<LNativeObj>	pXMLDoc = new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ;
+	LPtr<LNativeObj>	pXMLDoc( new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ) ;
 	pXMLDoc->SetNative( pThis->GetTagPathAs( tagPath.c_str() ) ) ;
 
 	LQT_RETURN_OBJECT( pXMLDoc ) ;
@@ -1915,7 +1915,7 @@ IMPL_LOQUATY_FUNC(XMLDocument_createTagPathAs)
 	LQT_FUNC_THIS_NOBJ( LXMLDocument, pThis ) ;
 	LQT_FUNC_ARG_STRING( tagPath ) ;
 
-	LPtr<LNativeObj>	pXMLDoc = new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ;
+	LPtr<LNativeObj>	pXMLDoc( new LNativeObj( LQT_GET_CLASS(XMLDocument) ) ) ;
 	pXMLDoc->SetNative( pThis->CreateTagPathAs( tagPath.c_str() ) ) ;
 
 	LQT_RETURN_OBJECT( pXMLDoc ) ;

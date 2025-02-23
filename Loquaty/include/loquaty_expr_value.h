@@ -112,14 +112,14 @@ namespace	Loquaty
 				m_pOperatorDef( nullptr ) {}
 
 		LExprValue( LClass * pFuncClass, const LFunctionVariation * pFuncVar )
-			: LValue( LType(pFuncClass), nullptr ),
+			: LValue( LType(pFuncClass) ),
 				m_constExpr( true ), m_uniqueObj( false ), m_localVar( false ),
 				m_optType( exprFuncVar ), m_pFuncVar( pFuncVar ),
 				m_pVirtClass( nullptr ), m_pVirtuals( nullptr ),
 				m_pOperatorDef( nullptr ) {}
 
 		LExprValue( LClass * pFuncClass, std::shared_ptr<LFunctionVariation> pFuncVar )
-			: LValue( LType(pFuncClass), nullptr ),
+			: LValue( LType(pFuncClass) ),
 				m_constExpr( true ), m_uniqueObj( false ), m_localVar( false ),
 				m_optType( exprFuncVar ),
 				m_pFuncVar( pFuncVar.get() ), m_ownFuncVar( pFuncVar ),
@@ -128,7 +128,7 @@ namespace	Loquaty
 
 		LExprValue( LClass * pFuncClass,
 					LClass * pVirtClass, const std::vector<size_t> * pVirtVec )
-			: LValue( LType(pFuncClass), nullptr ),
+			: LValue( LType(pFuncClass) ),
 				m_constExpr( false ), m_uniqueObj( false ), m_localVar( false ),
 				m_optType( exprRefVirtual ),
 				m_pFuncVar( nullptr ),
@@ -137,7 +137,7 @@ namespace	Loquaty
 
 		LExprValue( LClass * pFuncClass,
 					const Symbol::OperatorDef * pOperatorDef )
-			: LValue( LType(pFuncClass), nullptr ),
+			: LValue( LType(pFuncClass) ),
 				m_constExpr( true ), m_uniqueObj( false ), m_localVar( false ),
 				m_optType( exprOperator ),
 				m_pFuncVar( nullptr ),
@@ -306,7 +306,7 @@ namespace	Loquaty
 		LExprValuePtr PushBool( LBoolean val ) ;
 		LExprValuePtr PushLong( LLong val ) ;
 		LExprValuePtr PushDouble( LDouble val ) ;
-		LExprValuePtr PushObject( const LType& type, LObject* pObj ) ;
+		LExprValuePtr PushObject( const LType& type, LObjPtr pObj ) ;
 		LExprValuePtr PushRuntimeType( const LType& type, bool responsible ) ;
 
 		// 個数
@@ -388,7 +388,7 @@ namespace	Loquaty
 	public:
 		LLocalVar( const LType& type,
 					AllocType allocType, size_t iLoc = 0 )
-			: LExprValue( type, nullptr, false, false ),
+			: LExprValue( type, LObjPtr(), false, false ),
 				m_allocType( allocType ), m_iLocation( iLoc ),
 				m_flagReadOnly( false ),
 				m_maxFetchRange( 0 ), m_iFetchCodePos( SIZE_MAX )

@@ -67,19 +67,19 @@ void LVirtualMachine::Initialize( void )
 	m_pBasicClass[classClass] = pClassClass ;
 
 	LClass *	pNamespaceClass =
-				new LClass( *this, nullptr, pClassClass, L"Namespace" ) ;
+				new LClass( *this, LPtr<LNamespace>(), pClassClass, L"Namespace" ) ;
 	m_pBasicClass[classNamespace] = pNamespaceClass ;
 
 	LGenericObjClass *	pObjectClass =
-				new LGenericObjClass( *this, nullptr, pClassClass, L"Object" ) ;
+				new LGenericObjClass( *this, LPtr<LNamespace>(), pClassClass, L"Object" ) ;
 	m_pBasicClass[classObject] = pObjectClass ;
 
 	LNativeObjClass *	pNativeObjClass =
-				new LNativeObjClass( *this, nullptr, pClassClass, L"NativeObject" ) ;
+				new LNativeObjClass( *this, LPtr<LNamespace>(), pClassClass, L"NativeObject" ) ;
 	m_pBasicClass[classNativeObject] = pNativeObjClass ;
 
 	LStructureClass *	pStructClass =
-				new LStructureClass( *this, nullptr, pClassClass, L"Structure" ) ;
+				new LStructureClass( *this, LPtr<LNamespace>(), pClassClass, L"Structure" ) ;
 	m_pBasicClass[classStructure] = pStructClass ;
 
 	LType						typeVoid ;
@@ -121,19 +121,19 @@ void LVirtualMachine::Initialize( void )
 	m_pBasicClass[classFunction] = pFunctionClass ;
 
 	LExceptionClass *	pExceptionClass =
-				new LExceptionClass( *this, nullptr, pClassClass, L"Exception" ) ;
+				new LExceptionClass( *this, LPtr<LNamespace>(), pClassClass, L"Exception" ) ;
 	m_pBasicClass[classException] = pExceptionClass ;
 
 	LTaskClass *	pTaskClass =
-				new LTaskClass( *this, nullptr, pClassClass, L"Task", LType() ) ;
+				new LTaskClass( *this, LPtr<LNamespace>(), pClassClass, L"Task", LType() ) ;
 	m_pBasicClass[classTask] = pTaskClass ;
 
 	LThreadClass *	pThreadClass =
-				new LThreadClass( *this, nullptr, pClassClass, L"Thread", LType() ) ;
+				new LThreadClass( *this, LPtr<LNamespace>(), pClassClass, L"Thread", LType() ) ;
 	m_pBasicClass[classThread] = pThreadClass ;
 
 	// 大域空間
-	m_pGlobal = new LNamespace( *this, nullptr, pNamespaceClass ) ;
+	m_pGlobal = new LNamespace( *this, LPtr<LNamespace>(), pNamespaceClass ) ;
 	m_refGlobal = false ;
 
 	// まず基本クラスを宣言だけする
@@ -141,7 +141,8 @@ void LVirtualMachine::Initialize( void )
 	{
 		assert( m_pBasicClass[i] != nullptr ) ;
 		m_pGlobal->AddClassAs
-			( m_pBasicClass[i]->GetClassName().c_str(), m_pBasicClass[i] ) ;
+			( m_pBasicClass[i]->GetClassName().c_str(),
+				LPtr<LClass>( m_pBasicClass[i] ) ) ;
 	}
 
 	// プリミティブ型のポインタ型を宣言
@@ -178,33 +179,36 @@ void LVirtualMachine::Initialize( void )
 	} ;
 	for ( int i = 0; s_PrimitiveTyps[i].type != LType::typeObject; i ++ )
 	{
-		LType		typeData( s_PrimitiveTyps[i].type, s_PrimitiveTyps[i].mod ) ;
-		LString		strPtrTypeName = typeData.GetTypeName() + L"*" ;
-		LClass *	pClass = new LPointerClass
+		LType	typeData( s_PrimitiveTyps[i].type, s_PrimitiveTyps[i].mod ) ;
+		LString	strPtrTypeName = typeData.GetTypeName() + L"*" ;
+		LPtr<LClass>
+				pClass( new LPointerClass
 						( *this, m_pBasicClass[classClass],
-							strPtrTypeName.c_str(), typeData ) ;
+							strPtrTypeName.c_str(), typeData ) ) ;
 
 		m_pGlobal->AddClassAs( strPtrTypeName.c_str(), pClass ) ;
 
 		if ( s_PrimitiveTyps[i].mod == 0 )
 		{
-			m_pPrimitivePtrClass[s_PrimitiveTyps[i].type] = pClass ;
+			m_pPrimitivePtrClass[s_PrimitiveTyps[i].type] = pClass.Ptr() ;
 		}
 		else
 		{
-			m_pPrimitiveCPtrClass[s_PrimitiveTyps[i].type] = pClass ;
+			m_pPrimitiveCPtrClass[s_PrimitiveTyps[i].type] = pClass.Ptr() ;
 		}
-		s_PrimitiveTyps[i].pClass = pClass ;
+		s_PrimitiveTyps[i].pClass = pClass.Ptr() ;
 	}
 	m_pVoidPointerClass = new LPointerClass
 						( *this, m_pBasicClass[classClass],
 							L"void*", LType( nullptr, 0 ) ) ;
-	m_pGlobal->AddClassAs( L"void*", m_pVoidPointerClass ) ;
+	m_pGlobal->AddClassAs
+			( L"void*", LPtr<LClass>( m_pVoidPointerClass ) ) ;
 
 	m_pConstVoidPointerClass = new LPointerClass
 						( *this, m_pBasicClass[classClass],
 							L"const void*", LType( nullptr, LType::modifierConst ) ) ;
-	m_pGlobal->AddClassAs( L"const void*", m_pConstVoidPointerClass ) ;
+	m_pGlobal->AddClassAs
+			( L"const void*", LPtr<LClass>( m_pConstVoidPointerClass ) ) ;
 
 	// 基底クラスの定義処理
 	pObjectClass->ImpletentPureObjectClass() ;
@@ -270,25 +274,27 @@ void LVirtualMachine::Initialize( void )
 
 
 	// 追加の標準クラス
-	bci.AddClass( new LConsoleClass
-					( *this, pClassClass, L"Console" ), pObjectClass ) ;
-	bci.AddClass( new LDateTimeStructure
-					( *this, pClassClass, L"DateTime" ), pStructClass ) ;
-	bci.AddClass( new LClockClass
-					( *this, pClassClass, L"Clock" ), pObjectClass ) ;
-	bci.AddClass( new LMathClass
-					( *this, pClassClass, L"Math" ), pObjectClass ) ;
-	bci.AddClass( new LFileClass
-					( *this, pClassClass, L"File" ), pObjectClass ) ;
-	bci.AddClass( new LOutputStreamClass
-					( *this, pClassClass, L"OutputStream" ), pObjectClass ) ;
+	bci.AddClass( LPtr<LClass>( new LConsoleClass
+					( *this, pClassClass, L"Console" ) ), pObjectClass ) ;
+	bci.AddClass( LPtr<LClass>( new LDateTimeStructure
+					( *this, pClassClass, L"DateTime" ) ), pStructClass ) ;
+	bci.AddClass( LPtr<LClass>( new LClockClass
+					( *this, pClassClass, L"Clock" ) ), pObjectClass ) ;
+	bci.AddClass( LPtr<LClass>( new LMathClass
+					( *this, pClassClass, L"Math" ) ), pObjectClass ) ;
+	bci.AddClass( LPtr<LClass>( new LFileClass
+					( *this, pClassClass, L"File" ) ), pObjectClass ) ;
+	bci.AddClass( LPtr<LClass>( new LOutputStreamClass
+					( *this, pClassClass, L"OutputStream" ) ), pObjectClass ) ;
 
-	LClass *	pLoquatyClass = new LLoquatyClass( *this, pClassClass, L"Loquaty" ) ;
+	LPtr<LClass>
+		pLoquatyClass
+			( new LLoquatyClass( *this, pClassClass, L"Loquaty" ) ) ;
 	bci.AddClass( pLoquatyClass, pObjectClass ) ;
 
 	bci.Implement() ;
 
-	SetClass( pLoquatyClass ) ;
+	SetClass( pLoquatyClass.Ptr() ) ;
 }
 
 void LVirtualMachine::InitializeRef( LVirtualMachine& vmRef )
@@ -568,7 +574,8 @@ LClass * LVirtualMachine::GetArrayClassAs( LClass * pElementType )
 							strGenClassName.c_str(), pElementType ) ;
 			pElementType->m_pGenArrayType = pClass ;
 
-			if ( !m_pGlobal->AddClassAs( strGenClassName.c_str(), pClass ) )
+			if ( !m_pGlobal->AddClassAs
+					( strGenClassName.c_str(), LPtr<LClass>( pClass ) ) )
 			{
 				LCompiler::Error( errorCannotAddClass, strGenClassName.c_str() ) ;
 			}
@@ -605,7 +612,8 @@ LClass * LVirtualMachine::GetMapClassAs( LClass * pElementType )
 							strGenClassName.c_str(), pElementType ) ;
 			pElementType->m_pGenMapType = pClass ;
 
-			if ( !m_pGlobal->AddClassAs( strGenClassName.c_str(), pClass ) )
+			if ( !m_pGlobal->AddClassAs
+				( strGenClassName.c_str(), LPtr<LClass>( pClass ) ) )
 			{
 				LCompiler::Error( errorCannotAddClass, strGenClassName.c_str() ) ;
 			}
@@ -638,7 +646,8 @@ LClass * LVirtualMachine::GetDataArrayClassAs
 					( *this, m_pBasicClass[classClass],
 						strArrayTypeName.c_str(), typeData, dimArray ) ;
 
-		if ( !m_pGlobal->AddClassAs( strArrayTypeName.c_str(), pClass ) )
+		if ( !m_pGlobal->AddClassAs
+				( strArrayTypeName.c_str(), LPtr<LClass>( pClass ) ) )
 		{
 			LCompiler::Error( errorCannotAddClass, strArrayTypeName.c_str() ) ;
 		}
@@ -698,7 +707,8 @@ LClass * LVirtualMachine::GetPointerClassAs( const LType& typeData )
 						( *this, m_pBasicClass[classClass],
 							strPtrTypeName.c_str(), typeData ) ;
 
-			if ( !m_pGlobal->AddClassAs( strPtrTypeName.c_str(), pClass ) )
+			if ( !m_pGlobal->AddClassAs
+				( strPtrTypeName.c_str(), LPtr<LClass>( pClass ) ) )
 			{
 				LCompiler::Error( errorCannotAddClass, strPtrTypeName.c_str() ) ;
 			}
@@ -745,7 +755,7 @@ LClass * LVirtualMachine::GetExceptioinClassAs( const wchar_t * pwszClassName )
 			( *this, m_pGlobal,
 				m_pBasicClass[classClass], pwszClassName ) ;
 
-	if ( !m_pGlobal->AddClassAs( pwszClassName, pClass ) )
+	if ( !m_pGlobal->AddClassAs( pwszClassName, LPtr<LClass>( pClass ) ) )
 	{
 		LCompiler::Error( errorCannotAddClass, pwszClassName ) ;
 	}
@@ -773,7 +783,8 @@ LClass * LVirtualMachine::GetFunctionClassAs
 					( *this, m_pBasicClass[classClass],
 						strFuncTypeName.c_str(), pProto ) ;
 
-		if ( !m_pGlobal->AddClassAs( strFuncTypeName.c_str(), pClass ) )
+		if ( !m_pGlobal->AddClassAs
+				( strFuncTypeName.c_str(), LPtr<LClass>( pClass ) ) )
 		{
 			LCompiler::Error( errorCannotAddClass, strFuncTypeName.c_str() ) ;
 		}
@@ -812,7 +823,8 @@ LClass * LVirtualMachine::GetTaskClassAs( const LType& typeRet )
 					( *this, m_pGlobal, m_pBasicClass[classClass],
 						strClassName.c_str(), typeRet ) ;
 
-		if ( !m_pGlobal->AddClassAs( strClassName.c_str(), pClass ) )
+		if ( !m_pGlobal->AddClassAs
+				( strClassName.c_str(), LPtr<LClass>( pClass ) ) )
 		{
 			LCompiler::Error( errorCannotAddClass, strClassName.c_str() ) ;
 		}
@@ -844,7 +856,8 @@ LClass * LVirtualMachine::GetThreadClassAs( const LType& typeRet )
 					( *this, m_pGlobal, m_pBasicClass[classClass],
 						strClassName.c_str(), typeRet ) ;
 
-		if ( !m_pGlobal->AddClassAs( strClassName.c_str(), pClass ) )
+		if ( !m_pGlobal->AddClassAs
+				( strClassName.c_str(), LPtr<LClass>( pClass ) ) )
 		{
 			LCompiler::Error( errorCannotAddClass, strClassName.c_str() ) ;
 		}

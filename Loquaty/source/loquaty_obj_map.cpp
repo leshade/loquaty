@@ -120,7 +120,7 @@ LObject * LMapObj::SetElementAs( const wchar_t * name, LObject * pObj )
 	}
 	LSpinLock	lockArray( m_mtxArray ) ;
 	size_t	index = m_array.size() ;
-	m_array.push_back( pObj ) ;
+	m_array.push_back( LObjPtr( pObj ) ) ;
 	m_map.insert( std::make_pair<std::wstring,size_t>( name, (size_t) index ) ) ;
 	return	nullptr ;
 }
@@ -331,7 +331,7 @@ bool LMapObj::PutMembers( const LObjPtr& pObj )
 	{
 		return	false ;
 	}
-	LObjPtr		pCastObj = pObj->CastClassTo( pMapClass ) ;
+	LObjPtr		pCastObj( pObj->CastClassTo( pMapClass ) ) ;
 	LMapObj *	pMapObj = dynamic_cast<LMapObj*>( pCastObj.Ptr() ) ;
 	if ( pMapObj == nullptr )
 	{

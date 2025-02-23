@@ -80,8 +80,10 @@ void LFileClass::ImplementClass( void )
 {
 	LBatchClassImplementor	bci( *this ) ;
 	bci.AddClass
-		( new LFileStateStructure
-				( m_vm, nullptr, m_vm.GetClassClass(), L"State" ),
+		( LPtr<LClass>
+			( new LFileStateStructure
+				( m_vm, LPtr<LNamespace>(),
+					m_vm.GetClassClass(), L"State" ) ),
 			m_vm.GetStructureClass() ) ;
 
 	AddClassMemberDefinitions( s_MemberDesc ) ;
@@ -783,7 +785,7 @@ void LFileClass::method_outStream( LContext& _context )
 	}
 
 	LPtr<LNativeObj>
-		pOutStream = new LNativeObj( LQT_GET_CLASS(OutputStream) ) ;
+		pOutStream( new LNativeObj( LQT_GET_CLASS(OutputStream) ) ) ;
 	if ( enc == L"utf-8" )
 	{
 		pOutStream->SetNative
@@ -863,7 +865,8 @@ void LFileClass::method_listFiles( LContext& _context )
 	std::vector<LString>	files ;
 	LURLSchemer::s_schemer.ListFiles( files, path.c_str() ) ;
 
-	LPtr<LArrayObj>	pArray = _context.new_Array( _context.VM().GetStringClass() ) ;
+	LPtr<LArrayObj>
+		pArray( _context.new_Array( _context.VM().GetStringClass() ) ) ;
 	for ( size_t i = 0; i < files.size(); i ++ )
 	{
 		pArray->m_array.push_back
@@ -937,7 +940,7 @@ void LFileClass::method_makeBuffer( LContext& _context )
 	std::shared_ptr<LBufferedFile>
 			pFile = std::make_shared<LBufferedFile>( (long) flags, buf ) ;
 
-	LPtr<LNativeObj>	pFileObj = new LNativeObj( LQT_GET_CLASS(File) ) ;
+	LPtr<LNativeObj>	pFileObj( new LNativeObj( LQT_GET_CLASS(File) ) ) ;
 	pFileObj->SetNative( pFile ) ;
 
 	LQT_RETURN_OBJECT( pFileObj ) ;
@@ -1031,7 +1034,7 @@ void LOutputStreamClass::method_getFile( LContext& _context )
 	LQT_FUNC_ARG_LIST ;
 	LQT_FUNC_THIS_NOBJ( LOutputStream, strm ) ;
 
-	LPtr<LNativeObj>	pFileObj = new LNativeObj( LQT_GET_CLASS(File) ) ;
+	LPtr<LNativeObj>	pFileObj( new LNativeObj( LQT_GET_CLASS(File) ) ) ;
 	pFileObj->SetNative( strm->GetFile() ) ;
 
 	LQT_RETURN_OBJECT( pFileObj ) ;

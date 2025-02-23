@@ -358,15 +358,15 @@ int LoquatyApp::RunMain( void )
 	}
 
 	// 引数配列
-	LPtr<LThreadObj>	pThread = new LThreadObj( m_vm->GetThreadClass() ) ;
+	LPtr<LThreadObj>	pThread( new LThreadObj( m_vm->GetThreadClass() ) ) ;
 	if ( m_verb == verbDebug )
 	{
 		m_debugger.SetStepIn( pThread->Context() ) ;
 	}
 
 	std::vector<LValue>	args ;
-	LPtr<LArrayObj>	pArg =
-		pThread->Context().new_Array( m_vm->GetStringClass() ) ;
+	LPtr<LArrayObj>	pArg
+		( pThread->Context().new_Array( m_vm->GetStringClass() ) ) ;
 	args.push_back( LValue( pArg ) ) ;
 
 	for ( size_t i = 0; i < m_argsScript.size(); i ++ )
@@ -378,7 +378,7 @@ int LoquatyApp::RunMain( void )
 	// 関数を呼び出す
 	auto [valRet, pExcept] =
 		pThread->SyncCallFunctionAs
-			( nullptr, L"main", args.data(), args.size() ) ;
+			( LObjPtr(), L"main", args.data(), args.size() ) ;
 
 	if ( m_optMeasureTime )
 	{
@@ -1207,7 +1207,7 @@ void LoquatyApp::MakeDocVariableList
 	{
 		for ( size_t i = 0; i < pVar->GetElementCount(); i ++ )
 		{
-			LObjPtr	pElement = pVar->GetElementAt( i ) ;
+			LObjPtr	pElement( pVar->GetElementAt( i ) ) ;
 			LString	strName ;
 			pVar->GetElementNameAt( strName, i ) ;
 
@@ -1241,7 +1241,7 @@ void LoquatyApp::MakeDocVariableDesc
 	{
 		for ( size_t i = 0; i < pVar->GetElementCount(); i ++ )
 		{
-			LObjPtr	pElement = pVar->GetElementAt( i ) ;
+			LObjPtr	pElement( pVar->GetElementAt( i ) ) ;
 			LString	strName ;
 			pVar->GetElementNameAt( strName, i ) ;
 
@@ -1268,8 +1268,8 @@ void LoquatyApp::MakeDocVariableDesc
 			strm << L"<a name=\"" << pwszBase
 				<< LXMLDocParser::EncodeXMLString( names.at(i).c_str() ) << L"\"/>\r\n" ;
 
-			LPtr<LPointerObj>	pPtr =
-				new LPointerObj( m_vm->GetPointerClassAs( desc.m_type ) ) ;
+			LPtr<LPointerObj>	pPtr
+				( new LPointerObj( m_vm->GetPointerClassAs( desc.m_type ) ) ) ;
 			pPtr->SetPointer( arrange.GetBuffer(), desc.m_location, desc.m_size ) ;
 
 			MakeDocVariableDesc

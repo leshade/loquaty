@@ -371,7 +371,7 @@ LPtr<LFunctionObj>
 
 	if ( compiler.GetErrorCount() > 0 )
 	{
-		return	nullptr ;
+		return	LPtr<LFunctionObj>() ;
 	}
 
 	// 返り値設定
@@ -400,8 +400,8 @@ LPtr<LFunctionObj>
 	compiler.EndFunctionBlock( ctx ) ;
 
 	// 生成した関数返却
-	LPtr<LFunctionObj>	pFunc =
-			new LFunctionObj( vm.GetFunctionClassAs( proto ), proto ) ;
+	LPtr<LFunctionObj>	pFunc
+			( new LFunctionObj( vm.GetFunctionClassAs( proto ), proto ) ) ;
 	pFunc->SetFuncCode( codeBuf, 0 ) ;
 	return	pFunc ;
 }
@@ -438,11 +438,11 @@ LPtr<LFunctionObj>
 	compiler.EndFunctionBlock( ctx ) ;
 	if ( compiler.GetErrorCount() > 0 )
 	{
-		return	nullptr ;
+		return	LPtr<LFunctionObj>() ;
 	}
 
-	LPtr<LFunctionObj>	pFunc =
-			new LFunctionObj( vm.GetFunctionClassAs( proto ), proto ) ;
+	LPtr<LFunctionObj>	pFunc
+			( new LFunctionObj( vm.GetFunctionClassAs( proto ), proto ) ) ;
 	pFunc->SetFuncCode( codeBuf, 0 ) ;
 	return	pFunc ;
 }

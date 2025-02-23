@@ -408,7 +408,7 @@ namespace	Loquaty
 		{
 			return	m_callableInConstExpr ;
 		}
-		void CallNativeFunc( LContext& context )
+		void CallNativeFunc( LContext& context ) const
 		{
 			m_funcNative( context ) ;
 		}
@@ -658,7 +658,7 @@ static const Loquaty::NativeFuncDeclList*	s_pnfdlFirst = nullptr ;
 			return _context.ThrowException( exceptionNullPointer )
 
 #define	LQT_FUNC_THIS_OBJ(type,name)	\
-		Loquaty::LPtr<type>	name = _arglist.NextObjectAs<type>() ;	\
+		Loquaty::LPtr<type>	name( _arglist.NextObjectAs<type>() ) ;	\
 		assert( name != nullptr ) ;	\
 		LQT_VERIFY_NULL_PTR(name)
 
@@ -701,7 +701,7 @@ static const Loquaty::NativeFuncDeclList*	s_pnfdlFirst = nullptr ;
 		Loquaty::LString	name = _arglist.NextString()
 
 #define	LQT_FUNC_ARG_OBJECT(type,name)	\
-		Loquaty::LPtr<type>	name = _arglist.NextObjectAs<type>()
+		Loquaty::LPtr<type>	name( _arglist.NextObjectAs<type>() )
 
 #define	LQT_FUNC_ARG_NOBJ(type,name)	\
 		std::shared_ptr<type>	name = std::dynamic_pointer_cast<type>( _arglist.NextNativeObject() )

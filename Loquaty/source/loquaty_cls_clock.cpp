@@ -475,7 +475,7 @@ LValue::Primitive LDateTimeStructure::operator_add
 		return	LValue::MakeObjectPtr( nullptr ) ;
 	}
 
-	LPtr<LPointerObj>	pDatePtr = val1.pObject->GetBufferPoiner() ;
+	LPtr<LPointerObj>	pDatePtr( val1.pObject->GetBufferPoiner() ) ;
 	LDateTime *			pDate = pDatePtr->Ptr<LDateTime>() ;
 	if ( pDate == nullptr )
 	{
@@ -503,7 +503,7 @@ LValue::Primitive LDateTimeStructure::operator_sub
 		return	LValue::MakeObjectPtr( nullptr ) ;
 	}
 
-	LPtr<LPointerObj>	pDatePtr = val1.pObject->GetBufferPoiner() ;
+	LPtr<LPointerObj>	pDatePtr( val1.pObject->GetBufferPoiner() ) ;
 	LDateTime *			pDate = pDatePtr->Ptr<LDateTime>() ;
 	if ( pDate == nullptr )
 	{
@@ -531,7 +531,7 @@ LValue::Primitive LDateTimeStructure::operator_sadd
 		return	LValue::MakeObjectPtr( nullptr ) ;
 	}
 
-	LPtr<LPointerObj>	pDatePtr = val1.pObject->GetBufferPoiner() ;
+	LPtr<LPointerObj>	pDatePtr( val1.pObject->GetBufferPoiner() ) ;
 	LDateTime *			pDate = pDatePtr->Ptr<LDateTime>() ;
 	if ( pDate == nullptr )
 	{
@@ -558,7 +558,7 @@ LValue::Primitive LDateTimeStructure::operator_ssub
 		return	LValue::MakeObjectPtr( nullptr ) ;
 	}
 
-	LPtr<LPointerObj>	pDatePtr = val1.pObject->GetBufferPoiner() ;
+	LPtr<LPointerObj>	pDatePtr( val1.pObject->GetBufferPoiner() ) ;
 	LDateTime *			pDate = pDatePtr->Ptr<LDateTime>() ;
 	if ( pDate == nullptr )
 	{

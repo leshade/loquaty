@@ -270,8 +270,8 @@ LString LDebugger::ToExpression( const LValue& value )
 		if ( (pPtr != nullptr)
 			&& (pPtr->GetClass() != value.GetType().GetClass()) )
 		{
-			LPtr<LPointerObj>	pTempPtr =
-						new LPointerObj( value.GetType().GetClass() ) ;
+			LPtr<LPointerObj>
+				pTempPtr( new LPointerObj( value.GetType().GetClass() ) ) ;
 			*pTempPtr = *pPtr ;
 
 			LString	strExpr ;
@@ -331,7 +331,7 @@ LEvalValue LDebugger::EvaluateExpr
 			}
 			else
 			{
-				val = LEvalValue( context.new_String( strLiteral ) ) ;
+				val = LEvalValue( LObjPtr(context.new_String( strLiteral )) ) ;
 			}
 			break ;
 		}
@@ -945,10 +945,10 @@ LEvalValue LDebugger::GetLocalVar
 			assert( pArrayClass != nullptr ) ;
 			typeBuf = pArrayClass->GetElementType() ;
 		}
-		LPtr<LPointerObj>	pPtr =
-			new LPointerObj
-				( context.VM().GetPointerClassAs( typeBuf ),
-					pStack, (pStack->fp() + iLoc) * sizeof(LStackBuffer::Word) ) ;
+		LPtr<LPointerObj>	pPtr
+			( new LPointerObj
+				( context.VM().GetPointerClassAs( typeBuf ), pStack,
+					(pStack->fp() + iLoc) * sizeof(LStackBuffer::Word) ) ) ;
 		return	LEvalValue( pPtr, true ) ;
 	}
 	if ( pVar->GetType().IsPrimitive() )
@@ -962,8 +962,8 @@ LEvalValue LDebugger::GetLocalVar
 			&& (dynamic_cast<LPointerObj*>(val.pObject) != nullptr) )
 	{
 		// ポインタ型
-		LPtr<LPointerObj>	pPtr =
-				new LPointerObj( pVar->GetType().GetClass() ) ;
+		LPtr<LPointerObj>
+				pPtr( new LPointerObj( pVar->GetType().GetClass() ) ) ;
 		*pPtr = *(dynamic_cast<LPointerObj*>(val.pObject)) ;
 
 		if ( (pVar->GetAllocType() == LLocalVar::allocPointer)

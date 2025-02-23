@@ -37,7 +37,7 @@ LObject * LArrayObj::SetElementAt( size_t index, LObject * pObj )
 			LObject::ReleaseRef( pObj ) ;
 			return	nullptr ;
 		}
-		m_array.resize( index + 1, nullptr ) ;
+		m_array.resize( index + 1, LObjPtr() ) ;
 	}
 	LObject *	pOldObj = m_array.at( index ).Get() ;
 	if ( (pObj != nullptr)
@@ -129,7 +129,7 @@ LObject * LArrayObj::CastClassTo( LClass * pClass )
 	}
 	LSpinLock	lock( m_mtxArray ) ;
 	LArrayObj *	pArrayObj = new LArrayObj( pClass ) ;
-	pArrayObj->m_array.resize( m_array.size(), nullptr ) ;
+	pArrayObj->m_array.resize( m_array.size(), LObjPtr() ) ;
 	for ( size_t i = 0; i < m_array.size(); i ++ )
 	{
 		pObj = m_array.at(i).Ptr() ;
@@ -160,7 +160,7 @@ LObject * LArrayObj::CloneObject( void ) const
 void LArrayObj::CloneFrom( const LArrayObj& obj )
 {
 	LSpinLock	lock( m_mtxArray ) ;
-	m_array.resize( obj.m_array.size(), nullptr ) ;
+	m_array.resize( obj.m_array.size(), LObjPtr() ) ;
 
 	for ( size_t i = 0; i < obj.m_array.size(); i ++ )
 	{
@@ -219,7 +219,7 @@ bool LArrayObj::PutMembers( const LObjPtr& pObj )
 	{
 		return	false ;
 	}
-	LObjPtr		pCastObj = pObj->CastClassTo( pArrayClass ) ;
+	LObjPtr		pCastObj( pObj->CastClassTo( pArrayClass ) ) ;
 	LArrayObj *	pArrayObj = dynamic_cast<LArrayObj*>( pCastObj.Ptr() ) ;
 	if ( pArrayObj == nullptr )
 	{
@@ -430,7 +430,7 @@ LValue::Primitive LArrayObj::operator_sadd
 		LContext::ThrowExceptionError( exceptionNullPointer ) ;
 		return	LValue::MakeObjectPtr( nullptr ) ;
 	}
-	LObjPtr	pObj = val2.pObject ;
+	LObjPtr	pObj( val2.pObject ) ;
 	if ( pObj != nullptr )
 	{
 		pObj->AddRef() ;
@@ -464,7 +464,7 @@ LValue::Primitive LArrayObj::operator_add
 		LContext::ThrowExceptionError( exceptionNullPointer ) ;
 		return	LValue::MakeObjectPtr( nullptr ) ;
 	}
-	LObjPtr	pObj = val2.pObject ;
+	LObjPtr	pObj( val2.pObject ) ;
 	if ( pObj != nullptr )
 	{
 		pObj->AddRef() ;

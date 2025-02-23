@@ -73,7 +73,7 @@ std::tuple<LValue,LObjPtr>
 // 関数取得
 LPtr<LFunctionObj> LTaskObj::GetFunctionAs
 		( std::vector<LValue>& argValues,
-			LObjPtr pThisObj,
+			const LObjPtr& pThisObj,
 			const wchar_t * pwszFuncName,
 			const LValue * pArgValues, size_t nArgCount ) const
 {
@@ -99,7 +99,7 @@ LPtr<LFunctionObj> LTaskObj::GetFunctionAs
 								( pwszFuncName, argListType, pClass ) ;
 		if ( iFunc < 0 )
 		{
-			return	nullptr ;
+			return	LPtr<LFunctionObj>() ;
 		}
 		return	pClass->GetVirtualVector().GetFunctionAt( (size_t) iFunc ) ;
 	}
@@ -109,7 +109,7 @@ LPtr<LFunctionObj> LTaskObj::GetFunctionAs
 			m_context.VM().Global()->GetLocalStaticFunctionsAs( pwszFuncName ) ;
 		if ( pFuncVar == nullptr )
 		{
-			return	nullptr ;
+			return	LPtr<LFunctionObj>() ;
 		}
 		return	pFuncVar->GetCallableFunction( argListType ) ;
 	}
@@ -117,7 +117,7 @@ LPtr<LFunctionObj> LTaskObj::GetFunctionAs
 
 // 軽量スレッドとして実行を開始する
 bool LTaskObj::BeginAsync
-	( LPtr<LFunctionObj> pFunc, const LValue * pArgValues, size_t nArgCount )
+	( const LPtr<LFunctionObj>& pFunc, const LValue * pArgValues, size_t nArgCount )
 {
 	assert( !m_context.IsRunning() ) ;
 	m_flagAsync = true ;
@@ -138,7 +138,7 @@ bool LTaskObj::BeginAsync
 }
 
 bool LTaskObj::BeginAsyncAs
-	( LObjPtr pThisObj,
+	( const LObjPtr& pThisObj,
 		const wchar_t * pwszFuncName,
 		const LValue * pArgValues, size_t nArgCount )
 {
@@ -385,12 +385,14 @@ void LTaskObj::method_getReturned( LContext& _context )
 			if ( valRet.GetType().IsFloatingPointNumber() )
 			{
 				_context.SetReturnValue
-					( LValue( _context.new_Double( valRet.Value().dblValue ) ) ) ;
+					( LValue( LObjPtr
+						( _context.new_Double( valRet.Value().dblValue ) ) ) ) ;
 			}
 			else
 			{
 				_context.SetReturnValue
-					( LValue( _context.new_Integer( valRet.Value().longValue ) ) ) ;
+					( LValue( LObjPtr
+						( _context.new_Integer( valRet.Value().longValue ) ) ) ) ;
 			}
 		}
 		else
@@ -552,12 +554,14 @@ void LThreadObj::method_getReturned( LContext& _context )
 			if ( valRet.GetType().IsFloatingPointNumber() )
 			{
 				_context.SetReturnValue
-					( LValue( _context.new_Double( valRet.Value().dblValue ) ) ) ;
+					( LValue( LObjPtr
+						( _context.new_Double( valRet.Value().dblValue ) ) ) ) ;
 			}
 			else
 			{
 				_context.SetReturnValue
-					( LValue( _context.new_Integer( valRet.Value().longValue ) ) ) ;
+					( LValue( LObjPtr
+						( _context.new_Integer( valRet.Value().longValue ) ) ) ) ;
 			}
 		}
 		else

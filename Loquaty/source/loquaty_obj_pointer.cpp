@@ -332,7 +332,7 @@ bool LPointerObj::PutMembers
 		const size_t	nCount = pSrcObj->GetElementCount() ;
 		for ( size_t i = 0; i < nCount; i ++ )
 		{
-			LObjPtr	pElement = pSrcObj->GetElementAt( i ) ;
+			LObjPtr	pElement( pSrcObj->GetElementAt( i ) ) ;
 			if ( pElement != nullptr )
 			{
 				if ( !PutMembers
@@ -393,7 +393,7 @@ bool LPointerObj::PutMembers
 				flagSucceeded = false ;
 				continue ;
 			}
-			LObjPtr	pElement = pSrcObj->GetElementAt( i ) ;
+			LObjPtr	pElement( pSrcObj->GetElementAt( i ) ) ;
 			if ( pElement == nullptr )
 			{
 				continue ;
@@ -686,9 +686,10 @@ bool LPointerObj::AsExpression( LString& str, std::uint64_t flags ) const
 
 		const LType			typeElement = pArrayClass->GetElementType() ;
 		const size_t		nCount = pArrayClass->GetArrayElementCount() ;
-		LPtr<LPointerObj>	pNext =
-			new LPointerObj
-				( m_pClass->VM().GetPointerClassAs( typeElement ), m_pBuf, m_iOffset ) ;
+		LPtr<LPointerObj>	pNext
+			( new LPointerObj
+				( m_pClass->VM().
+					GetPointerClassAs( typeElement ), m_pBuf, m_iOffset ) ) ;
 
 		const wchar_t *	pwszStarter = L"[ " ;
 		const wchar_t *	pwszCloser = L" ]" ;
@@ -762,10 +763,10 @@ bool LPointerObj::AsExpression( LString& str, std::uint64_t flags ) const
 				}
 				str += pwszSeparator ;
 
-				LPtr<LPointerObj>	pElement =
-					new LPointerObj
+				LPtr<LPointerObj>	pElement
+					( new LPointerObj
 						( m_pClass->VM().GetPointerClassAs( desc.m_type ),
-							m_pBuf, m_iOffset + desc.m_location ) ;
+							m_pBuf, m_iOffset + desc.m_location ) ) ;
 				LString	strElement ;
 				if ( pElement->AsString( strElement ) )
 				{

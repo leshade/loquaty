@@ -72,7 +72,9 @@ namespace	Loquaty
 	public:
 		LValue( void )
 			: m_value( MakeObjectPtr(nullptr) ) {}
-		LValue( const LType& type, LObjPtr pObj = nullptr )
+		LValue( const LType& type )
+			: m_type( type ), m_value( MakeObjectPtr(nullptr) ) {}
+		LValue( const LType& type, const LObjPtr& pObj )
 			: m_type( type ), m_pObject( pObj )
 		{
 			m_value.pObject = pObj.Ptr() ;

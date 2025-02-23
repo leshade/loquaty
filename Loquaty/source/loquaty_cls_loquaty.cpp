@@ -296,10 +296,11 @@ LPtr<LFunctionObj>
 
 	if ( compiler.GetErrorCount() > 0 )
 	{
-		return	nullptr ;
+		return	LPtr<LFunctionObj>() ;
 	}
-	LPtr<LFunctionObj>	pFunc =
-			new LFunctionObj( vmMaster.GetFunctionClassAs( proto ), proto ) ;
+	LPtr<LFunctionObj>
+			pFunc( new LFunctionObj
+					( vmMaster.GetFunctionClassAs( proto ), proto ) ) ;
 	pFunc->SetFuncCode( codeBuf, 0 ) ;
 	return	pFunc ;
 }
@@ -318,7 +319,7 @@ void LLoquatyClass::Compiler::PrintString( const LString& str )
 // public static Loquaty getCurrent()
 void LLoquatyClass::method_getCurrent( LContext& _context )
 {
-	LObjPtr	pVM = LObject::AddRef( &_context.VM() ) ;
+	LObjPtr	pVM( LObject::AddRef( &_context.VM() ) ) ;
 	LQT_RETURN_OBJECT( pVM ) ;
 }
 

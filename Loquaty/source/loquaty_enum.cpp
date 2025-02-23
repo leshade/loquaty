@@ -26,7 +26,7 @@ bool LEnumerativeClass::IsConformableValue( const LValue& value ) const
 			LDouble	fpValue = value.AsDouble() ;
 			for ( size_t i = 0; i < GetElementCount(); i ++ )
 			{
-				LObjPtr	pElement = GetElementAt( i ) ;
+				LObjPtr	pElement( GetElementAt( i ) ) ;
 				LDouble	dblElement ;
 				if ( (pElement != nullptr) && pElement->AsDouble( dblElement ) )
 				{
@@ -45,7 +45,7 @@ bool LEnumerativeClass::IsConformableValue( const LValue& value ) const
 			LString	strValue = value.AsString() ;
 			for ( size_t i = 0; i < GetElementCount(); i ++ )
 			{
-				LObjPtr	pElement = GetElementAt( i ) ;
+				LObjPtr	pElement( GetElementAt( i ) ) ;
 				LString	str ;
 				if ( (pElement != nullptr) && pElement->AsString( str ) )
 				{

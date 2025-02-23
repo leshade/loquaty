@@ -332,7 +332,7 @@ LExprValuePtr LCompiler::ParseReservedWord
 	if ( rwIndex == Symbol::rwiNull )
 	{
 		// null
-		LValue	valNull( LType(), nullptr ) ;
+		LValue	valNull = LValue() ;
 		xval = std::make_shared<LExprValue>() ;
 		xval->SetConstValue( valNull ) ;
 	}
@@ -692,7 +692,7 @@ LExprValuePtr LCompiler::ParseArrayLiteral
 {
 	LClass *		pElementClass = pCastElementType ;		// 要素型
 	LClass *		pArrayClass = m_vm.GetArrayClassAs( pCastElementType ) ;
-	LPtr<LArrayObj>	pArrayObj = new LArrayObj( pArrayClass ) ;
+	LPtr<LArrayObj>	pArrayObj( new LArrayObj( pArrayClass ) ) ;
 
 	sparsExpr.PassSpace() ;
 	if ( sparsExpr.CurrentChar() != L'[' )
@@ -846,7 +846,7 @@ LExprValuePtr LCompiler::ParseMapLiteral
 {
 	LClass *		pElementClass = nullptr ;		// 要素型
 	LClass *		pMapClass = m_vm.GetMapClassAs( pCastElementType ) ;
-	LPtr<LMapObj>	pMapObj = new LMapObj( pMapClass ) ;
+	LPtr<LMapObj>	pMapObj( new LMapObj( pMapClass ) ) ;
 
 	sparsExpr.PassSpace() ;
 	if ( sparsExpr.CurrentChar() != L'{' )
@@ -1154,7 +1154,7 @@ LExprValuePtr LCompiler::GetSymbolWithNamespaceAs
 			LPtr<LNamespace>	pNamespace( pnsLocal ) ;
 
 			LExprValuePtr	xvalObj =
-				std::make_shared<LExprValue>( *pVarType, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( *pVarType, LObjPtr(), false, false ) ;
 			xvalObj->SetOptionRefByIndexOf
 				( std::make_shared<LExprValue>( pNamespace ),
 									ExprLoadImmInteger( iElement ) ) ;
@@ -1192,7 +1192,7 @@ LExprValuePtr LCompiler::GetSymbolWithNamespaceAs
 	{
 		pClass->AddRef() ;
 		return	std::make_shared<LExprValue>
-					( LType(pClass->GetClass()), pClass, true, true ) ;
+					( LType(pClass->GetClass()), LObjPtr(pClass), true, true ) ;
 	}
 
 	// 名前空間
@@ -1216,7 +1216,7 @@ LExprValuePtr LCompiler::GetSymbolWithNamespaceAs
 		pClass = pTypeDef->GetClass() ;
 		pClass->AddRef() ;
 		return	std::make_shared<LExprValue>
-					( LType(pClass->GetClass()), pClass, true, true ) ;
+					( LType(pClass->GetClass()), LObjPtr(pClass), true, true ) ;
 	}
 
 	// ジェネリック型
@@ -1234,7 +1234,8 @@ LExprValuePtr LCompiler::GetSymbolWithNamespaceAs
 			{
 				pClass->AddRef() ;
 				return	std::make_shared<LExprValue>
-							( LType(pClass->GetClass()), pClass, true, true ) ;
+							( LType(pClass->GetClass()),
+									LObjPtr(pClass), true, true ) ;
 			}
 			else
 			{
@@ -1348,7 +1349,7 @@ LPtr<LFunctionObj> LCompiler::GetStaticFunctionOfNamespaceAs
 		}
 		pnsLocal = pnsLocal->GetParentNamespace().Ptr() ;
 	}
-	return	nullptr ;
+	return	LPtr<LFunctionObj>() ;
 }
 
 
@@ -1369,7 +1370,7 @@ LPtr<LNamespace> LCompiler::ParseGenericType
 		( vecTypes, strGenTypeName, false, pwszName, m_vm, pnslLocal ) )
 	{
 		sparsExpr.SeekIndex( iSaveIndex ) ;
-		return	nullptr ;
+		return	LPtr<LNamespace>() ;
 	}
 
 	// インスタンス化済みか？
@@ -1378,12 +1379,12 @@ LPtr<LNamespace> LCompiler::ParseGenericType
 	if ( pGenClass != nullptr )
 	{
 		pGenClass->AddRef() ;
-		return	pGenClass ;
+		return	LPtr<LNamespace>( pGenClass ) ;
 	}
 	if ( !instantiateGenType )
 	{
 		sparsExpr.SeekIndex( iSaveIndex ) ;
-		return	nullptr ;
+		return	LPtr<LNamespace>() ;
 	}
 
 	// インスタンス化
@@ -1504,7 +1505,7 @@ LExprValuePtr LCompiler::GetExprVarMember
 		if ( xvalVar->IsConstExpr()
 			&& (xvalVar->GetObject() != nullptr) )
 		{
-			LObjPtr	pElement = xvalVar->GetObject()->GetElementAs( pwszName ) ;
+			LObjPtr	pElement( xvalVar->GetObject()->GetElementAs( pwszName ) ) ;
 			LType	typeElement = xvalVar->GetObject()->GetElementTypeAs( pwszName ) ;
 			if ( (pElement != nullptr)
 				&& IsAccessibleTo( pClass, typeElement.GetAccessModifier() ) )
@@ -1537,7 +1538,8 @@ LExprValuePtr LCompiler::GetExprVarMember
 				// オブジェクトのメンバ変数への参照
 				LExprValuePtr	xvalElement =
 					std::make_shared<LExprValue>
-						( typeElement.ConstWith(xvalVar->GetType()), nullptr, false, false ) ;
+						( typeElement.ConstWith(xvalVar->GetType()),
+												LObjPtr(), false, false ) ;
 				xvalElement->SetOptionRefByIndexOf
 						( xvalVar, ExprLoadImmInteger( iElement ) ) ;
 				return	xvalElement ;
@@ -1578,7 +1580,7 @@ LExprValuePtr LCompiler::GetExprVarMember
 				std::make_shared<LExprValue>( pAbsFuncClass, pClass, pVirtVec ) ;
 		LExprValuePtr	xvalRefCallFunc =
 				std::make_shared<LExprValue>
-						( LType(pAbsFuncClass), nullptr, false, false ) ;
+						( LType(pAbsFuncClass), LObjPtr(), false, false ) ;
 		xvalRefCallFunc->SetOptionRefCallThisOf( xvalVar, xvalVirtFunc ) ;
 		return	xvalRefCallFunc ;
 	}
@@ -1597,7 +1599,7 @@ LExprValuePtr LCompiler::GetExprVarMember
 						pPtrClass->GetVirtualVector().MakeFuncVariationOf( pVirtVec ) ) ;
 			LExprValuePtr	xvalRefCallFunc =
 					std::make_shared<LExprValue>
-						( LType(pAbsFuncClass), nullptr, false, false ) ;
+						( LType(pAbsFuncClass), LObjPtr(), false, false ) ;
 			xvalRefCallFunc->SetOptionRefCallThisOf( xvalVar, xvalVirtFunc ) ;
 			return	xvalRefCallFunc ;
 		}
@@ -1636,7 +1638,7 @@ LExprValuePtr LCompiler::GetLocalVariable( const wchar_t * pwszName )
 				//
 				LExprValuePtr	xvalPtr =
 					std::make_shared<LExprValue>
-						( pVar->GetType(), nullptr, false, false ) ;
+						( pVar->GetType(), LObjPtr(), false, false ) ;
 				xvalPtr->SetOptionPointerOffset( pVar, xvalPtrIndex ) ;
 				return	xvalPtr ;
 			}
@@ -2452,7 +2454,8 @@ LExprValuePtr LCompiler::ParseTypeConstruction
 	// Type
 	pTypeClass->AddRef() ;
 	return	std::make_shared<LExprValue>
-				( LType(pTypeClass->GetClass()), pTypeClass, true, true ) ;
+				( LType(pTypeClass->GetClass()),
+							LObjPtr(pTypeClass), true, true ) ;
 }
 
 // オブジェクト型の配列修飾
@@ -3186,7 +3189,7 @@ LExprValuePtr LCompiler::EvalPointerUnaryOperator
 		pPtrObj = new LPointerObj( *pPtrObj ) ;
 		pPtrObj += (ssize_t) value.longValue ;
 		return	std::make_shared<LExprValue>
-					( xval->GetType(), pPtrObj, true, xval->IsUniqueObject() ) ;
+					( xval->GetType(), LObjPtr(pPtrObj), true, xval->IsUniqueObject() ) ;
 	}
 	else
 	{
@@ -3198,7 +3201,7 @@ LExprValuePtr LCompiler::EvalPointerUnaryOperator
 			{
 				assert( xval->IsOffsetPointer() ) ;
 				xvalBefore = std::make_shared<LExprValue>
-								( xval->GetType(), nullptr, false, false ) ;
+								( xval->GetType(), LObjPtr(), false, false ) ;
 				xvalBefore->SetOptionPointerOffset
 					( xval->GetOption1(), ExprLoadClone( xval->GetOption2() ) ) ;
 			}
@@ -3233,7 +3236,7 @@ LExprValuePtr LCompiler::EvalPointerUnaryOperator
 								puopDef->m_opIndex,
 								puopDef->m_pfnOp,
 								stride.pVoidPtr, puopDef->m_pOpFunc ) ;
-			xval = std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+			xval = std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 			xval->SetOptionPointerOffset( xvalPtr, xvalStore ) ;
 		}
 		else
@@ -3346,7 +3349,8 @@ LExprValuePtr LCompiler::EvalObjectUnaryOperator
 		if ( puopDef->m_typeRet.IsObject() )
 		{
 			return	std::make_shared<LExprValue>
-						( puopDef->m_typeRet, value.pObject, true, false ) ;
+						( puopDef->m_typeRet,
+							LObjPtr(value.pObject), true, false ) ;
 		}
 		else
 		{
@@ -3603,7 +3607,7 @@ LExprValuePtr LCompiler::ParseOperatorStaticMemberOf
 			// 仮想関数の直接の参照
 			return	std::make_shared<LExprValue>
 				( m_vm.GetFunctionClass(),
-					pClass->GetVirtualVector().MakeFuncVariationOf(  pVirtVec ) ) ;
+					pClass->GetVirtualVector().MakeFuncVariationOf( pVirtVec ) ) ;
 		}
 	}
 
@@ -3666,7 +3670,7 @@ LExprValuePtr LCompiler::ParseOperatorMemberCallOf
 	}
 
 	LExprValuePtr	xvalFunc =
-		std::make_shared<LExprValue>( xval2->GetType(), nullptr, false, false ) ;
+		std::make_shared<LExprValue>( xval2->GetType(), LObjPtr(), false, false ) ;
 	xvalFunc->SetOptionRefCallThisOf( xval, xval2 ) ;
 	return	xvalFunc ;
 }
@@ -4209,7 +4213,7 @@ void LCompiler::ConstExprPushArgument
 	LObjPtr	pThisObj ;
 	if ( proto.GetThisClass() != nullptr )
 	{
-		pThisObj = (xvalThis != nullptr) ? xvalThis->GetObject() : nullptr ;
+		pThisObj = (xvalThis != nullptr) ? xvalThis->GetObject() : LObjPtr() ;
 		if ( pThisObj == nullptr )
 		{
 			OnError( exceptionNullPointer ) ;
@@ -4278,7 +4282,7 @@ LExprValuePtr LCompiler::ExprCodeReturnValue( const LPrototype& proto )
 	}
 	LExprValuePtr	xvalRetValue =
 						std::make_shared<LExprValue>
-							( proto.GetReturnType(), nullptr, false, false ) ;
+							( proto.GetReturnType(), LObjPtr(), false, false ) ;
 	if ( !proto.GetReturnType().IsVoid() )
 	{
 		PushExprValueOnStack( xvalRetValue ) ;
@@ -4458,7 +4462,7 @@ LExprValuePtr LCompiler::EvalOperatorElement
 		LExprValuePtr	xvalElement =
 				std::make_shared<LExprValue>
 					( xval->GetType().GetRefElementType().
-						ConstWith( xval->GetType() ), nullptr, false, false ) ;
+						ConstWith( xval->GetType() ), LObjPtr(), false, false ) ;
 		if ( xval->GetType().IsString() )
 		{
 			xvalElement->Type() = xvalElement->GetType().ConstType() ;
@@ -4472,7 +4476,7 @@ LExprValuePtr LCompiler::EvalOperatorElement
 		LExprValuePtr	xvalElement =
 				std::make_shared<LExprValue>
 					( xval->GetType().GetRefElementType().
-						ConstWith( xval->GetType() ), nullptr, false, false ) ;
+						ConstWith( xval->GetType() ), LObjPtr(), false, false ) ;
 		if ( xvalIndex->GetType().IsInteger() )
 		{
 			xvalElement->SetOptionRefByIndexOf( xval, xvalIndex ) ;
@@ -5090,7 +5094,7 @@ LExprValuePtr LCompiler::EvalPointerBinaryOperator
 			pPtrObj = new LPointerObj( *pPtrObj ) ;
 			pPtrObj += (ssize_t) value.longValue ;
 			return	std::make_shared<LExprValue>
-						( xval1->GetType(), pPtrObj, true, false ) ;
+						( xval1->GetType(), LObjPtr(pPtrObj), true, false ) ;
 		}
 	}
 	else
@@ -5110,7 +5114,7 @@ LExprValuePtr LCompiler::EvalPointerBinaryOperator
 		{
 			LExprValuePtr	xvalResPtr =
 								std::make_shared<LExprValue>
-									( xvalPtr->GetType(), nullptr, false, false ) ;
+									( xvalPtr->GetType(), LObjPtr(), false, false ) ;
 			xvalResPtr->SetOptionPointerOffset( xvalPtr->GetOption1(), xval1 ) ;
 			xval1 = xvalResPtr ;
 		}
@@ -5259,7 +5263,7 @@ LExprValuePtr LCompiler::EvalObjectBinaryOperator
 		if ( pbopDef->m_typeRet.IsObject() )
 		{
 			return	std::make_shared<LExprValue>
-						( pbopDef->m_typeRet, valRet.pObject, true, false ) ;
+						( pbopDef->m_typeRet, LObjPtr(valRet.pObject), true, false ) ;
 		}
 		else
 		{
@@ -5528,7 +5532,7 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 			// 定数式
 			if ( xval->GetObject() != nullptr )
 			{
-				LObjPtr	pObj = xval->GetObject()->CastClassTo( typeCast.GetClass() ) ;
+				LObjPtr	pObj( xval->GetObject()->CastClassTo( typeCast.GetClass() ) ) ;
 				if ( pObj == nullptr )
 				{
 					OnError( errorFailedConstExprToCast_opt1_opt2,
@@ -5540,7 +5544,7 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 			}
 			else
 			{
-				return	std::make_shared<LExprValue>( typeCast, nullptr, true, false ) ;
+				return	std::make_shared<LExprValue>( typeCast, LObjPtr(), true, false ) ;
 			}
 		}
 
@@ -5736,7 +5740,7 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 			if ( iCastOffset != 0 )
 			{
 				LExprValuePtr	xvalCastPtr =
-					std::make_shared<LExprValue>( typeValue, nullptr, false, false ) ;
+					std::make_shared<LExprValue>( typeValue, LObjPtr(), false, false ) ;
 				xvalCastPtr->SetOptionPointerOffset
 						( xval, LExprValue::MakeConstExprInt(iCastOffset) ) ;
 				if ( explicitCast )
@@ -5806,21 +5810,24 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 				LClass *	pClass = m_vm.GetStringClass() ;
 				return	std::make_shared<LExprValue>
 							( LType(pClass),
-								new LStringObj( pClass, str ), true, false ) ;
+								LObjPtr( new LStringObj
+										( pClass, str ) ), true, false ) ;
 			}
 			else if ( typeCast.IsDoubleObj() )
 			{
 				LClass *	pClass = m_vm.GetDoubleObjClass() ;
 				return	std::make_shared<LExprValue>
 							( LType(pClass),
-								new LDoubleObj( pClass, xval->AsDouble() ), true, false ) ;
+								LObjPtr( new LDoubleObj
+									( pClass, xval->AsDouble() ) ), true, false ) ;
 			}
 			else if ( typeCast.IsIntegerObj() )
 			{
 				LClass *	pClass = m_vm.GetIntegerObjClass() ;
 				return	std::make_shared<LExprValue>
 							( LType(pClass),
-								new LIntegerObj( pClass, xval->AsInteger() ), true, false ) ;
+								LObjPtr( new LIntegerObj
+									( pClass, xval->AsInteger() ) ), true, false ) ;
 			}
 		}
 
@@ -5839,14 +5846,14 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 			AddCode( LCodeBuffer::codeFloatToObject, iStack ) ;
 
 			xvalObj = std::make_shared<LExprValue>
-						( LType(m_vm.GetDoubleObjClass()), nullptr, false, false ) ;
+						( LType(m_vm.GetDoubleObjClass()), LObjPtr(), false, false ) ;
 		}
 		else
 		{
 			AddCode( LCodeBuffer::codeIntToObject, iStack ) ;
 
 			xvalObj = std::make_shared<LExprValue>
-					( LType(m_vm.GetIntegerObjClass()), nullptr, false, false ) ;
+					( LType(m_vm.GetIntegerObjClass()), LObjPtr(), false, false ) ;
 		}
 		PushExprValueOnStack( xvalObj ) ;
 		ExprTreatObjectChain( xvalObj ) ;
@@ -5862,7 +5869,7 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 			AddCode( LCodeBuffer::codeObjectToString, iStack ) ;
 
 			xvalObj = std::make_shared<LExprValue>
-						( LType(m_vm.GetStringClass()), nullptr, false, false ) ;
+						( LType(m_vm.GetStringClass()), LObjPtr(), false, false ) ;
 			PushExprValueOnStack( xvalObj ) ;
 			ExprTreatObjectChain( xvalObj ) ;
 		}
@@ -5893,7 +5900,7 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 
 		// 結果を受け取るスタック確保
 		LExprValuePtr	xvalNum =
-				std::make_shared<LExprValue>( typeCast, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( typeCast, LObjPtr(), false, false ) ;
 		PushExprValueOnStack( xvalNum ) ;
 
 		LCodeBuffer::ImmediateOperand	immop ;
@@ -6052,7 +6059,7 @@ LExprValuePtr LCompiler::ConstExprCastFuncTo
 	}
 	else if ( xval->IsNull() )
 	{
-		return	std::make_shared<LExprValue>( typeCast, nullptr, true, false ) ;
+		return	std::make_shared<LExprValue>( typeCast, LObjPtr(), true, false ) ;
 	}
 	else
 	{
@@ -6086,7 +6093,7 @@ LPtr<LArrayObj> LCompiler::ConstExprCastToArrayElementType
 	{
 		delete	pObj ;
 	}
-	return	pCastedObj ;
+	return	LPtr<LArrayObj>( pCastedObj ) ;
 }
 
 // 辞書配列オブジェクトを Map<Type> へ変換する
@@ -6111,7 +6118,7 @@ LPtr<LMapObj> LCompiler::ConstExprCastToMapElementType
 	{
 		delete	pObj ;
 	}
-	return	pCastedObj ;
+	return	LPtr<LMapObj>( pCastedObj ) ;
 }
 
 // ポインタのアライメントチェックする
@@ -6159,7 +6166,8 @@ LExprValuePtr LCompiler::EvalCheckPointerAlignmenet( LExprValuePtr xvalPtr )
 				pPtrObj = new LPointerObj( *pPtrObj ) ;
 				*pPtrObj += iPtrOffset ;
 			}
-			return	std::make_shared<LExprValue>( typePtr, pPtrObj, true, false ) ;
+			return	std::make_shared<LExprValue>
+						( typePtr, LObjPtr(pPtrObj) , true, false ) ;
 		}
 		if ( (iPtrOffset % nAlign) != 0 )
 		{
@@ -6175,7 +6183,7 @@ LExprValuePtr LCompiler::EvalCheckPointerAlignmenet( LExprValuePtr xvalPtr )
 		if ( iPtrOffset != 0 )
 		{
 			LExprValuePtr	xvalTempPtr =
-				std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 			xvalTempPtr->SetOptionPointerOffset
 				( xvalPtr, LExprValue::MakeConstExprInt(iPtrOffset) ) ;
 			return	xvalTempPtr ;
@@ -6208,13 +6216,13 @@ LExprValuePtr LCompiler::EvalCheckPointerAlignmenet( LExprValuePtr xvalPtr )
 						iStack, 0, nAlign, iPtrOffset, &immop ) ;
 		}
 		LExprValuePtr	xvalTempPtr =
-			std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+			std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 		xvalTempPtr->SetOptionPointerOffset( xvalPtr, xvalOffset ) ;
 		//
 		if ( iPtrOffset != 0 )
 		{
 			LExprValuePtr	xvalTempPtr2 =
-				std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 			xvalTempPtr2->SetOptionPointerOffset
 				( xvalTempPtr, LExprValue::MakeConstExprInt(iPtrOffset) ) ;
 			return	xvalTempPtr2 ;
@@ -6371,7 +6379,7 @@ LExprValuePtr LCompiler::ExprFetchPointerAddr
 			}
 			LExprValuePtr	xvalAddr =
 				std::make_shared<LExprValue>
-					( xval->GetType(), nullptr, false, false ) ;
+					( xval->GetType(), LObjPtr(), false, false ) ;
 			xvalAddr->Type().SetModifiers
 				( xval->GetType().GetModifiers() | LType::modifierFetchAddr ) ;
 			PushExprValueOnStack( xvalAddr ) ;
@@ -6411,7 +6419,7 @@ LExprValuePtr LCompiler::ExprFetchPointerAddr
 
 		LExprValuePtr	xvalAddr =
 			std::make_shared<LExprValue>
-					( xval->GetType(), nullptr, false, false ) ;
+					( xval->GetType(), LObjPtr(), false, false ) ;
 		xvalAddr->Type().SetModifiers
 			( xval->GetType().GetModifiers() | LType::modifierFetchAddr ) ;
 		PushExprValueOnStack( xvalAddr ) ;
@@ -6756,7 +6764,7 @@ LExprValuePtr LCompiler::MakeRefPointerToPointer( LExprValuePtr xval )
 			{
 				typePtr = LType( m_vm.GetPointerClassAs( xval->GetType() ) ) ;
 			}
-			xval = std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+			xval = std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 
 			PushExprValueOnStack( xval ) ;
 			ExprTreatObjectChain( xval ) ;
@@ -6861,7 +6869,7 @@ LExprValuePtr LCompiler::EvalLoadToDiscloseRef( LExprValuePtr xval )
 				AddCode( LCodeBuffer::codeRefObject, 0 ) ;
 			}
 			xval = std::make_shared<LExprValue>
-						( xval->GetType().ExConst(), nullptr, false, false ) ;
+						( xval->GetType().ExConst(), LObjPtr(), false, false ) ;
 			PushExprValueOnStack( xval ) ;
 			ExprTreatObjectChain( xval ) ;
 			return	xval ;
@@ -6904,7 +6912,7 @@ LExprValuePtr LCompiler::EvalLoadRefPtrStaticBuf
 		std::shared_ptr<LArrayBuffer> pBuf, size_t iOffset, size_t nBytes )
 {
 	LClass *	pPtrClass = m_vm.GetPointerClassAs( typeData ) ;
-	LPtr<LPointerObj>	pPtrObj = new LPointerObj( pPtrClass ) ;
+	LPtr<LPointerObj>	pPtrObj( new LPointerObj( pPtrClass ) ) ;
 	pPtrObj->SetPointer( pBuf, iOffset, nBytes ) ;
 
 	if ( typeData.IsConst() )
@@ -6922,7 +6930,7 @@ LExprValuePtr LCompiler::EvalLoadRefPtrStaticBuf
 		LExprValuePtr	xvalPtr =
 				ExprLoadImmObject( LType(pPtrClass), pPtrObj ) ;
 		LExprValuePtr	xvalRef =
-				std::make_shared<LExprValue>( typeData, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( typeData, LObjPtr(), false, false ) ;
 		xvalRef->SetOptionRefPointerOffset
 				( xvalPtr, LExprValue::MakeConstExprInt(0) ) ;
 		return	xvalRef ;
@@ -7010,7 +7018,7 @@ LExprValuePtr LCompiler::ExprLoadImmObject
 	}
 
 	LExprValuePtr	xval = 
-			std::make_shared<LExprValue>( type, nullptr, false, false ) ;
+			std::make_shared<LExprValue>( type, LObjPtr(), false, false ) ;
 	PushExprValueOnStack( xval ) ;
 
 	if ( fObjChain )
@@ -7037,7 +7045,7 @@ LExprValuePtr LCompiler::ExprLoadImmString( const LString& str )
 {
 	LStringClass *	pStrClass = m_vm.GetStringClass() ;
 	return	ExprLoadImmObject
-		( LType(pStrClass), new LStringObj( pStrClass, str ) ) ;
+		( LType(pStrClass), LObjPtr( new LStringObj( pStrClass, str ) ) ) ;
 }
 
 // 実行時式で新規オブジェクトを作成しロードする
@@ -7050,7 +7058,7 @@ LExprValuePtr LCompiler::ExprLoadNewObject( LClass * pClass )
 	AddCode( LCodeBuffer::codeNewObject, 0, 0, 0, 0, &immop ) ;
 
 	LExprValuePtr	xval = 
-		std::make_shared<LExprValue>( LType(pClass), nullptr, false, false ) ;
+		std::make_shared<LExprValue>( LType(pClass), LObjPtr(), false, false ) ;
 	PushExprValueOnStack( xval ) ;
 	ExprTreatObjectChain( xval ) ;
 
@@ -7128,7 +7136,7 @@ LExprValuePtr LCompiler::EvalCloneAsPointer( LExprValuePtr xval )
 		LObjPtr	pObj = xval->GetObject() ;
 		if ( pObj != nullptr )
 		{
-			LPtr<LPointerObj>	pPtr = pObj->GetBufferPoiner() ;
+			LPtr<LPointerObj>	pPtr( pObj->GetBufferPoiner() ) ;
 			if ( pPtr != nullptr )
 			{
 				return	std::make_shared<LExprValue>
@@ -7140,7 +7148,7 @@ LExprValuePtr LCompiler::EvalCloneAsPointer( LExprValuePtr xval )
 			OnError( errorCannotNonRefToPointer ) ;
 		}
 		return	std::make_shared<LExprValue>
-					( LType(m_vm.GetPointerClass()), nullptr, true, false ) ;
+					( LType(m_vm.GetPointerClass()), LObjPtr(), true, false ) ;
 	}
 	else if ( xval->IsOnLocal() )
 	{
@@ -7165,7 +7173,7 @@ LExprValuePtr LCompiler::EvalCloneAsPointer( LExprValuePtr xval )
 			{
 				typePtr = LType( m_vm.GetPointerClass() ) ;
 			}
-			xval = std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+			xval = std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 			PushExprValueOnStack( xval ) ;
 			ExprTreatObjectChain( xval ) ;
 			return	xval ;
@@ -7175,7 +7183,7 @@ LExprValuePtr LCompiler::EvalCloneAsPointer( LExprValuePtr xval )
 			OnError( errorCannotNonRefToPointer ) ;
 		}
 		return	std::make_shared<LExprValue>
-					( LType(m_vm.GetPointerClass()), nullptr, true, false ) ;
+					( LType(m_vm.GetPointerClass()), LObjPtr(), true, false ) ;
 	}
 	else
 	{
@@ -7194,7 +7202,7 @@ LExprValuePtr LCompiler::EvalCloneAsPointer( LExprValuePtr xval )
 		{
 			typePtr = LType( m_vm.GetPointerClass() ) ;
 		}
-		xval = std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+		xval = std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 		PushExprValueOnStack( xval ) ;
 		ExprTreatObjectChain( xval ) ;
 		return	xval ;
@@ -7327,7 +7335,7 @@ LExprValuePtr LCompiler::ExprPushClone( LExprValuePtr xval, bool withAddRef )
 		AddCode( LCodeBuffer::codeMove, 0, iStackPtr + 1, 0, 1 ) ;
 
 		LExprValuePtr	xvalDup =
-				std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 		PushExprValueOnStack( xvalDup ) ;
 		assert( withAddRef ) ;
 
@@ -7346,7 +7354,7 @@ LExprValuePtr LCompiler::ExprPushClone( LExprValuePtr xval, bool withAddRef )
 
 	LExprValuePtr	xvalDup =
 			std::make_shared<LExprValue>
-				( xval->GetType(), nullptr, false, false ) ;
+				( xval->GetType(), LObjPtr(), false, false ) ;
 	PushExprValueOnStack( xvalDup ) ;
 	AddCode( LCodeBuffer::codeLoadStack, iStack ) ;
 
@@ -7421,7 +7429,7 @@ LExprValuePtr LCompiler::ExprPrepareToPushClone( LExprValuePtr xval, bool withAd
 							Symbol::opAdd, std::move(xvalAdd) ) ;
 			}
 		}
-		xval = std::make_shared<LExprValue>( typePtr, nullptr, false, false ) ;
+		xval = std::make_shared<LExprValue>( typePtr, LObjPtr(), false, false ) ;
 		xval->SetOptionPointerOffset
 				( xvalPtr, ExprMakeOnStack( std::move(xvalOffset) ) ) ;
 		return	xval ;
@@ -7539,7 +7547,7 @@ void LCompiler::ExprCodeStore
 							primType = xvalRefDst->GetType().GetPrimitive() ;
 			const LType		typePtr( m_vm.GetPointerClassAs( xvalRefDst->GetType() ) ) ;
 			LExprValuePtr	xvalPtr = std::make_shared<LExprValue>
-											( typePtr, nullptr, false, false ) ;
+											( typePtr, LObjPtr(), false, false ) ;
 			xvalPtr->SetOptionPointerOffset
 						( xvalRefDst, LExprValue::MakeConstExprInt(0) ) ;
 
@@ -7850,7 +7858,7 @@ LExprValuePtr LCompiler::EvalLoadObjectElementAt
 		}
 		LLong	index = xvalIndex->AsInteger() ;
 
-		LObjPtr	pElement = pObj->GetElementAt( (size_t) index ) ;
+		LObjPtr	pElement( pObj->GetElementAt( (size_t) index ) ) ;
 		return	std::make_shared<LExprValue>
 					( type, pElement, true, xvalObj->IsUniqueObject() ) ;
 	}
@@ -7873,7 +7881,7 @@ LExprValuePtr LCompiler::EvalLoadObjectElementAt
 				iStackObj, iStackIndex, 0, nFreeCount ) ;
 
 	LExprValuePtr	xvalElement =
-			std::make_shared<LExprValue>( type, nullptr, false, false ) ;
+			std::make_shared<LExprValue>( type, LObjPtr(), false, false ) ;
 	PushExprValueOnStack( xvalElement ) ;
 	ExprTreatObjectChain( xvalElement ) ;
 
@@ -7911,7 +7919,7 @@ LExprValuePtr LCompiler::EvalLoadObjectElementAs
 		}
 		LString	str = xvalStr->AsString() ;
 
-		LObjPtr	pElement = pObj->GetElementAs( str.c_str() ) ;
+		LObjPtr	pElement( pObj->GetElementAs( str.c_str() ) ) ;
 		return	std::make_shared<LExprValue>
 					( type, pElement, true, xvalObj->IsUniqueObject() ) ;
 	}
@@ -7934,7 +7942,7 @@ LExprValuePtr LCompiler::EvalLoadObjectElementAs
 				iStackObj, iStackStr, 0, nFreeCount ) ;
 
 	LExprValuePtr	xvalElement =
-			std::make_shared<LExprValue>( type, nullptr, false, false ) ;
+			std::make_shared<LExprValue>( type, LObjPtr(), false, false ) ;
 	PushExprValueOnStack( xvalElement ) ;
 	ExprTreatObjectChain( xvalElement ) ;
 
@@ -8074,7 +8082,7 @@ LExprValuePtr LCompiler::ExprLoadPtrPrimitive
 	{
 		OnError( errorLoadByNonObjectPtr ) ;
 		return	std::make_shared<LExprValue>
-					( LType(type), nullptr, false, false ) ;
+					( LType(type), LObjPtr(), false, false ) ;
 	}
 	if ( xvalOffset != nullptr )
 	{
@@ -8087,7 +8095,7 @@ LExprValuePtr LCompiler::ExprLoadPtrPrimitive
 		LExprValuePtr	xvalPtrOffset =
 			std::make_shared<LExprValue>
 				( LType(m_vm.GetPointerClassAs( LType(type) )),
-											nullptr, false, false ) ;
+											LObjPtr(), false, false ) ;
 		xvalPtrOffset->SetOptionPointerOffset( xvalPtr, xvalOffset ) ;
 
 		LExprValuePtr	xvalFetchedAddr =
@@ -8101,7 +8109,7 @@ LExprValuePtr LCompiler::ExprLoadPtrPrimitive
 
 		LExprValuePtr	xvalLoaded =
 			std::make_shared<LExprValue>
-					( LType(type), nullptr, false, false ) ;
+					( LType(type), LObjPtr(), false, false ) ;
 		PushExprValueOnStack( xvalLoaded ) ;
 
 		return	xvalLoaded ;
@@ -8141,7 +8149,7 @@ LExprValuePtr LCompiler::ExprLoadPtrPrimitive
 		}
 		LExprValuePtr	xvalLoaded =
 			std::make_shared<LExprValue>
-					( LType(type), nullptr, false, false ) ;
+					( LType(type), LObjPtr(), false, false ) ;
 		PushExprValueOnStack( xvalLoaded ) ;
 
 		return	xvalLoaded ;
@@ -8172,7 +8180,7 @@ LExprValuePtr LCompiler::ExprLoadPtrPrimitive
 		}
 		LExprValuePtr	xvalLoaded =
 			std::make_shared<LExprValue>
-					( LType(type), nullptr, false, false ) ;
+					( LType(type), LObjPtr(), false, false ) ;
 		PushExprValueOnStack( xvalLoaded ) ;
 
 		return	xvalLoaded ;
@@ -8220,7 +8228,7 @@ void LCompiler::ExprStorePtrPrimitive
 		LExprValuePtr	xvalPtrOffset =
 			std::make_shared<LExprValue>
 				( LType(m_vm.GetPointerClassAs( LType(type) )),
-											nullptr, false, false ) ;
+											LObjPtr(), false, false ) ;
 		xvalPtrOffset->SetOptionPointerOffset( xvalPtr, xvalOffset ) ;
 
 		LExprValuePtr	xvalFetchedAddr =
@@ -8348,7 +8356,7 @@ void LCompiler::ExprStorePtrStructure
 		{
 			LExprValuePtr	xvalOffPtr =
 				std::make_shared<LExprValue>
-							( xvalPtr->GetType(), nullptr, false, false ) ;
+							( xvalPtr->GetType(), LObjPtr(), false, false ) ;
 			xvalOffPtr->SetOptionPointerOffset
 							( std::move(xvalPtr), std::move(xvalOffset) ) ;
 			xvalPtr = xvalOffPtr ;
@@ -8409,7 +8417,7 @@ LExprValuePtr LCompiler::EvalCodeBinaryOperate
 		else
 		{
 			return	std::make_shared<LExprValue>
-						( typeRet, valRet.pObject, true, false ) ;
+						( typeRet, LObjPtr(valRet.pObject), true, false ) ;
 		}
 	}
 	if ( pfnOp == nullptr )
@@ -8425,7 +8433,7 @@ LExprValuePtr LCompiler::EvalCodeBinaryOperate
 		arg.push_back( xval2 ) ;
 
 		pOpFunc->AddRef() ;
-		return	ExprCallFunction( xval1, pOpFunc, arg ) ;
+		return	ExprCallFunction( xval1, LPtr<LFunctionObj>(pOpFunc), arg ) ;
 	}
 
 	xval1 = ExprMakeOnStack( std::move(xval1) ) ;
@@ -8457,7 +8465,7 @@ LExprValuePtr LCompiler::EvalCodeBinaryOperate
 
 	// 返り値
 	LExprValuePtr	xvalRet =
-			std::make_shared<LExprValue>( typeRet, nullptr, false, false ) ;
+			std::make_shared<LExprValue>( typeRet, LObjPtr(), false, false ) ;
 	PushExprValueOnStack( xvalRet ) ;
 	ExprTreatObjectChain( xvalRet ) ;
 
@@ -8488,7 +8496,7 @@ LExprValuePtr LCompiler::EvalCodeUnaryOperate
 		else
 		{
 			return	std::make_shared<LExprValue>
-						( typeRet, valRet.pObject, true, false ) ;
+						( typeRet, LObjPtr(valRet.pObject), true, false ) ;
 		}
 	}
 	if ( pOpFunc != nullptr )
@@ -8502,7 +8510,7 @@ LExprValuePtr LCompiler::EvalCodeUnaryOperate
 		}
 		std::vector<LExprValuePtr>	arg ;
 		pOpFunc->AddRef() ;
-		return	ExprCallFunction( xval, pOpFunc, arg ) ;
+		return	ExprCallFunction( xval, LPtr<LFunctionObj>(pOpFunc), arg ) ;
 	}
 
 	xval = ExprMakeOnStack( std::move(xval) ) ;
@@ -8530,7 +8538,7 @@ LExprValuePtr LCompiler::EvalCodeUnaryOperate
 
 	// 返り値
 	LExprValuePtr	xvalRet =
-			std::make_shared<LExprValue>( typeRet, nullptr, false, false ) ;
+			std::make_shared<LExprValue>( typeRet, LObjPtr(), false, false ) ;
 	PushExprValueOnStack( xvalRet ) ;
 	ExprTreatObjectChain( xvalRet ) ;
 

@@ -131,7 +131,7 @@ void LClass::InvokeFinalizer( LObject * pObj )
 								//   無条件に delete されるはずである
 
 			LValue	valArgs[1] ;
-			valArgs[0] = LValue( pObj ) ;
+			valArgs[0] = LValue( LObjPtr(pObj) ) ;
 
 			pContext->SyncCallFunction( m_pFuncFinalize, valArgs, 1 ) ;
 		}
@@ -316,13 +316,13 @@ void LClass::ImplementVirtuals( LClass * pClass )
 							strFuncName.c_str(),
 							pInterFunc->GetPrototype()->TypeToString().c_str() ) ;
 					m_vfvVirtualFuncs.AddFunction
-						( strFuncName.c_str(), pInterFunc.Get() ) ;
+						( strFuncName.c_str(), pInterFunc ) ;
 				}
 			}
 			else
 			{
 				m_vfvVirtualFuncs.AddFunction
-					( strFuncName.c_str(), pInterFunc.Get() ) ;
+					( strFuncName.c_str(), pInterFunc ) ;
 			}
 		}
 	}
@@ -525,8 +525,8 @@ LPtr<LFunctionObj> LClass::CreateFunctionObj
 		pProto->SetComment( MakeComment( nfDesc.m_pwszComment ) ) ;
 	}
 
-	LPtr<LFunctionObj>	pFunc =
-		new LFunctionObj( compiler.VM().GetFunctionClass(), pProto ) ;
+	LPtr<LFunctionObj>	pFunc
+		( new LFunctionObj( compiler.VM().GetFunctionClass(), pProto ) ) ;
 
 	pFunc->SetNative( nfDesc.m_pfnNativeFunc, nfDesc.m_callableInConstExpr ) ;
 	pFunc->SetName( nfDesc.m_pwszFuncName ) ;
@@ -638,8 +638,8 @@ void LClass::AddVariableDefinition
 			std::shared_ptr<LArrayBufStorage>
 						pBuf = pArrangeBuf->GetBuffer() ;
 			LPtr<LPointerObj>
-						pPtr = new LPointerObj
-									( compiler.VM().GetPointerClass() ) ;
+						pPtr( new LPointerObj
+									( compiler.VM().GetPointerClass() ) ) ;
 			pPtr->SetPointer( pBuf, desc.m_location, desc.m_size ) ;
 
 			compiler.ParseDataInitExpression
@@ -650,8 +650,8 @@ void LClass::AddVariableDefinition
 			std::shared_ptr<LArrayBufStorage>
 						pBuf = pArrangeBuf->GetBuffer() ;
 			LPtr<LPointerObj>
-						pPtr = new LPointerObj
-									( compiler.VM().GetPointerClass() ) ;
+						pPtr( new LPointerObj
+									( compiler.VM().GetPointerClass() ) ) ;
 			pPtr->SetPointer( pBuf, desc.m_location, desc.m_size ) ;
 
 			if ( typeVar.IsInteger() || typeVar.IsBoolean() )
@@ -3341,8 +3341,8 @@ void LFunctionClass::ImplementClass( void )
 		pInitProto->ReturnType() = LType() ;
 		pInitProto->ArgListType() = m_pFuncProto->GetCaptureObjListTypes() ;
 
-		LPtr<LFunctionObj>	pFunc =
-				new LFunctionObj( m_vm.GetFunctionClass(), pInitProto ) ;
+		LPtr<LFunctionObj>	pFunc
+				( new LFunctionObj( m_vm.GetFunctionClass(), pInitProto ) ) ;
 		pFunc->SetNative( &LFunctionClass::method_init, false ) ;
 
 		OverrideVirtualFunction( s_Constructor, pFunc ) ;
@@ -3354,7 +3354,7 @@ void LFunctionClass::ImplementClass( void )
 void LFunctionClass::method_init( LContext& context )
 {
 	LRuntimeArgList		arglist( context ) ;
-	LPtr<LFunctionObj>	pThisObj = arglist.NextObjectAs<LFunctionObj>() ;
+	LPtr<LFunctionObj>	pThisObj( arglist.NextObjectAs<LFunctionObj>() ) ;
 	if ( pThisObj == nullptr )
 	{
 		context.ThrowException
@@ -3589,7 +3589,7 @@ LObject * LStructureClass::DuplicateObject( void ) const
 LObject * LStructureClass::CreateInstance( void )
 {
 	LPointerObj *	pPtrObj =
-			new LPointerObj( GetClass()->VM().GetPointerClass() ) ;
+		new LPointerObj( GetClass()->VM().GetPointerClassAs( LType(this) ) ) ;
 
 	const size_t	nStructBytes = GetStructBytes() ;
 	std::shared_ptr<LArrayBufStorage>

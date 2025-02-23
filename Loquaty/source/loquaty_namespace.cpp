@@ -49,13 +49,13 @@ LPtr<LNamespace> LNamespace::GenericDef::Instantiate
 	if ( pGenClass != nullptr )
 	{
 		pGenClass->AddRef() ;
-		return	pGenClass ;
+		return	LPtr<LNamespace>( pGenClass ) ;
 	}
 
 	if ( arg.size() != m_params.size() )
 	{
 		compiler.OnError( errorMismatchGenericTypeArgment ) ;
-		return	nullptr ;
+		return	LPtr<LNamespace>() ;
 	}
 
 	// インスタンス生成
@@ -260,7 +260,7 @@ const LType * LNamespace::GetLocalObjectTypeAs( const wchar_t * pwszName )
 // ローカル変数を取得
 LObjPtr LNamespace::GetLocalObjectAs( const wchar_t * pwszName )
 {
-	return	LGenericObj::GetElementAs( pwszName ) ;
+	return	LObjPtr( LGenericObj::GetElementAs( pwszName ) ) ;
 }
 
 // ローカルクラスを追加
@@ -353,7 +353,7 @@ LPtr<LFunctionObj> LNamespace::GetLocalStaticCallableFunctionAs
 			return	pFunc ;
 		}
 	}
-	return	nullptr ;
+	return	LPtr<LFunctionObj>() ;
 }
 
 // 静的なローカル関数配列
@@ -397,7 +397,7 @@ LPtr<LNamespace> LNamespace::GetLocalNamespaceAs( const wchar_t * pwszName )
 	{
 		return	iter->second ;
 	}
-	return	nullptr ;
+	return	LPtr<LNamespace>() ;
 }
 
 // 名前空間を取得（親の名前空間も探す）
@@ -564,7 +564,7 @@ LPtr<LNamespace> LNamespaceList::GetNamespaceAs( const wchar_t * pwszName ) cons
 			}
 		}
 	}
-	return	nullptr ;
+	return	LPtr<LNamespace>() ;
 }
 
 // クラスを取得（親の名前空間も探す）

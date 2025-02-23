@@ -34,7 +34,7 @@ LValue LValue::Clone( void ) const
 	{
 		if ( m_pObject != nullptr )
 		{
-			return	LValue( m_type, m_pObject->CloneObject() ) ;
+			return	LValue( m_type, LObjPtr(m_pObject->CloneObject()) ) ;
 		}
 	}
 	return	LValue( *this ) ;
@@ -59,10 +59,21 @@ LBoolean LValue::AsBoolean( void ) const
 			return	(m_value.dblValue != 0.0) ;
 		}
 	}
-	else
+	else if ( m_pObject != nullptr )
 	{
-		return	(m_pObject != nullptr) ;
+		LPointerObj *	pPtrObj = dynamic_cast<LPointerObj*>( m_pObject.Ptr() ) ;
+		if ( pPtrObj != nullptr )
+		{
+			LLong	val ;
+			if ( pPtrObj->AsInteger( val ) )
+			{
+				return	(val != 0) ;
+			}
+			return	false ;
+		}
+		return	true ;
 	}
+	return	false ;
 }
 
 LLong LValue::AsInteger( LLong err ) const
@@ -277,8 +288,8 @@ LValue LValue::GetElementAt
 			typeElement = typeElement.GetRefElementType() ;
 		}
 		const size_t		nElementBytes = typeElement.GetDataBytes() ;
-		LPtr<LPointerObj>	pPtrElement =
-			new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ;
+		LPtr<LPointerObj>	pPtrElement
+			( new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ) ;
 		pPtrElement->SetPointer
 			( pPtrObj->GetArrayBuffer(),
 				pPtrObj->GetOffset()
@@ -294,15 +305,15 @@ LValue LValue::GetElementAt
 	{
 		// オブジェクト要素間接参照
 		LType	typeElement = m_pObject->GetElementTypeAt( index ) ;
-		LObjPtr	pElement = m_pObject->GetElementAt( index ) ;
+		LObjPtr	pElement( m_pObject->GetElementAt( index ) ) ;
 		if ( (pElement != nullptr) && typeElement.IsPointer() )
 		{
 			LPointerObj *	pPtrObj =
 					dynamic_cast<LPointerObj*>( pElement.Ptr() ) ;
 			if ( pPtrObj != nullptr )
 			{
-				LPtr<LPointerObj>	pPtrMember =
-						new LPointerObj( typeElement.GetClass() ) ;
+				LPtr<LPointerObj>	pPtrMember
+						( new LPointerObj( typeElement.GetClass() ) ) ;
 				*pPtrMember = *pPtrObj ;
 				return	LValue( pPtrMember ) ;
 			}
@@ -344,8 +355,8 @@ LValue LValue::GetMemberAs
 				{
 					typeElement = typeElement.GetRefElementType() ;
 				}
-				LPtr<LPointerObj>	pPtrMember =
-					new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ;
+				LPtr<LPointerObj>	pPtrMember
+					( new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ) ;
 				pPtrMember->SetPointer
 					( pPtrObj->GetArrayBuffer(),
 						pPtrObj->GetOffset() + desc.m_location, desc.m_size ) ;
@@ -368,7 +379,7 @@ LValue LValue::GetMemberAs
 		if ( iElement >= 0 )
 		{
 			LType	typeElement = m_pObject->GetElementTypeAt( (size_t) iElement ) ;
-			LObjPtr	pElement = m_pObject->GetElementAt( (size_t) iElement ) ;
+			LObjPtr	pElement( m_pObject->GetElementAt( (size_t) iElement ) ) ;
 			if ( (pElement != nullptr)
 				&& typeElement.IsPointer() )
 			{
@@ -376,8 +387,8 @@ LValue LValue::GetMemberAs
 						dynamic_cast<LPointerObj*>( pElement.Ptr() ) ;
 				if ( pPtrObj != nullptr )
 				{
-					LPtr<LPointerObj>	pPtrMember =
-							new LPointerObj( typeElement.GetClass() ) ;
+					LPtr<LPointerObj>	pPtrMember
+							( new LPointerObj( typeElement.GetClass() ) ) ;
 					*pPtrMember = *pPtrObj ;
 					return	LValue( pPtrMember ) ;
 				}
@@ -390,7 +401,7 @@ LValue LValue::GetMemberAs
 		if ( arrangeBuf.GetDescAs( desc, name ) )
 		{
 			// クラスメンバ変数へのポインタ
-			LPtr<LPointerObj>	pPtrObj = m_pObject->GetBufferPoiner() ;
+			LPtr<LPointerObj>	pPtrObj( m_pObject->GetBufferPoiner() ) ;
 			if ( pPtrObj != nullptr )
 			{
 				LType	typeElement = desc.m_type ;
@@ -398,8 +409,8 @@ LValue LValue::GetMemberAs
 				{
 					typeElement = typeElement.GetRefElementType() ;
 				}
-				LPtr<LPointerObj>	pPtrMember =
-					new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ;
+				LPtr<LPointerObj>	pPtrMember
+					( new LPointerObj( vm.GetPointerClassAs( typeElement ) ) ) ;
 				pPtrMember->SetPointer
 					( pPtrObj->GetArrayBuffer(),
 						pPtrObj->GetOffset() + desc.m_location, desc.m_size ) ;
@@ -766,7 +777,7 @@ LPtr<LFunctionObj> LExprValue::GetConstExprFunction( void ) const
 			return	LPtr<LFunctionObj>( pFuncObj );
 		}
 	}
-	return	nullptr ;
+	return	LPtr<LFunctionObj>() ;
 }
 
 // 静的な関数群
@@ -904,7 +915,7 @@ std::shared_ptr<LExprValue> LExprValue::MakeConstExprObject( LObjPtr pObject )
 	if ( pObject != nullptr )
 	{
 		xval->SetConstValue
-				( LValue( LType(pObject->GetClass()), pObject.Get() ) ) ;
+				( LValue( LType(pObject->GetClass()), pObject ) ) ;
 	}
 	return	xval ;
 }
@@ -916,7 +927,7 @@ std::shared_ptr<LExprValue>
 	LClass *	pStringClass = vm.GetStringClass() ;
 	xval->SetConstValue
 		( LValue( LType(pStringClass),
-					new LStringObj( pStringClass, str ) ) ) ;
+					LObjPtr( new LStringObj( pStringClass, str ) ) ) ) ;
 	return	xval ;
 }
 
@@ -948,7 +959,7 @@ LExprValuePtr LExprValueArray::PushDouble( LDouble val )
 	return	Push( expr ) ;
 }
 
-LExprValuePtr LExprValueArray::PushObject( const LType& type, LObject* pObj )
+LExprValuePtr LExprValueArray::PushObject( const LType& type, LObjPtr pObj )
 {
 	LExprValuePtr	expr = std::make_shared<LExprValue>() ;
 	expr->SetConstValue( LValue( type, pObj ) ) ;

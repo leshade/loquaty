@@ -351,8 +351,8 @@ LPtr<LFunctionObj> LFunctionVariation::OverloadFunction( LFunctionObj * pFunc )
 		}
 	}
 	pFunc->SetVariationIndex( std::vector< LPtr<LFunctionObj> >::size() ) ;
-	std::vector< LPtr<LFunctionObj> >::push_back( pFunc ) ;
-	return	nullptr ;
+	std::vector< LPtr<LFunctionObj> >::push_back( LPtr<LFunctionObj>(pFunc) ) ;
+	return	LPtr<LFunctionObj>() ;
 }
 
 // 適合関数取得
@@ -369,7 +369,7 @@ LPtr<LFunctionObj> LFunctionVariation::GetCallableFunction
 			return	pFunc ;
 		}
 	}
-	return	nullptr ;
+	return	LPtr<LFunctionObj>() ;
 }
 
 // 関数名取得
@@ -472,7 +472,7 @@ std::tuple< size_t, LPtr<LFunctionObj> >
 			pFunc->SetVariationIndex( iter->second.size() ) ;
 			std::vector< LPtr<LFunctionObj> >::push_back( pFunc ) ;
 			iter->second.push_back( iFunc ) ;
-			return	std::make_tuple( iFunc, nullptr ) ;
+			return	std::make_tuple( iFunc, LPtr<LFunctionObj>() ) ;
 		}
 	}
 	else if ( !mustBeOverride )
@@ -484,10 +484,11 @@ std::tuple< size_t, LPtr<LFunctionObj> >
 		m_mapIndexByName.insert
 			( std::make_pair< std::wstring, std::vector<size_t> >
 						( pwszName, std::vector<size_t>{iFunc} ) ) ;
-		return	std::make_tuple( iFunc, nullptr ) ;
+		return	std::make_tuple( iFunc, LPtr<LFunctionObj>() ) ;
 	}
 
-	return	std::make_tuple( std::vector< LPtr<LFunctionObj> >::size(), nullptr ) ;
+	return	std::make_tuple
+			( std::vector< LPtr<LFunctionObj> >::size(), LPtr<LFunctionObj>() ) ;
 }
 
 // 関数検索
@@ -619,7 +620,7 @@ LPtr<LFunctionObj> LVirtualFuncVector::GetFunctionAt( size_t index ) const
 	{
 		return	std::vector< LPtr<LFunctionObj> >::at( index ) ;
 	}
-	return	nullptr ;
+	return	LPtr<LFunctionObj>() ;
 }
 
 // 関数候補リストを関数リストへ変換
@@ -744,7 +745,7 @@ std::uint8_t * LRuntimeArgList::NextPointer( size_t nBytes )
 	{
 		m_objPool.push_back( pObj ) ;
 		//
-		LPointerObj *	pPtrObj = pObj->GetBufferPoiner() ;
+		LPtr<LPointerObj>	pPtrObj( pObj->GetBufferPoiner() ) ;
 		if ( pPtrObj != nullptr )
 		{
 			m_objPool.push_back( pPtrObj ) ;

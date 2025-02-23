@@ -391,12 +391,13 @@ void LCompiler::EndNamespaceBlock( LCompiler::ContextPtr ctx )
 	if ( hasInitCode )
 	{
 		// 初期化コード実行関数
-		LPtr<LFunctionObj>	pInitFunc =
-				new LFunctionObj( m_vm.GetFunctionClass(), proto ) ;
+		LPtr<LFunctionObj>	pInitFunc
+				( new LFunctionObj( m_vm.GetFunctionClass(), proto ) ) ;
 		pInitFunc->SetFuncCode( codeBuf, 0 ) ;
 
 		// 初期化コード実行
-		LPtr<LThreadObj>	pThread = new LThreadObj( m_vm.GetThreadClass() ) ;
+		LPtr<LThreadObj>
+				pThread( new LThreadObj( m_vm.GetThreadClass() ) ) ;
 		auto [valRet, pExcept] =
 			pThread->SyncCallFunction( pInitFunc.Ptr(), nullptr, 0 ) ;
 
@@ -439,7 +440,7 @@ LPtr<LNamespace> LCompiler::GetCurrentNamespace( void ) const
 	{
 		return	m_ctx->m_curNest->m_namespace ;
 	}
-	return	nullptr ;
+	return	LPtr<LNamespace>() ;
 }
 
 // 文末のセミコロンを読み飛ばす
@@ -1019,7 +1020,7 @@ void LCompiler::ParseDataInitExpression
 		LDataArrayClass *	pArrayClass = typeData.GetDataArrayClass() ;
 		assert( pArrayClass != nullptr ) ;
 
-		LPtr<LPointerObj>	pNext = new LPointerObj( *pPtr );
+		LPtr<LPointerObj>	pNext( new LPointerObj( *pPtr ) ) ;
 		const size_t		nLength = pArrayClass->GetArrayElementCount() ;
 		const LType			typeElement = pArrayClass->GetElementType() ;
 		size_t				iElement = 0 ;
@@ -1050,7 +1051,8 @@ void LCompiler::ParseDataInitExpression
 			}
 			ParseDataInitExpression
 				( sparsExpr, typeElement,
-					new LPointerObj( *pNext ), pnslLocal, L",]" ) ;
+					LPtr<LPointerObj>( new LPointerObj( *pNext ) ),
+					pnslLocal, L",]" ) ;
 			if ( HasErrorOnCurrent() )
 			{
 				sparsExpr.PassStatement( L"]", L";" ) ;
@@ -1109,7 +1111,7 @@ void LCompiler::ParseDataInitExpression
 				assert( arrange.GetDescAs( desc, vMemberNames.at(i).c_str() ) ) ;
 				continue ;
 			}
-			LPtr<LPointerObj>	pMember = new LPointerObj( *pPtr ) ;
+			LPtr<LPointerObj>	pMember( new LPointerObj( *pPtr ) ) ;
 			*pMember += desc.m_location ;
 
 			ParseDataInitExpression
@@ -1384,7 +1386,7 @@ void LCompiler::ParseStatement_enum
 				m_vm.GetClassClass(), strName.c_str(), typeElement ) ;
 	pEnumerative->SetUsingEnumFlag( flagUsing ) ;
 
-	LPtr<LNamespace>	pEnumClass = pEnumerative ;
+	LPtr<LNamespace>	pEnumClass( pEnumerative ) ;
 	if ( !m_commentBefore.IsEmpty() )
 	{
 		pEnumClass->SetSelfComment( m_commentBefore.c_str() ) ;
@@ -1734,7 +1736,7 @@ void LCompiler::ParseImplementationClass
 		if ( pSuperClass->GetPrototypeObject() != nullptr )
 		{
 			pClass->SetPrototypeObject
-				( pSuperClass->GetPrototypeObject()->CloneObject() ) ;
+				( LObjPtr(pSuperClass->GetPrototypeObject()->CloneObject()) ) ;
 			pClass->GetPrototypeObject()->SetClass( pClass ) ;
 		}
 		if ( !pClass->AddSuperClass( pSuperClass ) )
@@ -3003,7 +3005,7 @@ void LCompiler::ParseStatement_try
 				AddCode( LCodeBuffer::codeCastObject, 0, 0, 0, 1, &immop ) ;
 
 				LExprValuePtr	xvalCatched =
-					std::make_shared<LExprValue>( typeCatch, nullptr, false, false )  ;
+					std::make_shared<LExprValue>( typeCatch, LObjPtr(), false, false )  ;
 				PushExprValueOnStack( xvalCatched ) ;
 
 				// キャスト結果が null かテスト
@@ -3663,8 +3665,8 @@ void LCompiler::ParseOperatorFuncDeclaration
 	ParsePostFunctionModifiers( sparsSrc, pProto ) ;
 
 	// 関数登録
-	LPtr<LFunctionObj>	pFunc =
-			new LFunctionObj( m_vm.GetFunctionClassAs( pProto ), pProto ) ;
+	LPtr<LFunctionObj>	pFunc
+			( new LFunctionObj( m_vm.GetFunctionClassAs( pProto ), pProto ) ) ;
 	if ( pClass != nullptr )
 	{
 		auto [iVirtFunc, pOverrided] =
@@ -4015,7 +4017,7 @@ void LCompiler::DefineVariableOnArrangeBuf
 			OnError( errorNotConstExprInitExpr, pwszName ) ;
 		}
 
-		LPtr<LPointerObj>	pPtr = new LPointerObj( m_vm.GetPointerClass() ) ;
+		LPtr<LPointerObj>	pPtr( new LPointerObj( m_vm.GetPointerClass() ) ) ;
 		pPtr->SetPointer( arrangeBuf.GetBuffer(), desc.m_location, desc.m_size ) ;
 
 		if ( typeVar.IsFloatingPointNumber() )
@@ -4120,7 +4122,7 @@ void LCompiler::ParseDelayInitVar( const LCompiler::DelayInitVar& delayInit )
 		assert( delayInit.m_pArrange->GetDescAs( desc, delayInit.m_strName.c_str() ) ) ;
 		if ( delayInit.m_pArrange->GetDescAs( desc, delayInit.m_strName.c_str() ) )
 		{
-			LPtr<LPointerObj>	pPtr = new LPointerObj( m_vm.GetPointerClass() ) ;
+			LPtr<LPointerObj>	pPtr( new LPointerObj( m_vm.GetPointerClass() ) ) ;
 			pPtr->SetPointer
 				( delayInit.m_pArrange->GetBuffer(),
 								desc.m_location, desc.m_size ) ;
@@ -4162,7 +4164,7 @@ void LCompiler::ParseDelayInitVar( const LCompiler::DelayInitVar& delayInit )
 					( LType(delayInit.m_pRefObj->GetClass()),
 									delayInit.m_pRefObj, true, true ) ;
 			LExprValuePtr	xvalRef =
-				std::make_shared<LExprValue>( typeVar, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( typeVar, LObjPtr(), false, false ) ;
 			xvalRef->SetOptionRefByStrOf
 				( xvalObj, ExprLoadImmString( delayInit.m_strName ) ) ;
 			ExprCodeStore( std::move(xvalRef), std::move(xval) ) ;
@@ -4314,7 +4316,7 @@ void LCompiler::ParseLocalVariableInitExpr
 				break ;
 			}
 			LExprValuePtr	xvalPtrElement =
-				std::make_shared<LExprValue>( typeElement, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( typeElement, LObjPtr(), false, false ) ;
 			xvalPtrElement->SetOptionRefPointerOffset
 				( xvalPtrBase, LExprValue::MakeConstExprInt
 								( typeElement.GetDataBytes() * iElement ) ) ;
@@ -4379,7 +4381,7 @@ void LCompiler::ParseLocalVariableInitExpr
 				continue ;
 			}
 			LExprValuePtr	xvalPtrMember =
-				std::make_shared<LExprValue>( desc.m_type, nullptr, false, false ) ;
+				std::make_shared<LExprValue>( desc.m_type, LObjPtr(), false, false ) ;
 			xvalPtrMember->SetOptionRefPointerOffset
 				( xvalPtrBase, LExprValue::MakeConstExprInt( desc.m_location ) ) ;
 			ParseLocalVariableInitExpr
@@ -4482,8 +4484,8 @@ bool LCompiler::ParseConstructer
 	ParsePostFunctionModifiers( sparsSrc, pProto ) ;
 
 	// 関数登録
-	LPtr<LFunctionObj>	pFunc =
-			new LFunctionObj( m_vm.GetFunctionClassAs( pProto ), pProto ) ;
+	LPtr<LFunctionObj>	pFunc
+			( new LFunctionObj( m_vm.GetFunctionClassAs( pProto ), pProto ) ) ;
 	pClass->OverrideVirtualFunction( LClass::s_Constructor, pFunc ) ;
 
 	// 関数実装解釈
@@ -4547,8 +4549,8 @@ void LCompiler::ParseMemberFunction
 	ParsePostFunctionModifiers( sparsSrc, pProto ) ;
 
 	// 関数登録
-	LPtr<LFunctionObj>	pFunc =
-			new LFunctionObj( m_vm.GetFunctionClassAs( pProto ), pProto ) ;
+	LPtr<LFunctionObj>	pFunc
+			( new LFunctionObj( m_vm.GetFunctionClassAs( pProto ), pProto ) ) ;
 	if ( pClass != nullptr )
 	{
 		auto [iVirtFunc, pOverrided] =

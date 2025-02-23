@@ -168,7 +168,7 @@ namespace	Loquaty
 		// （true が返された場合、関数は完了した）
 		bool AsyncCallFunction
 				( AsyncState& state,
-					LFunctionObj * pFunc,
+					const LFunctionObj * pFunc,
 					const LValue * pArgValues, size_t nArgCount ) ;
 		// 実行を継続する（非同期）
 		// ※msecTimeout<0 の時、待機状態になるか、終了、又は外部割り込みなどの
@@ -188,7 +188,7 @@ namespace	Loquaty
 	protected:
 		// 引数をプッシュ
 		size_t PushArgument
-			( LFunctionObj * pFunc,
+			( const LFunctionObj * pFunc,
 				const LValue * pArgValues, size_t nArgCount,
 				std::vector<LObjPtr>* pCastTempObjs ) ;
 		// 実行状態をリセット
@@ -247,7 +247,8 @@ namespace	Loquaty
 		// 待機関数設定
 		void SetAwaiting( AwaitingFunc func ) ;
 		// 割り込み信号を設定する
-		void SetInterruptSignal( InterruptSignal signal, LObjPtr pObj = nullptr ) ;
+		void SetInterruptSignal
+			( InterruptSignal signal, LObjPtr pObj = LObjPtr() ) ;
 
 		// 非実行同期を取得する
 		std::unique_lock<std::recursive_mutex> LockRunning( void )
@@ -441,11 +442,11 @@ namespace	Loquaty
 		void micro_instruction_ThrowIndexOutOfBounds( void ) ;
 		void micro_instruction_ThrowPointerOutOfBounds( void ) ;
 		void micro_instruction_ThrowAlignmentMismatch( void ) ;
-		void micro_instruction_ThrowUnimplemented( LFunctionObj * pFunc ) ;
+		void micro_instruction_ThrowUnimplemented( const LFunctionObj * pFunc ) ;
 		void micro_instruction_ThrowNoVirtualVector
 					( LClass * pThisClass, LClass * pVirtClass ) ;
 
-		void micro_instruction_Call( LFunctionObj * pFunc ) ;
+		void micro_instruction_Call( const LFunctionObj * pFunc ) ;
 
 		std::uint8_t * micro_instruction_FetchAddr
 					( size_t ptr, ssize_t off, size_t range, std::uint8_t type ) ;

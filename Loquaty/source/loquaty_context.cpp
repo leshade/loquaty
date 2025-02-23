@@ -164,7 +164,7 @@ std::tuple<LValue,LObjPtr>
 // （true が返された場合、関数は完了した）
 bool LContext::AsyncCallFunction
 		( AsyncState& state,
-			LFunctionObj * pFunc,
+			const LFunctionObj * pFunc,
 			const LValue * pArgValues, size_t nArgCount )
 {
 	auto	lock = LockRunning() ;
@@ -251,8 +251,8 @@ void LContext::InterruptFunction
 	save.valReturn = m_valReturn ;
 
 	// 一時的な関数オブジェクトをプッシュして解放チェーンに追加する
-	LPtr<LFunctionObj>	pFuncGate = new LFunctionObj( m_vm.GetFunctionClass() ) ;
-	LPtr<LFunctionObj>	pFuncAfter = new LFunctionObj( m_vm.GetFunctionClass() ) ;
+	LPtr<LFunctionObj>	pFuncGate( new LFunctionObj( m_vm.GetFunctionClass() ) ) ;
+	LPtr<LFunctionObj>	pFuncAfter( new LFunctionObj( m_vm.GetFunctionClass() ) ) ;
 
 	m_stack->Push( LValue::MakeObjectPtr( pFuncGate.Get() ) ) ;
 	m_stack->Push( LValue::MakeLong( m_stack->m_yp ) ) ;
@@ -322,7 +322,7 @@ void LContext::InterruptFunction
 
 // 引数をプッシュ
 size_t LContext::PushArgument
-	( LFunctionObj * pFunc,
+	( const LFunctionObj * pFunc,
 		const LValue * pArgValues, size_t nArgCount,
 		std::vector<LObjPtr>* pCastTempObjs )
 {
@@ -343,7 +343,7 @@ size_t LContext::PushArgument
 			if ( pCastTempObjs != nullptr )
 			{
 				// 一応キャストする
-				LObjPtr	pTempObj = pArgValues[0].GetObject()->CastClassTo( pThisClass ) ;
+				LObjPtr	pTempObj( pArgValues[0].GetObject()->CastClassTo( pThisClass ) ) ;
 				pCastTempObjs->push_back( pTempObj ) ;
 				LValue	valArg( pTempObj ) ;
 				m_stack->Push( valArg.Value() ) ;
@@ -370,7 +370,7 @@ size_t LContext::PushArgument
 			if ( typeArg.IsObject() && !valArg.IsNull() )
 			{
 				// オブジェクトの場合、一応キャストしておく
-				LObjPtr	pTempObj = valArg.GetObject()->CastClassTo( typeArg.GetClass() ) ;
+				LObjPtr	pTempObj( valArg.GetObject()->CastClassTo( typeArg.GetClass() ) ) ;
 				pCastTempObjs->push_back( pTempObj ) ;
 				valArg = LValue( pTempObj ) ;
 			}
@@ -521,7 +521,7 @@ void LContext::ThrowException
 	( const wchar_t * pwszErrMsg, const wchar_t * pwszClassName )
 {
 	LClass *	pClass = m_vm.GetExceptioinClassAs( pwszClassName ) ;
-	ThrowException( new LExceptionObj( pClass, pwszErrMsg ) ) ;
+	ThrowException( LObjPtr( new LExceptionObj( pClass, pwszErrMsg ) ) ) ;
 }
 
 void LContext::ThrowException( ErrorMessageIndex error )
@@ -1085,7 +1085,7 @@ void LContext::instruction_Synchronize( const LCodeBuffer::Word& word )
 	pObj->AddRef() ;
 
 	LSyncLockerObj *	pSyncObj =
-		new LSyncLockerObj( m_vm.GetObjectClass(), pObj, this ) ;
+		new LSyncLockerObj( m_vm.GetObjectClass(), LObjPtr(pObj), this ) ;
 	if ( !pSyncObj->IsLocked() )
 	{
 		m_status = statusAwaiting ;
@@ -1126,7 +1126,7 @@ void LContext::instruction_SetRetValue( const LCodeBuffer::Word& word )
 	}
 	else
 	{
-		m_valReturn = LValue( val.pObject ) ;
+		m_valReturn = LValue( LObjPtr(val.pObject) ) ;
 	}
 	if ( word.imm > 0 )
 	{
@@ -2244,7 +2244,7 @@ void LContext::micro_instruction_ThrowAlignmentMismatch( void )
 	micro_instruction_Throw() ;
 }
 
-void LContext::micro_instruction_ThrowUnimplemented( LFunctionObj * pFunc )
+void LContext::micro_instruction_ThrowUnimplemented( const LFunctionObj * pFunc )
 {
 	LClass *	pClass = m_vm.GetExceptioinClassAs
 							( GetExceptionClassName(exceptionUnimplemented) ) ;
@@ -2274,7 +2274,7 @@ void LContext::micro_instruction_ThrowNoVirtualVector
 }
 
 // Call
-void LContext::micro_instruction_Call( LFunctionObj * pFunc )
+void LContext::micro_instruction_Call( const LFunctionObj * pFunc )
 {
 	assert( pFunc != nullptr ) ;
 	if ( pFunc == nullptr )
@@ -2335,7 +2335,7 @@ std::uint8_t * LContext::micro_instruction_FetchAddr
 		}
 		return	nullptr ;
 	}
-	LPtr<LPointerObj>	pPtr = pObj->GetBufferPoiner() ;
+	LPtr<LPointerObj>	pPtr( pObj->GetBufferPoiner() ) ;
 	if ( pPtr == nullptr )
 	{
 		micro_instruction_ThrowNullException() ;

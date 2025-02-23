@@ -81,7 +81,7 @@ const wchar_t * LObject::GetElementNameAt( LString& strName, size_t index ) cons
 // 要素型情報取得
 LType LObject::GetElementTypeAt( size_t index ) const
 {
-	LObjPtr	pElement = GetElementAt( index ) ;
+	LObjPtr	pElement( GetElementAt( index ) ) ;
 	if ( pElement != nullptr )
 	{
 		return	LType( pElement->GetClass() ) ;
@@ -91,7 +91,7 @@ LType LObject::GetElementTypeAt( size_t index ) const
 
 LType LObject::GetElementTypeAs( const wchar_t * name ) const
 {
-	LObjPtr	pElement = GetElementAs( name ) ;
+	LObjPtr	pElement( GetElementAs( name ) ) ;
 	if ( pElement != nullptr )
 	{
 		return	LType( pElement->GetClass() ) ;
@@ -243,7 +243,7 @@ void LObject::DisposeObject( void )
 LLong LObject::GetElementLongAt( size_t index, LLong valDefault )
 {
 	LLong	val ;
-	LObjPtr	pObj = GetElementAt( index ) ;
+	LObjPtr	pObj( GetElementAt( index ) ) ;
 	if ( (pObj != nullptr) && pObj->AsInteger( val ) )
 	{
 		return	val ;
@@ -252,7 +252,7 @@ LLong LObject::GetElementLongAt( size_t index, LLong valDefault )
 	if ( (pPtrClass != nullptr)
 		&& pPtrClass->GetBufferType().IsPrimitive() )
 	{
-		LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+		LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 		if ( pPtr != nullptr )
 		{
 			return	pPtr->LoadIntegerAt
@@ -266,7 +266,7 @@ LLong LObject::GetElementLongAt( size_t index, LLong valDefault )
 LDouble LObject::GetElementDoubleAt( size_t index, LDouble valDefault )
 {
 	LDouble	val ;
-	LObjPtr	pObj = GetElementAt( index ) ;
+	LObjPtr	pObj( GetElementAt( index ) ) ;
 	if ( (pObj != nullptr) && pObj->AsDouble( val ) )
 	{
 		return	val ;
@@ -275,7 +275,7 @@ LDouble LObject::GetElementDoubleAt( size_t index, LDouble valDefault )
 	if ( (pPtrClass != nullptr)
 		&& pPtrClass->GetBufferType().IsPrimitive() )
 	{
-		LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+		LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 		if ( pPtr != nullptr )
 		{
 			return	pPtr->LoadDoubleAt
@@ -289,7 +289,7 @@ LDouble LObject::GetElementDoubleAt( size_t index, LDouble valDefault )
 LString LObject::GetElementStringAt( size_t index, const wchar_t * valDefault )
 {
 	LString	str ;
-	LObjPtr	pObj = GetElementAt( index ) ;
+	LObjPtr	pObj( GetElementAt( index ) ) ;
 	if ( (pObj != nullptr) && pObj->AsString( str ) )
 	{
 		return	str ;
@@ -299,10 +299,10 @@ LString LObject::GetElementStringAt( size_t index, const wchar_t * valDefault )
 
 std::uint8_t * LObject::GetElementPointerAt( size_t index, size_t nBytes )
 {
-	LObjPtr	pObj = GetElementAt( index ) ;
+	LObjPtr	pObj( GetElementAt( index ) ) ;
 	if ( pObj != nullptr )
 	{
-		LPtr<LPointerObj>	pPtr = pObj->GetBufferPoiner() ;
+		LPtr<LPointerObj>	pPtr( pObj->GetBufferPoiner() ) ;
 		if ( pPtr != nullptr )
 		{
 			return	pPtr->GetPointer( 0, nBytes ) ;
@@ -313,7 +313,7 @@ std::uint8_t * LObject::GetElementPointerAt( size_t index, size_t nBytes )
 
 std::shared_ptr<Object> LObject::GetElementNativeObjectAt( size_t index )
 {
-	LObjPtr	pObj = GetElementAt( index ) ;
+	LObjPtr	pObj( GetElementAt( index ) ) ;
 	if ( pObj != nullptr )
 	{
 		return	LNativeObj::GetNativeObject( pObj.Ptr() ) ;
@@ -324,12 +324,12 @@ std::shared_ptr<Object> LObject::GetElementNativeObjectAt( size_t index )
 LLong LObject::GetElementLongAs( const wchar_t * name, LLong valDefault )
 {
 	LLong	val ;
-	LObjPtr	pObj = GetElementAs( name ) ;
+	LObjPtr	pObj( GetElementAs( name ) ) ;
 	if ( (pObj != nullptr) && pObj->AsInteger( val ) )
 	{
 		return	val ;
 	}
-	LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+	LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 	LArrangement::Desc	desc ;
 	if ( (pPtr != nullptr)
 		&& m_pClass->GetProtoArrangemenet().GetDescAs( desc, name )
@@ -343,12 +343,12 @@ LLong LObject::GetElementLongAs( const wchar_t * name, LLong valDefault )
 LDouble LObject::GetElementDoubleAs( const wchar_t * name, LDouble valDefault )
 {
 	LDouble	val ;
-	LObjPtr	pObj = GetElementAs( name ) ;
+	LObjPtr	pObj( GetElementAs( name ) ) ;
 	if ( (pObj != nullptr) && pObj->AsDouble( val ) )
 	{
 		return	val ;
 	}
-	LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+	LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 	LArrangement::Desc	desc ;
 	if ( (pPtr != nullptr)
 		&& m_pClass->GetProtoArrangemenet().GetDescAs( desc, name )
@@ -362,7 +362,7 @@ LDouble LObject::GetElementDoubleAs( const wchar_t * name, LDouble valDefault )
 LString LObject::GetElementStringAs( const wchar_t * name, const wchar_t * valDefault )
 {
 	LString	str ;
-	LObjPtr	pObj = GetElementAs( name ) ;
+	LObjPtr	pObj( GetElementAs( name ) ) ;
 	if ( (pObj != nullptr) && pObj->AsString( str ) )
 	{
 		return	str ;
@@ -372,17 +372,17 @@ LString LObject::GetElementStringAs( const wchar_t * name, const wchar_t * valDe
 
 std::uint8_t * LObject::GetElementPointerAs( const wchar_t * name, size_t nBytes )
 {
-	LObjPtr	pObj = GetElementAs( name ) ;
+	LObjPtr	pObj( GetElementAs( name ) ) ;
 	if ( pObj != nullptr )
 	{
-		LPtr<LPointerObj>	pPtr = pObj->GetBufferPoiner() ;
+		LPtr<LPointerObj>	pPtr( pObj->GetBufferPoiner() ) ;
 		if ( pPtr != nullptr )
 		{
 			return	pPtr->GetPointer( 0, nBytes ) ;
 		}
 		return	nullptr ;
 	}
-	LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+	LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 	LArrangement::Desc	desc ;
 	if ( (pPtr != nullptr)
 		&& m_pClass->GetProtoArrangemenet().GetDescAs( desc, name ) )
@@ -394,7 +394,7 @@ std::uint8_t * LObject::GetElementPointerAs( const wchar_t * name, size_t nBytes
 
 std::shared_ptr<Object> LObject::GetElementNativeObjectAs( const wchar_t * name )
 {
-	LObjPtr	pObj = GetElementAs( name ) ;
+	LObjPtr	pObj( GetElementAs( name ) ) ;
 	if ( pObj != nullptr )
 	{
 		return	LNativeObj::GetNativeObject( pObj.Ptr() ) ;
@@ -409,7 +409,7 @@ void LObject::SetElementLongAt( size_t index, LLong value )
 	if ( (pPtrClass != nullptr)
 		&& pPtrClass->GetBufferType().IsPrimitive() )
 	{
-		LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+		LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 		if ( pPtr != nullptr )
 		{
 			pPtr->StoreIntegerAt
@@ -429,7 +429,7 @@ void LObject::SetElementDoubleAt( size_t index, LDouble value )
 	if ( (pPtrClass != nullptr)
 		&& pPtrClass->GetBufferType().IsPrimitive() )
 	{
-		LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+		LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 		if ( pPtr != nullptr )
 		{
 			pPtr->StoreDoubleAt
@@ -452,7 +452,7 @@ void LObject::SetElementStringAt( size_t index, const wchar_t * value )
 void LObject::SetElementLongAs( const wchar_t * name, LLong value )
 {
 	assert( m_pClass != nullptr ) ;
-	LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+	LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 	LArrangement::Desc	desc ;
 	if ( (pPtr != nullptr)
 		&& m_pClass->GetProtoArrangemenet().GetDescAs( desc, name )
@@ -469,7 +469,7 @@ void LObject::SetElementLongAs( const wchar_t * name, LLong value )
 void LObject::SetElementDoubleAs( const wchar_t * name, LDouble value )
 {
 	assert( m_pClass != nullptr ) ;
-	LPtr<LPointerObj>	pPtr = GetBufferPoiner() ;
+	LPtr<LPointerObj>	pPtr( GetBufferPoiner() ) ;
 	LArrangement::Desc	desc ;
 	if ( (pPtr != nullptr)
 		&& m_pClass->GetProtoArrangemenet().GetDescAs( desc, name )

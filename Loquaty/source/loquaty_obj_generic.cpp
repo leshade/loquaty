@@ -184,10 +184,10 @@ bool LGenericObj::AsExpression( LString& str, std::uint64_t flags ) const
 		LArrangement::Desc	desc ;
 		if ( arrange.GetDescAs( desc, names.at(i).c_str() ) )
 		{
-			LPtr<LPointerObj>	pPtr =
-				new LPointerObj
+			LPtr<LPointerObj>	pPtr
+				( new LPointerObj
 					( m_pClass->VM().GetPointerClassAs( desc.m_type ),
-						m_pBuf, desc.m_location ) ;
+						m_pBuf, desc.m_location ) ) ;
 			if ( pPtr->AsString( strElement ) )
 			{
 				str += strElement ;
@@ -282,7 +282,7 @@ bool LGenericObj::PutMembers( const LObjPtr& pObj )
 			flagFaild = true ;
 			continue ;
 		}
-		LObjPtr			pSrcObj = pObj->GetElementAt( i ) ;
+		LObjPtr			pSrcObj( pObj->GetElementAt( i ) ) ;
 		const ssize_t	iElement = FindElementAs( pwszName ) ;
 		if ( iElement >= 0 )
 		{
@@ -295,7 +295,7 @@ bool LGenericObj::PutMembers( const LObjPtr& pObj )
 		}
 		else if ( arrangeBuf.GetDescAs( desc, pwszName ) )
 		{
-			LPtr<LPointerObj>	pPtrObj = GetBufferPoiner() ;
+			LPtr<LPointerObj>	pPtrObj( GetBufferPoiner() ) ;
 			if ( pPtrObj != nullptr )
 			{
 				if ( !pPtrObj->PutMembers
