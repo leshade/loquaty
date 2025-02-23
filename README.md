@@ -49,7 +49,7 @@ using namespace Loquaty ;
 をインクルード
 
 ```C++
-LPtr<LVirtualMachine> vm = new LVirtualMachine ;
+LPtr<LVirtualMachine> vm( new LVirtualMachine ) ;
 vm->Initialize() ;
 
 // スクリプト 'script_file.lqs' 読み込み
