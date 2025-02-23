@@ -2537,8 +2537,8 @@ int LoquatyApp::MakeNativeFunctionStub
 				if ( IsNativeClass( pRetClass ) )
 				{
 					osCpp << L"LPtr<LNativeObj>	" << strRetValueName
-							<< L" = new LNativeObj( LQT_GET_CLASS("
-							<< pRetClass->GetFullClassName() << L") ) ;\r\n" ;
+							<< L"( new LNativeObj( LQT_GET_CLASS("
+							<< pRetClass->GetFullClassName() << L") ) ) ;\r\n" ;
 				}
 				else
 				{
