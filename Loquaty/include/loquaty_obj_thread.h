@@ -75,7 +75,9 @@ namespace	Loquaty
 		virtual void OnFinished( void ) ;
 
 	public:	// 共通
-		// スレッドは完了したか？
+		// タスクは実行中か？
+		bool IsRunning( void ) const ;
+		// タスクは完了したか？
 		bool IsFinished( void ) const ;
 		// スレッド完了を待つ（msecTimeout < 0 の時はタイムアウトしないで待つ）
 		bool WaitForThread( std::int64_t msecTimeout = -1 ) ;

@@ -65,7 +65,7 @@ LBoolean LValue::AsBoolean( void ) const
 	}
 }
 
-LLong LValue::AsInteger( void ) const
+LLong LValue::AsInteger( LLong err ) const
 {
 	if ( m_type.IsPrimitive() )
 	{
@@ -91,10 +91,10 @@ LLong LValue::AsInteger( void ) const
 			return	val ;
 		}
 	}
-	return	0 ;
+	return	err ;
 }
 
-LDouble LValue::AsDouble( void ) const
+LDouble LValue::AsDouble( LDouble err ) const
 {
 	if ( m_type.IsPrimitive() )
 	{
@@ -120,10 +120,10 @@ LDouble LValue::AsDouble( void ) const
 			return	val ;
 		}
 	}
-	return	0.0 ;
+	return	err ;
 }
 
-LString LValue::AsString( void ) const
+LString LValue::AsString( const wchar_t * err ) const
 {
 	if ( m_type.IsPrimitive() )
 	{
@@ -145,7 +145,7 @@ LString LValue::AsString( void ) const
 			return	str ;
 		}
 	}
-	return	LString() ;
+	return	LString( err ) ;
 }
 
 // ポインタの参照先やオブジェクトに値を設定

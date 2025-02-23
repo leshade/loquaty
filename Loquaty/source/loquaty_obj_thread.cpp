@@ -178,6 +178,12 @@ void LTaskObj::OnFinished( void )
 	m_cvFinished.notify_all() ;
 }
 
+// タスクは実行中か？
+bool LTaskObj::IsRunning( void ) const
+{
+	return	m_context.IsRunning() ;
+}
+
 // スレッドは完了したか？
 bool LTaskObj::IsFinished( void ) const
 {

@@ -137,9 +137,9 @@ namespace	Loquaty
 
 		// 値を評価
 		LBoolean AsBoolean( void ) const ;
-		LLong AsInteger( void ) const ;
-		LDouble AsDouble( void ) const ;
-		LString AsString( void ) const ;
+		LLong AsInteger( LLong err = 0 ) const ;
+		LDouble AsDouble( LDouble err = 0.0 ) const ;
+		LString AsString( const wchar_t * err = nullptr ) const ;
 
 		// ポインタの参照先やオブジェクトに値を設定
 		bool PutInteger( LLong val ) ;
