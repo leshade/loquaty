@@ -5707,57 +5707,72 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 	{
 		// ポインタの型変更
 		assert( xval->GetType().IsPointer() ) ;
-		assert( typeCast.IsPointer() ) ;
-		ssize_t	iCastOffset = 0 ;
-		//
-		LStructureClass *	pStructClass = xval->GetType().GetPtrStructureClass() ;
-		LStructureClass *	pCastStructClass = typeCast.GetPtrStructureClass() ;
-		if ( (pStructClass != nullptr) && (pCastStructClass != nullptr) )
+		if ( typeCast.IsPointer() )
 		{
-			// ダウンキャスト？
-			const size_t *	pOffset =
-					pStructClass->GetOffsetCastTo( pCastStructClass ) ;
-			if ( pOffset != nullptr )
+			ssize_t	iCastOffset = 0 ;
+			//
+			LStructureClass *	pStructClass = xval->GetType().GetPtrStructureClass() ;
+			LStructureClass *	pCastStructClass = typeCast.GetPtrStructureClass() ;
+			if ( (pStructClass != nullptr) && (pCastStructClass != nullptr) )
 			{
-				iCastOffset = (ssize_t) *pOffset ;
-			}
-			else
-			{
-				// アップキャスト？
-				pOffset = pCastStructClass->GetOffsetCastTo( pStructClass ) ;
+				// ダウンキャスト？
+				const size_t *	pOffset =
+						pStructClass->GetOffsetCastTo( pCastStructClass ) ;
 				if ( pOffset != nullptr )
 				{
-					iCastOffset = - (ssize_t) *pOffset ;
+					iCastOffset = (ssize_t) *pOffset ;
+				}
+				else
+				{
+					// アップキャスト？
+					pOffset = pCastStructClass->GetOffsetCastTo( pStructClass ) ;
+					if ( pOffset != nullptr )
+					{
+						iCastOffset = - (ssize_t) *pOffset ;
+					}
 				}
 			}
-		}
-		LType	typeValue( typeCast.GetClass(), xval->GetType().GetModifiers() ) ;
-		if ( iCastOffset != 0 )
-		{
-			LExprValuePtr	xvalCastPtr =
-				std::make_shared<LExprValue>( typeValue, nullptr, false, false ) ;
-			xvalCastPtr->SetOptionPointerOffset
-					( xval, LExprValue::MakeConstExprInt(iCastOffset) ) ;
-			if ( explicitCast )
+			LType	typeValue( typeCast.GetClass(), xval->GetType().GetModifiers() ) ;
+			if ( iCastOffset != 0 )
 			{
-				return	EvalCheckPointerAlignmenet( std::move(xvalCastPtr) ) ;
+				LExprValuePtr	xvalCastPtr =
+					std::make_shared<LExprValue>( typeValue, nullptr, false, false ) ;
+				xvalCastPtr->SetOptionPointerOffset
+						( xval, LExprValue::MakeConstExprInt(iCastOffset) ) ;
+				if ( explicitCast )
+				{
+					return	EvalCheckPointerAlignmenet( std::move(xvalCastPtr) ) ;
+				}
+				else
+				{
+					return	xvalCastPtr ;
+				}
 			}
 			else
 			{
-				return	xvalCastPtr ;
+				xval->Type() = typeValue ;
+				if ( explicitCast )
+				{
+					return	EvalCheckPointerAlignmenet( std::move(xval) ) ;
+				}
+				else
+				{
+					return	xval ;
+				}
 			}
 		}
 		else
 		{
-			xval->Type() = typeValue ;
-			if ( explicitCast )
-			{
-				return	EvalCheckPointerAlignmenet( std::move(xval) ) ;
-			}
-			else
-			{
-				return	xval ;
-			}
+			// ポインタ -> Object 変換
+			xval = EvalMakePointerInstance( std::move(xval) ) ;
+
+			// 型情報変更
+			assert( xval->GetType().IsRuntimeObject() ) ;
+			LType::Modifiers	accMod = xval->GetType().GetModifiers()
+														& LType::accessMask ;
+			xval->Type() = typeCast ;
+			xval->Type().SetModifiers( typeCast.GetAccessModifier() | accMod ) ;
+			return	xval ;
 		}
 	}
 

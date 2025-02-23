@@ -1339,7 +1339,7 @@ LClass::ResultInstanceOf LPointerClass::TestInstanceOf( LClass * pClass ) const
 	LPointerClass *	pPtrClass = dynamic_cast<LPointerClass*>( pClass ) ;
 	if ( pPtrClass == nullptr )
 	{
-		return	instanceUnavailable ;
+		return	LClass::TestInstanceOf( pClass ) ;
 	}
 	bool	flagCastable = false ;
 	if ( pPtrClass->m_typeBuf.IsVoid() )
