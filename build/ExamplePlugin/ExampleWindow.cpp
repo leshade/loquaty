@@ -23,7 +23,7 @@ LExampleWindow::LExampleWindow( LVirtualMachine& vm, LObjPtr pObj )
 	Gdiplus::GdiplusStartup( &m_gdipToken, &m_gdipStartupInput, 0 ) ;
 
 	// コールバック用スレッド
-	m_threadCallback = new LThreadObj( vm.GetThreadClass() ) ;
+	m_threadCallback = vm.new_Thread() ;
 }
 
 LExampleWindow::~LExampleWindow( void )
@@ -115,7 +115,7 @@ void LExampleWindow::Close( void )
 	{
 		::DestroyWindow( m_hwnd ) ;
 		m_hwnd = nullptr ;
-		m_pObj = nullptr ;
+		m_pObj.Release() ;
 	}
 	if ( m_hDCView != nullptr )
 	{

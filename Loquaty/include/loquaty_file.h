@@ -348,6 +348,13 @@ namespace	Loquaty
 		static LString GetFileNameOf( const wchar_t * path ) ;
 		static size_t FindFileName( const wchar_t * path ) ;
 
+		// ディレクトリと拡張子を除いたファイル名を取得する
+		static LString GetFileTitleOf( const wchar_t * path ) ;
+
+		// ファイル拡張子を取得する
+		static LString GetFileExtensionOf( const wchar_t * path ) ;
+		static size_t FindFileExtension( const wchar_t * path ) ;
+
 		// ディレクトリパスを結合する
 		// （sub の先頭が '/' 又は '\' で始まる場合、
 		// 　又はスキームを含む場合は sub をそのまま返す）

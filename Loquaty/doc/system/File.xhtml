@@ -73,6 +73,7 @@
 
 <div class="headline">Static Functions</div>
 <div class="indent2">
+	<a href="#func_catenatePath">catenatePath</a><br/>
 	<a href="#func_createDirectory">createDirectory</a><br/>
 	<a href="#func_deleteDirectory">deleteDirectory</a><br/>
 	<a href="#func_deleteFile">deleteFile</a><br/>
@@ -80,6 +81,10 @@
 	<a href="#func_isExisting">isExisting</a><br/>
 	<a href="#func_listFiles">listFiles</a><br/>
 	<a href="#func_makeBuffer">makeBuffer</a><br/>
+	<a href="#func_pathDirectoryOf">pathDirectoryOf</a><br/>
+	<a href="#func_pathExtensionOf">pathExtensionOf</a><br/>
+	<a href="#func_pathFileNameOf">pathFileNameOf</a><br/>
+	<a href="#func_pathFileTitleOf">pathFileTitleOf</a><br/>
 	<a href="#func_queryState">queryState</a><br/>
 	<a href="#func_renameFile">renameFile</a><br/>
 </div><br/>
@@ -347,6 +352,27 @@ File.State の dateAccessed へ値を取得した。</div>
 
 <div class="chapter">Static Functions</div>
 
+<a name="func_catenatePath"/>
+<div class="headline">catenatePath</div>
+<div class="usage">public static String catenatePath( String pathBase, String pathOffset, uint deli = 47 )</div>
+<div class="normal">
+二つのファイルパスを結合します。この際、pathOffset がフルパス（スキームやドライブレターを含む、又は '/', '\' 記号で始まる）の場合 pathBase は無視され pathOffset がそのまま返されます。</div>
+<div class="notes_parameter">
+<div class="param_name">pathBase</div>
+<div class="param_desc">
+ベースとなるディレクトリパス<br/>末尾が '\', '/' 記号の場合、deli に置き換えて結合されます。</div>
+<div class="param_name">pathOffset</div>
+<div class="param_desc">
+追加するオフセットパス</div>
+<div class="param_name">deli</div>
+<div class="param_desc">
+ディレクトリの区切り記号。暗黙に '\' 又は '/' は判定されます。<br/>それら以外の文字を指定した場合その文字も区切り記号として解釈します。<br/>また pathBase と pathOffset を結合する際の区切り記号として使用されます。但し pathBase, pathOffset の内側に含まれる区切り記号は維持されます。</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+結合されたパス</div>
+</div>
+<br/>
+
 <a name="func_createDirectory"/>
 <div class="headline">createDirectory</div>
 <div class="usage">public static boolean createDirectory( String path )</div>
@@ -455,6 +481,66 @@ File オブジェクトの初期イメージのバイト数</div>
 <div class="param_name">Return Value</div>
 <div class="param_desc">
 作成された File オブジェクト</div>
+</div>
+<br/>
+
+<a name="func_pathDirectoryOf"/>
+<div class="headline">pathDirectoryOf</div>
+<div class="usage">public static String pathDirectoryOf( String path )</div>
+<div class="normal">
+ファイルパスのディレクトリ部分（URLスキーム、ドライブレター等を含む）を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+ファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+解釈されたディレクトリパス</div>
+</div>
+<br/>
+
+<a name="func_pathExtensionOf"/>
+<div class="headline">pathExtensionOf</div>
+<div class="usage">public static String pathExtensionOf( String path )</div>
+<div class="normal">
+ファイルパスの拡張子部分（区切りの . を含まない）を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+ファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+解釈されたファイル拡張子</div>
+</div>
+<br/>
+
+<a name="func_pathFileNameOf"/>
+<div class="headline">pathFileNameOf</div>
+<div class="usage">public static String pathFileNameOf( String path )</div>
+<div class="normal">
+ファイルパスのファイル名部分（拡張子含む）を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+ファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+解釈されたファイル名（拡張子を含む）</div>
+</div>
+<br/>
+
+<a name="func_pathFileTitleOf"/>
+<div class="headline">pathFileTitleOf</div>
+<div class="usage">public static String pathFileTitleOf( String path )</div>
+<div class="normal">
+ファイルパスのファイル名部分（拡張子を含まない）を取得します。</div>
+<div class="notes_parameter">
+<div class="param_name">path</div>
+<div class="param_desc">
+ファイルパス</div>
+<div class="param_name">Return Value</div>
+<div class="param_desc">
+解釈されたファイル名（拡張子を含まない）</div>
 </div>
 <br/>
 

@@ -16,7 +16,7 @@ namespace	Loquaty
 				const wchar_t * pwszName = nullptr )
 			: LClass( vm, vm.Global(), pClass, pwszName )
 		{
-			m_pPrototype = new LVirtualMachine() ;
+			m_pPrototype.SetPtr( new LVirtualMachine() ) ;
 		}
 
 		// クラス定義処理（ネイティブな実装）

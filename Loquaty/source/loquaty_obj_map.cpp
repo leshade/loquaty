@@ -224,7 +224,7 @@ LObject * LMapObj::CastClassTo( LClass * pClass )
 					delete	pMapObj ;
 					return	nullptr ;
 				}
-				pMapObj->m_array.at(i) = pObj ;
+				pMapObj->m_array.at(i).SetPtr( pObj ) ;
 			}
 		}
 	}

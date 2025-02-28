@@ -38,9 +38,9 @@ LoquatyApp::LoquatyApp( void )
 	: m_verb( verbNo ),
 		m_optNologo( false ),
 		m_optMeasureTime( false ),
+		m_vm( new LVirtualMachine ),
 		m_warnLevel( LCompiler::warning3 )
 {
-	m_vm = new LVirtualMachine ;
 }
 
 LoquatyApp::~LoquatyApp( void )
@@ -358,7 +358,7 @@ int LoquatyApp::RunMain( void )
 	}
 
 	// 引数配列
-	LPtr<LThreadObj>	pThread( new LThreadObj( m_vm->GetThreadClass() ) ) ;
+	LPtr<LThreadObj>	pThread = m_vm->new_Thread() ;
 	if ( m_verb == verbDebug )
 	{
 		m_debugger.SetStepIn( pThread->Context() ) ;

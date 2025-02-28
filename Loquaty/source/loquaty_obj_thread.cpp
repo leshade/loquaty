@@ -148,7 +148,7 @@ bool LTaskObj::BeginAsyncAs
 						pwszFuncName, pArgValues, nArgCount ) ;
 	if ( pFunc == nullptr )
 	{
-		m_state.exception = m_context.new_Exception( exceptionNullPointer ) ;
+		m_state.exception.SetPtr( m_context.new_Exception( exceptionNullPointer ) ) ;
 		return	true ;
 	}
 	return	BeginAsync( pFunc, argValues.data(), argValues.size() ) ;

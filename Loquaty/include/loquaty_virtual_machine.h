@@ -142,7 +142,18 @@ namespace	Loquaty
 		LClass * GetThreadClassAs( const LType& typeRet ) ;
 
 	public:
-		// 式／文を関数としてコンパイルする
+		// タスクオブジェクト生成
+		LPtr<LTaskObj> new_Task( void ) ;
+		LPtr<LTaskObj> new_Task( const LType& typeRet ) ;
+		// スレッドオブジェクト生成
+		LPtr<LThreadObj> new_Thread( void ) ;
+		LPtr<LThreadObj> new_Thread( const LType& typeRet ) ;
+
+	public:
+		// 式を関数としてコンパイルする
+		// ※より詳細なコンパイルには
+		//   LCompiler::CompileExpressionAsFunc や
+		//   LCompiler::CompileStatementsAsFunc を利用する
 		LPtr<LFunctionObj>
 			CompileAsFunc
 				( const wchar_t * pwszExpr,

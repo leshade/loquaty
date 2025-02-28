@@ -57,7 +57,7 @@ LCompiler compiler( *vm ) ;
 compiler.IncludeScript( L"script_file.lqs" ) ;
 
 // 関数 funcName() 実行
-LPtr<LThreadObj> thread( new LThreadObj( vm->GetThreadClass() ) ) ;
+LPtr<LThreadObj> thread = vm->new_Thread() ;
 auto [value, exception] =
     thread->SyncCallFunctionAs( LObjPtr(), L"funcName", nullptr, 0 ) ;
 ```

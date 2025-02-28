@@ -581,6 +581,40 @@ size_t LURLSchemer::FindFileName( const wchar_t * path )
 	return	iFile ;
 }
 
+// ディレクトリと拡張子を除いたファイル名を取得する
+LString LURLSchemer::GetFileTitleOf( const wchar_t * path )
+{
+	size_t	iFile = FindFileName( path ) ;
+	size_t	iExt = FindFileExtension( path + iFile ) ;
+	if ( (iExt >= 1) && (path[iFile + iExt - 1] == L'.') )
+	{
+		iExt -- ;
+	}
+	return	LString( path + iFile, iExt ) ;
+}
+
+// ファイル拡張子を取得する
+LString LURLSchemer::GetFileExtensionOf( const wchar_t * path )
+{
+	size_t	iExt = FindFileExtension( path ) ;
+	return	LString( path + iExt ) ;
+}
+
+size_t LURLSchemer::FindFileExtension( const wchar_t * path )
+{
+	size_t	iFile = FindFileName( path ) ;
+	size_t	iExt = 0 ;
+	while ( path[iFile] != 0 )
+	{
+		if ( path[iFile] == L'.' )
+		{
+			iExt = iFile + 1 ;
+		}
+		iFile ++ ;
+	}
+	return	(iExt == 0) ? iFile : iExt ;
+}
+
 // ディレクトリパスを結合する
 // （sub の先頭が '/' 又は '\' で始まる場合、
 // 　又はスキームを含む場合は sub をそのまま返す）
@@ -597,6 +631,10 @@ LString LURLSchemer::SubPath
 	}
 	if ( (sub != nullptr)
 		&& ((sub[0] == sep) || (sub[0] == L'/') || (sub[0] == L'\\')) )
+	{
+		return	LString( sub ) ;
+	}
+	if ( (sub != nullptr) && (sub[0] != 0) && (sub[1] == L':') )
 	{
 		return	LString( sub ) ;
 	}

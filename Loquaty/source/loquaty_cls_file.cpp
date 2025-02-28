@@ -230,7 +230,7 @@ const LClass::NativeFuncDesc	LFileClass::s_Virtuals[16] =
 	},
 } ;
 
-const LClass::NativeFuncDesc	LFileClass::s_Functions[10] =
+const LClass::NativeFuncDesc	LFileClass::s_Functions[15] =
 {
 	{	// public static boolean queryState( File.State* state, String path )
 		L"queryState",
@@ -312,6 +312,54 @@ const LClass::NativeFuncDesc	LFileClass::s_Functions[10] =
 		L"<param name=\"buf\">File オブジェクトの初期イメージ</param>\n"
 		L"<param name=\"bytes\">File オブジェクトの初期イメージのバイト数</param>\n"
 		L"<return>作成された File オブジェクト</return>", nullptr
+	},
+	{	// public static String pathDirectoryOf( String path )
+		L"pathDirectoryOf",
+		&LFileClass::method_pathDirectoryOf, true,
+		L"public static", L"String", L"String path",
+		L"ファイルパスのディレクトリ部分（URLスキーム、ドライブレター等を含む）を取得します。\n"
+		L"<param name=\"path\">ファイルパス</param>\n"
+		L"<return>解釈されたディレクトリパス</return>", nullptr
+	},
+	{	// public static String pathFileNameOf( String path )
+		L"pathFileNameOf",
+		&LFileClass::method_pathFileNameOf, true,
+		L"public static", L"String", L"String path",
+		L"ファイルパスのファイル名部分（拡張子含む）を取得します。\n"
+		L"<param name=\"path\">ファイルパス</param>\n"
+		L"<return>解釈されたファイル名（拡張子を含む）</return>", nullptr
+	},
+	{	// public static String pathFileTitleOf( String path )
+		L"pathFileTitleOf",
+		&LFileClass::method_pathFileTitleOf, true,
+		L"public static", L"String", L"String path",
+		L"ファイルパスのファイル名部分（拡張子を含まない）を取得します。\n"
+		L"<param name=\"path\">ファイルパス</param>\n"
+		L"<return>解釈されたファイル名（拡張子を含まない）</return>", nullptr
+	},
+	{	// public static String pathExtensionOf( String path )
+		L"pathExtensionOf",
+		&LFileClass::method_pathExtensionOf, true,
+		L"public static", L"String", L"String path",
+		L"ファイルパスの拡張子部分（区切りの . を含まない）を取得します。\n"
+		L"<param name=\"path\">ファイルパス</param>\n"
+		L"<return>解釈されたファイル拡張子</return>", nullptr
+	},
+	{	// public static String catenatePath( String pathBase, String pathOffset, uint deli = '/' )
+		L"catenatePath",
+		&LFileClass::method_catenatePath, true,
+		L"public static", L"String", L"String pathBase, String pathOffset, uint deli = \'/\'",
+		L"二つのファイルパスを結合します。この際、pathOffset がフルパス"
+		L"（スキームやドライブレターを含む、又は \'/\', \'\\\' 記号で始まる）の場合"
+		L" pathBase は無視され pathOffset がそのまま返されます。"
+		L"<param name=\"pathBase\">ベースとなるディレクトリパス<br/>\n"
+		L"末尾が \'\\', \'/\' 記号の場合、deli に置き換えて結合されます。</param>\n"
+		L"<param name=\"pathOffset\">追加するオフセットパス</param>\n"
+		L"<param name=\"deli\">ディレクトリの区切り記号。暗黙に \'\\' 又は \'/\' は判定されます。<br/>\n"
+		L"それら以外の文字を指定した場合その文字も区切り記号として解釈します。<br/>\n"
+		L"また pathBase と pathOffset を結合する際の区切り記号として使用されます。"
+		L"但し pathBase, pathOffset の内側に含まれる区切り記号は維持されます。</param>\n"
+		L"<return>結合されたパス</return>", nullptr
 	},
 	{
 		nullptr, nullptr, false,
@@ -946,6 +994,54 @@ void LFileClass::method_makeBuffer( LContext& _context )
 	LQT_RETURN_OBJECT( pFileObj ) ;
 }
 
+// static String pathDirectoryOf( String path )
+void LFileClass::method_pathDirectoryOf( LContext& _context )
+{
+	LQT_FUNC_ARG_LIST ;
+	LQT_FUNC_ARG_STRING( path ) ;
+
+	LQT_RETURN_STRING( LURLSchemer::GetDirectoryOf( path.c_str() ) ) ;
+}
+
+// static String pathFileNameOf( String path )
+void LFileClass::method_pathFileNameOf( LContext& _context )
+{
+	LQT_FUNC_ARG_LIST ;
+	LQT_FUNC_ARG_STRING( path ) ;
+
+	LQT_RETURN_STRING( LURLSchemer::GetFileNameOf( path.c_str() ) ) ;
+}
+
+// static String pathFileTitleOf( String path )
+void LFileClass::method_pathFileTitleOf( LContext& _context )
+{
+	LQT_FUNC_ARG_LIST ;
+	LQT_FUNC_ARG_STRING( path ) ;
+
+	LQT_RETURN_STRING( LURLSchemer::GetFileTitleOf( path.c_str() ) ) ;
+}
+
+// static String pathExtensionOf( String path )
+void LFileClass::method_pathExtensionOf( LContext& _context )
+{
+	LQT_FUNC_ARG_LIST ;
+	LQT_FUNC_ARG_STRING( path ) ;
+
+	LQT_RETURN_STRING( LURLSchemer::GetFileExtensionOf( path.c_str() ) ) ;
+}
+
+// static String catenatePath( String pathBase, String pathOffset, char deli = '/' )
+void LFileClass::method_catenatePath( LContext& _context )
+{
+	LQT_FUNC_ARG_LIST ;
+	LQT_FUNC_ARG_STRING( pathBase ) ;
+	LQT_FUNC_ARG_STRING( pathOffset ) ;
+	LQT_FUNC_ARG_INT( deli ) ;
+
+	LQT_RETURN_STRING
+		( LURLSchemer::SubPath
+			( pathBase.c_str(), pathOffset.c_str(), (wchar_t) deli ) ) ;
+}
 
 
 

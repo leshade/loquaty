@@ -345,7 +345,7 @@ LPtr<LFunctionObj> LFunctionVariation::OverloadFunction( LFunctionObj * pFunc )
 		assert( pOldFunc != nullptr ) ;
 		if ( pOldFunc->IsEqualArgmentList( pFunc->GetArgListType() ) )
 		{
-			std::vector< LPtr<LFunctionObj> >::at(i) = pFunc ;
+			std::vector< LPtr<LFunctionObj> >::at(i).SetPtr( pFunc ) ;
 			pFunc->SetVariationIndex( i ) ;
 			return	pOldFunc ;
 		}
@@ -459,7 +459,7 @@ std::tuple< size_t, LPtr<LFunctionObj> >
 			if ( pEntry->IsEqualArgmentList( pAsProto->GetArgListType() )
 				&& (pEntry->IsConstThis() == pAsProto->IsConstThis()) )
 			{
-				pEntry = new LFunctionObj( *pEntry ) ;
+				pEntry.SetPtr( new LFunctionObj( *pEntry ) ) ;
 				pEntry->MakeInvisible() ;
 				std::vector< LPtr<LFunctionObj> >::at( iFunc ) = pEntry ;
 			}

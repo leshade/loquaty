@@ -133,7 +133,8 @@ void LVirtualMachine::Initialize( void )
 	m_pBasicClass[classThread] = pThreadClass ;
 
 	// 大域空間
-	m_pGlobal = new LNamespace( *this, LPtr<LNamespace>(), pNamespaceClass ) ;
+	m_pGlobal.SetPtr
+		( new LNamespace( *this, LPtr<LNamespace>(), pNamespaceClass ) ) ;
 	m_refGlobal = false ;
 
 	// まず基本クラスを宣言だけする
@@ -304,7 +305,7 @@ void LVirtualMachine::InitializeRef( LVirtualMachine& vmRef )
 	{
 		return ;
 	}
-	m_pGlobal = new LNamespace( *(vmRef.m_pGlobal) ) ;
+	m_pGlobal.SetPtr( new LNamespace( *(vmRef.m_pGlobal) ) ) ;
 	m_refGlobal = true ;
 
 	for ( int i = 0; i < classBasicCount; i ++ )
@@ -348,7 +349,7 @@ void LVirtualMachine::Release( void )
 		{
 			m_pGlobal->DisposeAllObjects() ;
 		}
-		m_pGlobal = nullptr ;
+		m_pGlobal.Release() ;
 		m_refGlobal = false ;
 
 		// クラスの最終的なリリース
@@ -869,7 +870,29 @@ LClass * LVirtualMachine::GetThreadClassAs( const LType& typeRet )
 	return	pClass ;
 }
 
-// 式／文を関数としてコンパイルする
+// タスクオブジェクト生成
+LPtr<LTaskObj> LVirtualMachine::new_Task( void )
+{
+	return	LPtr<LTaskObj>( new LTaskObj( GetTaskClass() ) ) ;
+}
+
+LPtr<LTaskObj> LVirtualMachine::new_Task( const LType& typeRet )
+{
+	return	LPtr<LTaskObj>( new LTaskObj( GetTaskClassAs( typeRet ) ) ) ;
+}
+
+// スレッドオブジェクト生成
+LPtr<LThreadObj> LVirtualMachine::new_Thread( void )
+{
+	return	LPtr<LThreadObj>( new LThreadObj( GetThreadClass() ) ) ;
+}
+
+LPtr<LThreadObj> LVirtualMachine::new_Thread( const LType& typeRet )
+{
+	return	LPtr<LThreadObj>( new LThreadObj( GetThreadClassAs( typeRet ) ) ) ;
+}
+
+// 式を関数としてコンパイルする
 LPtr<LFunctionObj>
 	LVirtualMachine::CompileAsFunc
 		( const wchar_t * pwszExpr,

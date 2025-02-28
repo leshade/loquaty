@@ -20,7 +20,7 @@ LContext::LContext( LVirtualMachine& vm, size_t nInitSize )
 		m_jumped( 0 ), m_signal( interruptNo ),
 		m_pfnRunCoreLoop( &LContext::RunCoreLoopNoDebug )
 {
-	m_nullThrown = new LExceptionObj( vm.GetExceptionClass(), L"null" ) ;
+	m_nullThrown.SetPtr( new LExceptionObj( vm.GetExceptionClass(), L"null" ) ) ;
 
 	if ( vm.GetDebugger() != nullptr )
 	{
@@ -179,7 +179,7 @@ bool LContext::AsyncCallFunction
 	{
 		state.finished = true ;
 		state.valRet = LValue() ;
-		state.exception = new_Exception(exceptionNullPointer) ;
+		state.exception.SetPtr( new_Exception(exceptionNullPointer) ) ;
 		return	true ;
 	}
 	else if ( !pFunc->IsNativeFunc()
@@ -187,7 +187,7 @@ bool LContext::AsyncCallFunction
 	{
 		state.finished = true ;
 		state.valRet = LValue() ;
-		state.exception = new_Exception(exceptionUnimplemented) ;
+		state.exception.SetPtr( new_Exception(exceptionUnimplemented) ) ;
 		return	true ;
 	}
 
@@ -409,8 +409,8 @@ void LContext::ResetState( LContext::ExecutionStatus status )
 	m_ip = LCodeBuffer::InvalidCodePos ;
 	m_pCodeBuf = nullptr ;
 
-	m_thrown = nullptr ;
-	m_exception = nullptr ;
+	m_thrown.Release() ;
+	m_exception.Release() ;
 
 	m_status = status ;
 	m_awaiting = nullptr ;
@@ -484,7 +484,7 @@ void LContext::FinishFunctionResult( LContext::AsyncState& state )
 void LContext::ClearException( void )
 {
 	auto	lock = LockRunning() ;
-	m_exception = nullptr ;
+	m_exception.Release() ;
 }
 
 // 例外送出
@@ -695,7 +695,7 @@ bool LContext::ProcessSignal( void )
 		assert ( GetCurrent() == this ) ;
 		LObjPtr	pThrow = m_pSignalObj ;
 		m_signal = interruptNo ;
-		m_pSignalObj = nullptr ;
+		m_pSignalObj.Release() ;
 		lockSignal.unlock() ;
 		//
 		ThrowException( pThrow ) ;
@@ -1193,7 +1193,7 @@ void LContext::instruction_ExImmPrefix( const LCodeBuffer::Word& word )
 // ClearException
 void LContext::instruction_ClearException( const LCodeBuffer::Word& word )
 {
-	m_exception = nullptr ;
+	m_exception.Release() ;
 }
 
 // LoadRetValue
@@ -2093,7 +2093,7 @@ void LContext::micro_instruction_LeaveTry( void )
 	pStack->m_fp = (size_t) pExceptDesc->fp.longValue ;
 	pStack->m_xp = (size_t) pExceptDesc->prev_xp.longValue ;
 
-	m_thrown = nullptr ;
+	m_thrown.Release() ;
 }
 
 // ジャンプ検証
@@ -2109,7 +2109,7 @@ void LContext::micro_instruction_VerifyJumped( void )
 void LContext::micro_instruction_Throw( void )
 {
 	LStackBuffer *	pStack = m_stack.get() ;
-	m_thrown = pStack->Pop().pObject ;
+	m_thrown.SetPtr( pStack->Pop().pObject ) ;
 
 	LDebugger *	pDebugger = m_vm.GetDebugger() ;
 	if ( pDebugger != nullptr )
@@ -2162,10 +2162,10 @@ void LContext::micro_instruction_Throw( void )
 		}
 	}
 
-	m_exception = m_thrown.Detach() ;
+	m_exception.SetPtr( m_thrown.Detach() ) ;
 	if ( m_exception == m_nullThrown )
 	{
-		m_exception = nullptr ;
+		m_exception.Release() ;
 	}
 
 	if ( pStack->m_xp != LStackBuffer::InvalidPtr )

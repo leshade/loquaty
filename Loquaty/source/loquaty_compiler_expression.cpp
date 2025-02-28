@@ -4219,7 +4219,7 @@ void LCompiler::ConstExprPushArgument
 			OnError( exceptionNullPointer ) ;
 			return ;
 		}
-		pThisObj = pThisObj->CastClassTo( proto.GetThisClass() ) ;
+		pThisObj.SetPtr( pThisObj->CastClassTo( proto.GetThisClass() ) ) ;
 		if ( pThisObj == nullptr )
 		{
 			OnError( errorFailedConstExprToCast_opt1_opt2,

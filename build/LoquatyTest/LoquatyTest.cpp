@@ -906,6 +906,36 @@ namespace LoquatyTest
 								L"..\\..\\..\\LoquatyTest\\test" ) ;
 			TestFile( pDir ) ;
 		}
+
+		TEST_METHOD(FilePathParser)
+		{
+			const wchar_t *	pwszPath1 = L"d:\\dir1\\dir2\\file1.file2.ext" ;
+			Assert::IsTrue( LURLSchemer::GetDirectoryOf(pwszPath1) == L"d:\\dir1\\dir2" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileNameOf(pwszPath1) == L"file1.file2.ext" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileTitleOf(pwszPath1) == L"file1.file2" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileExtensionOf(pwszPath1) == L"ext" ) ;
+
+			const wchar_t *	pwszPath2 = L"\\dir1\\dir2\\file1.file2.ext" ;
+			Assert::IsTrue( LURLSchemer::GetDirectoryOf(pwszPath2) == L"\\dir1\\dir2" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileNameOf(pwszPath2) == L"file1.file2.ext" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileTitleOf(pwszPath2) == L"file1.file2" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileExtensionOf(pwszPath2) == L"ext" ) ;
+
+			const wchar_t *	pwszPath3 = L"dir1\\dir2\\file1.file2.ext" ;
+			Assert::IsTrue( LURLSchemer::GetDirectoryOf(pwszPath3) == L"dir1\\dir2" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileNameOf(pwszPath3) == L"file1.file2.ext" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileTitleOf(pwszPath3) == L"file1.file2" ) ;
+			Assert::IsTrue( LURLSchemer::GetFileExtensionOf(pwszPath3) == L"ext" ) ;
+
+			const wchar_t *	pwszDirPath1 = L"dir3\\dir4\\" ;
+			Assert::IsTrue( LURLSchemer::SubPath(pwszPath1,pwszPath2) == pwszPath2 ) ;
+			Assert::IsTrue( LURLSchemer::SubPath(pwszPath1,pwszPath3) == L"d:\\dir1\\dir2\\file1.file2.ext/dir1\\dir2\\file1.file2.ext" ) ;
+			Assert::IsTrue( LURLSchemer::SubPath(pwszPath3,pwszPath1) == pwszPath1 ) ;
+			Assert::IsTrue( LURLSchemer::SubPath(pwszDirPath1,pwszPath1) == pwszPath1 ) ;
+			Assert::IsTrue( LURLSchemer::SubPath(pwszDirPath1,pwszPath2) == pwszPath2 ) ;
+			Assert::IsTrue( LURLSchemer::SubPath(pwszDirPath1,pwszPath3) == L"dir3\\dir4/dir1\\dir2\\file1.file2.ext" ) ;
+			Assert::IsTrue( LURLSchemer::SubPath(pwszPath1,pwszDirPath1) == L"d:\\dir1\\dir2\\file1.file2.ext/dir3\\dir4\\" ) ;
+		}
 	} ;
 
 	TEST_CLASS(LoquatyContextTest)

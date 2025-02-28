@@ -92,7 +92,7 @@ LPointerObj * LGenericObj::GetBufferPoiner( void )
 	LSpinLock	lockMap( m_mtxMap ) ;
 	assert( m_pClass != nullptr ) ;
 	LClass *	pPtrClass = m_pClass->VM().GetPointerClass() ;
-	m_pPtr = new LPointerObj( pPtrClass ) ;
+	m_pPtr.SetPtr( new LPointerObj( pPtrClass ) ) ;
 	m_pPtr->SetPointer( m_pBuf, 0, m_pBuf->size() ) ;
 	return	m_pPtr.Get() ;
 }
@@ -289,7 +289,7 @@ bool LGenericObj::PutMembers( const LObjPtr& pObj )
 			type = GetElementTypeAt( (size_t) iElement ) ;
 			if ( type.GetClass() != nullptr )
 			{
-				pSrcObj = pSrcObj->CastClassTo( type.GetClass() ) ;
+				pSrcObj.SetPtr( pSrcObj->CastClassTo( type.GetClass() ) ) ;
 			}
 			LObject::ReleaseRef( SetElementAt( i, pSrcObj.Get() ) ) ;
 		}

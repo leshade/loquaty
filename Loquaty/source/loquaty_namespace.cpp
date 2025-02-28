@@ -64,21 +64,24 @@ LPtr<LNamespace> LNamespace::GenericDef::Instantiate
 	{
 	case	Symbol::rwiClass:
 	default:
-		pInstance = new LGenericObjClass
+		pInstance.SetPtr
+			( new LGenericObjClass
 				( compiler.VM(), m_parent,
-					compiler.VM().GetClassClass(), strGenTypeName.c_str() ) ;
+					compiler.VM().GetClassClass(), strGenTypeName.c_str() ) ) ;
 		break ;
 
 	case	Symbol::rwiStruct:
-		pInstance = new LStructureClass
+		pInstance.SetPtr
+			( new LStructureClass
 				( compiler.VM(), m_parent,
-					compiler.VM().GetClassClass(), strGenTypeName.c_str() ) ;
+					compiler.VM().GetClassClass(), strGenTypeName.c_str() ) ) ;
 		break ;
 
 	case	Symbol::rwiNamespace:
-		pInstance = new LNamespace
+		pInstance.SetPtr
+			( new LNamespace
 				( compiler.VM(), m_parent,
-					compiler.VM().GetNamespaceClass(), strGenTypeName.c_str() ) ;
+					compiler.VM().GetNamespaceClass(), strGenTypeName.c_str() ) ) ;
 		break ;
 	}
 	m_parent->AddNamespace( strGenTypeName.c_str(), pInstance ) ;
@@ -213,7 +216,7 @@ void LNamespace::DisposeAllObjects( void )
 		iter.second->DisposeObject() ;
 	}
 
-	m_parent = nullptr ;
+	m_parent.Release() ;
 	m_arrangement.ClearAll();
 	m_funcs.clear() ;
 	m_typedefs.clear() ;
@@ -317,7 +320,7 @@ LPtr<LFunctionObj>
 	else
 	{
 		LFunctionVariation	funcvar ;
-		LPtr<LFunctionObj>	pNull = funcvar.OverloadFunction( pFunc.Get() ) ;
+		LPtr<LFunctionObj>	pNull( funcvar.OverloadFunction( pFunc.Get() ) ) ;
 		m_funcs.insert
 			( std::make_pair<std::wstring,LFunctionVariation>
 					( pwszName, LFunctionVariation(funcvar) ) ) ;
@@ -384,7 +387,7 @@ bool LNamespace::AddNamespace
 			( pwszName, LPtr<LNamespace>( pNamespace ) ) ) ;
 
 	AddRef() ;
-	pNamespace->m_parent = this ;
+	pNamespace->m_parent.SetPtr( this ) ;
 	return	true ;
 }
 

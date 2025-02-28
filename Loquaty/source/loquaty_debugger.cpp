@@ -813,7 +813,7 @@ LEvalValue LDebugger::EvaluateBinaryOperator
 		case	Symbol::opAdd:
 			if ( pLeftPtrObj != nullptr )
 			{
-				pPtrObj = new LPointerObj( pLeftPtrClass ) ;
+				pPtrObj.SetPtr( new LPointerObj( pLeftPtrClass ) ) ;
 				*pPtrObj = *pLeftPtrObj ;
 				*pPtrObj += (ssize_t) (valRight.AsInteger()
 								* (ssize_t) pLeftPtrClass->GetElementStride()) ;
@@ -824,7 +824,7 @@ LEvalValue LDebugger::EvaluateBinaryOperator
 		case	Symbol::opSub:
 			if ( pLeftPtrObj != nullptr )
 			{
-				pPtrObj = new LPointerObj( pLeftPtrClass ) ;
+				pPtrObj.SetPtr( new LPointerObj( pLeftPtrClass ) ) ;
 				*pPtrObj = *pLeftPtrObj ;
 				*pPtrObj -= (ssize_t) (valRight.AsInteger()
 								* (ssize_t) pLeftPtrClass->GetElementStride()) ;

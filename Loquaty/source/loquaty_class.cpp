@@ -71,7 +71,7 @@ void LClass::DisposeAllObjects( void )
 
 	m_pFuncFinalize = nullptr ;
 
-	m_pPrototype = nullptr ;
+	m_pPrototype.Release() ;
 	m_protoBuffer.ClearAll() ;
 	m_nSuperBufSize = 0 ;
 
@@ -160,7 +160,7 @@ bool LClass::AddSuperClass( LClass * pClass )
 	if ( (m_pPrototype == nullptr)
 		&& (pClass->m_pPrototype != nullptr) )
 	{
-		m_pPrototype = pClass->m_pPrototype->CloneObject() ;
+		m_pPrototype.SetPtr( pClass->m_pPrototype->CloneObject() ) ;
 		m_pPrototype->SetClass( this ) ;
 		//
 		if ( dynamic_cast<LGenericObj*>( m_pPrototype.Ptr() ) != nullptr )

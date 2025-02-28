@@ -285,6 +285,10 @@ namespace	Loquaty
 		{
 			LObject::ReleaseRef( (LObject*) m_pObject ) ;
 		}
+		void Release( void )
+		{
+			SetPtr( nullptr ) ;
+		}
 		const LPtr<T>& operator = ( const LPtr<T>& ptr )
 		{
 			LObject::AddRef( (LObject*) ptr.m_pObject ) ;
@@ -292,11 +296,10 @@ namespace	Loquaty
 			m_pObject = ptr.m_pObject ;
 			return	*this ;
 		}
-		const LPtr<T>& operator = ( T * p )
+		void SetPtr( T * p )
 		{
 			LObject::ReleaseRef( (LObject*) m_pObject ) ;
 			m_pObject = p ;
-			return	*this ;
 		}
 		operator LPtr<LObject> ( void )
 		{

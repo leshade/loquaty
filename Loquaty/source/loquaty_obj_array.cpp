@@ -55,7 +55,7 @@ LObject * LArrayObj::SetElementAt( size_t index, LObject * pObj )
 			}
 		}
 	}
-	m_array.at( index ) = pObj ;
+	m_array.at( index ).SetPtr( pObj ) ;
 	return	pOldObj ;
 }
 
@@ -142,7 +142,7 @@ LObject * LArrayObj::CastClassTo( LClass * pClass )
 				delete	pArrayObj ;
 				return	nullptr ;
 			}
-			pArrayObj->m_array.at(i) = pObj ;
+			pArrayObj->m_array.at(i).SetPtr( pObj ) ;
 		}
 	}
 	return	pArrayObj ;
@@ -167,7 +167,7 @@ void LArrayObj::CloneFrom( const LArrayObj& obj )
 		LObject *	pObj = obj.m_array.at(i).Ptr() ;
 		if ( pObj != nullptr )
 		{
-			m_array.at(i) = pObj->CloneObject() ;
+			m_array.at(i).SetPtr( pObj->CloneObject() ) ;
 		}
 	}
 }
@@ -254,7 +254,7 @@ void LArrayObj::method_add( LContext& _context )
 		if ( (pArrayClass != nullptr)
 			&& (pArrayClass->GetElementTypeClass() != nullptr) )
 		{
-			pObj = pObj->CastClassTo( pArrayClass->GetElementTypeClass() ) ;
+			pObj.SetPtr( pObj->CastClassTo( pArrayClass->GetElementTypeClass() ) ) ;
 			if ( pObj == nullptr )
 			{
 				_context.ThrowException( exceptionElementTypeMismatch ) ;
@@ -297,7 +297,7 @@ void LArrayObj::method_insert( LContext& _context )
 		if ( (pArrayClass != nullptr)
 			&& (pArrayClass->GetElementTypeClass() != nullptr) )
 		{
-			pObj = pObj->CastClassTo( pArrayClass->GetElementTypeClass() ) ;
+			pObj.SetPtr( pObj->CastClassTo( pArrayClass->GetElementTypeClass() ) ) ;
 			if ( pObj == nullptr )
 			{
 				_context.ThrowException( exceptionElementTypeMismatch ) ;
@@ -439,7 +439,7 @@ LValue::Primitive LArrayObj::operator_sadd
 		if ( (pArrayClass != nullptr)
 			&& (pArrayClass->GetElementTypeClass() != nullptr) )
 		{
-			pObj = pObj->CastClassTo( pArrayClass->GetElementTypeClass() ) ;
+			pObj.SetPtr( pObj->CastClassTo( pArrayClass->GetElementTypeClass() ) ) ;
 			if ( pObj == nullptr )
 			{
 				LContext::ThrowExceptionError( exceptionElementTypeMismatch ) ;
@@ -473,7 +473,7 @@ LValue::Primitive LArrayObj::operator_add
 		if ( (pArrayClass != nullptr)
 			&& (pArrayClass->GetElementTypeClass() != nullptr) )
 		{
-			pObj = pObj->CastClassTo( pArrayClass->GetElementTypeClass() ) ;
+			pObj.SetPtr( pObj->CastClassTo( pArrayClass->GetElementTypeClass() ) ) ;
 			if ( pObj == nullptr )
 			{
 				LContext::ThrowExceptionError( exceptionElementTypeMismatch ) ;

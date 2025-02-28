@@ -466,7 +466,7 @@ namespace	Loquaty
 			: LClass( vm, vm.Global(), pClass, pwszName ),
 				m_typeBuf( typeBuf )
 		{
-			m_pPrototype = new LPointerObj( this ) ;
+			m_pPrototype.SetPtr( new LPointerObj( this ) ) ;
 		}
 		LPointerClass( const LPointerClass& ptrcls )
 			: LClass( ptrcls ),
@@ -559,7 +559,7 @@ namespace	Loquaty
 				LClass * pClass, const wchar_t * pwszName = nullptr )
 			: LClass( vm, vm.Global(), pClass, pwszName )
 		{
-			m_pPrototype = new LIntegerObj( this ) ;
+			m_pPrototype.SetPtr( new LIntegerObj( this ) ) ;
 		}
 		LIntegerClass( const LIntegerClass& cls )
 			: LClass( cls ) {}
@@ -654,7 +654,7 @@ namespace	Loquaty
 				LClass * pClass, const wchar_t * pwszName = nullptr )
 			: LClass( vm, vm.Global(), pClass, pwszName )
 		{
-			m_pPrototype = new LDoubleObj( this ) ;
+			m_pPrototype.SetPtr( new LDoubleObj( this ) ) ;
 		}
 		LDoubleClass( const LDoubleClass& cls )
 			: LClass( cls ) {}
@@ -721,7 +721,7 @@ namespace	Loquaty
 				LClass * pClass, const wchar_t * pwszName = nullptr )
 			: LClass( vm, vm.Global(), pClass, pwszName )
 		{
-			m_pPrototype = new LStringObj( this ) ;
+			m_pPrototype.SetPtr( new LStringObj( this ) ) ;
 		}
 		LStringClass( const LStringClass& cls )
 			: LClass( cls ) {}
@@ -756,7 +756,7 @@ namespace	Loquaty
 				LClass * pClass, const wchar_t * pwszName = nullptr )
 			: LClass( vm, vm.Global(), pClass, pwszName )
 		{
-			m_pPrototype = new LStringBufObj( this ) ;
+			m_pPrototype.SetPtr( new LStringBufObj( this ) ) ;
 		}
 		LStringBufClass( const LStringBufClass& cls )
 			: LClass( cls ) {}
@@ -795,7 +795,7 @@ namespace	Loquaty
 			: LClass( vm, vm.Global(), pClass, pwszName ),
 				m_pElementType( pElementType )
 		{
-			m_pPrototype = new LArrayObj( this ) ;
+			m_pPrototype.SetPtr( new LArrayObj( this ) ) ;
 		}
 		LArrayClass( const LArrayClass& cls )
 			: LClass( cls ), m_pElementType( cls.m_pElementType ) {}
@@ -846,7 +846,7 @@ namespace	Loquaty
 			: LClass( vm, vm.Global(), pClass, pwszName ),
 				m_pElementType( pElementType )
 		{
-			m_pPrototype = new LMapObj( this ) ;
+			m_pPrototype.SetPtr( new LMapObj( this ) ) ;
 		}
 		LMapClass( const LMapClass& cls )
 			: LClass( cls ), m_pElementType( cls.m_pElementType ) {}
@@ -897,7 +897,7 @@ namespace	Loquaty
 			: LClass( vm, vm.Global(), pClass, pwszName ),
 				m_pFuncProto( pProto )
 		{
-			m_pPrototype = new LFunctionObj( this, pProto ) ;
+			m_pPrototype.SetPtr( new LFunctionObj( this, pProto ) ) ;
 		}
 		LFunctionClass( const LFunctionClass& cls )
 			: LClass( cls ), m_pFuncProto( cls.m_pFuncProto ) {}
@@ -944,7 +944,7 @@ namespace	Loquaty
 				LClass * pClass, const wchar_t * pwszName = nullptr )
 			: LClass( vm, pNamespace, pClass, pwszName )
 		{
-			m_pPrototype = new LGenericObj( this ) ;
+			m_pPrototype.SetPtr( new LGenericObj( this ) ) ;
 		}
 		LGenericObjClass
 			( LVirtualMachine& vm,
@@ -995,7 +995,7 @@ namespace	Loquaty
 				LClass * pClass, const wchar_t * pwszName = nullptr )
 			: LClass( vm, pNamespace, pClass, pwszName )
 		{
-			m_pPrototype = new LNativeObj( this ) ;
+			m_pPrototype.SetPtr( new LNativeObj( this ) ) ;
 		}
 		LNativeObjClass( const LNativeObjClass& cls )
 			: LClass( cls ) {}
@@ -1092,7 +1092,7 @@ namespace	Loquaty
 				LClass * pClass, const wchar_t * pwszName = nullptr )
 			: LClass( vm, pNamespace, pClass, pwszName )
 		{
-			m_pPrototype = new LExceptionObj( this ) ;
+			m_pPrototype.SetPtr( new LExceptionObj( this ) ) ;
 		}
 		LExceptionClass( const LExceptionClass& cls )
 			: LClass( cls ) {}
@@ -1131,7 +1131,7 @@ namespace	Loquaty
 			: LClass( vm, pNamespace, pClass, pwszName ),
 				m_typeReturn( typeReturn )
 		{
-			m_pPrototype = new LTaskObj( this ) ;
+			m_pPrototype.SetPtr( new LTaskObj( this ) ) ;
 		}
 		LTaskClass( const LTaskClass& cls )
 			: LClass( cls ),
@@ -1179,7 +1179,7 @@ namespace	Loquaty
 			: LClass( vm, pNamespace, pClass, pwszName ),
 				m_typeReturn( typeReturn )
 		{
-			m_pPrototype = new LThreadObj( this ) ;
+			m_pPrototype.SetPtr( new LThreadObj( this ) ) ;
 		}
 		LThreadClass( const LThreadClass& cls )
 			: LClass( cls ),

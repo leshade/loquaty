@@ -44,7 +44,7 @@ namespace	Loquaty
 
 	private:
 		static const NativeFuncDesc		s_Virtuals[16] ;
-		static const NativeFuncDesc		s_Functions[10] ;
+		static const NativeFuncDesc		s_Functions[15] ;
 		static const LValue				s_VarInitValue[41] ;
 		static const VariableDesc		s_Variables[41] ;
 		static const ClassMemberDesc	s_MemberDesc ;
@@ -99,6 +99,16 @@ namespace	Loquaty
 		static void method_deleteDirectory( LContext& context ) ;
 		// static File makeBuffer( long flags = File.modeRead, const void* buf = null, uint64 bytes = 0 )
 		static void method_makeBuffer( LContext& context ) ;
+		// static String pathDirectoryOf( String path )
+		static void method_pathDirectoryOf( LContext& context ) ;
+		// static String pathFileNameOf( String path )
+		static void method_pathFileNameOf( LContext& context ) ;
+		// static String pathFileTitleOf( String path )
+		static void method_pathFileTitleOf( LContext& context ) ;
+		// static String pathExtensionOf( String path )
+		static void method_pathExtensionOf( LContext& context ) ;
+		// static String catenatePath( String pathBase, String pathOffset, char deli = '/' )
+		static void method_catenatePath( LContext& context ) ;
 
 	} ;
 

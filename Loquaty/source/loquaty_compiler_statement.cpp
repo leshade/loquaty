@@ -1593,18 +1593,21 @@ void LCompiler::ParseStatement_class
 			{
 			case	Symbol::rwiClass:
 			default:
-				pSub = new LGenericObjClass
-						( m_vm, pNamespace, m_vm.GetClassClass(), strName.c_str() ) ;
+				pSub.SetPtr
+					( new LGenericObjClass
+						( m_vm, pNamespace, m_vm.GetClassClass(), strName.c_str() ) ) ;
 				break ;
 
 			case	Symbol::rwiStruct:
-				pSub = new LStructureClass
-						( m_vm, pNamespace, m_vm.GetClassClass(), strName.c_str() ) ;
+				pSub.SetPtr
+					( new LStructureClass
+						( m_vm, pNamespace, m_vm.GetClassClass(), strName.c_str() ) ) ;
 				break ;
 
 			case	Symbol::rwiNamespace:
-				pSub = new LNamespace
-						( m_vm, pNamespace, m_vm.GetNamespaceClass(), strName.c_str() ) ;
+				pSub.SetPtr
+					( new LNamespace
+						( m_vm, pNamespace, m_vm.GetNamespaceClass(), strName.c_str() ) ) ;
 				break ;
 			}
 			pNamespace->AddNamespace( strName.c_str(), pSub ) ;
