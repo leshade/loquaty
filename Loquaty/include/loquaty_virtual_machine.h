@@ -183,6 +183,15 @@ namespace	Loquaty
 		static const NativeFuncDesc *	s_pnfdFirstDesc ;
 
 	public:
+		// IMPL_LOQUATY_FUNC 等 IMPL_LOQUATY_～ マクロで実装した
+		// ネイティブ関数を仮想マシンに結びつけるには
+		// AddNativeFuncDefinitions() を呼び出す。
+		//
+		// 但し結合されない中間ファイルに含まれる関数は結合されないため
+		// 明示的に結合するには DECL_LOQUATY_FUNC マクロで関数名を定義した
+		// ヘッダファイル等を全てインクルードしたソースファイルから
+		// DEF_LOQUATY_FUNC_LIST(vm) マクロを呼び出す。
+
 		// ネイティブ関数定義追加
 		void AddNativeFuncDefinitions( void ) ;
 		void AddNativeFuncDefinitions( const NativeFuncDesc * pFuncDescs ) ;
