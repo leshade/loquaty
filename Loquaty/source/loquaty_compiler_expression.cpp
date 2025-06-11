@@ -5549,6 +5549,10 @@ LExprValuePtr LCompiler::EvalCastTypeTo
 		}
 
 		// 実行時式でのオブジェクトへの変換
+		if ( !IsExprValueOnStack( xval ) )
+		{
+			xval = EvalMakeInstance( std::move(xval) ) ;
+		}
 		assert( IsExprValueOnStack( xval ) ) ;
 		ssize_t	iStack = GetBackIndexOnStack( xval ) ;
 		assert( iStack >= 0 ) ;
