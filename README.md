@@ -1,4 +1,4 @@
-﻿
+
 # Loquaty, the language for game scripts
 
 Loquaty は汎用的なスクリプト言語で、「ポインタ型のある Java」、「const のある Java」、「演算子をオーバーロードできる Java」、「try 文に finally 句のある C++」、「安全なポインタしかない C++」等々、他の言語との差異を挙げることはできますが、ゲーム用のスクリプト言語として開発されたその目的のために特に以下の特徴を有します。
@@ -80,6 +80,8 @@ auto [value, exception] =
 
 ![demo](./Loquaty/example/demo/AvoidanceFlight.gif)
 
+
+> ※古い msvcp140.dll には std::mutex のバグが存在するため、サンプルが正常に動作しない場合には、Windows にインストールされている「Microsoft Visual C++ 再頒布可能パッケージ」の修復を実行してください。
 
 
 ## 特徴：軽量スレッド
