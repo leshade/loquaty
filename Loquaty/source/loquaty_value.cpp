@@ -71,6 +71,11 @@ LBoolean LValue::AsBoolean( void ) const
 			}
 			return	false ;
 		}
+		LIntegerObj *	pIntObj = dynamic_cast<LIntegerObj*>( m_pObject.Ptr() ) ;
+		if ( pIntObj != nullptr )
+		{
+			return	(pIntObj->m_value != 0) ;
+		}
 		return	true ;
 	}
 	return	false ;
