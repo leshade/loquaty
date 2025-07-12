@@ -8750,7 +8750,7 @@ LCompiler::CodePointPtr
 {
 	if ( xvalCond->IsConstExpr() && xvalCond->GetType().IsBoolean() )
 	{
-		if ( xvalCond->AsInteger() == 0 )
+		if ( xvalCond->AsInteger() != 0 )
 		{
 			return	nullptr ;
 		}
