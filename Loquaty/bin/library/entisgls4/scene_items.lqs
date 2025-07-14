@@ -965,6 +965,32 @@ namespace	EntisGLS4
 
 
 	//////////////////////////////////////////////////////////////////////////
+	// Scene 弾・アイテム
+	//////////////////////////////////////////////////////////////////////////
+
+	class	SceneBulleteItem	extends SceneCommon
+	{
+		// 弾インスタンス
+		class	Bullet	extends NativeObject
+		{
+			public native Object getUserObject() const ;
+		}
+
+		// SceneBulleteItem 構築
+		public native SceneBulleteItem() ;
+
+		// 弾を発射する
+		public native Bullet generateBullet
+			( const Vector3d* vPos, const Vector3d* vSpeed,
+				float thickness = 1.0f, Object objUserInstance = null ) ;
+		// すべての弾を削除
+		public native void removeAllBullets() ;
+		// 弾が有効か？
+		public native boolean isValidBullet( Bullet bullet ) const ;
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
 	// Scene サブコンポジション・アイテム
 	//////////////////////////////////////////////////////////////////////////
 

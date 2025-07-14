@@ -406,6 +406,14 @@ namespace	EntisGLS4
 		public native ModelMarker getMarkerAt( ulong index ) const ;
 		// マーカー情報取得
 		public native ModelMarker getMarkerAs( String markerId ) const ;
+		// マーカーの座標と変換行列を計算
+		// <return>マーカーのグローバル座標</return>
+		public native const Vector3d* calcMarkerMatrix
+			( float* pRadius /* マーカー半径を受け取る float 変数 (null の場合は受け取らない) */,
+				Matrix3d* pMarkerMatrix /* グローバル変換行列を受け取る Matrix3d (null の場合は受け取らない) */,
+				ModelMarker marker /* 取得するマーカー */,
+				const Matrix3d* matSpace = null /* モデルの空間変換行列 */,
+				const Vector3d* vSpace = null /* モデルのベース座標 */ ) const ;
 	}
 
 }

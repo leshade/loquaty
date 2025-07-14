@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>EntisGLS4.SceneBulleteItem</title>
+</head>
+<body>
+<div class="chapter">EntisGLS4.SceneBulleteItem</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class SceneBulleteItem ;</div>
+<div class="normal">
+Scene 弾・アイテム<br/></div>
+<br/>
+
+<div class="headline">Package</div>
+<div class="usage">
+@include &nbsp;entisgls4.lqs
+</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="../system/Object.xhtml">Object</a>
+<div class="indent1"><a href="../system/NativeObject.xhtml">NativeObject</a>
+<div class="indent1"><a href="EntisGLS4.SceneParameter.xhtml">EntisGLS4.SceneParameter</a>
+<div class="indent1"><a href="EntisGLS4.SceneProperty.xhtml">EntisGLS4.SceneProperty</a>
+<div class="indent1"><a href="EntisGLS4.SceneItem.xhtml">EntisGLS4.SceneItem</a>
+<div class="indent1"><a href="EntisGLS4.SceneCommon.xhtml">EntisGLS4.SceneCommon</a>
+<div class="indent1"><a href="EntisGLS4.SceneBulleteItem.xhtml">EntisGLS4.SceneBulleteItem</a>
+</div></div></div></div></div></div></div><br/>
+
+<div class="headline">Classes</div>
+<div class="indent2"><a href="EntisGLS4.SceneBulleteItem.Bullet.xhtml">EntisGLS4.SceneBulleteItem.Bullet</a></div>
+<br/>
+
+<div class="headline">Methods</div>
+<div class="indent2">
+	<a href="#virtual_SceneBulleteItem">SceneBulleteItem</a><br/>
+	<a href="#virtual_generateBullet">generateBullet</a><br/>
+	<a href="#virtual_isValidBullet">isValidBullet</a><br/>
+	<a href="#virtual_removeAllBullets">removeAllBullets</a><br/>
+</div><br/>
+
+<div class="chapter">Methods</div>
+
+<a name="virtual_SceneBulleteItem"/>
+<div class="headline">SceneBulleteItem</div>
+<div class="usage">public native SceneBulleteItem( )</div>
+<div class="normal">
+SceneBulleteItem 構築<br/></div>
+<br/>
+
+<a name="virtual_generateBullet"/>
+<div class="headline">generateBullet</div>
+<div class="usage">public native EntisGLS4.SceneBulleteItem.Bullet generateBullet( const Vector3d* vPos, const Vector3d* vSpeed, float thickness = 1., Object objUserInstance = null )</div>
+<div class="normal">
+弾を発射する<br/></div>
+<br/>
+
+<a name="virtual_isValidBullet"/>
+<div class="headline">isValidBullet</div>
+<div class="usage">public native boolean isValidBullet( EntisGLS4.SceneBulleteItem.Bullet bullet ) const</div>
+<div class="normal">
+弾が有効か？<br/></div>
+<br/>
+
+<a name="virtual_removeAllBullets"/>
+<div class="headline">removeAllBullets</div>
+<div class="usage">public native void removeAllBullets( )</div>
+<div class="normal">
+すべての弾を削除<br/></div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>
