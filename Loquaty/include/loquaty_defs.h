@@ -58,8 +58,8 @@
 		#define	LOQUATY_DLL_EXPORT	__declspec( dllexport )
 		#define	LOQUATY_DLL_EXPORT_IMPL	__declspec( dllexport )
 	#else
-		#define	LOQUATY_DLL_EXPORT
-		#define	LOQUATY_DLL_EXPORT_IMPL
+		#define	LOQUATY_DLL_EXPORT	__attribute__ ((visibility ("default")))
+		#define	LOQUATY_DLL_EXPORT_IMPL	__attribute__ ((visibility ("default")))
 	#endif
 	#define	LOQUATY_DLL_DECL(x)	LOQUATY_DLL_EXPORT x
 
@@ -69,7 +69,7 @@
 		#define	LOQUATY_DLL_EXPORT_IMPL	__declspec( dllexport )
 	#else
 		#define	LOQUATY_DLL_EXPORT
-		#define	LOQUATY_DLL_EXPORT_IMPL
+		#define	LOQUATY_DLL_EXPORT_IMPL	__attribute__ ((visibility ("default")))
 	#endif
 	#define	LOQUATY_DLL_DECL(x)
 
