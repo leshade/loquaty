@@ -49,7 +49,7 @@ struct	GenVector2<_T,_S>
 	{
 		return	GenVector2<_T,_S>( x * pv.x - y * pv.y, y * pv.x + x * pv.y ) ;
 	}
-	public GenVector2<_T,_S>* operator * ( const GenVector2<_T,_S>* pv )
+	public GenVector2<_T,_S>* operator *= ( const GenVector2<_T,_S>* pv )
 	{
 		const _T	_x = x * pv.x - y * pv.y ;
 		const _T	_y = y * pv.x + x * pv.y ;
@@ -250,7 +250,7 @@ struct	ImageRect	extends GenVector2<int,long>
 	}
 
 	// 除算
-	public ImageRect* operator / ( long s )
+	public ImageRect* operator /= ( long s )
 	{
 		x /= (int) s ;
 		y /= (int) s ;
@@ -730,12 +730,12 @@ struct	GenAffine<_T,_S>
 		{
 			d = (_T) 1.0 / d ;
 		}
-		const float	a11 =   a[1][1] * d ;
-		const float	a12 = - a[0][1] * d ;
-		const float	a21 = - a[1][0] * d ;
-		const float	a22 =   a[0][0] * d ;
-		const float	a13 = - (a11 * a[0][2] + a12 * a[1][2]) ;
-		const float	a23 = - (a21 * a[0][2] + a22 * a[1][2]) ;
+		const _T	a11 =   a[1][1] * d ;
+		const _T	a12 = - a[0][1] * d ;
+		const _T	a21 = - a[1][0] * d ;
+		const _T	a22 =   a[0][0] * d ;
+		const _T	a13 = - (a11 * a[0][2] + a12 * a[1][2]) ;
+		const _T	a23 = - (a21 * a[0][2] + a22 * a[1][2]) ;
 		return	GenAffine<_T,_S>( a11, a12, a13, a21, a22, a23 ) ;
 	}
 
@@ -1744,7 +1744,7 @@ struct	GenMatrix4<_T,_S>
 	// 行列積
 	public const GenMatrix4<_T,_S>* operator *= ( const GenMatrix4<_T,_S>* mat )
 	{
-		for ( int i = 0; i < 3; ++ i )
+		for ( int i = 0; i < 4; ++ i )
 		{
 			const _T	t1 = m[i][0] ;
 			const _T	t2 = m[i][1] ;
