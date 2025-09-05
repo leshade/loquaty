@@ -92,8 +92,8 @@ namespace	Loquaty
 {
 	// バージョン
 	constexpr int			VersionMajor	= 1 ;
-	constexpr int			VersionMinor	= 1 ;
-	constexpr const char *	VersionString	= "1.01" ;
+	constexpr int			VersionMinor	= 2 ;
+	constexpr const char *	VersionString	= "1.02" ;
 
 	// 型
 	typedef	std::size_t		size_t ;
