@@ -985,8 +985,24 @@ size_t LCppStdFile::Read( void * buf, size_t bytes )
 	{
 		if ( m_fs != nullptr )
 		{
-			m_fs->peek() ;
-			return	m_fs->readsome( reinterpret_cast<char*>( buf ), bytes ) ;
+			uint8_t*	pNext = reinterpret_cast<uint8_t*>( buf ) ;
+			size_t		readBytes = 0 ;
+			while ( readBytes < bytes )
+			{
+				m_fs->peek() ;
+
+				std::streamsize	size =
+					m_fs->readsome
+						( reinterpret_cast<char*>( pNext ),
+										bytes - readBytes ) ;
+				if ( size == -1 )
+				{
+					break ;
+				}
+				readBytes += size ;
+				pNext += size ;
+			}
+			return	readBytes ;
 		}
 	}
 	catch ( const std::exception& e )
