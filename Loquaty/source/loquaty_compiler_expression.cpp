@@ -763,7 +763,7 @@ LExprValuePtr LCompiler::ParseArrayLiteral
 	}
 
 	// 定数式では表現できないので実行時式に変換する
-	pArrayObj = ConstExprCastToArrayElementType( pArrayObj, pElementClass ) ;
+	pArrayObj = ConstExprCastToArrayElementType( pArrayObj, nullptr ) ;
 	if ( m_ctx == nullptr )
 	{
 		OnError( errorUnavailableConstExpr ) ;
@@ -928,7 +928,7 @@ LExprValuePtr LCompiler::ParseMapLiteral
 	}
 
 	// 定数式では表現できないので実行時式に変換する
-	pMapObj = ConstExprCastToMapElementType( pMapObj, pElementClass ) ;
+	pMapObj = ConstExprCastToMapElementType( pMapObj, nullptr ) ;
 	if ( m_ctx == nullptr )
 	{
 		OnError( errorUnavailableConstExpr ) ;
@@ -6080,12 +6080,13 @@ LExprValuePtr LCompiler::ConstExprCastFuncTo
 LPtr<LArrayObj> LCompiler::ConstExprCastToArrayElementType
 	( LPtr<LArrayObj> pArrayObj, LClass * pElementType )
 {
-	if ( (pArrayObj == nullptr) || (pElementType == nullptr) )
+	if ( pArrayObj == nullptr )
 	{
 		return	pArrayObj ;
 	}
 	LClass *	pArrayClass = m_vm.GetArrayClassAs( pElementType ) ;
-	LObject *	pObj = pArrayObj->CastClassTo( pArrayClass ) ;
+	LObject *	pObj = pArrayObj->CastElementClassTo
+							( dynamic_cast<LArrayClass*>( pArrayClass ) ) ;
 	if ( pObj == nullptr )
 	{
 		OnError( errorFailedConstExprToCast_opt1_opt2,
@@ -6105,12 +6106,13 @@ LPtr<LArrayObj> LCompiler::ConstExprCastToArrayElementType
 LPtr<LMapObj> LCompiler::ConstExprCastToMapElementType
 	( LPtr<LMapObj> pMapObj, LClass * pElementType )
 {
-	if ( (pMapObj == nullptr) || (pElementType == nullptr) )
+	if ( pMapObj == nullptr )
 	{
 		return	pMapObj ;
 	}
 	LClass *	pMapClass = m_vm.GetMapClassAs( pElementType ) ;
-	LObject *	pObj = pMapObj->CastClassTo( pMapClass ) ;
+	LObject *	pObj = pMapObj->CastElementClassTo
+								( dynamic_cast<LMapClass*>( pMapClass ) ) ;
 	if ( pObj == nullptr )
 	{
 		OnError( errorFailedConstExprToCast_opt1_opt2,

@@ -41,6 +41,7 @@ namespace	Loquaty
 
 		// 型変換（可能なら AddRef されたポインタを返す / 不可能なら nullptr）
 		virtual LObject * CastClassTo( LClass * pClass ) ;
+		virtual LObject * CastElementClassTo( LMapClass * pMapClass ) ;
 
 		// 複製する（要素も全て複製処理する）
 		virtual LObject * CloneObject( void ) const ;

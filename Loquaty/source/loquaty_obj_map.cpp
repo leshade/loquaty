@@ -193,18 +193,17 @@ LObject * LMapObj::CastClassTo( LClass * pClass )
 	{
 		return	pObj ;
 	}
-	LMapClass *	pMapClass = dynamic_cast<LMapClass*>( pClass ) ;
+	return	CastElementClassTo( dynamic_cast<LMapClass*>( pClass ) ) ;
+}
+
+LObject * LMapObj::CastElementClassTo( LMapClass * pMapClass )
+{
 	if ( pMapClass == nullptr )
 	{
 		return	nullptr ;
 	}
 	LClass *	pElementType = pMapClass->GetElementTypeClass() ;
-	if ( pElementType == nullptr )
-	{
-		AddRef() ;
-		return	this ;
-	}
-	LMapObj *	pMapObj = new LMapObj( pClass ) ;
+	LMapObj *	pMapObj = new LMapObj( pMapClass ) ;
 	{
 		LSpinLock	lockMap( m_mtxMap ) ;
 		pMapObj->m_map = m_map ;
@@ -214,15 +213,22 @@ LObject * LMapObj::CastClassTo( LClass * pClass )
 		pMapObj->m_array.resize( m_array.size() ) ;
 		for ( size_t i = 0; i < m_array.size(); i ++ )
 		{
-			pObj = m_array.at(i).Ptr() ;
+			LObject *	pObj = m_array.at(i).Ptr() ;
 			if ( pObj != nullptr )
 			{
-				pObj = pObj->CastClassTo( pElementType ) ;
-				if ( pObj == nullptr )
+				if ( pElementType != nullptr )
 				{
-					// 変換できなかった場合は nullptr
-					delete	pMapObj ;
-					return	nullptr ;
+					pObj = pObj->CastClassTo( pElementType ) ;
+					if ( pObj == nullptr )
+					{
+						// 変換できなかった場合は nullptr
+						delete	pMapObj ;
+						return	nullptr ;
+					}
+				}
+				else
+				{
+					pObj->AddRef();
 				}
 				pMapObj->m_array.at(i).SetPtr( pObj ) ;
 			}

@@ -116,31 +116,37 @@ LObject * LArrayObj::CastClassTo( LClass * pClass )
 	{
 		return	pObj ;
 	}
-	LArrayClass *	pArrayClass = dynamic_cast<LArrayClass*>( pClass ) ;
+	return	CastElementClassTo( dynamic_cast<LArrayClass*>( pClass ) ) ;
+}
+
+LObject * LArrayObj::CastElementClassTo( LArrayClass * pArrayClass )
+{
 	if ( pArrayClass == nullptr )
 	{
 		return	nullptr ;
 	}
 	LClass *	pElementType = pArrayClass->GetElementTypeClass() ;
-	if ( pElementType == nullptr )
-	{
-		AddRef() ;
-		return	this ;
-	}
 	LSpinLock	lock( m_mtxArray ) ;
-	LArrayObj *	pArrayObj = new LArrayObj( pClass ) ;
+	LArrayObj *	pArrayObj = new LArrayObj( pArrayClass ) ;
 	pArrayObj->m_array.resize( m_array.size(), LObjPtr() ) ;
 	for ( size_t i = 0; i < m_array.size(); i ++ )
 	{
-		pObj = m_array.at(i).Ptr() ;
+		LObject *	pObj = m_array.at(i).Ptr() ;
 		if ( pObj != nullptr )
 		{
-			pObj = pObj->CastClassTo( pElementType ) ;
-			if ( pObj == nullptr )
+			if ( pElementType != nullptr )
 			{
-				// 変換できなかった場合は nullptr
-				delete	pArrayObj ;
-				return	nullptr ;
+				pObj = pObj->CastClassTo( pElementType ) ;
+				if ( pObj == nullptr )
+				{
+					// 変換できなかった場合は nullptr
+					delete	pArrayObj ;
+					return	nullptr ;
+				}
+			}
+			else
+			{
+				pObj->AddRef();
 			}
 			pArrayObj->m_array.at(i).SetPtr( pObj ) ;
 		}
