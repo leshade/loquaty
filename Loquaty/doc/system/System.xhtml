@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>System</title>
+</head>
+<body>
+<div class="chapter">System</div>
+
+<div class="headline">Summary</div>
+<div class="usage">class System ;</div>
+<div class="normal">
+システムクラス</div>
+<br/>
+
+<div class="headline">Super Classes</div>
+<div class="indent1"><a href="index.xhtml">&lt;index&gt;</a></div>
+<div class="indent1"><a href="Object.xhtml">Object</a>
+<div class="indent1"><a href="System.xhtml">System</a>
+</div></div><br/>
+
+<div class="headline">Static Members</div>
+<div class="indent2">
+	<a href="#static_moduleFilePath">moduleFilePath</a><br/>
+	<a href="#static_isWindows">isWindows</a><br/>
+	<a href="#static_isAndroid">isAndroid</a><br/>
+	<a href="#static_archBits">archBits</a><br/>
+	<a href="#static_logicalProcessors">logicalProcessors</a><br/>
+</div><br/>
+
+<div class="headline">Static Functions</div>
+<div class="indent2">
+	<a href="#func_trace">trace</a><br/>
+</div><br/>
+
+<div class="chapter">Static Members</div>
+<a name="static_moduleFilePath"/>
+<div class="headline">moduleFilePath</div>
+<div class="usage">public static const String&#9; moduleFilePath</div>
+<div class="normal">
+実行しているモジュールファイルパス</div>
+<br/>
+<a name="static_isWindows"/>
+<div class="headline">isWindows</div>
+<div class="usage">public static const boolean&#9; isWindows = true</div>
+<div class="normal">
+Windows で実行中の時 true</div>
+<br/>
+<a name="static_isAndroid"/>
+<div class="headline">isAndroid</div>
+<div class="usage">public static const boolean&#9; isAndroid = false</div>
+<div class="normal">
+Android で実行中の時 true</div>
+<br/>
+<a name="static_archBits"/>
+<div class="headline">archBits</div>
+<div class="usage">public static const int&#9; archBits = 64</div>
+<div class="normal">
+実行バイナリ・アーキテクチャ・ビット数<br/>※64 ビット CPU、64 ビット OS でも 32 ビットアプリケーションで実行中の場合 32</div>
+<br/>
+<a name="static_logicalProcessors"/>
+<div class="headline">logicalProcessors</div>
+<div class="usage">public static const uint&#9; logicalProcessors = 16</div>
+<div class="normal">
+実行可能な論理プロセッサ数</div>
+<br/>
+
+
+<div class="chapter">Static Functions</div>
+
+<a name="func_trace"/>
+<div class="headline">trace</div>
+<div class="usage">public static void trace( String text )</div>
+<div class="normal">
+デバッグ用に文字列を出力します。</div>
+<br/>
+
+
+<br/><br/>
+</body>
+</html>

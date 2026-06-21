@@ -60,6 +60,7 @@
     <ClInclude Include="..\..\Loquaty\include\loquaty_cls_file.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_cls_loquaty.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_cls_math.h" />
+    <ClInclude Include="..\..\Loquaty\include\loquaty_cls_system.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_code_buffer.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_compiler.h" />
     <ClInclude Include="..\..\Loquaty\include\loquaty_context.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="..\..\Loquaty\source\loquaty_cls_file.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_cls_loquaty.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_cls_math.cpp" />
+    <ClCompile Include="..\..\Loquaty\source\loquaty_cls_system.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_code_buffer.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_compiler.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_compiler_expression.cpp" />
@@ -154,6 +156,9 @@
     <ClCompile Include="..\..\Loquaty\source\loquaty_value.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_virtual_machine.cpp" />
     <ClCompile Include="..\..\Loquaty\source\loquaty_xml_document.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="..\..\Loquaty\source\x64\loquaty_function_x64.asm" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -244,6 +249,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -602,5 +608,6 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
   </ImportGroup>
 </Project>

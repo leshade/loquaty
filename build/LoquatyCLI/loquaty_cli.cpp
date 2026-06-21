@@ -1290,7 +1290,9 @@ void LoquatyApp::MakeDocVariableDesc
 			<< L" " << LXMLDocParser::EncodeXMLString
 						( typeVar.GetTypeName().c_str() ) << L"&#9; " << pwszName ;
 
-	if ( pVarInit != nullptr )
+	LType::LComment *	pComment = typeVar.GetComment() ;
+	if ( (pVarInit != nullptr)
+		&& ((pComment == nullptr) || !IsHiddenInitValue( *pComment )) )
 	{
 		LString	strExpr = LObject::ToExpression( pVarInit.Ptr() ) ;
 		if ( !strExpr.IsEmpty() )
@@ -1300,7 +1302,6 @@ void LoquatyApp::MakeDocVariableDesc
 	}
 	strm << L"</div>\r\n" ;
 
-	LType::LComment *	pComment = typeVar.GetComment() ;
 	if ( (pComment != nullptr) && HasCommentSummary(*pComment) )
 	{
 		bool	lineSpace = MakeDocXMLSummary( strm, *pComment ) ;
@@ -1506,6 +1507,13 @@ void LoquatyApp::MakeComment( LType::LComment& comment )
 			comment.m_xmlDoc->AddElement( pSummary ) ;
 		}
 	}
+}
+
+// 初期値を非表示にするか？（<hide_value> タグがあるか？）
+bool LoquatyApp::IsHiddenInitValue( LType::LComment& comment )
+{
+	MakeComment( comment ) ;
+	return	(comment.m_xmlDoc->GetTagAs( L"hide_value" ) != nullptr) ;
 }
 
 // コメントに <summary> が存在するか？

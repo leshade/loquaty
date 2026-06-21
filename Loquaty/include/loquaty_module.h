@@ -21,6 +21,23 @@ namespace	Loquaty
 
 
 	//////////////////////////////////////////////////////////////////////////
+	// 抽象ネイティブ関数プロデューサー
+	//////////////////////////////////////////////////////////////////////////
+
+	class	LFunctionProducer	: public Object
+	{
+	public:
+		// ネイティブ関数を取得する
+		virtual LFunctionObj::NakedNativeFuncPtr
+						GetFunction( const wchar_t * pwszName ) = 0 ;
+
+	} ;
+
+	typedef	std::shared_ptr<LFunctionProducer>	LFunctionProducerPtr ;
+
+
+
+	//////////////////////////////////////////////////////////////////////////
 	// モジュール・プロデューサー
 	//////////////////////////////////////////////////////////////////////////
 
@@ -50,6 +67,10 @@ namespace	Loquaty
 		void AddProducer( Producer producer ) ;
 		void AddProducer( std::shared_ptr<LModuleProducer> producer ) ;
 
+		// ネイティブ関数を取得する
+		virtual LFunctionObj::NakedNativeFuncPtr
+						GetFunction( const wchar_t * pwszName ) ;
+
 		// 複製
 		const LModuleProducer& operator = ( const LModuleProducer& mp ) ;
 	} ;
@@ -62,6 +83,31 @@ namespace	Loquaty
 
 	class	LPluginModuleProducer	: public LModuleProducer
 	{
+	public:
+	#if	defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
+		typedef	HMODULE		ModuleHandle ;
+	#else
+		typedef	void*		ModuleHandle ;
+	#endif
+
+		class	Instance	: public LModule, public LFunctionProducer
+		{
+		protected:
+			ModuleHandle	m_handle ;
+			LModulePtr		m_module ;
+
+		public:
+			// 構築
+			Instance( ModuleHandle handle, LModulePtr module ) ;
+
+			// 仮想マシンにクラス群を追加する
+			virtual void ImportTo( LVirtualMachine& vm ) override ;
+
+			// ネイティブ関数を取得する
+			virtual LFunctionObj::NakedNativeFuncPtr
+							GetFunction( const wchar_t * pwszName ) override ;
+		} ;
+
 	protected:
 		LString	m_strPluginPath ;
 
@@ -100,6 +146,7 @@ namespace	Loquaty
 		static void DLLAddModule( LModulePtr module ) ;
 
 	} ;
+
 
 
 }

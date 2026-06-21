@@ -60,6 +60,7 @@
 	<a href="#operator_and">operator &amp;</a><br/>
 	<a href="#operator_or">operator |</a><br/>
 	<a href="#operator_smul">operator *=</a><br/>
+	<a href="#operator_sdiv">operator /=</a><br/>
 </div><br/>
 
 <div class="chapter">Members</div>
@@ -126,13 +127,6 @@
 積<br/></div>
 <br/>
 
-<a name="operator_or"/>
-<div class="headline">operator |</div>
-<div class="usage">public ImageRect* operator |( const ImageRect* irct ) const</div>
-<div class="normal">
-外接矩形<br/></div>
-<br/>
-
 <a name="operator_smul"/>
 <div class="headline">operator *=</div>
 <div class="usage">public ImageRect* operator *=( long s )</div>
@@ -142,9 +136,23 @@
 
 <a name="operator_div"/>
 <div class="headline">operator /</div>
-<div class="usage">public ImageRect* operator /( long s )</div>
+<div class="usage">public ImageRect* operator /( long s ) const</div>
 <div class="normal">
 除算<br/></div>
+<br/>
+
+<a name="operator_sdiv"/>
+<div class="headline">operator /=</div>
+<div class="usage">public ImageRect* operator /=( long s )</div>
+<div class="normal">
+除算<br/></div>
+<br/>
+
+<a name="operator_or"/>
+<div class="headline">operator |</div>
+<div class="usage">public ImageRect* operator |( const ImageRect* irct ) const</div>
+<div class="normal">
+外接矩形<br/></div>
 <br/>
 
 <a name="operator_and"/>

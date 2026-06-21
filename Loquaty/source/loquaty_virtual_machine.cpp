@@ -35,12 +35,12 @@ LVirtualMachine::LVirtualMachine( void )
 	m_pVoidPointerClass = nullptr ;
 	m_pConstVoidPointerClass = nullptr ;
 
-#if	defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
 	m_producer.AddProducer
 		( std::make_shared<LPluginModuleProducer>( L"" ) ) ;
+	m_producer.ProduceModule( LSystemClass::GetModuleFilePath().c_str() ) ;
+
 	m_producer.AddProducer
 		( std::make_shared<LPluginModuleProducer>( L"plugins" ) ) ;
-#endif
 }
 
 LVirtualMachine::~LVirtualMachine( void )
@@ -287,6 +287,8 @@ void LVirtualMachine::Initialize( void )
 					( *this, pClassClass, L"File" ) ), pObjectClass ) ;
 	bci.AddClass( LPtr<LClass>( new LOutputStreamClass
 					( *this, pClassClass, L"OutputStream" ) ), pObjectClass ) ;
+	bci.AddClass( LPtr<LClass>( new LSystemClass
+					( *this, pClassClass, L"System" ) ), pObjectClass ) ;
 
 	LPtr<LClass>
 		pLoquatyClass

@@ -4596,10 +4596,12 @@ void LCompiler::ParseFunctionImplementation
 	( LStringParser& sparsSrc,
 		LPtr<LFunctionObj> pFunc, const LNamespaceList * pnslLocal )
 {
-	if ( sparsSrc.HasNextChars( L";" ) == L';' )
+	wchar_t	wch = sparsSrc.HasNextChars( L";=" ) ;
+	if ( wch == L';' )
 	{
 		if ( pFunc->GetPrototype()->GetModifiers() & LType::modifierNative )
 		{
+			// ネイティブ関数
 			m_vm.SolveNativeFunction( pFunc ) ;
 		}
 		else if ( !(pFunc->GetPrototype()->GetModifiers() & LType::modifierAbstract) )
@@ -4607,6 +4609,12 @@ void LCompiler::ParseFunctionImplementation
 			OnError( errorNoStatementsOfFunction,
 						pFunc->GetPrintName().c_str() ) ;
 		}
+		return ;
+	}
+	else if ( wch == L'=' )
+	{
+		// = native {stdcall|cdecl|[loquaty]} { name: "func-name" [, ...] } ;
+		ParseFunctionNativeCall( sparsSrc, pFunc ) ;
 		return ;
 	}
 	else
@@ -4643,6 +4651,179 @@ void LCompiler::ParseFunctionImplementation
 	pNest->m_vecDelayImplements.push_back
 		( std::make_shared<DelayImplement>( psImpl, psProto, pFunc, nslTemp ) ) ;
 
+}
+
+// ネイティブ関数呼び出し解釈
+///////////////////////////////////////////////////////////////////////////////
+void LCompiler::ParseFunctionNativeCall
+	( LStringParser& sparsSrc, LPtr<LFunctionObj> pFunc )
+{
+	// native {stdcall|cdecl|[loquaty]} { name: "func-name" [, ...] } ;
+	LString	strToken ;
+	sparsSrc.NextToken( strToken ) ;
+	if ( strToken != GetReservedWordDesc(Symbol::rwiNative).pwszName )
+	{
+		OnError( errorSyntaxError, strToken.c_str() ) ;
+		sparsSrc.PassStatement( L";", L"}" ) ;
+		return ;
+	}
+
+	// 呼び出し規約
+	LFunctionObj::CallAttributes	callAttr ;
+	callAttr.protocol = LFunctionObj::protocolLoquaty ;
+	if ( sparsSrc.HasNextToken( L"stdcall" ) )
+	{
+		callAttr.protocol = LFunctionObj::protocolStdcall ;
+	}
+	else if ( sparsSrc.HasNextToken( L"cdecl" ) )
+	{
+		callAttr.protocol = LFunctionObj::protocolCdecl ;
+	}
+	else if ( sparsSrc.HasNextToken( L"loquaty" ) )
+	{
+		callAttr.protocol = LFunctionObj::protocolLoquaty ;
+	}
+
+	// 呼び出し属性
+	LExprValuePtr	xval = ParseMapLiteral( sparsSrc ) ;
+	if ( HasErrorOnCurrent() || !xval->IsConstExpr() )
+	{
+		sparsSrc.PassStatement( L";", L"}" ) ;
+		return ;
+	}
+	LObjPtr	pCallAttr ;
+	if ( !HasErrorOnCurrent() && xval->IsConstExpr() )
+	{
+		pCallAttr = xval->GetObject() ;
+	}
+	if ( pCallAttr == nullptr )
+	{
+		OnError( errorErrorCallAttribute_opt1,
+					L"must be const expression Map" ) ;
+		sparsSrc.PassStatement( L";", L"}" ) ;
+		return ;
+	}
+	HasSemicolonForEndOfStatement( sparsSrc ) ;
+
+	LString	strFuncName ;
+	ParseNativeFunctionCallAttribute( callAttr, strFuncName, pCallAttr ) ;
+
+	if ( !HasErrorOnCurrent() )
+	{
+		// 呼び出し可能か判定
+		if ( !NakedInvoker::HasCapacity( *(pFunc->GetPrototype()) ) )
+		{
+			OnError( errorUnavailableNativeFuncc_opt1,
+						L"too many argument" ) ;
+			return ;
+		}
+
+		// 関数を取得
+		auto	pfnFunc =
+			m_vm.ModuleProducer().GetFunction( strFuncName.c_str() ) ;
+		if ( pfnFunc != nullptr )
+		{
+			// 関数設定
+			pFunc->SetNakedNative( pfnFunc, callAttr ) ;
+		}
+		else
+		{
+			OnWarning
+				( warningNativeFunctionNotFound_opt1,
+					warning1, strFuncName.c_str() ) ;
+		}
+	}
+}
+
+// ネイティブ関数呼び出し属性解釈
+///////////////////////////////////////////////////////////////////////////////
+void LCompiler::ParseNativeFunctionCallAttribute
+	( LFunctionObj::CallAttributes& callAttr,
+		LString& strFuncName, const LObjPtr& pCallAttr )
+{
+	size_t	countAttr = pCallAttr->GetElementCount() ;
+	for ( size_t i = 0; i < countAttr; i ++ )
+	{
+		LString	attrName;
+		pCallAttr->GetElementNameAt( attrName, i ) ;
+
+		LObjPtr	pValue( pCallAttr->GetElementAt( i ) ) ;
+		LString	attrValue ;
+		if ( (pValue != nullptr)
+			&& pValue->AsString( attrValue ) )
+		{
+			if ( attrName == L"name" )
+			{
+				strFuncName = attrValue ;
+			}
+			else if ( attrName == L"string" )
+			{
+				if ( attrValue == L"mbs" )
+				{
+					callAttr.string = LFunctionObj::stringToMBS ;
+				}
+				else if ( attrValue == L"wcs" )
+				{
+					callAttr.string = LFunctionObj::stringToWCS ;
+				}
+				else if ( attrValue == L"utf8" )
+				{
+					callAttr.string = LFunctionObj::stringToUTF8 ;
+				}
+				else if ( attrValue == L"utf16" )
+				{
+					callAttr.string = LFunctionObj::stringToUTF16 ;
+				}
+				else if ( attrValue == L"object" )
+				{
+					callAttr.string = LFunctionObj::stringObject ;
+				}
+				else
+				{
+					OnError( errorErrorCallAttribute_opt1,
+						(L"undefined string conversion "
+										+ attrValue).c_str() ) ;
+					return ;
+				}
+			}
+			else if ( attrName == L"pointer" )
+			{
+				if ( attrValue == L"naked" )
+				{
+					callAttr.pointer = LFunctionObj::pointerNaked ;
+				}
+				else if ( attrValue == L"object" )
+				{
+					callAttr.pointer = LFunctionObj::pointerObject ;
+				}
+				else
+				{
+					OnError( errorErrorCallAttribute_opt1,
+						(L"undefined pointer conversion "
+										+ attrValue).c_str() ) ;
+					return ;
+				}
+			}
+			else if ( attrName == L"cppobj" )
+			{
+				if ( attrValue == L"native" )
+				{
+					callAttr.nativeObj = LFunctionObj::nativeObjPtr ;
+				}
+				else if ( attrValue == L"object" )
+				{
+					callAttr.nativeObj = LFunctionObj::nativeObject ;
+				}
+				else
+				{
+					OnError( errorErrorCallAttribute_opt1,
+						(L"undefined cppobj conversion "
+										+ attrValue).c_str() ) ;
+					return ;
+				}
+			}
+		}
+	}
 }
 
 // 関数遅延実装

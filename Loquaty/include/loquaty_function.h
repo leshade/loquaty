@@ -413,6 +413,43 @@ namespace	Loquaty
 			m_funcNative( context ) ;
 		}
 
+		// 低水準ネイティブ関数
+		enum	CallProtocol
+		{
+			protocolStdcall,
+			protocolCdecl,
+			protocolLoquaty,
+		} ;
+		enum	StringConversion
+		{
+			stringToMBS,
+			stringToWCS,
+			stringToUTF8,
+			stringToUTF16,
+			stringObject,
+		} ;
+		enum	PointerConversion
+		{
+			pointerNaked,
+			pointerObject,
+		} ;
+		enum	NativeOjectConversion
+		{
+			nativeObjPtr,
+			nativeObject,
+		} ;
+		struct	CallAttributes
+		{
+			CallProtocol			protocol = protocolStdcall ;
+			StringConversion		string = stringToMBS ;
+			PointerConversion		pointer = pointerNaked ;
+			NativeOjectConversion	nativeObj = nativeObjPtr ;
+		} ;
+		typedef	void (*NakedNativeFuncPtr)( ... ) ;
+
+		void SetNakedNative
+			( NakedNativeFuncPtr func, const CallAttributes& callAttr ) ;
+
 		// 実装されているか？
 		bool IsImplemented( void ) const
 		{
@@ -420,7 +457,7 @@ namespace	Loquaty
 		}
 
 		// 同名関数のインデックス
-		size_t GetVariationIndex( void ) const
+		size_t GetVariationIndex( void ) const    
 		{
 			return	m_iVariation ;
 		}
@@ -439,6 +476,268 @@ namespace	Loquaty
 
 	} ;
 
+
+	//////////////////////////////////////////////////////////////////////////
+	// ネイティブ関数呼び出し
+	//////////////////////////////////////////////////////////////////////////
+
+	#if	defined(_M_X64) || defined(_M_AMD64) || defined(__x86_64__)
+		extern "C" void PrepareFPRegisterToCallx64( const void** arg, size_t count ) ;
+	#endif
+	#if	defined(__aarch64__) || defined(__ARM_64BIT_STATE)
+		extern "C" void PrepareFPRegisterToCallArm64( const void** arg, size_t count ) ;
+	#endif
+	#if	!defined(_MSC_VER)
+		#if	defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
+			#define	__stdcall	WINAPI
+			#define	__cdecl
+		#else
+			#define	__stdcall
+			#define	__cdecl
+		#endif
+	#endif
+
+	#define	FUNC_ARG_CP0
+	#define	FUNC_ARG_CP1	const void*
+	#define	FUNC_ARG_CP2	FUNC_ARG_CP1, FUNC_ARG_CP1
+	#define	FUNC_ARG_CP3	FUNC_ARG_CP1, FUNC_ARG_CP2
+	#define	FUNC_ARG_CP4	FUNC_ARG_CP1, FUNC_ARG_CP3
+	#define	FUNC_ARG_CP5	FUNC_ARG_CP1, FUNC_ARG_CP4
+	#define	FUNC_ARG_CP6	FUNC_ARG_CP1, FUNC_ARG_CP5
+	#define	FUNC_ARG_CP7	FUNC_ARG_CP1, FUNC_ARG_CP6
+	#define	FUNC_ARG_CP8	FUNC_ARG_CP1, FUNC_ARG_CP7
+	#define	FUNC_ARG_CP9	FUNC_ARG_CP1, FUNC_ARG_CP8
+	#define	FUNC_ARG_CP10	FUNC_ARG_CP1, FUNC_ARG_CP9
+	#define	FUNC_ARG_CP11	FUNC_ARG_CP1, FUNC_ARG_CP10
+	#define	FUNC_ARG_CP12	FUNC_ARG_CP1, FUNC_ARG_CP11
+
+	#define	FUNC_ARG_1		arg[0]
+	#define	FUNC_ARG_2		FUNC_ARG_1, arg[1]
+	#define	FUNC_ARG_3		FUNC_ARG_2, arg[2]
+	#define	FUNC_ARG_4		FUNC_ARG_3, arg[3]
+	#define	FUNC_ARG_5		FUNC_ARG_4, arg[4]
+	#define	FUNC_ARG_6		FUNC_ARG_5, arg[5]
+	#define	FUNC_ARG_7		FUNC_ARG_6, arg[6]
+	#define	FUNC_ARG_8		FUNC_ARG_7, arg[7]
+	#define	FUNC_ARG_9		FUNC_ARG_8, arg[8]
+	#define	FUNC_ARG_10		FUNC_ARG_9, arg[9]
+	#define	FUNC_ARG_11		FUNC_ARG_10, arg[10]
+	#define	FUNC_ARG_12		FUNC_ARG_11, arg[11]
+	
+	#define	TYPEDEF_FUNC(call_type,x)	\
+			typedef	T (call_type *FuncPtr##x)(FUNC_ARG_CP##x)
+	#define	TYPEDEF_FUNCS(call_type)		\
+			TYPEDEF_FUNC(call_type,0) ;		\
+			TYPEDEF_FUNC(call_type,1) ;		\
+			TYPEDEF_FUNC(call_type,2) ;		\
+			TYPEDEF_FUNC(call_type,3) ;		\
+			TYPEDEF_FUNC(call_type,4) ;		\
+			TYPEDEF_FUNC(call_type,5) ;		\
+			TYPEDEF_FUNC(call_type,6) ;		\
+			TYPEDEF_FUNC(call_type,7) ;		\
+			TYPEDEF_FUNC(call_type,8) ;		\
+			TYPEDEF_FUNC(call_type,9) ;		\
+			TYPEDEF_FUNC(call_type,10) ;	\
+			TYPEDEF_FUNC(call_type,11) ;	\
+			TYPEDEF_FUNC(call_type,12)
+
+	#define	FUNC_PTR(x)		(reinterpret_cast<typename Func::FuncPtr##x>(func))
+	#define	CALL_FUNC(x)	FUNC_PTR(x)(FUNC_ARG_##x)
+
+
+	class	NakedInvoker
+	{
+	protected:
+		std::vector<const void*>	m_arg ;
+
+		std::vector<std::string>	m_str ;
+		std::vector<LString>		m_wstr ;
+		std::vector< std::vector<std::uint8_t> >
+									m_utf8 ;
+		std::vector< std::vector<std::uint16_t> >
+									m_utf16 ;
+		std::list<LObjPtr>			m_obj ;
+		std::list< std::shared_ptr<Object> >
+									m_nativeObj ;
+
+	public:
+		// ブリッジ関数生成
+		static std::function<void(LContext&)>
+			MakeFunction
+				( LFunctionObj* pFunc,
+					LFunctionObj::NakedNativeFuncPtr func,
+					LFunctionObj::CallAttributes callAttr  ) ;
+
+		// 引数をネイティブ形式に変換する
+		void MakeArgument
+			( LContext& context, const LPrototype& proto,
+				const LFunctionObj::CallAttributes& callAttr ) ;
+
+		void AddArgument
+			( class LRuntimeArgList& argList,
+				const LType& type,
+				const LFunctionObj::CallAttributes& callAttr ) ;
+
+		// 引数を受け渡し可能か？
+		static bool HasCapacity( const LPrototype& proto ) ;
+
+		// 返り値変換
+		static LValue ToLValue( int* ) ;		// void
+		static LValue ToLValue( bool value ) ;
+		static LValue ToLValue( int value ) ;
+		static LValue ToLValue( std::int64_t value ) ;
+		static LValue ToLValue( float value ) ;
+		static LValue ToLValue( double value ) ;
+		static LValue ToLValue( LObject* value ) ;
+
+		// 浮動小数点レジスタ渡し
+		#if	defined(_M_X64) || defined(_M_AMD64) || defined(__x86_64__)
+		inline void PrepareFPRegisterToCall( void )
+		{
+			PrepareFPRegisterToCallx64( m_arg.data(), m_arg.size() ) ;
+		}
+		#elif	defined(__aarch64__) || defined(__ARM_64BIT_STATE)
+		inline void PrepareFPRegisterToCall( void )
+		{
+			PrepareFPRegisterToCallArm64( m_arg.data(), m_arg.size() ) ;
+		}
+		#else
+		inline void PrepareFPRegisterToCall( void ) { }
+		#endif
+
+		// 関数呼び出し
+		template <typename T> class	StdCallFunc
+		{
+		public:
+			typedef	T	RetType ;
+			TYPEDEF_FUNCS(__stdcall) ;
+		} ;
+		template <typename T> class	CdeclFunc
+		{
+		public:
+			typedef	T	RetType ;
+			TYPEDEF_FUNCS(__cdecl) ;
+		} ;
+		template <class Func>
+		LValue Invoke( typename Func::FuncPtr0 func )
+		{
+			const void**	arg = m_arg.data() ;
+			switch ( m_arg.size() )
+			{
+			case	0:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( func() ) ;
+			case	1:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(1) ) ;
+			case	2:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(2) ) ;
+			case	3:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(3) ) ;
+			case	4:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(4) ) ;
+			case	5:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(5) ) ;
+			case	6:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(6) ) ;
+			case	7:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(7) ) ;
+			case	8:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(8) ) ;
+			case	9:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(9) ) ;
+			case	10:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(10) ) ;
+			case	11:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(11) ) ;
+			case	12:
+			default:
+				PrepareFPRegisterToCall() ;
+				return	ToLValue( CALL_FUNC(12) ) ;
+			}
+		}
+		constexpr static const size_t	MaxArguments = 12 ;
+
+		// 特定の返り値型ブリッジ関数生成
+		template <typename T>
+		static std::function<void(LContext&)>
+			MakeStdCallFunction
+				( LFunctionObj* pFunc,
+					LFunctionObj::NakedNativeFuncPtr func,
+					LFunctionObj::CallAttributes callAttr )
+		{
+			return	[pFunc, func, callAttr]( LContext& context )
+			{
+				NakedInvoker	invoker ;
+				invoker.MakeArgument
+					( context, *(pFunc->GetPrototype()), callAttr ) ;
+				context.SetReturnValue
+					( invoker.Invoke< StdCallFunc<T> >
+						( reinterpret_cast<typename StdCallFunc<T>::FuncPtr0>( func ) ) ) ;
+			} ;
+		}
+		template <typename T>
+		static std::function<void(LContext&)>
+			MakeCdeclFunction
+				( LFunctionObj* pFunc,
+					LFunctionObj::NakedNativeFuncPtr func,
+					LFunctionObj::CallAttributes callAttr )
+		{
+			return	[pFunc, func, callAttr]( LContext& context )
+			{
+				NakedInvoker	invoker ;
+				invoker.MakeArgument
+					( context, *(pFunc->GetPrototype()), callAttr ) ;
+				context.SetReturnValue
+					( invoker.Invoke< CdeclFunc<T> >
+						( reinterpret_cast<typename CdeclFunc<T>::FuncPtr0>( func ) ) ) ;
+			} ;
+		}
+
+	} ;
+
+	#undef	FUNC_ARG_CP0
+	#undef	FUNC_ARG_CP1
+	#undef	FUNC_ARG_CP2
+	#undef	FUNC_ARG_CP3
+	#undef	FUNC_ARG_CP4
+	#undef	FUNC_ARG_CP5
+	#undef	FUNC_ARG_CP6
+	#undef	FUNC_ARG_CP7
+	#undef	FUNC_ARG_CP8
+	#undef	FUNC_ARG_CP9
+	#undef	FUNC_ARG_CP10
+	#undef	FUNC_ARG_CP11
+	#undef	FUNC_ARG_CP12
+
+	#undef	FUNC_ARG_1
+	#undef	FUNC_ARG_2
+	#undef	FUNC_ARG_3
+	#undef	FUNC_ARG_4
+	#undef	FUNC_ARG_5
+	#undef	FUNC_ARG_6
+	#undef	FUNC_ARG_7
+	#undef	FUNC_ARG_8
+	#undef	FUNC_ARG_9
+	#undef	FUNC_ARG_10
+	#undef	FUNC_ARG_11
+	#undef	FUNC_ARG_12
+
+	#undef	TYPEDEF_FUNC
+	#undef	TYPEDEF_FUNCS
+
+	#undef	FUNC_PTR
+	#undef	CALL_FUNC
 
 
 	//////////////////////////////////////////////////////////////////////////

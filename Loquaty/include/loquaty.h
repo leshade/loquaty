@@ -17,9 +17,9 @@
 #include <loquaty_expr_value.h>
 #include <loquaty_code_buffer.h>
 #include <loquaty_stack_buffer.h>
-#include <loquaty_function.h>
 #include <loquaty_debugger.h>
 #include <loquaty_context.h>
+#include <loquaty_function.h>
 
 #include <loquaty_obj_pointer.h>
 #include <loquaty_obj_integer.h>
@@ -45,6 +45,7 @@
 #include <loquaty_cls_math.h>
 #include <loquaty_cls_file.h>
 #include <loquaty_cls_loquaty.h>
+#include <loquaty_cls_system.h>
 
 #endif
 

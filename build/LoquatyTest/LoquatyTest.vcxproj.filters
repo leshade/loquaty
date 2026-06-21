@@ -27,4 +27,17 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="TestFiles\test.xml">
+      <Filter>リソース ファイル</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="TestFiles\test_script.lqs">
+      <Filter>リソース ファイル</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LoquatyTest.def">
+      <Filter>ソース ファイル</Filter>
+    </None>
+  </ItemGroup>
 </Project>

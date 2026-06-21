@@ -999,6 +999,10 @@ size_t LCppStdFile::Read( void * buf, size_t bytes )
 				{
 					break ;
 				}
+				if ( (size == 0) && (m_fs->eof() || !m_fs->good()) )
+				{
+					break ;
+				}
 				readBytes += size ;
 				pNext += size ;
 			}
@@ -1146,15 +1150,7 @@ void LCppStdFile::Truncate( void )
 		&& !m_path.IsEmpty()
 		&& (m_nOpenFlags & LDirectory::modeWriteFlag) )
 	{
-		std::int64_t	pos = GetPosition() ;
-		m_fs = nullptr ;
-
 		m_dir->Turncate( m_path.c_str(), pos ) ;
-
-		m_fs = m_dir->OpenFileStream
-			( m_path.c_str(),
-				m_nOpenFlags & ~(LDirectory::modeCreateFlag
-								| LDirectory::modeCreateDirsFlag) ) ;
 	}
 }
 

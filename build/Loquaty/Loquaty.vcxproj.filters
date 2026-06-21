@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\asm_x64">
+      <UniqueIdentifier>{dc55e2fb-b6ac-4fc3-af07-5aa42ec8b83e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Loquaty\include\loquaty.h">
@@ -153,6 +156,9 @@
     <ClInclude Include="..\..\Loquaty\include\loquaty_expr_value.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Loquaty\include\loquaty_cls_system.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Loquaty\source\loquaty_object.cpp">
@@ -281,5 +287,13 @@
     <ClCompile Include="..\..\Loquaty\source\loquaty_debugger.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Loquaty\source\loquaty_cls_system.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="..\..\Loquaty\source\x64\loquaty_function_x64.asm">
+      <Filter>ソース ファイル\asm_x64</Filter>
+    </MASM>
   </ItemGroup>
 </Project>

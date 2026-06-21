@@ -424,7 +424,7 @@ namespace LoquatyTest
 		TEST_METHOD(LoadFile)
 		{
 			LXMLDocParser	xmlParser ;
-			Assert::IsTrue( xmlParser.LoadTextFile( L"..\\..\\..\\LoquatyTest\\test\\test.xml" ) ) ;
+			Assert::IsTrue( xmlParser.LoadTextFile( L"test.xml" ) ) ;
 
 			LXMLDocPtr	pDoc = xmlParser.ParseDocument() ;
 			Assert::IsTrue( pDoc != nullptr ) ;
@@ -435,7 +435,7 @@ namespace LoquatyTest
 			Assert::IsTrue( pTag->GetTextElement() == L"Affine" ) ;
 
 			Assert::IsTrue( xmlParser.SaveToFile
-				( L"..\\..\\..\\LoquatyTest\\test\\test_save.xml", *pDoc, 60, L"" ) ) ;
+				( L"test_save.xml", *pDoc, 60, L"" ) ) ;
 		}
 	};
 
@@ -903,7 +903,7 @@ namespace LoquatyTest
 			LDirectoryPtr	pDir =
 				std::make_shared<LSubDirectory>
 					( std::make_shared<LStdFileDirectory>(),
-								L"..\\..\\..\\LoquatyTest\\test" ) ;
+								L"test" ) ;
 			TestFile( pDir ) ;
 		}
 
@@ -1295,6 +1295,134 @@ namespace LoquatyTest
 			Assert::IsFalse( d ) ;
 		}
 
+		TEST_METHOD(LoadScriptToRun)
+		{
+			_CrtMemState	s1 ;
+			_CrtMemCheckpoint( &s1 ) ;
+			{
+				LVirtualMachine	vm ;
+				vm.Initialize() ;
+
+				LCompiler	compiler( vm ) ;
+				compiler.IncludeScript( L"test_script.lqs" ) ;
+
+				Assert::IsTrue( compiler.GetErrorCount() == 0 ) ;
+				Assert::IsTrue( compiler.GetWarningCount() == 0 ) ;
+
+				LPtr<LThreadObj>	pThread = vm.new_Thread() ;
+				auto [valRet1, pExcept1] =
+					pThread->SyncCallFunctionAs
+						( LObjPtr(), L"TestImport", nullptr, 0 ) ;
+				Assert::IsTrue( pExcept1 == nullptr ) ;
+				Assert::IsTrue( valRet1.AsInteger() == -1234567 ) ;
+
+				auto [valRet2, pExcept2] =
+					pThread->SyncCallFunctionAs
+						( LObjPtr(), L"TestMain", nullptr, 0 ) ;
+				Assert::IsTrue( pExcept2 == nullptr ) ;
+			}
+			_CrtMemState	s2 ;
+			_CrtMemCheckpoint( &s2 ) ;
+
+			_CrtMemState	sd ;
+			int	d = _CrtMemDifference( &sd, &s1, &s2 ) ;
+
+			_CrtDumpMemoryLeaks() ;
+			_CrtMemDumpStatistics( &sd ) ;
+
+			Assert::IsFalse( d ) ;
+		}
 	};
 
 }
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL void TestAssert( bool eval )
+{
+	Assert::IsTrue( eval ) ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL int TestImportFunc( void )
+{
+	return	-1234567 ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+int TestMulAddSubIIII( int a, int b, int c, int d, int e )
+{
+	return	a*b + c*d - e ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+float TestMulAddSubFFDLIL( float a, double b, std::int64_t c, int d, std::int64_t e )
+{
+	return	(float) (a*b + c*d - e) ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+int __stdcall __TestMulAddSubIIII( int a, int b, int c, int d, int e )
+{
+	return	a*b + c*d - e ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+float __stdcall __TestMulAddSubFFDLIL( float a, double b, std::int64_t c, int d, std::int64_t e )
+{
+	return	(float) (a*b + c*d - e) ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+int TestParseIntMBS( const char* str )
+{
+	return	atoi( str ) ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+int TestParseIntWCS( const wchar_t* str )
+{
+	return	_wtoi( str ) ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+int TestParseIntUTF8( const std::uint8_t* str )
+{
+	std::vector<std::uint8_t>	buf ;
+	for ( size_t i = 0; str[i]; i ++ )
+	{
+		buf.push_back( str[i] ) ;
+	}
+	LString	temp ;
+	temp.FromUTF8(buf) ;
+
+	return	_wtoi( temp.c_str() ) ;
+}
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+int TestParseIntUTF16( const std::uint16_t* str )
+{
+	std::vector<std::uint16_t>	buf ;
+	for ( size_t i = 0; str[i]; i ++ )
+	{
+		buf.push_back( str[i] ) ;
+	}
+	LString	temp ;
+	temp.FromUTF16(buf) ;
+
+	return	_wtoi( temp.c_str() ) ;
+}
+
+
+struct	TestABCDE
+{
+	LFloat	a ;
+	LDouble	b ;
+	LLong	c ;
+	LInt	d ;
+	LLong	e ;
+} ;
+
+extern"C" LOQUATY_DLL_EXPORT_IMPL
+double TestMulAddSubStructPtr( TestABCDE* p )
+{
+	return	(p->a * p->b + p->c * p->d - p->e) ;
+}
+

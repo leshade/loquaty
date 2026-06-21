@@ -306,6 +306,18 @@ void LFunctionObj::TraceCodeMnemonicList( void ) const
 	}
 }
 
+// 低水準ネイティブ関数
+void LFunctionObj::SetNakedNative
+	( LFunctionObj::NakedNativeFuncPtr func, const CallAttributes& callAttr )
+{
+	if ( callAttr.protocol == protocolLoquaty )
+	{
+		m_funcNative = (PFN_NativeProc) func ;
+		return ;
+	}
+	m_funcNative = NakedInvoker::MakeFunction( this, func, callAttr ) ;
+}
+
 // 関数キャプチャー引数を追加
 void LFunctionObj::SetCaptureObjectList( const std::vector<LValue>& refObjs )
 {
@@ -328,6 +340,388 @@ LValue LFunctionObj::GetCaptureObjectAt( size_t index ) const
 	return	LValue() ;
 }
 
+
+//////////////////////////////////////////////////////////////////////////////
+// ネイティブ関数呼び出し
+//////////////////////////////////////////////////////////////////////////////
+
+// 引数をネイティブ形式に変換する
+void NakedInvoker::MakeArgument
+	( LContext& context, const LPrototype& proto,
+		const LFunctionObj::CallAttributes& callAttr )
+{
+	LRuntimeArgList	argList( context ) ;
+
+	const LNamedArgumentListType&	argTypes = proto.GetArgListType() ;
+	const size_t	count = argTypes.size() ;
+
+	if ( (proto.GetModifiers() & LType::modifierStatic)
+		&& (proto.GetThisClass() != nullptr) )
+	{
+		m_arg.reserve( (count + 1)
+						* (sizeof(LStackBuffer::Word)/sizeof(void*)) ) ;
+
+		LType	typeThis( proto.GetThisClass() ) ;
+		AddArgument( argList, typeThis, callAttr ) ;
+	}
+	else
+	{
+		m_arg.reserve( count * (sizeof(LStackBuffer::Word)/sizeof(void*)) ) ;
+	}
+	for ( size_t i = 0; i < count; i ++ )
+	{
+		AddArgument( argList, argTypes[i], callAttr ) ;
+	}
+}
+
+void NakedInvoker::AddArgument
+	( LRuntimeArgList& argList,
+		const LType& type,
+		const LFunctionObj::CallAttributes& callAttr )
+{
+	LStackBuffer::Word	word = argList.NextPrimitive() ;
+
+	if ( type.IsPrimitive() )
+	{
+		if ( type.GetPrimitive() == LType::typeFloat )
+		{
+			word.flValue = (LFloat) word.dblValue ;
+		}
+		if ( (sizeof(void*) == sizeof(LStackBuffer::Word))
+			|| (sizeof(void*) >= type.GetDataBytes()) )
+		{
+			m_arg.push_back( word.pVoidPtr ) ;
+		}
+		else
+		{
+			assert( sizeof(void*)*2 == sizeof(LStackBuffer::Word) ) ;
+			void**	ppVoid = &(word.pVoidPtr) ;
+			m_arg.push_back( ppVoid[0] ) ;
+			m_arg.push_back( ppVoid[1] ) ;
+		}
+	}
+	else if ( type.IsString() )
+	{
+		LStringObj*	pStrObj = dynamic_cast<LStringObj*>( word.pObject ) ;
+		size_t		iBuf ;
+		switch ( callAttr.string )
+		{
+		case	LFunctionObj::stringToMBS:
+			// const char* として渡す
+			iBuf = m_str.size() ;
+			m_str.resize( iBuf + 1 ) ;
+			if ( pStrObj != nullptr )
+			{
+				m_arg.push_back
+					( pStrObj->m_string.ToString( m_str[iBuf] ).c_str() ) ;
+			}
+			else if ( word.pObject != nullptr )
+			{
+				LString	str ;
+				word.pObject->AsString( str ) ;
+				m_arg.push_back
+					( str.ToString( m_str[iBuf] ).c_str() ) ;
+			}
+			else
+			{
+				m_arg.push_back( nullptr ) ;
+			}
+			break ;
+
+		case	LFunctionObj::stringToWCS:
+			// const wchar_t* として渡す
+			if ( pStrObj != nullptr )
+			{
+				m_arg.push_back( pStrObj->m_string.c_str() ) ;
+			}
+			else if ( word.pObject != nullptr )
+			{
+				iBuf = m_wstr.size() ;
+				m_wstr.resize( iBuf + 1 ) ;
+				word.pObject->AsString( m_wstr[iBuf] ) ;
+				m_arg.push_back( m_wstr[iBuf].c_str() ) ;
+			}
+			else
+			{
+				m_arg.push_back( nullptr ) ;
+			}
+			break ;
+
+		case	LFunctionObj::stringToUTF8:
+			// const uint8_t* として渡す
+			iBuf = m_utf8.size() ;
+			m_utf8.resize( iBuf + 1 ) ;
+			if ( pStrObj != nullptr )
+			{
+				pStrObj->m_string.ToUTF8( m_utf8[iBuf] ) ;
+				m_utf8[iBuf].push_back( 0 ) ;
+				m_arg.push_back( m_utf8[iBuf].data() ) ;
+			}
+			else if ( word.pObject != nullptr )
+			{
+				LString	str ;
+				word.pObject->AsString( str ) ;
+				str.ToUTF8( m_utf8[iBuf] ) ;
+				m_utf8[iBuf].push_back( 0 ) ;
+				m_arg.push_back( m_utf8[iBuf].data() ) ;
+			}
+			else
+			{
+				m_arg.push_back( nullptr ) ;
+			}
+			break ;
+
+		case	LFunctionObj::stringToUTF16:
+			// const uint16_t* として渡す
+			iBuf = m_utf16.size() ;
+			m_utf16.resize( iBuf + 1 ) ;
+			if ( pStrObj != nullptr )
+			{
+				pStrObj->m_string.ToUTF16( m_utf16[iBuf] ) ;
+				m_utf16[iBuf].push_back( 0 ) ;
+				m_arg.push_back( m_utf16[iBuf].data() ) ;
+			}
+			else if ( word.pObject != nullptr )
+			{
+				LString	str ;
+				word.pObject->AsString( str ) ;
+				str.ToUTF16( m_utf16[iBuf] ) ;
+				m_utf16[iBuf].push_back( 0 ) ;
+				m_arg.push_back( m_utf16[iBuf].data() ) ;
+			}
+			else
+			{
+				m_arg.push_back( nullptr ) ;
+			}
+			break ;
+
+		case	LFunctionObj::stringObject:
+		default:
+			// LObject* として渡す
+			m_obj.push_back( LObjPtr( LObject::AddRef( word.pObject ) ) ) ;
+			m_arg.push_back( word.pObject ) ;
+			break ;
+		}
+	}
+	else if ( type.IsPointer() )
+	{
+		switch ( callAttr.pointer )
+		{
+		case	LFunctionObj::pointerNaked:
+			// 直接のネイティブポインタとして渡す
+			if ( word.pObject != nullptr )
+			{
+				LPtr<LPointerObj>	pPtrObj( word.pObject->GetBufferPoiner() ) ;
+				if ( pPtrObj != nullptr )
+				{
+					m_obj.push_back( LObjPtr( pPtrObj ) ) ;
+					m_arg.push_back( pPtrObj->GetPointer() ) ;
+					break ;
+				}
+			}
+			m_arg.push_back( nullptr ) ;
+			break ;
+
+		case	LFunctionObj::pointerObject:
+		default:
+			// LObject* として渡す
+			m_obj.push_back( LObjPtr( LObject::AddRef( word.pObject ) ) ) ;
+			m_arg.push_back( word.pObject ) ;
+			break ;
+		}
+	}
+	else if ( dynamic_cast<LNativeObjClass*>( type.GetClass() ) != nullptr )
+	{
+		switch ( callAttr.nativeObj )
+		{
+		case	LFunctionObj::nativeObjPtr:
+			// C++ クラスのポインタとして渡す
+			if ( word.pObject != nullptr )
+			{
+				std::shared_ptr<Object>
+					pNativeObj = LNativeObj::GetNativeObject( word.pObject ) ;
+				m_nativeObj.push_back( pNativeObj ) ;
+				m_arg.push_back( pNativeObj.get() ) ;
+				break ;
+			}
+			m_arg.push_back( nullptr ) ;
+			break ;
+
+		case	LFunctionObj::nativeObject:
+		default:
+			// LObject* として渡す
+			m_obj.push_back( LObjPtr( LObject::AddRef( word.pObject ) ) ) ;
+			m_arg.push_back( word.pObject ) ;
+			break ;
+		}
+	}
+	else
+	{
+		// LObject* として渡す
+		m_obj.push_back( LObjPtr( LObject::AddRef( word.pObject ) ) ) ;
+		m_arg.push_back( word.pObject ) ;
+	}
+}
+
+// 引数を受け渡し可能か？
+bool NakedInvoker::HasCapacity( const LPrototype& proto )
+{
+	size_t	count = 0 ;
+
+	if ( (proto.GetModifiers() & LType::modifierStatic)
+		&& (proto.GetThisClass() != nullptr) )
+	{
+		count ++ ;
+	}
+	const LNamedArgumentListType&	argTypes = proto.GetArgListType() ;
+	for ( size_t i = 0; i < argTypes.size(); i ++ )
+	{
+		if ( argTypes[i].IsPrimitive() )
+		{
+			if ( (sizeof(void*) == sizeof(LStackBuffer::Word))
+				|| (sizeof(void*) >= argTypes[i].GetDataBytes()) )
+			{
+				count ++ ;
+			}
+			else
+			{
+				count += 2 ;
+			}
+		}
+		else
+		{
+			count ++ ;
+		}
+	}
+	return	(count <= MaxArguments) ;
+}
+
+// 返り値変換
+LValue NakedInvoker::ToLValue( int* )
+{
+	return	LValue() ;
+}
+
+LValue NakedInvoker::ToLValue( bool value )
+{
+	return	LValue( LType::typeBoolean, LValue::MakeBool(value) ) ;
+}
+
+LValue NakedInvoker::ToLValue( int value )
+{
+	return	LValue( LType::typeInt32, LValue::MakeLong(value) ) ;
+}
+
+LValue NakedInvoker::ToLValue( std::int64_t value )
+{
+	return	LValue( LType::typeInt64, LValue::MakeLong(value) ) ;
+}
+
+LValue NakedInvoker::ToLValue( float value )
+{
+	return	LValue( LType::typeFloat, LValue::MakeDouble(value) ) ;
+}
+
+LValue NakedInvoker::ToLValue( double value )
+{
+	return	LValue( LType::typeDouble, LValue::MakeDouble(value) ) ;
+}
+
+LValue NakedInvoker::ToLValue( LObject* value )
+{
+	return	LValue( LObjPtr( value ) ) ;
+}
+
+// ブリッジ関数生成
+std::function<void(LContext&)>
+	NakedInvoker::MakeFunction
+		( LFunctionObj* pFunc,
+			LFunctionObj::NakedNativeFuncPtr func,
+			LFunctionObj::CallAttributes callAttr  )
+{
+	if ( callAttr.protocol == LFunctionObj::protocolLoquaty )
+	{
+		return	reinterpret_cast<PFN_NativeProc>( func ) ;
+	}
+
+	const LType&	typeRet = pFunc->GetPrototype()->GetReturnType() ;
+
+	if ( callAttr.protocol == LFunctionObj::protocolStdcall )
+	{
+		if ( typeRet.IsVoid() )
+		{
+			return	MakeStdCallFunction<int*>( pFunc, func, callAttr ) ;
+		}
+		else if ( typeRet.IsBoolean() )
+		{
+			return	MakeStdCallFunction<bool>( pFunc, func, callAttr ) ;
+		}
+		else if ( typeRet.IsInteger() )
+		{
+			if ( typeRet.GetDataBytes() == 8 )
+			{
+				return	MakeStdCallFunction<std::int64_t>( pFunc, func, callAttr ) ;
+			}
+			else
+			{
+				return	MakeStdCallFunction<int>( pFunc, func, callAttr ) ;
+			}
+		}
+		else if ( typeRet.IsFloatingPointNumber() )
+		{
+			if ( typeRet.GetDataBytes() == 8 )
+			{
+				return	MakeStdCallFunction<double>( pFunc, func, callAttr ) ;
+			}
+			else
+			{
+				return	MakeStdCallFunction<float>( pFunc, func, callAttr ) ;
+			}
+		}
+		else
+		{
+			return	MakeStdCallFunction<LObject*>( pFunc, func, callAttr ) ;
+		}
+	}
+	if ( callAttr.protocol == LFunctionObj::protocolCdecl )
+	{
+		if ( typeRet.IsVoid() )
+		{
+			return	MakeCdeclFunction<int*>( pFunc, func, callAttr ) ;
+		}
+		else if ( typeRet.IsBoolean() )
+		{
+			return	MakeCdeclFunction<bool>( pFunc, func, callAttr ) ;
+		}
+		else if ( typeRet.IsInteger() )
+		{
+			if ( typeRet.GetDataBytes() == 8 )
+			{
+				return	MakeCdeclFunction<std::int64_t>( pFunc, func, callAttr ) ;
+			}
+			else
+			{
+				return	MakeCdeclFunction<int>( pFunc, func, callAttr ) ;
+			}
+		}
+		else if ( typeRet.IsFloatingPointNumber() )
+		{
+			if ( typeRet.GetDataBytes() == 8 )
+			{
+				return	MakeCdeclFunction<double>( pFunc, func, callAttr ) ;
+			}
+			else
+			{
+				return	MakeCdeclFunction<float>( pFunc, func, callAttr ) ;
+			}
+		}
+		else
+		{
+			return	MakeCdeclFunction<LObject*>( pFunc, func, callAttr ) ;
+		}
+	}
+	return	nullptr ;
+}
 
 
 //////////////////////////////////////////////////////////////////////////////

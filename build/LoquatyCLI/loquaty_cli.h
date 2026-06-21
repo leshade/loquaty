@@ -113,6 +113,7 @@ public:
 	LString MakeTypeModifiers( LType::Modifiers modifiers ) ;
 
 	void MakeComment( LType::LComment& comment ) ;
+	bool IsHiddenInitValue( LType::LComment& comment ) ;
 	bool HasCommentSummary( LType::LComment& comment ) ;
 	bool MakeDocXMLSummary( LOutputStream& strm, LType::LComment& comment ) ;
 	bool MakeDocXMLParams

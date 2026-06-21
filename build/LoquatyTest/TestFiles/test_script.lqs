@@ -1,0 +1,229 @@
+﻿
+@import "LoquatyTest.dll"
+
+
+void Assert( boolean expr )
+	= native cdecl { name: "TestAssert" } ;
+
+int TestImportFunc( void )
+	= native cdecl { name: "TestImportFunc" } ;
+
+
+int TestImport()
+{
+	return	TestImportFunc() ;
+}
+
+void TestMain()
+{
+	Test1::RunTest() ;
+	Test2::RunTest() ;
+	Test3::RunTest() ;
+}
+
+namespace	Test1
+{
+	enum using TestEnum<String>
+	{
+		_a = "abc",
+		_b = "def",
+		_c = "ghi",
+	}
+
+	enum IntEnum
+	{
+		a = 1,
+		b,
+	}
+
+
+	struct	A
+	{
+		int	a ;
+	}
+
+	class	Foo
+	{
+		public int foo()
+		{
+			return	123 ;
+		}
+	}
+
+	class	Hoge	extends Foo
+	{
+		public A[4]	a ;
+
+		public Hoge( const Hoge h )
+		{
+			a.copy( h.a, sizeof(A) * 4 ) ;
+		}
+
+		@override
+		public int foo()
+		{
+			return	456 ;
+		}
+	}
+
+	void RunTest( void )
+	{
+		const String	temp = "abc" ;
+		TestEnum		te_a = temp ;
+
+		IntEnum	ie_a = IntEnum.a ;
+		IntEnum	ie_b = ie_a ;
+		ie_b |= IntEnum.b ;
+		Assert( ie_a == 1 ) ;
+		Assert( ie_b == 3 ) ;
+
+		Hoge	h1 = Hoge() ;
+		h1.a[0].a = 1 ;
+		h1.a[1].a = 2 ;
+		h1.a[2].a = 3 ;
+		h1.a[3].a = 4 ;
+
+		Hoge	h2 = Hoge( h1 ) ;
+		Assert( h2.a[0].a == 1 ) ;
+		Assert( h2.a[1].a == 2 ) ;
+		Assert( h2.a[2].a == 3 ) ;
+		Assert( h2.a[3].a == 4 ) ;
+
+		Foo	foo = Foo() ;
+		Assert( foo.foo() == 123 ) ;
+		Assert( h1.foo() == 456 ) ;
+		foo = h1 ;
+		Assert( foo.foo() == 456 ) ;
+	}
+}
+
+namespace	Test2
+{
+	class	Hoge
+	{
+		public static int	s_count = 0 ;
+	}
+
+	void RunTest( void )
+	{
+		Loquaty	vm = Loquaty() ;
+
+		StringBuf	err = StringBuf() ;
+		vm.includeScript( "test_script.lqs", err ) ;
+		Assert( err == "" ) ;
+
+		Function<long()>	func = vm.compileAsInteger( "Test2.Hoge.s_count ++" ) ;
+		Assert( func() == 0 ) ;
+		Assert( func() == 1 ) ;
+		Assert( func() == 2 ) ;
+
+		Object	obj = Loquaty.evalConstExpr( "123" ) ;
+		Assert( (int) (Integer) obj == 123 ) ;
+
+		obj = Loquaty.evalConstExpr( "123.456" ) ;
+		Assert( (double) (Double) obj == 123.456 ) ;
+
+		obj = Loquaty.evalConstExpr( "\"abc\\ndef\"" ) ;
+		Assert( (String) obj == "abc\ndef" ) ;
+
+		obj = Loquaty.evalConstExpr( "[0,1,\"abc\"]" ) ;
+		Assert( obj instanceof Array ) ;
+		Assert( (int)(Integer)((Array)obj)[0] == 0 ) ;
+		Assert( (int)(Integer)((Array)obj)[1] == 1 ) ;
+
+		obj = Loquaty.evalConstExpr( "{a:0,b:1,c:\"abc\"}" ) ;
+		Assert( !(obj instanceof String) ) ;
+		Assert( obj instanceof Map ) ;
+		Assert( (int)(Integer)((Map)obj)["a"] == 0 ) ;
+		Assert( (int)(Integer)((Map)obj)["b"] == 1 ) ;
+		Assert( (String)((Map)obj)["c"] == "abc" ) ;
+	}
+}
+
+namespace	Test3
+{
+	// a*b + c*d - e
+	int _TestMulAddSubIIII( int a, int b, int c, int d, int e )
+		= native stdcall { name: "__TestMulAddSubIIII" } ;
+	float _TestMulAddSubFFDLIL( float a, double b, long c, int d, long e )
+		= native stdcall { name: "__TestMulAddSubFFDLIL" } ;
+
+	int TestMulAddSubIIII( int a, int b, int c, int d, int e )
+		= native cdecl { name: "TestMulAddSubIIII" } ;
+	float TestMulAddSubFFDLIL( float a, double b, long c, int d, long e )
+		= native cdecl { name: "TestMulAddSubFFDLIL" } ;
+
+	int TestParseIntMBS( String str )
+		= native cdecl { name: "TestParseIntMBS", string: "mbs" } ;
+	int TestParseIntWCS( String str )
+		= native cdecl { name: "TestParseIntWCS", string: "wcs" } ;
+	int TestParseIntUTF8( String str )
+		= native cdecl { name: "TestParseIntUTF8", string: "utf8" } ;
+	int TestParseIntUTF16( String str )
+		= native cdecl { name: "TestParseIntUTF16", string: "utf16" } ;
+
+	int TestParseIntPtrU8( uint8* str )
+		= native cdecl { name: "TestParseIntUTF8", pointer: "naked" } ;
+	int TestParseIntPtrU16( uint16* str )
+		= native cdecl { name: "TestParseIntUTF16", pointer: "naked" } ;
+
+	struct	TestABCDE
+	{
+		float	a ;
+		double	b ;
+		long	c ;
+		int		d ;
+		long	e ;
+	} ;
+	double TestMulAddSubStructPtr( TestABCDE* ptr )
+		= native cdecl { name: "TestMulAddSubStructPtr", pointer: "naked" } ;
+
+
+	void RunTest( void )
+	{
+		Assert( _TestMulAddSubIIII( 1, 2, 3, 4, 5 ) == 9 ) ;
+		Assert( _TestMulAddSubIIII( 1, 2, -3, 4, 5 ) == -15 ) ;
+		Assert( _TestMulAddSubIIII( 1, 2, -3, -4, 5 ) == 9 ) ;
+
+		Assert( _TestMulAddSubFFDLIL( 1, 2, 3, 4, 5 ) == 9 ) ;
+		Assert( _TestMulAddSubFFDLIL( 1, 2, -3, 4, 5 ) == -15 ) ;
+		Assert( _TestMulAddSubFFDLIL( 1, 2, -3, -4, 5 ) == 9 ) ;
+
+		Assert( TestMulAddSubIIII( 1, 2, 3, 4, 5 ) == 9 ) ;
+		Assert( TestMulAddSubIIII( 1, 2, -3, 4, 5 ) == -15 ) ;
+		Assert( TestMulAddSubIIII( 1, 2, -3, -4, 5 ) == 9 ) ;
+
+		Assert( TestMulAddSubFFDLIL( 1, 2, 3, 4, 5 ) == 9 ) ;
+		Assert( TestMulAddSubFFDLIL( 1, 2, -3, 4, 5 ) == -15 ) ;
+		Assert( TestMulAddSubFFDLIL( 1, 2, -3, -4, 5 ) == 9 ) ;
+
+		Assert( TestParseIntMBS( "123" ) == 123 ) ;
+		Assert( TestParseIntMBS( "-456" ) == -456 ) ;
+
+		Assert( TestParseIntWCS( "123" ) == 123 ) ;
+		Assert( TestParseIntWCS( "-456" ) == -456 ) ;
+
+		Assert( TestParseIntUTF8( "123" ) == 123 ) ;
+		Assert( TestParseIntUTF8( "-456" ) == -456 ) ;
+
+		Assert( TestParseIntUTF16( "123" ) == 123 ) ;
+		Assert( TestParseIntUTF16( "-456" ) == -456 ) ;
+
+		Assert( TestParseIntPtrU8( "123\0".utf8() ) == 123 ) ;
+		Assert( TestParseIntPtrU8( "-456\0".utf8() ) == -456 ) ;
+
+		Assert( TestParseIntPtrU16( "123\0".utf16() ) == 123 ) ;
+		Assert( TestParseIntPtrU16( "-456\0".utf16() ) == -456 ) ;
+
+		TestABCDE*	abcde = TestABCDE() ;
+		abcde.a = 1 ;
+		abcde.b = 2 ;
+		abcde.c = -3 ;
+		abcde.d = -4 ;
+		abcde.e = 5 ;
+		Assert( TestMulAddSubStructPtr( abcde ) == 9 ) ;
+	}
+}
+
+
+

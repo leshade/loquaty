@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html
+[
+	<!ENTITY nbsp "&#160;">
+]>
+<?xml-stylesheet type="text/css" href="specifications.css"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+	<title>Affine</title>
+</head>
+<body>
+<div class="chapter" attribute1="アトリビュート１" attribute2="アトリビュート２" attribute3="アトリビュート３" attribute4="アトリビュート４" attribute5="アトリビュート５" attribute6="アトリビュート６">Affine</div>
+
+<div class="headline">Summary</div>
+<!-- 概要 -->
+<div class="normal">
+<![CDATA[　Affine はアフィン行列を格納する構造体です。]]><br/>
+</div>
+<br/>
+</body>
+</html>

@@ -233,7 +233,10 @@ void onDestroy()&r;
 
 　Loquaty はゲームで使用するスクリプト言語が最大の目的ですので、Loquaty 自体に大量の機能をビルトインするのではなく、C++ で記述されたゲームの実装を Loquaty スクリプトから呼び出しやすくすることに重点が置かれています。<br/>
 <br/>
-　C++ 言語とやり取りをする場合、大きく二つの方法があり、その一つが NativeObject を利用する方法です。<br/>
+　C++ 言語とやり取りをする場合いくつかの方法があり、最も簡単な方法が DLL エクスポート関数をインポートする形で呼び出すことです。<br/>
+　数値やポインタ、構造体ポインタを受け取り、オブジェクトを返却しない関数の場合十分な方法です。<br/>
+<br/>
+　もう一つが NativeObject を利用する方法です。<br/>
 <br/>
 　例えば C++ で記述された次のようなクラスがあったとします。<br/>
 
@@ -1954,7 +1957,7 @@ boolean の false 値を表現します。
 <div class="headline">関数定義文</div>
 
 <div class="usage">
-[ <italic>modifier-list</italic> ]&opt;&nbsp; <italic>type-expr</italic>&nbsp; <italic>func-name</italic> <bold>(</bold> <italic>arg-list</italic> <bold>)</bold> [<bold>const</bold>]&opt; { <bold>;</bold> | <bold>{</bold> <italic>statement-list</italic> <bold>}</bold> }&opt;<br/>
+[ <italic>modifier-list</italic> ]&opt;&nbsp; <italic>type-expr</italic>&nbsp; <italic>func-name</italic> <bold>(</bold> <italic>arg-list</italic> <bold>)</bold> [<bold>const</bold>]&opt; { <bold>;</bold> | <bold>=</bold> <italic>import-function</italic> | <bold>{</bold> <italic>statement-list</italic> <bold>}</bold> }&opt;<br/>
 <br/>
 <italic>modifier-list</italic>:<br/>
 &tab; { <bold>static</bold><br/>
@@ -1973,7 +1976,10 @@ boolean の false 値を表現します。
 <br/>
 <italic>argument</italic>:<br/>
 &tab; [ <italic>arg-type-expr</italic> ]&opt; <italic>arg-name</italic> [ = <italic>default-expr</italic> ]&opt;<br/>
+<br/>
 
+<italic>import-function:</italic><br/>
+&tab; <bold>native</bold> { <bold>stdcall</bold> | <bold>cdecl</bold> | [ <bold>loquaty</bold> ]&opt; }&opt; <italic>map-literal</italic> <bold>;</bold><br/>
 </div>
 <br/>
 
@@ -1987,6 +1993,45 @@ boolean の false 値を表現します。
 	{&r;
 	&tab;return 0 ;&r;
 	}&r;
+</div>
+
+　関数実装文の代わりに = native で @dllimport でインポートされた DLL から直接関数を割り当てることができます。
+
+<div class="code_quote">
+	&exam;
+	double ImportFunc( String text, int arg ) &r;
+	&tab; = native stdcall { name: "ImportFunc", string: "wcs" } ;&r;
+</div>
+
+　バイナリインターフェースには stdcall（Win32 API で使用される呼び出し規約
+）、cdecl（C 言語の標準的な呼び出し規約）が使用できます。<br/>
+　呼び出し規約に loquaty を指定すると通常の native 関数と同様の Loquaty 専用の関数形式となります。<br/>
+　<italic>map-literal</italic> の要素には呼び出す関数について記述できます。<br/>
+　name 要素は必須でインポート関数名を指定します。<br/>
+　以下の要素を指定できます。<br/>
+<br/>
+<div class="notes_parameter">
+<div class="param_name">name</div>
+<div class="param_desc">
+インポートする関数名</div>
+<div class="param_name">string</div>
+<div class="param_desc">
+String 型引数の変換方法。"mbs" はデフォルトの文字エンコーディングでの変換になります。日本語の場合、デフォルトでは ShiftJIS になります。<br/>
+"wcs": const wchar_t*<br/>
+"mbs": const char*<br/>
+"utf8": const std::uint8_t*<br/>
+"utf16": const std::uint16_t*<br/>
+"object": Loquaty::LObject*</div>
+<div class="param_name">pointer</div>
+<div class="param_desc">
+ポインタ型（構造体含む）引数の変換方法。<br/>
+"naked": 対応する型の直接のポインタ<br/>
+"object": Loquaty::LObject*</div>
+<div class="param_name">cppobj</div>
+<div class="param_desc">
+NativeObject 型引数の変換方法。<br/>
+"native": 対応する C++ クラスへの直接のポインタ<br/>
+"object": Loquaty::LObject*</div>
 </div>
 
 </div>

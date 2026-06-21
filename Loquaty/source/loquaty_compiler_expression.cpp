@@ -4627,7 +4627,7 @@ LExprValuePtr LCompiler::ParseOperatorConditionalChoise
 				( sparsExpr, pnslLocal, pwszEscChars,
 					GetOperatorDesc(Symbol::opConditional).priorityBinary ) ;
 		}
-		if ( sparsExpr.HasNextChars( L":" ) != L';' )
+		if ( sparsExpr.HasNextChars( L":" ) != L':' )
 		{
 			OnError( errorNoSeparationConditionalExpr ) ;
 			sparsExpr.PassStatement( L":", L";}" ) ;
@@ -4674,7 +4674,7 @@ LExprValuePtr LCompiler::ParseOperatorConditionalChoise
 	FixJumpDestination( cpCJump, GetCurrentCodePointer( true ) ) ;
 
 	// : 記号で分割
-	if ( sparsExpr.HasNextChars( L":" ) != L';' )
+	if ( sparsExpr.HasNextChars( L":" ) != L':' )
 	{
 		OnError( errorNoSeparationConditionalExpr ) ;
 		sparsExpr.PassStatement( L":", L";}" ) ;
@@ -6701,7 +6701,6 @@ LExprValuePtr LCompiler::MakeRefPointerToPointer( LExprValuePtr xval )
 		// ポインタ先への参照
 		if ( xval->OptionType() == LExprValue::exprRefPointer )
 		{
-			assert( IsUniqueExprValue( xval ) ) ;
 			if ( !xval->GetType().IsPointer() )
 			{
 				if ( xval->GetType().IsDataArray() )

@@ -1259,6 +1259,14 @@ namespace	Loquaty
 			( LStringParser& sparsSrc,
 				LPtr<LFunctionObj> pFunc, const LNamespaceList * pnslLocal ) ;
 
+		// ネイティブ関数呼び出し解釈
+		void ParseFunctionNativeCall
+			( LStringParser& sparsSrc, LPtr<LFunctionObj> pFunc ) ;
+		// ネイティブ関数呼び出し属性解釈
+		void ParseNativeFunctionCallAttribute
+			( LFunctionObj::CallAttributes& callAttr,
+				LString& strFuncName, const LObjPtr& pCallAttr ) ;
+
 		// 関数遅延実装
 		void ParseDelayFuncImplement( const DelayImplement& delayImpl ) ;
 		// 構築関数初期化リスト解釈

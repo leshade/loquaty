@@ -11,6 +11,7 @@
 #include <cstddef>
 #include <memory>
 #include <vector>
+#include <list>
 #include <string>
 #include <set>
 #include <map>
@@ -37,6 +38,11 @@
 #else
 	#include <unistd.h>
 	#include <termios.h>
+	#include <dlfcn.h>
+#endif
+
+#if	defined(__ANDROID__)
+	#include <android/log.h>
 #endif
 
 
@@ -92,8 +98,8 @@ namespace	Loquaty
 {
 	// バージョン
 	constexpr int			VersionMajor	= 1 ;
-	constexpr int			VersionMinor	= 2 ;
-	constexpr const char *	VersionString	= "1.02" ;
+	constexpr int			VersionMinor	= 3 ;
+	constexpr const char *	VersionString	= "1.03" ;
 
 	// 型
 	typedef	std::size_t		size_t ;
@@ -228,6 +234,8 @@ namespace	Loquaty
 
 	#if defined(NDEBUG) || !defined(_DEBUG)
 		inline void LTrace( const char * pszTrace, ... ) {}
+	#elif	defined(__ANDROID__)
+		#define	LTrace(...) __android_log_print( ANDROID_LOG_DEBUG, "Loquaty", __VA_ARGS__ )
 	#else
 		inline void LTrace( const char * pszTrace, ... )
 		{
